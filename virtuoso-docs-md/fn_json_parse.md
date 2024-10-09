@@ -1,10 +1,10 @@
-<div id="fn_json_parse" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ json_parse — Takes json string and returns parse tree.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_json_parse" class="funcsynopsis">
+<div>
 
 |                                |                        |
 |--------------------------------|------------------------|
 | `integer `**`json_parse`**` (` | in `txt ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ json_parse — Takes json string and returns parse tree.
 
 </div>
 
-<div id="desc_json_parse" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ This function takes json string and returns parse tree.
 
 </div>
 
-<div id="params_json_parse" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93629" class="refsect2">
+<div>
 
 ### txt
 
@@ -54,7 +54,7 @@ a json string
 
 </div>
 
-<div id="ret_json_parse" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ The function returns tree.
 
 </div>
 
-<div id="examples_atoi_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_atoi_01" class="example">
+<div>
 
 **Example 24.181. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>create procedure json_tree_example ()
@@ -104,7 +104,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_json_parse" class="refsect1">
+<div>
 
 ## See Also
 

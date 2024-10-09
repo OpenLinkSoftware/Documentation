@@ -1,6 +1,6 @@
-<div id="installstepswin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="installstepswinpreparetoinstall" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,7 +33,7 @@
 If you are upgrading an existing Virtuoso installation and want to
 preserve your existing data and configuration files:
 
-<div class="orderedlist">
+<div>
 
 1.  Shut down your Virtuoso instance as normal.
 
@@ -45,7 +45,7 @@ preserve your existing data and configuration files:
 4.  Check the size of the `virtuoso.trx` file, found in the `database`
     folder alongside the `virtuoso.db` and `virtuoso.ini` files.
 
-    <div class="itemizedlist">
+    <div>
 
     - If zero bytes, proceed to step 6.
 
@@ -77,9 +77,9 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div id="installstepswindownload" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -93,7 +93,7 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Download the <a
     href="http://opldownload.s3.amazonaws.com/uda%2Fvirtuoso%2F7.2%2Fx86_64-generic-win-64%2Fwavpz2zz.msi#this"
@@ -111,9 +111,9 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div id="installstepswinobtainlicense" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -127,7 +127,7 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  If you haven't already obtained a suitable Virtuoso 7.x license
     file, return to the
@@ -138,16 +138,16 @@ preserve your existing data and configuration files:
     Pilot License*</span> (30 day duration, requires some additional
     personal and business information).
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstobtainlic" class="figure">
+    <div>
 
     **Figure 2.1. Installing the Virtuoso Universal Server on Windows --
     Obtain a License File**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Obtain a
     License File](images/ui/win_obtain_license.jpg)
@@ -175,9 +175,9 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div id="installstepswinruninstaller" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -191,21 +191,21 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Double-click the installer archive, `wavpz2zz.msi` , to start the
     process with the Installer Program Introduction.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstruninst" class="figure">
+    <div>
 
     **Figure 2.2. Installing the Virtuoso Universal Server on Windows --
     Run the Virtuoso Installer**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Run the
     Virtuoso Installer](images/ui/win_installer_program.jpg)
@@ -226,16 +226,16 @@ preserve your existing data and configuration files:
 
     , and you'll be presented with the License Agreement:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstrunnext" class="figure">
+    <div>
 
     **Figure 2.3. Installing the Virtuoso Universal Server on Windows --
     License Agreement**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- License
     Agreement](images/ui/win_license_agreement.jpg)
@@ -260,16 +260,16 @@ preserve your existing data and configuration files:
 
     . You'll be asked to locate your license file:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstrunnextaccept" class="figure">
+    <div>
 
     **Figure 2.4. Installing the Virtuoso Universal Server on Windows --
     License Agreement Accept**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- License
     Agreement Accept](images/ui/win_install_folder.jpg)
@@ -303,16 +303,16 @@ preserve your existing data and configuration files:
 
     . You'll be prompted to select an Installation Type:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstrunnextbrowse" class="figure">
+    <div>
 
     **Figure 2.5. Installing the Virtuoso Universal Server on Windows --
     Choose Installation Type**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Choose
     Installation Type](images/ui/win_install_type.jpg)
@@ -329,7 +329,7 @@ preserve your existing data and configuration files:
 
 5.  Select the desired option:
 
-    <div class="itemizedlist">
+    <div>
 
     - <span class="emphasis">*Typical* </span>
 
@@ -366,16 +366,16 @@ preserve your existing data and configuration files:
 
     Custom, you'll be prompted to choose a destination folder:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstrunnextfolder" class="figure">
+    <div>
 
     **Figure 2.6. Installing the Virtuoso Universal Server on Windows --
     Choose Destination Folder**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Choose
     Destination Folder](images/ui/win_destination_folder.jpg)
@@ -400,16 +400,16 @@ preserve your existing data and configuration files:
 
     , you'll be prompted for Feature Selection:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstrunnextfeature" class="figure">
+    <div>
 
     **Figure 2.7. Installing the Virtuoso Universal Server on Windows --
     Feature Selection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Feature
     Selection](images/ui/win_feature_selection.jpg.)
@@ -430,16 +430,16 @@ preserve your existing data and configuration files:
 
     , and the installer will indicate it's ready to begin:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="wininstrunnextready" class="figure">
+    <div>
 
     **Figure 2.8. Installing the Virtuoso Universal Server on Windows --
     Read to install**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Read to
     install](images/ui/win_file_copystart.jpg)
@@ -460,9 +460,9 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div id="installstepswinstartservice" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -476,7 +476,7 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Virtuoso Service Manager from your
 
@@ -484,16 +484,16 @@ preserve your existing data and configuration files:
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="winstartservlaunch" class="figure">
+    <div>
 
     **Figure 2.9. Installing the Virtuoso Universal Server on Windows --
     Launch the Virtuoso Service Manager.**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Launch the
     Virtuoso Service Manager.](images/ui/win_locate_manager.jpg)
@@ -511,16 +511,16 @@ preserve your existing data and configuration files:
 2.  Look for an icon to appear in the Task Bar at the bottom right of
     your screen.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="winstartservicon" class="figure">
+    <div>
 
     **Figure 2.10. Installing the Virtuoso Universal Server on Windows
     -- Look for an icon**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Look for an
     icon](images/win_launch_manager.jpg)
@@ -539,9 +539,9 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div id="installstepswinadmininst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -555,7 +555,7 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Right-click on the Virtuoso Service Manager icon in the Task Bar,
     and click on
@@ -564,16 +564,16 @@ preserve your existing data and configuration files:
 
     :
 
-    <div class="figure-float">
+    <div>
 
-    <div id="winstartadminstart" class="figure">
+    <div>
 
     **Figure 2.11. Installing the Virtuoso Universal Server on Windows
     -- Start your Virtuoso Instance**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Start your
     Virtuoso Instance](images/win_start_service.jpg)
@@ -597,16 +597,16 @@ preserve your existing data and configuration files:
     <a href="http://example.com/conductor" class="ulink"
     target="_top">http://example.com/conductor</a> .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="winstartadmincond" class="figure">
+    <div>
 
     **Figure 2.12. Installing the Virtuoso Universal Server on Windows
     -- Virtuoso Conductor**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installing the Virtuoso Universal Server on Windows -- Virtuoso
     Conductor](images/win_virt_admin.jpg)
@@ -648,9 +648,9 @@ preserve your existing data and configuration files:
 
 </div>
 
-<div id="installstepswinoptional" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -667,7 +667,7 @@ preserve your existing data and configuration files:
 If you preserved existing data and configuration files at the start of
 this process, now is the time to bring them back into play.
 
-<div class="orderedlist">
+<div>
 
 1.  If you used Virtuoso's online backup feature,
     <a href="ch-server.html#onlinebackups" class="link"

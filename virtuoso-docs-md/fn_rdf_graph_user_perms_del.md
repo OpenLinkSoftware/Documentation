@@ -1,10 +1,10 @@
-<div id="fn_rdf_graph_user_perms_del" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ an user named uname on a given graph.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_graph_user_perms_del" class="funcsynopsis">
+<div>
 
 |                                              |                           |
 |----------------------------------------------|---------------------------|
 | ` `**`DB.DBA.RDF_GRAPH_USER_PERMS_DEL`**` (` | in `graph_iri ` varchar , |
 |                                              | in `uname ` varchar `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ an user named uname on a given graph.
 
 </div>
 
-<div id="desc_rdf_graph_user_perms_del" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ users.
 
 </div>
 
-<div id="params_rdf_graph_user_perms_del" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101782" class="refsect2">
+<div>
 
 ### graph_iri
 
@@ -68,7 +68,7 @@ Graph IRI.
 
 </div>
 
-<div id="id101785" class="refsect2">
+<div>
 
 ### uname
 
@@ -78,15 +78,15 @@ User name.
 
 </div>
 
-<div id="examples_rdf_graph_user_perms_del" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_graph_user_perms_del" class="example">
+<div>
 
 **Example 24.278. Example**
 
-<div class="example-contents">
+<div>
 
 See <a href="rdfgraphsecurityintconfsec.html#rdfgraphsecurityintex"
 class="link" title="Example: Blogs and Resource Sharing">Example for
@@ -100,7 +100,7 @@ Blogs and Resource Sharing</a>
 
 </div>
 
-<div id="seealso_rdf_graph_user_perms_del" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="wsrtraversingmsgpaths" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,7 +33,7 @@ using a "via" element as a sub-element of the "rev" element.
 A WS-Routing receiver receiving a WS-Routing message inspects the SOAP
 header and performs the following operations:
 
-<div class="itemizedlist">
+<div>
 
 - If no "fwd" element is present or if the "fwd" element does not
   contain any "via" elements then inspect the "to" element and verify
@@ -56,7 +56,7 @@ header and performs the following operations:
 
 A WS-Routing intermediary MUST follow these additional rules:
 
-<div class="itemizedlist">
+<div>
 
 - If a "rev" element is present then add a "via" element as the first
   "via" element listed in the "rev" element with a value indicating the
@@ -76,11 +76,11 @@ A WS-Routing intermediary MUST follow these additional rules:
 
 </div>
 
-<div id="wsrexample" class="example">
+<div>
 
 **Example 17.29. WS Routing Example**
 
-<div class="example-contents">
+<div>
 
 Here is an example SOAP call from a client to an endpoint D.com via
 intermediaries B.com and C.com:

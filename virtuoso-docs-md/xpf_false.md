@@ -1,10 +1,10 @@
-<div id="xpf_false" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ false — Returns false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_false" class="funcsynopsis">
+<div>
 
 |                           |          |     |
 |---------------------------|----------|-----|
 | `boolean `**`false`**` (` | `void)`; |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ false — Returns false.
 
 </div>
 
-<div id="xpf_desc_false" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,7 +40,7 @@ This function returns boolean constant "false".
 
 </div>
 
-<div id="xpf_ret_false" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -48,7 +48,7 @@ Boolean
 
 </div>
 
-<div id="xpf_seealso_false" class="refsect1">
+<div>
 
 ## See Also
 

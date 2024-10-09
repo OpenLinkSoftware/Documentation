@@ -1,6 +1,6 @@
-<div id="websrvcsproto" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,15 +34,15 @@ services can be enhanced further with other Web and Internet protocols
 for the grand objective of making parts of useful information or ability
 consumable over the Internet as a Web Service.
 
-<div class="figure-float">
+<div>
 
-<div id="virtpyramid" class="figure">
+<div>
 
 **Figure 5.1. Towards Web Services...**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Towards Web Services...](images/virtpyramid.jpg)
 

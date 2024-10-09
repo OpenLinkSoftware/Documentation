@@ -1,10 +1,10 @@
-<div id="fn_rdf_quad_uri_l" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ is a literal value in 'SQL valmode'.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_quad_uri_l" class="funcsynopsis">
+<div>
 
 |                                    |                       |
 |------------------------------------|-----------------------|
@@ -26,7 +26,7 @@ is a literal value in 'SQL valmode'.
 |                                    | in `p_uri ` varchar , |
 |                                    | in `o_lit ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ is a literal value in 'SQL valmode'.
 
 </div>
 
-<div id="desc_rdf_quad_uri_l" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ otherwise they will be stored but are not queryable via SPARQL.
 
 </div>
 
-<div id="params_rdf_quad_uri_l" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104124" class="refsect2">
+<div>
 
 ### g_uri
 
@@ -59,7 +59,7 @@ graph uri IRI string or IRI_ID
 
 </div>
 
-<div id="id104127" class="refsect2">
+<div>
 
 ### s_uri
 
@@ -67,7 +67,7 @@ subject IRI string or IRI_ID
 
 </div>
 
-<div id="id104130" class="refsect2">
+<div>
 
 ### p_uri
 
@@ -75,7 +75,7 @@ predicate IRI string or IRI_ID
 
 </div>
 
-<div id="id104133" class="refsect2">
+<div>
 
 ### o_uri
 
@@ -85,7 +85,7 @@ string, number or datetime, NULL is not allowed
 
 </div>
 
-<div id="ret_rdf_quad_uri_l" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,15 +93,15 @@ any
 
 </div>
 
-<div id="examples_rdf_quad_uri_l" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_quad_uri_l" class="example">
+<div>
 
 **Example 24.308. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>DB.DBA.RDF_QUAD_URI_L ('g_many', 's1', 'p_some', 'z016,g_many,s1,p_some');
@@ -117,7 +117,7 @@ Done. -- 0 msec.
 
 </div>
 
-<div id="seealso_rdf_quad_uri_l" class="refsect1">
+<div>
 
 ## See Also
 

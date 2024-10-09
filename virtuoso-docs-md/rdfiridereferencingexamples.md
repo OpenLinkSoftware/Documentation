@@ -1,6 +1,6 @@
-<div id="rdfiridereferencingexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -91,7 +91,7 @@ Example of <span class="emphasis">*DOI*</span>
 In order to execute correctly queries with doi resolver you need to
 have:
 
-<div class="itemizedlist">
+<div>
 
 - the handle.dll file accessible from your system. For ex. you can put
   it in the Virtuoso bin folder where the rest of the server components

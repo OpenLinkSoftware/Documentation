@@ -1,10 +1,10 @@
-<div id="fn_wsdl_import_udt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ WSDL_IMPORT_UDT — Returns a string containing a UDT definition
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_wsdl_import_udt" class="funcsynopsis">
+<div>
 
 |                                     |                     |
 |-------------------------------------|---------------------|
@@ -24,7 +24,7 @@ WSDL_IMPORT_UDT — Returns a string containing a UDT definition
 |                                     | in `f ` varchar ,   |
 |                                     | in `exec ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ WSDL_IMPORT_UDT — Returns a string containing a UDT definition
 
 </div>
 
-<div id="desc_wsdl_import_udt" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,7 +45,7 @@ URL.
 The returned definition can be saved to a file and/or executed
 automatically to provide instant access to the new UDT.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                            |
 |:----------------------------:|:-----------------------------------------------------------|
@@ -56,11 +56,11 @@ automatically to provide instant access to the new UDT.
 
 </div>
 
-<div id="params_wsdl_import_udt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119282" class="refsect2">
+<div>
 
 ### url
 
@@ -68,7 +68,7 @@ The URI of the target WSDL file to build a UDT definition of.
 
 </div>
 
-<div id="id119285" class="refsect2">
+<div>
 
 ### f
 
@@ -79,7 +79,7 @@ The default value is NULL, which will not create a file.
 
 </div>
 
-<div id="id119289" class="refsect2">
+<div>
 
 ### exec
 
@@ -91,7 +91,7 @@ of 0 will not execute the definition.
 
 </div>
 
-<div id="ret_wsdl_import_udt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -99,15 +99,15 @@ This function returns the text of the UDT definition as a varchar.
 
 </div>
 
-<div id="examples_wsdl_import_udt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_wsdl_import_udt" class="example">
+<div>
 
 **Example 24.451. Simple example of a WSDL driven UDT**
 
-<div class="example-contents">
+<div>
 
 Web Service proxy wrapper for Redcoal SMS SOAP interface:
 
@@ -308,7 +308,7 @@ ____________________________________________
 
 </div>
 
-<div id="seealso_wsdl_import_udt" class="refsect1">
+<div>
 
 ## See Also
 

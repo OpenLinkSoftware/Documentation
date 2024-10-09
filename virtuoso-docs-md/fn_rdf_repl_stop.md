@@ -1,10 +1,10 @@
-<div id="fn_rdf_repl_stop" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ RDF_REPL_STOP — Stops the RDF replication at the publishing side
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_repl_stop" class="funcsynopsis">
+<div>
 
 |                            |                               |
 |----------------------------|-------------------------------|
 | ` `**`RDF_REPL_STOP`**` (` | in `quiet ` integer := 0 `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ RDF_REPL_STOP — Stops the RDF replication at the publishing side
 
 </div>
 
-<div id="desc_rdf_repl_stop" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ in replicated graphs.
 
 </div>
 
-<div id="params_repl_sync_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108086" class="refsect2">
+<div>
 
 ### quiet
 
@@ -60,15 +60,15 @@ are shown. If set to 1 -- no errors are shown.
 
 </div>
 
-<div id="examples_rdf_repl_stop" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_rdf_repl_stop" class="example">
+<div>
 
 **Example 24.353. Enable RDF Publication**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.RDF_REPL_STOP ();
@@ -82,7 +82,7 @@ SQL> DB.DBA.RDF_REPL_STOP ();
 
 </div>
 
-<div id="seealso_rdf_repl_stop" class="refsect1">
+<div>
 
 ## See Also
 

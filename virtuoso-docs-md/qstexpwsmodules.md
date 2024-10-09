@@ -1,6 +1,6 @@
-<div id="qstexpwsmodules" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ servers already existing within an organization can easily become a
 component in an eBusiness solution using Virtuoso. All you need is a few
 simple steps that typically take mere minutes to complete:
 
-<div class="itemizedlist">
+<div>
 
 - **Choose your stored procedure(s). ** The procedures that you want to
   expose can either be native Virtuoso stored procedures, or remote
@@ -53,9 +53,9 @@ functions, from C or other programming languages, that can be used from
 within Virtuoso PL. This also means that VSE's can also be published as
 a Web Service!
 
-<div id="qstexpwspls" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -69,9 +69,9 @@ a Web Service!
 
 </div>
 
-<div id="qstexpwssps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -99,15 +99,15 @@ create a valid data source that leads to a connection to that database.
 Once verified proceed to the Remote Procedures page. Select the "Link
 objects" link for a data source.
 
-<div class="figure-float">
+<div>
 
-<div id="id8545" class="figure">
+<div>
 
 **Figure 3.38. Linking Procedures from Remote Data Sources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Procedures from Remote Data
 Sources](images/ui/admrmtprocs001.png)
@@ -125,15 +125,15 @@ Sources](images/ui/admrmtprocs001.png)
 Select the check-box "Store Procedures". Click the "Apply" button. As
 result will be shown the list of available procedures.
 
-<div class="figure-float">
+<div>
 
-<div id="id8551" class="figure">
+<div>
 
 **Figure 3.39. Linking Procedures from Remote Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Procedures from Remote
 Datasources](images/ui/admrmtprocs002.png)
@@ -151,15 +151,15 @@ Datasources](images/ui/admrmtprocs002.png)
 Select the check-boxes for the procedures you want to link and click the
 "Link" button.
 
-<div class="figure-float">
+<div>
 
-<div id="id8557" class="figure">
+<div>
 
 **Figure 3.40. Linking Procedures from Remote Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Procedures from Remote
 Datasources](images/ui/admrmtprocs003.png)
@@ -180,15 +180,15 @@ data type mappings that Virtuoso will use both internally and for any
 future interactions with the SOAP server. If you do not want to specify
 any special type information the details can be left as default.
 
-<div class="figure-float">
+<div>
 
-<div id="id8563" class="figure">
+<div>
 
 **Figure 3.41. Linking Procedures from Remote Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Procedures from Remote
 Datasources](images/ui/admrmtprocs004.png)
@@ -223,7 +223,7 @@ Type*</span> .
 
 Once the details are correct press the "Link" button.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                         |
 |:--------------------------:|:--------------------------------------------------------|
@@ -235,9 +235,9 @@ Once the details are correct press the "Link" button.
 
 </div>
 
-<div id="qstexpwsvirtdir" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -258,15 +258,15 @@ Directories*</span> you make a new URL Mappings. Click on the
 <span class="emphasis">*New Directory*</span> link for the {Default Web
 Site} line to begin defining a new SOAP mapping.
 
-<div class="figure-float">
+<div>
 
-<div id="id8591" class="figure">
+<div>
 
 **Figure 3.42. Virtual Directories**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories](images/ui/admvirtdir001.png)
 
@@ -283,15 +283,15 @@ Site} line to begin defining a new SOAP mapping.
 Select for "Type" from the list the value "SOAP access point" and click
 the "Next" button.
 
-<div class="figure-float">
+<div>
 
-<div id="id8597" class="figure">
+<div>
 
 **Figure 3.43. Virtual Directories Mappings**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories Mappings](images/ui/admvirtdir003.png)
 
@@ -310,15 +310,15 @@ Information", "Authentication", "Web Service Option", "WS Security" and
 "Publish Objects". Particular options to note are "Virtual Directory
 Information" and "Publish Objects".
 
-<div class="figure-float">
+<div>
 
-<div id="id8603" class="figure">
+<div>
 
 **Figure 3.44. Virtual Directories**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories](images/ui/admvirtdir004.png)
 
@@ -337,15 +337,15 @@ Virtuoso stored procedures, or remotely linked procedures to be
 published as SOAP web services. Also you can publish Pl Modules, User
 Defined Types, or Saved Queries.
 
-<div class="figure-float">
+<div>
 
-<div id="id8610" class="figure">
+<div>
 
 **Figure 3.45. Publish Objects**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Publish Objects](images/ui/admvirtdir005.png)
 
@@ -359,7 +359,7 @@ Defined Types, or Saved Queries.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|
@@ -371,9 +371,9 @@ Defined Types, or Saved Queries.
 
 </div>
 
-<div id="qstexpspublishbtn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -397,15 +397,15 @@ which you can select the mapping that you want to edit by pressing on
 its <span class="emphasis">*Edit*</span> link. Note, the virtual
 directory should have type "SOAP".
 
-<div class="figure-float">
+<div>
 
-<div id="id8624" class="figure">
+<div>
 
 **Figure 3.46. Virtual Directories**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories](images/ui/admvirtdir006.png)
 
@@ -422,15 +422,15 @@ directory should have type "SOAP".
 Go to tab "publish Objects" to expose/hide your procedures, Pl Modules,
 User Defined Types and Saved Queries.
 
-<div class="figure-float">
+<div>
 
-<div id="id8630" class="figure">
+<div>
 
 **Figure 3.47. Publish Objects**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Publish Objects](images/ui/admvirtdir008.png)
 
@@ -450,15 +450,15 @@ When the procedures to be published are selected, you can either click
 the "Publish Selected" button, or before this to click the "Edit
 Description" button.
 
-<div class="figure-float">
+<div>
 
-<div id="id8636" class="figure">
+<div>
 
 **Figure 3.48. Choosing Procedure aPublish**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Choosing Procedure aPublish](images/ui/admvirtdir007.png)
 
@@ -474,9 +474,9 @@ Description" button.
 
 </div>
 
-<div id="qstexpsvsmxtest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -503,15 +503,15 @@ the following URLs:
 | http://example.com:8890/mysoap/services.wsdl |
 | http://example.com:8890/mysoap/services.vsmx |
 
-<div class="figure-float">
+<div>
 
-<div id="id8650" class="figure">
+<div>
 
 **Figure 3.49. Services.wsdl**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Services.wsdl](images/ui/admvirtdir009.png)
 
@@ -525,15 +525,15 @@ the following URLs:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id8655" class="figure">
+<div>
 
 **Figure 3.50. Services.vsmx**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Services.vsmx](images/ui/admvirtdir010.png)
 
@@ -552,7 +552,7 @@ Services available from /mysoap. The VSMX page is a Virtuoso generated
 test page allowing you to test SOAP services. This feature should
 improve your development time.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                      |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

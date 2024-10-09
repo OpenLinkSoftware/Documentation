@@ -1,6 +1,6 @@
-<div id="trxlogpurger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,11 +42,11 @@ If P_TIME is NULL log purger will not be scheduled to run at all. If
 P_TIME is not NULL there can be the following combinations of P_MONTH,
 P_DAY and P_WDAY ('\*' means NULL value, 'x' means any value):
 
-<div id="id37466" class="table">
+<div>
 
 **Table 13.2. Purger config settings**
 
-<div class="table-contents">
+<div>
 
 |                                          |                                        |                                         |                                                 |
 |------------------------------------------|----------------------------------------|-----------------------------------------|-------------------------------------------------|

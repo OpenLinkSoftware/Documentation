@@ -1,6 +1,6 @@
-<div id="virtuosospongerfacetinstallvadinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,22 +14,22 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Download and install the <a
     href="http://download.openlinksw.com/packages/5.0/virtuoso/fct_dav.vad"
     class="ulink" target="_top">Virtuoso Faceted Browser VAD</a> package
     using the Conductor System Admin - \> Packages tab.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst1" class="figure">
+    <div>
 
     **Figure 16.115. Install the FCT package**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Install the FCT package](images/ui/fb1.png)
 
@@ -50,15 +50,15 @@
     , where "cname" is the hostname:portno your Virtuoso instance is
     running on.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst3" class="figure">
+    <div>
 
     **Figure 16.116. FCT HTML interface**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![FCT HTML interface](images/ui/fb2.png)
 
@@ -78,7 +78,7 @@
 
     .
 
-    <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div>
 
     <table data-border="0" data-summary="Tip: See Also:
     ">

@@ -1,6 +1,6 @@
-<div id="vspquickstart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,7 +65,7 @@ custom-designed controls too. Since XML is a key factor for VSPX so does
 XSLT for providing total separation between the data, business logic and
 the layout on the web page.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                          |
 |:--------------------------:|:-----------------------------------------|

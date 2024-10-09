@@ -1,10 +1,10 @@
-<div id="xpf_document" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ document.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_document" class="funcsynopsis">
+<div>
 
 |                               |                                      |
 |-------------------------------|--------------------------------------|
@@ -28,7 +28,7 @@ document.
 |                               | `content_language ` varchar ,        |
 |                               | `dtd_validator_config ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ document.
 
 </div>
 
-<div id="xpf_desc_document" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ in XSLT 1.0 standard. In XPATH 1.0, there is no such function at all.
 
 </div>
 
-<div id="xpf_params_document" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126878" class="refsect2">
+<div>
 
 ### document_uri
 
@@ -72,7 +72,7 @@ specified.
 
 </div>
 
-<div id="id126882" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -82,7 +82,7 @@ into absolute in order to locate and load subdocuments) and to change
 
 </div>
 
-<div id="id126885" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -91,7 +91,7 @@ mode (with quiet recovery after any syntax error)
 
 </div>
 
-<div id="id126888" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -101,7 +101,7 @@ and 'LATIN-1' for HTML mode.
 
 </div>
 
-<div id="id126891" class="refsect2">
+<div>
 
 ### content_language
 
@@ -111,7 +111,7 @@ various human languages')
 
 </div>
 
-<div id="id126894" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -128,7 +128,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="xpf_ret_document" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -136,15 +136,15 @@ Node-set
 
 </div>
 
-<div id="xpf_errors_document" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id126903" class="table">
+<div>
 
-**Table 24.140. Errors signalled by document()**
+**Table 24.139. Errors signalled by document()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                            | Description                                                                                                                           |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -165,15 +165,15 @@ are locked by Virtuoso/PL procedure that invokes the XPATH processor.
 
 </div>
 
-<div id="xpf_examples_document" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_document1" class="example">
+<div>
 
 **Example 24.579. Simple reading of a standalone XML document**
 
-<div class="example-contents">
+<div>
 
 Read a standalone document from http://www.example.com/sales/prices.xml
 
@@ -187,11 +187,11 @@ document("http://www.example.com/sales/prices.xml")
 
   
 
-<div id="xpf_ex_document2" class="example">
+<div>
 
 **Example 24.580. Simple reading of a non-standalone document**
 
-<div class="example-contents">
+<div>
 
 Read a non-standalone document from local mirror but access its
 subdocuments as if it is retrieved directly from
@@ -212,7 +212,7 @@ document("http://webcache.localdomain/examplesales/prices.xml", "http://www.exam
 
 </div>
 
-<div id="xpf_seealso_document" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="fn_disconnect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -31,11 +31,11 @@ logged in the error log file but not otherwise processed. The
 transaction is committed regardless of errors. The user and
 connection_id and any connection variables are defined during this hook.
 
-<div id="id36510" class="example">
+<div>
 
 **Example 12.5. Disconnect Interception**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure DB.DBA.DBEV_DISCONNECT ()

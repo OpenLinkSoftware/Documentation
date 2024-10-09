@@ -1,10 +1,10 @@
-<div id="fn_vd_remote_data_source" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ vd_remote_data_source — prepares a remote DSN for use
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vd_remote_data_source" class="funcsynopsis">
+<div>
 
 |                                    |                             |
 |------------------------------------|-----------------------------|
@@ -25,7 +25,7 @@ vd_remote_data_source — prepares a remote DSN for use
 |                                    | in `user ` varchar ,        |
 |                                    | in `password ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ vd_remote_data_source — prepares a remote DSN for use
 
 </div>
 
-<div id="desc_vd_remote_data_source" class="refsect1">
+<div>
 
 ## Description
 
@@ -54,11 +54,11 @@ the server's environment and the DSN's database should be on line.
 
 </div>
 
-<div id="params_vd_remote_data_source" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117987" class="refsect2">
+<div>
 
 ### dsn
 
@@ -66,7 +66,7 @@ The name of the remote datasource to prepare.
 
 </div>
 
-<div id="id117990" class="refsect2">
+<div>
 
 ### connstr
 
@@ -74,7 +74,7 @@ Currently ignored parameter.
 
 </div>
 
-<div id="id117993" class="refsect2">
+<div>
 
 ### user
 
@@ -82,7 +82,7 @@ username for the connection.
 
 </div>
 
-<div id="id117996" class="refsect2">
+<div>
 
 ### password
 
@@ -92,7 +92,7 @@ password for the user.
 
 </div>
 
-<div id="ret_vd_remote_data_source" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -100,15 +100,15 @@ Status of the connection attempt.
 
 </div>
 
-<div id="errors_vd_remote_data_source" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id118004" class="table">
+<div>
 
-**Table 24.113. Errors signalled by**
+**Table 24.112. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -122,7 +122,7 @@ Status of the connection attempt.
 
 </div>
 
-<div id="seealso_vd_remote_data_source" class="refsect1">
+<div>
 
 ## See Also
 

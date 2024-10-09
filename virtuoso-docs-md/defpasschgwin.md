@@ -1,6 +1,6 @@
-<div id="defpasschgwin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

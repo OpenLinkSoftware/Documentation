@@ -1,6 +1,6 @@
-<div id="jdbcdriverhibernatesetupandtestingexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,9 +22,9 @@ installation,
 target="_top">our demo programs</a> are provided in both binary and
 source code format for your free use.
 
-<div id="jdbcdriverhibernatesetupandtestingexmp1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,7 +41,7 @@ source code format for your free use.
 This sample performs a simple insert and retrieval of data against the
 Virtuoso database.
 
-<div class="orderedlist">
+<div>
 
 1.  Open your command shell and change to the "ex1" directory
 
@@ -103,9 +103,9 @@ Virtuoso database.
 
 </div>
 
-<div id="jdbcdriverhibernatesetupandtestingexmp2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -121,7 +121,7 @@ Virtuoso database.
 
 Hello World with Java Persistence
 
-<div class="orderedlist">
+<div>
 
 1.  Open your command shell and change to the "ex2" directory
 
@@ -256,9 +256,9 @@ Hello World with Java Persistence
 
 </div>
 
-<div id="jdbcdriverhibernatesetupandtestingexmp3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -275,7 +275,7 @@ Hello World with Java Persistence
 This sample performs more complex insert and retrieval of data against
 the Virtuoso database.
 
-<div class="orderedlist">
+<div>
 
 1.  Open your command shell and change to the "ex3" directory
 
@@ -348,9 +348,9 @@ the Virtuoso database.
 
 </div>
 
-<div id="jdbcdriverhibernatesetupandtestingexmp4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

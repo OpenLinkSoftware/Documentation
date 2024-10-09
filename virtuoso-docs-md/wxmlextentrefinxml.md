@@ -1,6 +1,6 @@
-<div id="wxmlextentrefinxml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,7 +67,7 @@ The '..' and '.' in relative paths are treated like file names when
 combining relative references to base URIs. A relative reference without
 a path just replaces the last part of the path in the base URI.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                      |
 |:--------------------------:|:---------------------------------------------------------------------|

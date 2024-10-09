@@ -1,6 +1,6 @@
-<div id="virtmanconfodbcdsnunix" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,9 +33,9 @@ Address=localhost:1111
 If the application that will load the ODBC driver is multithreaded, use
 the virtodbc32_r.so driver instead.
 
-<div id="virtmanconfodbcdsnunixlink" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,9 +59,9 @@ ODBC driver shared object is also possible.
 
 </div>
 
-<div id="virtmanconfodbcdsnunixjdbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

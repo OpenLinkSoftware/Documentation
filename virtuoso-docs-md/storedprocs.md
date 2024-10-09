@@ -1,6 +1,6 @@
-<div id="storedprocs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

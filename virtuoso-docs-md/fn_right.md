@@ -1,10 +1,10 @@
-<div id="fn_right" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ right — get n rightmost characters of a string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_right" class="funcsynopsis">
+<div>
 
 |                    |                          |
 |--------------------|--------------------------|
 | ` `**`right`**` (` | in `str ` string ,       |
 |                    | in `count ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ right — get n rightmost characters of a string
 
 </div>
 
-<div id="desc_right" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,15 +46,15 @@ returned.
 
 </div>
 
-<div id="examples_right" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_right_1" class="example">
+<div>
 
 **Example 24.364. Simple Example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 right('AbracadabrA',4) -> 'abrA'

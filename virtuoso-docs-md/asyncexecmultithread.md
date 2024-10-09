@@ -1,6 +1,6 @@
-<div id="asyncexecmultithread" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -95,9 +95,9 @@ create procedure taq1 (in x int, in thrs int := 1)
 of the last one. Note that this is not necessarily the last to complete if there are multiple threads serving the queue.
 ```
 
-<div id="synchronization" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

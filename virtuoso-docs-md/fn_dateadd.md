@@ -1,10 +1,10 @@
-<div id="fn_dateadd" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ dateadd — arithmetic add to a date
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dateadd" class="funcsynopsis">
+<div>
 
 |                      |                          |
 |----------------------|--------------------------|
@@ -24,7 +24,7 @@ dateadd — arithmetic add to a date
 |                      | in `number ` integer ,   |
 |                      | in `date ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ dateadd — arithmetic add to a date
 
 </div>
 
-<div id="desc_dateadd" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ the result to a human-readable string.
 
 </div>
 
-<div id="params_dateadd" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84149" class="refsect2">
+<div>
 
 ### unit
 
@@ -58,7 +58,7 @@ String value denoting the unit to use in the addition.
 
 </div>
 
-<div id="id84152" class="refsect2">
+<div>
 
 ### number
 
@@ -66,7 +66,7 @@ Integer number of *`unit `* units to be added.
 
 </div>
 
-<div id="id84156" class="refsect2">
+<div>
 
 ### date
 
@@ -76,15 +76,15 @@ Datetime value to which the *`number `* of *`unit `* s is to be added
 
 </div>
 
-<div id="examples_dateadd" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dateadd" class="example">
+<div>
 
 **Example 24.70. Simple date addition**
 
-<div class="example-contents">
+<div>
 
 Add 10 days to 1996.10.10.
 
@@ -107,7 +107,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_dateadd" class="refsect1">
+<div>
 
 ## See Also
 

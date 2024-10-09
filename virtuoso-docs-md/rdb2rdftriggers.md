@@ -1,6 +1,6 @@
-<div id="rdb2rdftriggers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -68,7 +68,7 @@ create procedure DB.DBA.RDB2RDF_COPY_ALL_RDF_VIEWS_TO_SYNC ()
 When the virtrdf:SyncToQuads storage is fully prepared, two API
 functions can be used:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_sparql_rdb2rdf_list_tables.html" class="link"
   title="DB.DBA.SPARQL_RDB2RDF_LIST_TABLES">DB.DBA.SPARQL_RDB2RDF_LIST_TABLES</a>

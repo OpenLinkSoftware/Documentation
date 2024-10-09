@@ -1,6 +1,6 @@
-<div id="vdbenginepsqlcrvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the PostgreSQL Northwind database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora1" class="figure">
+    <div>
 
     **Figure 8.458. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the PostgreSQL Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_14" class="figure">
+    <div>
 
     **Figure 8.459. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the PostgreSQL Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora2" class="figure">
+    <div>
 
     **Figure 8.460. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/eora2.png)
 
@@ -137,15 +137,15 @@ the PostgreSQL Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora3" class="figure">
+    <div>
 
     **Figure 8.461. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/eora3.png)
 
@@ -161,15 +161,15 @@ the PostgreSQL Northwind database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora4" class="figure">
+    <div>
 
     **Figure 8.462. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the PostgreSQL Northwind database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora5" class="figure">
+    <div>
 
     **Figure 8.463. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/eora5.png)
 
@@ -241,15 +241,15 @@ the PostgreSQL Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora6" class="figure">
+    <div>
 
     **Figure 8.464. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the PostgreSQL Northwind database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora7" class="figure">
+    <div>
 
     **Figure 8.465. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the PostgreSQL Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora8" class="figure">
+    <div>
 
     **Figure 8.466. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the PostgreSQL Northwind database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="psdora10" class="figure">
+    <div>
 
     **Figure 8.467. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the PostgreSQL Northwind database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora10" class="figure">
+    <div>
 
     **Figure 8.468. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/pseora10.png)
 
@@ -405,15 +405,15 @@ the PostgreSQL Northwind database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora11" class="figure">
+    <div>
 
     **Figure 8.469. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -442,15 +442,15 @@ the PostgreSQL Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora12" class="figure">
+    <div>
 
     **Figure 8.470. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/pseora12.png)
 
@@ -487,15 +487,15 @@ the PostgreSQL Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora13" class="figure">
+    <div>
 
     **Figure 8.471. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/pseora13.png)
 
@@ -516,15 +516,15 @@ the PostgreSQL Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="pseora14" class="figure">
+    <div>
 
     **Figure 8.472. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/pseora14.png)
 

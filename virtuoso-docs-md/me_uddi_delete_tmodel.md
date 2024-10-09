@@ -1,10 +1,10 @@
-<div id="me_uddi_delete_tmodel" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ structures.
 
 </div>
 
-<div id="syntax_uddi_delete_tmodel_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -29,11 +29,11 @@ structures.
 
 </div>
 
-<div id="params_uddi_delete_tmodel_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id114619" class="refsect2">
+<div>
 
 ### authInfo
 
@@ -42,7 +42,7 @@ token obtained using the *`get_authToken `* call.
 
 </div>
 
-<div id="id114623" class="refsect2">
+<div>
 
 ### tModelKey
 
@@ -55,14 +55,14 @@ value.)
 
 </div>
 
-<div id="ret_uddi_delete_tmodel_01" class="refsect1">
+<div>
 
 ## Return Types
 
 Upon successful completion, a *`dispositionReport `* structure is
 returned with a single success indicator.
 
-<div id="id114633" class="refsect2">
+<div>
 
 ### Behavior
 
@@ -87,7 +87,7 @@ passing the key of the hidden *`tModel `* .
 
 </div>
 
-<div id="errors_uddi_delete_tmodel_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -95,11 +95,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id114659" class="table">
+<div>
 
-**Table 24.89. Errors signalled by uddi_delete_tModel**
+**Table 24.88. Errors signalled by uddi_delete_tModel**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                          | Description                                                                                                                                                                                                                                                                                                                         |
 |-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

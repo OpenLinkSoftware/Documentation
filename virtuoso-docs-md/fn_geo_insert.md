@@ -1,10 +1,10 @@
-<div id="fn_geo_insert" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ geo_insert — Inserts a geometry from an R tree index.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_geo_insert" class="funcsynopsis">
+<div>
 
 |                         |                   |
 |-------------------------|-------------------|
@@ -24,7 +24,7 @@ geo_insert — Inserts a geometry from an R tree index.
 |                         | in `geo ` any ,   |
 |                         | in `id ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ geo_insert — Inserts a geometry from an R tree index.
 
 </div>
 
-<div id="desc_geo_insert" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ transaction log record of the action.
 
 </div>
 
-<div id="params_geo_insert" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91518" class="refsect2">
+<div>
 
 ### tb
 
@@ -57,7 +57,7 @@ A fully qualified name of an R tree table.
 
 </div>
 
-<div id="id91521" class="refsect2">
+<div>
 
 ### geo
 
@@ -65,7 +65,7 @@ A geometry.
 
 </div>
 
-<div id="id91524" class="refsect2">
+<div>
 
 ### id
 
@@ -75,7 +75,7 @@ Geometry id.
 
 </div>
 
-<div id="ret_geo_insert" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,15 +83,15 @@ Returns int.
 
 </div>
 
-<div id="examples_geo_insert" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_geo_insert" class="example">
+<div>
 
 **Example 24.148. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 ```
@@ -104,7 +104,7 @@ Returns int.
 
 </div>
 
-<div id="seealso_geo_insert" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="jbenchapplication" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,22 +14,22 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the Virtuoso "Start Menu" program group and then follow the
     JDBC Samples--\>Jbench (JDK1.1) or Jbench (JDK1.2) menu path,
     depending on the JVM you have installed. This will execute a DOS
     batch program that initializes the JBench application.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample017" class="figure">
+    <div>
 
     **Figure 4.20. JBench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JBench](images/sampl019.gif)
 
@@ -50,15 +50,15 @@
     a valid Virtuoso Driver for JDBC URL that points to the
     demonstration database listening at port 1112 as its default).
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample018" class="figure">
+    <div>
 
     **Figure 4.21. JBench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JBench](images/sampl020.gif)
 
@@ -89,15 +89,15 @@
     not listed ANSI should suffice (as long as this is an ANSI SQL
     compliant database).
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample019" class="figure">
+    <div>
 
     **Figure 4.22. JBench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JBench](images/sampl021.gif)
 
@@ -121,15 +121,15 @@
     The benchmark parameters fall into 4 categories, Bench execution
     mode, Run Options, SQL Options, and Execution Options.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample020" class="figure">
+    <div>
 
     **Figure 4.23. JBench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JBench](images/sampl022.gif)
 

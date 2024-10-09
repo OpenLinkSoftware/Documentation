@@ -1,6 +1,6 @@
-<div id="sqlrefgeospatial7enchance" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,9 +23,9 @@ target="_top">GeoSPARQL</a> and
 <a href="http://www.opengeospatial.org/" class="ulink"
 target="_top">OGC</a> standards.
 
-<div id="sqlrefgeospatial7enchancedt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,15 +42,15 @@ target="_top">OGC</a> standards.
 The table below outlines the common WKT (Well Known Text)
 representations for several types of geometric objects used in RDF:
 
-<div class="figure-float">
+<div>
 
-<div id="geospatial1" class="figure">
+<div>
 
 **Figure 9.1. Geo Spatial Geometry Data Types**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Geo Spatial Geometry Data Types](images/ui/geosptypes.png)
 
@@ -70,9 +70,9 @@ geometry data types now supported by Virtuoso. The links are to live
 examples of the query running against the OpenLink LOD Cloud Server
 instance.
 
-<div id="sqlrefgeospatial7enchancedtbox" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -100,7 +100,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1gwmvTC" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -112,9 +112,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtpolygon" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -142,7 +142,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1hp78Nw" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -154,9 +154,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtpolygonhole" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -184,7 +184,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1gwmJtN" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -196,9 +196,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtmpolygon" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -226,7 +226,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1jtEBIL" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -238,9 +238,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtgcollection" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -268,7 +268,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1h5pYuF" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -280,9 +280,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtdmpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -310,7 +310,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1piJibH" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -322,9 +322,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtlstring" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -352,7 +352,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1piJwQ6" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -364,9 +364,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtmlstring" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -394,7 +394,7 @@ ORDER BY DESC(?cnt)
 LIMIT 10
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/1leUyWc" class="ulink" target="_top">View the
   SPARQL Query Definition via SPARQL Protocol URL;</a>
@@ -406,9 +406,9 @@ LIMIT 10
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtsupported" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -443,9 +443,9 @@ RING, RINGM, RINGZ, RINGZM
 
 </div>
 
-<div id="sqlrefgeospatial7enchancedtnsy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -479,9 +479,9 @@ TIN, TINM, TINZ, TINZM
 
 </div>
 
-<div id="sqlrefgeospatial7enchancefunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -506,7 +506,7 @@ bif:earth_radius()
 etc.
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_earth_radius.html" class="link" title="earth_radius"><code
   class="function">earth_radius()</code></a> : returns geom.mean of
@@ -737,9 +737,9 @@ etc.
 
 </div>
 
-<div id="sqlrefgeospatial7enchanceplg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -766,9 +766,9 @@ is that the plugin should load data about coordinate systems to work and
 the simplest way to get the right data from a high-quality source is to
 use the package.
 
-<div id="sqlrefgeospatial7enchanceplgcomp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -816,9 +816,9 @@ libsrc/plugin/.libs/v7proj4.ver
 
 </div>
 
-<div id="sqlrefgeospatial7enchanceplginst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -928,7 +928,7 @@ SQL>
 There are two procedures are available for loading more co-ordinate
 systems:
 
-<div class="orderedlist">
+<div>
 
 1.  `DB.DBA.V7PROJ4_LOAD_SYS_SRIDS` : it is called at server startup if
     the v7proj4 plugin is loaded:
@@ -1016,9 +1016,9 @@ coordinates may be tens kilometers away from correct values.
 
 </div>
 
-<div id="sqlrefgeospatial7enchanceplginex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

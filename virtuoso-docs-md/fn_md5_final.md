@@ -1,10 +1,10 @@
-<div id="fn_md5_final" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ md5_final — returns the md5 checksum given an initialized md5 context
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_md5_final" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
 | ` `**`md5_final`**` (` | in `ctx ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ md5_final — returns the md5 checksum given an initialized md5 context
 
 </div>
 
-<div id="desc_md5_final" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ This function finalizes the MD5_CTX and returns the final checksum.
 
 </div>
 
-<div id="params_md5_final" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96469" class="refsect2">
+<div>
 
 ### ctx
 
@@ -54,7 +54,7 @@ A MD5_CTX
 
 </div>
 
-<div id="ret_md5_final" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,7 +62,7 @@ A string md5 checksum.
 
 </div>
 
-<div id="seealso_md5_final" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_corr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ CORR — Returns the coefficient of correlation of a set of number pairs.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_corr" class="funcsynopsis">
+<div>
 
 |                          |                      |
 |--------------------------|----------------------|
 | `numeric `**`CORR`**` (` | in `expr1 ` any ,    |
 |                          | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ CORR — Returns the coefficient of correlation of a set of number pairs.
 
 </div>
 
-<div id="desc_corr" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ COVAR_POP(expr1, expr2) / (STDDEV_POP(expr1) * STDDEV_POP(expr2))
 
 </div>
 
-<div id="params_corr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id79385" class="refsect2">
+<div>
 
 ### expr1
 
@@ -61,7 +61,7 @@ Number expression.
 
 </div>
 
-<div id="id79388" class="refsect2">
+<div>
 
 ### expr2
 
@@ -71,7 +71,7 @@ Number expression.
 
 </div>
 
-<div id="ret_corr" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,7 +80,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_corr" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_vad_pack" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ VAD_PACK — get VAD resource
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_pack" class="funcsynopsis">
+<div>
 
 |                                      |                                       |
 |--------------------------------------|---------------------------------------|
@@ -24,7 +24,7 @@ VAD_PACK — get VAD resource
 |                                      | in `base_uri_of_resources ` varchar , |
 |                                      | in `package_uri ` varchar `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ VAD_PACK — get VAD resource
 
 </div>
 
-<div id="desc_58" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ be unavailable. By convention, VAD package files have the extension
 
 </div>
 
-<div id="params_24" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117814" class="refsect2">
+<div>
 
 ### sticker_url
 
@@ -63,7 +63,7 @@ stickers file URI
 
 </div>
 
-<div id="id117817" class="refsect2">
+<div>
 
 ### base_uri_of_resources
 
@@ -71,7 +71,7 @@ inlined resources root
 
 </div>
 
-<div id="id117820" class="refsect2">
+<div>
 
 ### package_uri
 
@@ -81,7 +81,7 @@ path of output VAD file
 
 </div>
 
-<div id="ret_06_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -91,7 +91,7 @@ be unavailable.
 
 </div>
 
-<div id="seealso_30" class="refsect1">
+<div>
 
 ## See Also
 

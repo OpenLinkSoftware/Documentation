@@ -1,6 +1,6 @@
-<div id="rdfindertmethodsparqlendpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ single statement and executed in sequence.
 Using the Virtuoso ISQL tool or using the /sparql UI at
 http://host:port/sparql, execute the following:
 
-<div class="orderedlist">
+<div>
 
 1.  Insert into graph http://BookStore.com 3 triples:
 

@@ -1,10 +1,10 @@
-<div id="fn_regr_syy" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ statistics.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regr_syy" class="funcsynopsis">
+<div>
 
 |                              |                      |
 |------------------------------|----------------------|
 | `numeric `**`REGR_SYY`**` (` | in `expr1 ` any ,    |
 |                              | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ statistics.
 
 </div>
 
-<div id="desc_regr_syy" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ REGR_COUNT(expr1, expr2) * VAR_POP(expr1)
 
 </div>
 
-<div id="params_regr_syy" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78422" class="refsect2">
+<div>
 
 ### expr1
 
@@ -59,7 +59,7 @@ Number expression.
 
 </div>
 
-<div id="id78425" class="refsect2">
+<div>
 
 ### expr2
 
@@ -69,7 +69,7 @@ Number expression.
 
 </div>
 
-<div id="ret_regr_syy" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,7 +78,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_regr_syy" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="qualifiednames" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="qual_owners" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_nntp_post" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ nntp_post — Post message to NNTP server
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_nntp_post" class="funcsynopsis">
+<div>
 
 |                             |                         |
 |-----------------------------|-------------------------|
 | `array `**`nntp_post`**` (` | in `server ` varchar ,  |
 |                             | in `body ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ nntp_post — Post message to NNTP server
 
 </div>
 
-<div id="desc_nntp_post" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ News Transfer Protocol as defined in the rfc977.
 
 </div>
 
-<div id="params_nntp_post" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97390" class="refsect2">
+<div>
 
 ### server
 
@@ -56,7 +56,7 @@ default for port, so to connect to the standard port for NNTP, use
 
 </div>
 
-<div id="id97393" class="refsect2">
+<div>
 
 ### body
 
@@ -67,7 +67,7 @@ must comply with RFC 850 (Standard for Interchange of USENET Messages).
 
 </div>
 
-<div id="ret_05" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ must comply with RFC 850 (Standard for Interchange of USENET Messages).
 
 </div>
 
-<div id="errors_nntp_post" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id97402" class="table">
+<div>
 
-**Table 24.60. Errors signalled by**
+**Table 24.59. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                  |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|
@@ -99,15 +99,15 @@ must comply with RFC 850 (Standard for Interchange of USENET Messages).
 
 </div>
 
-<div id="examples_nntp_post" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_nntp_post_1" class="example">
+<div>
 
 **Example 24.226. Post message to remote NNTP**
 
-<div class="example-contents">
+<div>
 
 This example post message to a remote NNTP server.
 

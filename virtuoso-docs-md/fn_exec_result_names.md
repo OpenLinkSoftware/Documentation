@@ -1,10 +1,10 @@
-<div id="fn_exec_result_names" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ output.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exec_result_names" class="funcsynopsis">
+<div>
 
 |                                |                                |
 |--------------------------------|--------------------------------|
 | ` `**`exec_result_names`**` (` | in `res_names_array ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ output.
 
 </div>
 
-<div id="desc_exec_result_names" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ function. This function is similar to `result_names() ` .
 
 </div>
 
-<div id="params_exec_result_names" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88052" class="refsect2">
+<div>
 
 ### res_names_array
 
@@ -62,7 +62,7 @@ This parameter can be one of two things:
 
 </div>
 
-<div id="ret_exec_result_names" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -70,15 +70,15 @@ None.
 
 </div>
 
-<div id="examples_exec_result_names" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_exec_result_names_01" class="example">
+<div>
 
 **Example 24.104. Result set column names**
 
-<div class="example-contents">
+<div>
 
 The procedure below uses the metadata from exec() to generate result set
 column names.
@@ -108,7 +108,7 @@ create procedure XX1 ()
 
 </div>
 
-<div id="seealso_exec_result_names" class="refsect1">
+<div>
 
 ## See Also
 

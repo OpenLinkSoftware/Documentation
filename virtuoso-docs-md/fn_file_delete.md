@@ -1,10 +1,10 @@
-<div id="fn_file_delete" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ file_delete — Delete a file from the file system
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_delete" class="funcsynopsis">
+<div>
 
 |                                 |                           |
 |---------------------------------|---------------------------|
 | `integer `**`file_delete`**` (` | in `path ` varchar ,      |
 |                                 | in `silent ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ file_delete — Delete a file from the file system
 
 </div>
 
-<div id="desc_file_delete" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ has a silent mode, where no errors will be signalled upon failure.
 
 </div>
 
-<div id="params_file_delete" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88455" class="refsect2">
+<div>
 
 ### path
 
@@ -56,7 +56,7 @@ Path name of the file to delete.
 
 </div>
 
-<div id="id88458" class="refsect2">
+<div>
 
 ### silent
 
@@ -67,7 +67,7 @@ errors.
 
 </div>
 
-<div id="errors_file_delete" class="refsect1">
+<div>
 
 ## Errors
 

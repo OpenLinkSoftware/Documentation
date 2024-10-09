@@ -1,6 +1,6 @@
-<div id="rdfperfdumpandreloadgraphs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphswhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ How to export RDF model data from Virtuoso's Quad Store.
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphswhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -58,9 +58,9 @@ well as relational data (e.g., SQL) (discussed elsewhere).
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphshow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -78,9 +78,9 @@ We have created stored procedures for the task. The dump procedures
 leverage SPARQL to facilitate selective data dump(s) from one or more
 Named Graphs, each denoted by an IRI.
 
-<div id="rdfperfdumpandreloadgraphsproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -96,9 +96,9 @@ Named Graphs, each denoted by an IRI.
 
 The procedure dump_one_graph can be used to dump any single Named Graph.
 
-<div id="rdfperfdumpandreloadgraphsprocparams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -112,7 +112,7 @@ The procedure dump_one_graph can be used to dump any single Named Graph.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - IN
 
@@ -136,9 +136,9 @@ The procedure dump_one_graph can be used to dump any single Named Graph.
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphsprocsrc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -233,9 +233,9 @@ Conductor and executed.
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphsprocexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -282,9 +282,9 @@ Call the `dump_one_graph` procedure with appropriate arguments:
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphdumpmlpgraph" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -302,9 +302,9 @@ The <span class="emphasis">*dump_graphs*</span> procedure can be used to
 dump all the graphs in a Virtuoso server to a set of turtle (.ttl) data
 files in the specified dump directory.
 
-<div id="rdfperfdumpandreloadgraphdumpmlpgraphparams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -320,7 +320,7 @@ files in the specified dump directory.
 
 The procedure dump_graphs has the following parameters:
 
-<div class="itemizedlist">
+<div>
 
 - IN
 
@@ -342,9 +342,9 @@ server will not be able to create or access the data files.
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphdumpmlpgraphsource" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -389,9 +389,9 @@ CREATE PROCEDURE dump_graphs
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphdumpmlpgraphex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -405,7 +405,7 @@ CREATE PROCEDURE dump_graphs
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Call the
 
@@ -453,9 +453,9 @@ CREATE PROCEDURE dump_graphs
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphloadgraph" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -472,9 +472,9 @@ CREATE PROCEDURE dump_graphs
 The stored procedure <span class="emphasis">*load_graphs*</span>
 procedure performs a bulk load from a file.
 
-<div id="rdfperfdumpandreloadgraphloadgraphparams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -490,7 +490,7 @@ procedure performs a bulk load from a file.
 
 The procedure load_graphs has the following parameters:
 
-<div class="itemizedlist">
+<div>
 
 - IN
 
@@ -506,9 +506,9 @@ server will not be able to create or access the data files.
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphloadgraphsource" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -553,9 +553,9 @@ CREATE PROCEDURE load_graphs
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphloadgraphex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

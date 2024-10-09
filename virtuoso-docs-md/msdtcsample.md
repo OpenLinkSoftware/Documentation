@@ -1,6 +1,6 @@
-<div id="msdtcsample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,9 +23,9 @@ The MS DTC demo is located in the
 folder. This demo shows usage of distributed transactions driven by MS
 DTC through the ODBC API.
 
-<div id="msdtcdemo1setup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,9 +59,9 @@ password.
 
 </div>
 
-<div id="msdtcdemo1init" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -92,9 +92,9 @@ and initialize tables, procedures, etc.
 
 </div>
 
-<div id="msdtcdemo1start" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -122,9 +122,9 @@ logical consistency of the tables.
 
 </div>
 
-<div id="msdtcdemo1description" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

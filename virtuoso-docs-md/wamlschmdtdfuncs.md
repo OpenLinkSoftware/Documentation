@@ -1,6 +1,6 @@
-<div id="wamlschmdtdfuncs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,11 +25,11 @@ information about a given SQL query:
 | <a href="fn_xml_auto_dtd.html" class="link" title="xml_auto_dtd"><code 
  class="function">xml_auto_dtd()</code></a>                              |
 
-<div id="ex_webandxmlautoschdtd" class="example">
+<div>
 
 **Example 15.12. Generating XML Schema and DTD Data**
 
-<div class="example-contents">
+<div>
 
 This example shows trivial use of the two functions `xml_auto_schema()`
 and `xml_auto_dtd()` .

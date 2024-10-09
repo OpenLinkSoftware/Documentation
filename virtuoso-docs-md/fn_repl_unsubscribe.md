@@ -1,10 +1,10 @@
-<div id="fn_repl_unsubscribe" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_UNSUBSCRIBE — drop subscription
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_unsubscribe" class="funcsynopsis">
+<div>
 
 |                               |                             |
 |-------------------------------|-----------------------------|
@@ -24,7 +24,7 @@ REPL_UNSUBSCRIBE — drop subscription
 |                               | in `publication ` varchar , |
 |                               | in `item ` varchar `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ REPL_UNSUBSCRIBE — drop subscription
 
 </div>
 
-<div id="desc_repl_unsubscribe" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ use repl_disconnect().
 
 </div>
 
-<div id="params_" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107092" class="refsect2">
+<div>
 
 ### server_name
 
@@ -61,7 +61,7 @@ Name of the target publishing server.
 
 </div>
 
-<div id="id107095" class="refsect2">
+<div>
 
 ### publication
 
@@ -69,7 +69,7 @@ The name of the publication.
 
 </div>
 
-<div id="id107098" class="refsect2">
+<div>
 
 ### item
 
@@ -79,15 +79,15 @@ The item to removed. NULL can be supplied to remove all items.
 
 </div>
 
-<div id="examples_repl_unsubscribe" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_unsubscribe_1" class="example">
+<div>
 
 **Example 24.339. Unsubscribing from a publication.**
 
-<div class="example-contents">
+<div>
 
 This is to stop replication on subscription 'demo-publication' from
 publisher server 'demo-srv'.
@@ -104,7 +104,7 @@ SQL> DB.DBA.REPL_UNSUBSCRIBE ('demo-srv', 'demo-publication', NULL);
 
 </div>
 
-<div id="seealso_repl_unsubscribe" class="refsect1">
+<div>
 
 ## See Also
 

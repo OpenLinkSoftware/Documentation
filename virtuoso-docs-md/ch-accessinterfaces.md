@@ -1,6 +1,6 @@
-<div id="ch-accessinterfaces" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -28,7 +28,7 @@ comprise the Virtuoso Client Connectivity kit.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -167,9 +167,9 @@ DB](dataccessclientsconfailandbalanceole.html)</span>
 
 </div>
 
-<div id="virtclientref" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -183,9 +183,9 @@ DB](dataccessclientsconfailandbalanceole.html)</span>
 
 </div>
 
-<div id="virtclientrefintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -237,7 +237,7 @@ access to native and heterogeneous data sources.
 
 <span class="emphasis">*Features*</span>
 
-<div class="itemizedlist">
+<div>
 
 - ADO.NET 3.5 compliance
 
@@ -267,9 +267,9 @@ access to native and heterogeneous data sources.
 
 </div>
 
-<div id="virtclientrefinstallandconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -285,7 +285,7 @@ access to native and heterogeneous data sources.
 
 There are two installation types to consider:
 
-<div class="itemizedlist">
+<div>
 
 - If you have an existing Virtuoso instance, or will install Virtuoso on
   a different host, you only need to install of the
@@ -303,9 +303,9 @@ There are two installation types to consider:
 
 </div>
 
-<div id="virtclientrefinstallandconfigonwin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -324,12 +324,12 @@ Connectivity Kit installer, and if the target Virtuoso Server
 installation already exists on the network this is the only component
 that needs to be installed.
 
-<div class="orderedlist">
+<div>
 
 1.  Download and run the Virtuoso Client Connectivity Kit installer for
     your target Windows OS:
 
-    <div class="itemizedlist">
+    <div>
 
     - <a
       href="http://download.openlinksw.com/download/login.vsp?pfam=2&amp;pform=26&amp;pcat=51&amp;prod=virtuoso-connect-psnl&amp;os=i686-generic-win-32&amp;release-dbms=5.0-virt50"
@@ -346,15 +346,15 @@ that needs to be installed.
 2.  Choose the "run" button to allow the signed "Virtuoso Client
     Connectivity kit" installer to start.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado1" class="figure">
+    <div>
 
     **Figure 7.1. Run**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Run](images/ui/ado1.png)
 
@@ -370,15 +370,15 @@ that needs to be installed.
 
 3.  Choose the "Next" button to begin the installation process.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado3" class="figure">
+    <div>
 
     **Figure 7.2. Installation: Next**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installation: Next](images/ui/ado3.png)
 
@@ -395,15 +395,15 @@ that needs to be installed.
 4.  Check the "I agree with license agreement" checkbox and choose the
     "Next" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado4" class="figure">
+    <div>
 
     **Figure 7.3. Installation: Agree license**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installation: Agree license](images/ui/ado4.png)
 
@@ -421,15 +421,15 @@ that needs to be installed.
     installed and in which location, or choose the "Typical" or
     "Complete" options as recommended and skip to step 7.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado5" class="figure">
+    <div>
 
     **Figure 7.4. Custom Install**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Custom Install](images/ui/ado5.png)
 
@@ -446,15 +446,15 @@ that needs to be installed.
 6.  If the "Custom" option what chosen, select the installation
     directory or leave default and choose the "Next" button to continue.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado6" class="figure">
+    <div>
 
     **Figure 7.5. Installation**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installation](images/ui/ado6.png)
 
@@ -471,15 +471,15 @@ that needs to be installed.
 7.  Select which of the ADO.NET Providers are to be installed and choose
     "Next" to continue.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado7" class="figure">
+    <div>
 
     **Figure 7.6. ADO.NET Providers**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ADO.NET Providers](images/ui/ado7.png)
 
@@ -496,15 +496,15 @@ that needs to be installed.
 8.  The installer is now ready to begin the installation, choose the
     "Install" button to commence the process.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado8" class="figure">
+    <div>
 
     **Figure 7.7. Install**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Install](images/ui/ado8.png)
 
@@ -520,15 +520,15 @@ that needs to be installed.
 
 9.  The installation was successfully completed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado10" class="figure">
+    <div>
 
     **Figure 7.8. Completed installation**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Completed installation](images/ui/ado10.png)
 
@@ -546,15 +546,15 @@ that needs to be installed.
     %WINDOWS%\assembly folder and checking that the Provider(s) chosen
     for installation is(are) listed - "virtado3" and/or "virtado2".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adon8_blank" class="figure">
+    <div>
 
     **Figure 7.9. Provider**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Provider](images/ui/adon8.png)
 
@@ -572,9 +572,9 @@ that needs to be installed.
 
 The installation of the ADO.Net Provider Client is complete.
 
-<div id="virtclientrefinstallandconfigonwinuninst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -588,20 +588,20 @@ The installation of the ADO.Net Provider Client is complete.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  If you attempt to run the installer again, the following message
     will be displayed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adon9" class="figure">
+    <div>
 
     **Figure 7.10. Installer message**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installer message](images/ui/adon9.png)
 
@@ -620,15 +620,15 @@ The installation of the ADO.Net Provider Client is complete.
     Connectivity kit" from the list of installed components and clicking
     the "unistall" option presented.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado11" class="figure">
+    <div>
 
     **Figure 7.11. Uninstall**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Uninstall](images/ui/ado11.png)
 
@@ -644,15 +644,15 @@ The installation of the ADO.Net Provider Client is complete.
 
 3.  Choose "Yes" to uninstall the Virtuoso ADO.Net Provider.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado12" class="figure">
+    <div>
 
     **Figure 7.12. Uninstall**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Uninstall](images/ui/ado12.png)
 
@@ -672,9 +672,9 @@ The installation of the ADO.Net Provider Client is complete.
 
 </div>
 
-<div id="virtclientrefinstallandconfigvirt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -696,12 +696,12 @@ this particular installation type is require would be when using the
 Provider to provide Entity Framework connectivity to the remote database
 schema objects.
 
-<div class="orderedlist">
+<div>
 
 1.  Download and run the Virtuoso Universal Server installer for your
     target Windows OS:
 
-    <div class="itemizedlist">
+    <div>
 
     - <a
       href="http://download.openlinksw.com/download/login.vsp?pfam=2&amp;pform=26&amp;pcat=47&amp;prod=virtuoso-uim-unisvr-psnl&amp;os=i686-generic-win-32&amp;os2=i686-generic-win-32&amp;xpfam=virtuoso&amp;xpform=personal&amp;xpcat=unisvr&amp;xos=i686-generic-win-32&amp;xprod=virtuoso-uim-unisvr-psnl&amp;release-dbms=5.0-virt50&amp;proceed=Next+%3E"
@@ -718,15 +718,15 @@ schema objects.
 2.  Choose the "run" button to allow the signed "Virtuoso Universal
     Server" installer to start.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow1" class="figure">
+    <div>
 
     **Figure 7.13. Run**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Run](images/ui/adow1.png)
 
@@ -742,15 +742,15 @@ schema objects.
 
 3.  Choose the "Next" button to begin the installation process.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow3" class="figure">
+    <div>
 
     **Figure 7.14. Next**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Next](images/ui/adow3.png)
 
@@ -767,15 +767,15 @@ schema objects.
 4.  Check the "I agree with license agreement" checkbox and choose the
     "Next" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow4" class="figure">
+    <div>
 
     **Figure 7.15. Agree license**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Agree license](images/ui/adow4.png)
 
@@ -793,15 +793,15 @@ schema objects.
     installed and in which location, or choose the "Typical" or
     "Complete" options as recommended and skip to step 7.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow5" class="figure">
+    <div>
 
     **Figure 7.16. Custom option**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Custom option](images/ui/adow5.png)
 
@@ -818,15 +818,15 @@ schema objects.
 6.  If the "Custom" option what chosen, select the installation
     directory or leave default and choose the "Next" button to continue.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow6" class="figure">
+    <div>
 
     **Figure 7.17. Installation directory**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installation directory](images/ui/adow6.png)
 
@@ -843,15 +843,15 @@ schema objects.
 7.  Select which of the ADO.NET Providers are to be installed and choose
     "Next" to continue.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow8" class="figure">
+    <div>
 
     **Figure 7.18. ADO.NET Providers**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ADO.NET Providers](images/ui/adow8.png)
 
@@ -868,15 +868,15 @@ schema objects.
 8.  The installer is now ready to begin the installation, choose the
     "Install" button to commence the process.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow9" class="figure">
+    <div>
 
     **Figure 7.19. Begin installation**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Begin installation](images/ui/adow9.png)
 
@@ -892,15 +892,15 @@ schema objects.
 
 9.  The installation was successfully completed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow11" class="figure">
+    <div>
 
     **Figure 7.20. Installation completed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installation completed](images/ui/adow11.png)
 
@@ -918,15 +918,15 @@ schema objects.
     "Virtuoso Service Manager" which gets added to the Windows "Icons
     Tray" in the status bar.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow12" class="figure">
+    <div>
 
     **Figure 7.21. Post installation**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Post installation](images/ui/adow12.png)
 
@@ -944,15 +944,15 @@ schema objects.
     Tray" to load the application, select the "OpenLink Virtuoso Server"
     instance and press the "Start" button to run the Service.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow13" class="figure">
+    <div>
 
     **Figure 7.22. Virtuoso Service Manager**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Service Manager](images/ui/adow13.png)
 
@@ -972,15 +972,15 @@ schema objects.
     "http://example.com/install" in a Web Browser which loads the
     following page for making these changes.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow15" class="figure">
+    <div>
 
     **Figure 7.23. Defaults**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Defaults](images/ui/adow15.png)
 
@@ -996,15 +996,15 @@ schema objects.
 
 13. The Virtuoso Server is now available for use.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adow16" class="figure">
+    <div>
 
     **Figure 7.24. Virtuoso Server**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Server](images/ui/adow16.png)
 
@@ -1023,15 +1023,15 @@ schema objects.
     chosen for installation is(are) listed - "virtado3" and/or
     "virtado2".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adon8" class="figure">
+    <div>
 
     **Figure 7.25. Installation verification**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installation verification](images/ui/adon8.png)
 
@@ -1050,9 +1050,9 @@ schema objects.
 The installation of the ADO.Net Provider Client and Virtuoso Universal
 Server is complete.
 
-<div id="virtclientrefinstallandconfigvirtuninst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1066,20 +1066,20 @@ Server is complete.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  If you attempt to run the installer again, the following message
     will be displayed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="adon9_01" class="figure">
+    <div>
 
     **Figure 7.26. Installer message**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Installer message](images/ui/adon9.png)
 
@@ -1098,15 +1098,15 @@ Server is complete.
     Connectivity kit" from the list of installed components and clicking
     the "unistall" option presented.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado11_01" class="figure">
+    <div>
 
     **Figure 7.27. Uninstall**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Uninstall](images/ui/ado11.png)
 
@@ -1122,15 +1122,15 @@ Server is complete.
 
 3.  Choose "Yes" to uninstall the Virtuoso ADO.Net Provider.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ado13" class="figure">
+    <div>
 
     **Figure 7.28. Uninstall**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Uninstall](images/ui/ado13.png)
 
@@ -1152,9 +1152,9 @@ Server is complete.
 
 </div>
 
-<div id="virtclientrefprogrammersguide" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1168,9 +1168,9 @@ Server is complete.
 
 </div>
 
-<div id="virtclientrefprogrammersguidewalk" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1184,7 +1184,7 @@ Server is complete.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="installvsgrid.html" class="link"
   title="2.6. Virtuoso ADO.Net Data Grid Form Application">Using Visual
@@ -1226,9 +1226,9 @@ Server is complete.
 
 </div>
 
-<div id="virtclientrefprogrammersguideentfr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1251,7 +1251,7 @@ linked/attached, they inherit the functionality prowess of Virtuoso, and
 this particular use case scenario, complete compatibility with Entity
 Frameworks and ADO.NET 3.5.
 
-<div class="itemizedlist">
+<div>
 
 - <a href="vdbenginemc.html" class="link"
   title="8.2. Using Microsoft Entity Frameworks to Access Oracle Schema Objects with Virtuoso">Using
@@ -1317,9 +1317,9 @@ Frameworks and ADO.NET 3.5.
 
 </div>
 
-<div id="vcrvirtdbtype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1335,9 +1335,9 @@ Frameworks and ADO.NET 3.5.
 
 Specifies Virtuoso data types.
 
-<div id="id1322" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1351,11 +1351,11 @@ Specifies Virtuoso data types.
 
 </div>
 
-<div id="id16748" class="table">
+<div>
 
 **Table 7.1. **
 
-<div class="table-contents">
+<div>
 
 | Member name    | Description                                                                                                |
 |----------------|------------------------------------------------------------------------------------------------------------|
@@ -1390,9 +1390,9 @@ Specifies Virtuoso data types.
 
 </div>
 
-<div id="vcrvirtuosocommandclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1409,15 +1409,15 @@ Specifies Virtuoso data types.
 Represents an SQL statement or stored procedure to execute against a
 Virtuoso database. This class cannot be inherited.
 
-<div class="figure-float">
+<div>
 
-<div id="virtprovider001" class="figure">
+<div>
 
 **Figure 7.29. Virtuoso .Net Provider VirtuosoCommand Class**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso .Net Provider VirtuosoCommand
 Class](images/VirtProviderClassHier.jpg)
@@ -1449,9 +1449,9 @@ Class](images/VirtProviderClassHier.jpg)
 }
 ```
 
-<div id="id1323" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1471,9 +1471,9 @@ be thread safe.
 
 </div>
 
-<div id="id1324" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1490,11 +1490,11 @@ be thread safe.
 The VirtuosoCommand class provides the following methods for executing
 commands against a Virtuoso database:
 
-<div id="id16883" class="table">
+<div>
 
 **Table 7.2. **
 
-<div class="table-contents">
+<div>
 
 | Item            | Description                                                                 |
 |-----------------|-----------------------------------------------------------------------------|
@@ -1510,9 +1510,9 @@ commands against a Virtuoso database:
 
 </div>
 
-<div id="id1337" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1528,9 +1528,9 @@ commands against a Virtuoso database:
 
 Initializes a new instance of the VirtuosoCommand class.
 
-<div id="id1326" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1548,9 +1548,9 @@ Initializes a new instance of the VirtuosoCommand class.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoCommand`</span>`();`
 
-<div id="id1325" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1568,11 +1568,11 @@ The base constructor initializes all fields to their default values. The
 following table shows initial property values for an instance of
 VirtuosoCommand.
 
-<div id="id16910" class="table">
+<div>
 
 **Table 7.3. **
 
-<div class="table-contents">
+<div>
 
 | Properties     | Initial Value     |
 |----------------|-------------------|
@@ -1594,9 +1594,9 @@ call to the property.
 
 </div>
 
-<div id="id1328" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1615,9 +1615,9 @@ the query.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoCommand`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`cmdText`</span>` `</span>`);`
 
-<div id="id1327" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1631,7 +1631,7 @@ the query.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">cmdText</span>  
 The text of the query.
@@ -1642,9 +1642,9 @@ The text of the query.
 
 </div>
 
-<div id="id1330" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1664,9 +1664,9 @@ the query and an VirtuosoConnection object.
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoCommand`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`cmdText`</span>` `</span>`,`  
 `                       `<span class="methodparam">` `<span class="type">`VirtuosoConnection `</span>` `<span class="parameter">`connection`</span>` `</span>`);`
 
-<div id="id1329" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1680,7 +1680,7 @@ the query and an VirtuosoConnection object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">cmdText</span>  
 The text of the query.
@@ -1695,9 +1695,9 @@ database.
 
 </div>
 
-<div id="id1334" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1719,9 +1719,9 @@ The default value is an empty string.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`ConnectionString `</span>` ;`
 
-<div id="id1331" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1752,11 +1752,11 @@ doubled.
 The following table lists the valid names for values within the
 ConnectionString:
 
-<div id="id16976" class="table">
+<div>
 
 **Table 7.4. **
 
-<div class="table-contents">
+<div>
 
 | Name                                                        | Default | Description                                                                                                                                                                                                                                                                                                                               |
 |-------------------------------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1783,9 +1783,9 @@ ConnectionString:
 
 </div>
 
-<div id="id1332" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1803,9 +1803,9 @@ IDbCommand.ConnectionString
 
 </div>
 
-<div id="id1333" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1855,9 +1855,9 @@ errors can be found only when an attempt is made to open the connection.
 
 </div>
 
-<div id="id1336" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1878,9 +1878,9 @@ the query, an VirtuosoConnection object, and the VirtuosoTransaction.
 `                       `<span class="methodparam">` `<span class="type">`VirtuosoConnection `</span>` `<span class="parameter">`connection`</span>` `</span>`,`  
 `                       `<span class="methodparam">` `<span class="type">`VirtuosoTransaction `</span>` `<span class="parameter">`transaction`</span>` `</span>`);`
 
-<div id="id1335" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1894,7 +1894,7 @@ the query, an VirtuosoConnection object, and the VirtuosoTransaction.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">cmdText</span>  
 The text of the query.
@@ -1914,9 +1914,9 @@ The VirtuosoTransaction in which the VirtuosoCommand executes.
 
 </div>
 
-<div id="id1361" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1930,9 +1930,9 @@ The VirtuosoTransaction in which the VirtuosoCommand executes.
 
 </div>
 
-<div id="id1341" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1951,9 +1951,9 @@ the Virtuoso database.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`CommandText `</span>` ;`
 
-<div id="id1338" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1972,9 +1972,9 @@ an empty string ("").
 
 </div>
 
-<div id="id1339" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1992,9 +1992,9 @@ IDbCommand.CommandText
 
 </div>
 
-<div id="id1340" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2018,7 +2018,7 @@ passing parameters to a SQL statement or a stored procedure called by an
 OleDbCommand when CommandType is set to Text. In this case, the question
 mark (?) placeholder must be used. For example:
 
-<div class="informalexample">
+<div>
 
 ``` programlisting
 SELECT * FROM Customers WHERE CustomerID = ?
@@ -2034,9 +2034,9 @@ of the question mark placeholder for the parameter.
 
 </div>
 
-<div id="id1345" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2055,9 +2055,9 @@ command and generating an error.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`CommandTimeout `</span>` ;`
 
-<div id="id1342" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2076,9 +2076,9 @@ The time (in seconds) to wait for the command to execute. The default is
 
 </div>
 
-<div id="id1343" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2096,9 +2096,9 @@ IDbCommand.CommandTimeout
 
 </div>
 
-<div id="id1344" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2119,9 +2119,9 @@ wait time, and therefore should be avoided.
 
 </div>
 
-<div id="id1349" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2140,9 +2140,9 @@ interpreted.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`CommandType `</span>` `<span class="varname">`CommandType `</span>` ;`
 
-<div id="id1346" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2160,9 +2160,9 @@ One of the System.Data.CommandType values. The default is Text.
 
 </div>
 
-<div id="id1347" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2180,9 +2180,9 @@ IDbCommand.CommandType
 
 </div>
 
-<div id="id1348" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2209,7 +2209,7 @@ parameters to an SQL statement or to a stored procedure called by a
 VirtuosoCommand. In either of these cases, use the question mark (?)
 placeholder. For example:
 
-<div class="informalexample">
+<div>
 
 ``` programlisting
 SELECT * FROM Customers WHERE CustomerID = ?
@@ -2225,9 +2225,9 @@ the question mark placeholder for the parameter.
 
 </div>
 
-<div id="id1351" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2246,9 +2246,9 @@ VirtuosoCommand.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoConnection `</span>` `<span class="varname">`Connection `</span>` ;`
 
-<div id="id1350" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2268,9 +2268,9 @@ The connection to a Virtuoso database. The default is a null value.
 
 </div>
 
-<div id="id1354" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2288,9 +2288,9 @@ Gets the VirtuosoParameterCollection.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoParameterCollection `</span>` `<span class="varname">`Connection `</span>` ;`
 
-<div id="id1352" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2309,9 +2309,9 @@ an empty collection.
 
 </div>
 
-<div id="id1353" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2330,7 +2330,7 @@ not support passing named parameters to an SQL statement or to a stored
 procedure called by an VirtuosoCommand. In either of these cases, use
 the question mark (?) placeholder. For example:
 
-<div class="informalexample">
+<div>
 
 ``` programlisting
 SELECT * FROM Customers WHERE CustomerID = ?
@@ -2342,7 +2342,7 @@ The order in which VirtuosoParameter objects are added to the
 VirtuosoParameterCollection must directly correspond to the position of
 the question mark placeholder for the parameter in the command text.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                     |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------|
@@ -2355,9 +2355,9 @@ the question mark placeholder for the parameter in the command text.
 
 </div>
 
-<div id="id1357" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2376,9 +2376,9 @@ executes.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoTransaction `</span>` `<span class="varname">`Transaction `</span>` ;`
 
-<div id="id1355" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2396,9 +2396,9 @@ A VirtuosoTransaction. The default is a null value.
 
 </div>
 
-<div id="id1356" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2423,9 +2423,9 @@ a statement.
 
 </div>
 
-<div id="id1360" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2444,9 +2444,9 @@ the Update method of the DbDataAdapter.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`UpdateRowSource `</span>` `<span class="varname">`UpdatedRowSource `</span>` ;`
 
-<div id="id1358" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2464,9 +2464,9 @@ One of the System.Data.UpdateRowSource values.
 
 </div>
 
-<div id="id1359" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2488,9 +2488,9 @@ IDbCommand.UpdatedRowSource
 
 </div>
 
-<div id="id1389" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2504,9 +2504,9 @@ IDbCommand.UpdatedRowSource
 
 </div>
 
-<div id="id1362" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2526,9 +2526,9 @@ Attempts to cancel the execution of an VirtuosoCommand.
 
 </div>
 
-<div id="id1363" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2546,9 +2546,9 @@ IDbCommand.Cancel
 
 </div>
 
-<div id="id1364" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2568,9 +2568,9 @@ generated.
 
 </div>
 
-<div id="id1367" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2588,9 +2588,9 @@ Creates a new instance of a VirtuosoParameter object.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoParameter `</span><span class="methodname">`CreateParameter`</span>`();`
 
-<div id="id1365" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2608,9 +2608,9 @@ A VirtuosoParameter object.
 
 </div>
 
-<div id="id1366" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2631,9 +2631,9 @@ IDbCommand.CreateParameter.
 
 </div>
 
-<div id="id1371" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2652,9 +2652,9 @@ of rows affected.
 
 <span class="modifier">`public `</span><span class="type">`int `</span><span class="methodname">`ExecuteNonQuery`</span>`();`
 
-<div id="id1368" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2674,9 +2674,9 @@ statements, the return value is -1.
 
 </div>
 
-<div id="id1369" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2694,9 +2694,9 @@ IDbCommand.ExecuteNonQuery
 
 </div>
 
-<div id="id1370" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2722,9 +2722,9 @@ or return values mapped to parameters are populated with data.
 
 </div>
 
-<div id="id1377" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2740,9 +2740,9 @@ or return values mapped to parameters are populated with data.
 
 Sends the CommandText to the Connection and builds a VirtuosoDataReader.
 
-<div id="id1373" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2760,9 +2760,9 @@ Sends the CommandText to the Connection and builds a VirtuosoDataReader.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoDataReader `</span><span class="methodname">`ExecuteReader`</span>`();`
 
-<div id="id1372" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2782,9 +2782,9 @@ A VirtuosoDataReader object.
 
 </div>
 
-<div id="id1376" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2803,9 +2803,9 @@ using one of the CommandBehavior values.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoDataReader `</span><span class="methodname">`ExecuteReader`</span>`(`<span class="methodparam">` `<span class="type">`CommandBehavior `</span>` `<span class="parameter">`behavior`</span>` `</span>`);`
 
-<div id="id1374" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2819,7 +2819,7 @@ using one of the CommandBehavior values.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">behavior</span>  
 One of the System.Data.CommandBehavior values.
@@ -2828,9 +2828,9 @@ One of the System.Data.CommandBehavior values.
 
 </div>
 
-<div id="id1375" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2852,9 +2852,9 @@ A VirtuosoDataReader object.
 
 </div>
 
-<div id="id1381" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2873,9 +2873,9 @@ resultset returned by the query. Extra columns or rows are ignored.
 
 <span class="modifier">`public `</span><span class="type">`object `</span><span class="methodname">`ExecuteScalar`</span>`();`
 
-<div id="id1378" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2893,9 +2893,9 @@ The first column of the first row in the resultset.
 
 </div>
 
-<div id="id1379" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2913,9 +2913,9 @@ IDbCommand.ExecuteScalar
 
 </div>
 
-<div id="id1380" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2938,7 +2938,7 @@ VirtuosoDataReader.
 A typical ExecuteScalar query can be formatted as in the following C#
 example:
 
-<div class="informalexample">
+<div>
 
 ``` programlisting
 command.CommandText = "select count(*) from foobar";
@@ -2951,9 +2951,9 @@ int count = (int) command.ExecuteScalar();
 
 </div>
 
-<div id="id1382" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2974,9 +2974,9 @@ intended to be used directly from your code.
 
 </div>
 
-<div id="id1383" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2997,9 +2997,9 @@ intended to be used directly from your code.
 
 </div>
 
-<div id="id1386" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3016,9 +3016,9 @@ intended to be used directly from your code.
 This member supports the .NET Framework infrastructure and is not
 intended to be used directly from your code.
 
-<div id="id1384" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3039,9 +3039,9 @@ intended to be used directly from your code.
 
 </div>
 
-<div id="id1385" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3064,9 +3064,9 @@ intended to be used directly from your code.
 
 </div>
 
-<div id="id1388" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3085,9 +3085,9 @@ server.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Prepare`</span>`();`
 
-<div id="id1387" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3111,9 +3111,9 @@ IDbCommand.Prepare
 
 </div>
 
-<div id="vcrvirtcmdbuildr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3150,9 +3150,9 @@ database. This class cannot be inherited.
 }
 ```
 
-<div id="id1390" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3172,9 +3172,9 @@ be thread safe.
 
 </div>
 
-<div id="id1391" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3221,9 +3221,9 @@ the VirtuosoDataAdapter, and the generated commands are no longer used.
 
 </div>
 
-<div id="id1396" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3237,9 +3237,9 @@ the VirtuosoDataAdapter, and the generated commands are no longer used.
 
 </div>
 
-<div id="id1392" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3259,9 +3259,9 @@ Initializes a new instance of the VirtuosoCommandBuilder class.
 
 </div>
 
-<div id="id1395" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3280,9 +3280,9 @@ associated VirtuosoDataAdapter object.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoCommandBuilder`</span>`(`<span class="methodparam">` `<span class="type">`VirtuosoDataAdapter `</span>` `<span class="parameter">`adapter`</span>` `</span>`);`
 
-<div id="id1393" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3296,7 +3296,7 @@ associated VirtuosoDataAdapter object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">adapter</span>  
 A VirtuosoDataAdapter object to associate with this
@@ -3306,9 +3306,9 @@ VirtuosoCommandBuilder.
 
 </div>
 
-<div id="id1394" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3332,9 +3332,9 @@ specified in this property.
 
 </div>
 
-<div id="id1406" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3348,9 +3348,9 @@ specified in this property.
 
 </div>
 
-<div id="id1399" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3369,9 +3369,9 @@ automatically generated.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoDataAdapter `</span>` `<span class="varname">`DataAdapter `</span>` ;`
 
-<div id="id1397" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3389,9 +3389,9 @@ A VirtuosoDataAdapter object.
 
 </div>
 
-<div id="id1398" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3413,9 +3413,9 @@ specified in this property.
 
 </div>
 
-<div id="id1402" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3435,9 +3435,9 @@ contain characters such as spaces.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`QuotePrefix `</span>` ;`
 
-<div id="id1400" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3456,9 +3456,9 @@ string.
 
 </div>
 
-<div id="id1401" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3482,9 +3482,9 @@ object name.
 
 </div>
 
-<div id="id1405" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3504,9 +3504,9 @@ characters such as spaces.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`QuotePrefix `</span>` ;`
 
-<div id="id1403" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3525,9 +3525,9 @@ string.
 
 </div>
 
-<div id="id1404" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3553,9 +3553,9 @@ object name.
 
 </div>
 
-<div id="id1424" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3569,9 +3569,9 @@ object name.
 
 </div>
 
-<div id="id1409" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3591,9 +3591,9 @@ specified VirtuosoCommand object.
 
 <span class="modifier">`public `</span><span class="modifier">`static `</span><span class="void">`void `</span><span class="methodname">`DeriveParameters`</span>`(`<span class="methodparam">` `<span class="type">`VirtuosoCommand `</span>` `<span class="parameter">`command`</span>` `</span>`);`
 
-<div id="id1407" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3607,7 +3607,7 @@ specified VirtuosoCommand object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">command</span>  
 The VirtuosoCommand referencing the stored procedure from which the
@@ -3618,9 +3618,9 @@ to the Parameters collection of the VirtuosoCommand.
 
 </div>
 
-<div id="id1408" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3647,9 +3647,9 @@ the Microsoft® .NET Framework SDK documentation.
 
 </div>
 
-<div id="id1412" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3668,9 +3668,9 @@ the VirtuosoCommandBuilder.
 
 <span class="modifier">`protected `</span><span class="modifier">`override `</span><span class="void">`void `</span><span class="methodname">`Dispose`</span>`(`<span class="methodparam">` `<span class="type">`bool `</span>` `<span class="parameter">`disposing`</span>` `</span>`);`
 
-<div id="id1410" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3684,7 +3684,7 @@ the VirtuosoCommandBuilder.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">disposing</span>  
 `true` to release both managed and unmanaged resources; `false` to
@@ -3694,9 +3694,9 @@ release only unmanaged resources.
 
 </div>
 
-<div id="id1411" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3727,9 +3727,9 @@ Framework SDK documentation.
 
 </div>
 
-<div id="id1415" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3748,9 +3748,9 @@ perform deletions on the Virtuoso database.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoCommand `</span><span class="methodname">`GetDeleteCommand`</span>`();`
 
-<div id="id1413" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3769,9 +3769,9 @@ deletions.
 
 </div>
 
-<div id="id1414" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3804,9 +3804,9 @@ generated when the application calls either Update or GetDeleteCommand.
 
 </div>
 
-<div id="id1418" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3825,9 +3825,9 @@ perform insertions on the Virtuoso database.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoCommand `</span><span class="methodname">`GetInsertCommand`</span>`();`
 
-<div id="id1416" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3846,9 +3846,9 @@ insertions.
 
 </div>
 
-<div id="id1417" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3881,9 +3881,9 @@ generated when the application calls either Update or GetInsertCommand.
 
 </div>
 
-<div id="id1421" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3902,9 +3902,9 @@ perform updates on the Virtuoso database.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoCommand `</span><span class="methodname">`GetUpdateCommand`</span>`();`
 
-<div id="id1419" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3923,9 +3923,9 @@ updates.
 
 </div>
 
-<div id="id1420" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3958,9 +3958,9 @@ generated when the application calls either Update or GetUpdateCommand.
 
 </div>
 
-<div id="id1423" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3979,9 +3979,9 @@ UPDATE, or DELETE statements.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`RefreshSchema`</span>`();`
 
-<div id="id1422" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4006,9 +4006,9 @@ VirtuosoDataAdapter changes.
 
 </div>
 
-<div id="vcrvirtconnclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4049,9 +4049,9 @@ be inherited.
 }
 ```
 
-<div id="id1425" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4071,9 +4071,9 @@ be thread safe.
 
 </div>
 
-<div id="id1426" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4106,9 +4106,9 @@ performance.
 
 </div>
 
-<div id="id1432" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4124,9 +4124,9 @@ performance.
 
 Initializes a new instance of the VirtuosoConnection class.
 
-<div id="id1428" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4144,9 +4144,9 @@ Initializes a new instance of the VirtuosoConnection class.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoConnection`</span>`();`
 
-<div id="id1427" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4165,11 +4165,11 @@ properties are set to the following initial values unless they are
 specifically set using their associated keywords in the ConnectionString
 property.
 
-<div id="id17502" class="table">
+<div>
 
 **Table 7.5. **
 
-<div class="table-contents">
+<div>
 
 | Properties        | Initial Value     |
 |-------------------|-------------------|
@@ -4190,9 +4190,9 @@ ConnectionString property
 
 </div>
 
-<div id="id1431" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4211,9 +4211,9 @@ specified connection string.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoConnection`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`connectionString`</span>` `</span>`);`
 
-<div id="id1429" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4227,7 +4227,7 @@ specified connection string.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">connectionString</span>  
 The connection used to open the Virtuoso database.
@@ -4236,9 +4236,9 @@ The connection used to open the Virtuoso database.
 
 </div>
 
-<div id="id1430" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4257,11 +4257,11 @@ properties are set to the following initial values unless they are
 specifically set using their associated keywords in the ConnectionString
 property.
 
-<div id="id17536" class="table">
+<div>
 
 **Table 7.6. **
 
-<div class="table-contents">
+<div>
 
 | Properties        | Initial Value     |
 |-------------------|-------------------|
@@ -4284,9 +4284,9 @@ ConnectionString property
 
 </div>
 
-<div id="id1448" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4300,9 +4300,9 @@ ConnectionString property
 
 </div>
 
-<div id="id1436" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4320,9 +4320,9 @@ Gets or sets the string used to open a Virtuoso database.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`ConnectionString `</span>` ;`
 
-<div id="id1433" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4342,9 +4342,9 @@ is an empty string.
 
 </div>
 
-<div id="id1434" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4362,9 +4362,9 @@ IDbConnection.ConnectionString
 
 </div>
 
-<div id="id1435" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4419,11 +4419,11 @@ doubled.
 The following table lists the valid names for values within the
 ConnectionString.
 
-<div id="id17575" class="table">
+<div>
 
 **Table 7.7. **
 
-<div class="table-contents">
+<div>
 
 <table data-summary="" data-border="1">
 <thead>
@@ -4534,9 +4534,9 @@ appropriate pool.</td>
 
 </div>
 
-<div id="id1440" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4555,9 +4555,9 @@ before terminating the attempt and generating an error.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`ConnectionTimeout `</span>` ;`
 
-<div id="id1437" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4576,9 +4576,9 @@ value is 15 seconds.
 
 </div>
 
-<div id="id1438" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4596,9 +4596,9 @@ IDbConnection.ConnectionTimeout
 
 </div>
 
-<div id="id1439" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4619,9 +4619,9 @@ ConnectionString because an attempt to connect will wait indefinitely.
 
 </div>
 
-<div id="id1444" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4640,9 +4640,9 @@ connection is opened.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`Database `</span>` ;`
 
-<div id="id1441" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4661,9 +4661,9 @@ once a connection is open. The default value is an empty string.
 
 </div>
 
-<div id="id1442" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4681,9 +4681,9 @@ IDbConnection.Database
 
 </div>
 
-<div id="id1443" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4704,9 +4704,9 @@ Database property can be updated by using the ChangeDatabase method.
 
 </div>
 
-<div id="id1447" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4724,9 +4724,9 @@ Gets the current state of the connection.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`ConnectionState `</span>` `<span class="varname">`State `</span>` ;`
 
-<div id="id1445" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4745,9 +4745,9 @@ Closed.
 
 </div>
 
-<div id="id1446" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4763,7 +4763,7 @@ Closed.
 
 The allowed state changes are:
 
-<div class="itemizedlist">
+<div>
 
 - From Closed to Open, using the Open method of the connection object.
 
@@ -4778,9 +4778,9 @@ The allowed state changes are:
 
 </div>
 
-<div id="id1477" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4794,9 +4794,9 @@ The allowed state changes are:
 
 </div>
 
-<div id="id1456" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4812,9 +4812,9 @@ The allowed state changes are:
 
 Begins a database transaction.
 
-<div id="id1451" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4832,9 +4832,9 @@ Begins a database transaction.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoTransaction `</span><span class="methodname">`BeginTransaction`</span>`();`
 
-<div id="id1449" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4852,9 +4852,9 @@ An object representing the new transaction.
 
 </div>
 
-<div id="id1450" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4879,9 +4879,9 @@ models, such as those provided by the data source.
 
 </div>
 
-<div id="id1455" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4899,9 +4899,9 @@ Begins a database transaction with the specified isolation level.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoTransaction `</span><span class="methodname">`BeginTransaction`</span>`(`<span class="methodparam">` `<span class="type">`IsolationLevel `</span>` `<span class="parameter">`isoLevel`</span>` `</span>`);`
 
-<div id="id1452" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4915,7 +4915,7 @@ Begins a database transaction with the specified isolation level.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">isoLevel</span>  
 The isolation level under which the transaction should run.
@@ -4924,9 +4924,9 @@ The isolation level under which the transaction should run.
 
 </div>
 
-<div id="id1453" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4944,9 +4944,9 @@ An object representing the new transaction.
 
 </div>
 
-<div id="id1454" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4973,9 +4973,9 @@ models, such as those provided by the data source.
 
 </div>
 
-<div id="id1460" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4993,9 +4993,9 @@ Changes the current database for an open VirtuosoConnection.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`ChangeDatabase`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`database`</span>` `</span>`);`
 
-<div id="id1457" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5009,7 +5009,7 @@ Changes the current database for an open VirtuosoConnection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">database</span>  
 The name of the database to use in place of the current database.
@@ -5018,9 +5018,9 @@ The name of the database to use in place of the current database.
 
 </div>
 
-<div id="id1458" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5038,9 +5038,9 @@ IDbConnection.ChangeDatabase
 
 </div>
 
-<div id="id1459" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5062,9 +5062,9 @@ characters.
 
 </div>
 
-<div id="id1463" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5083,9 +5083,9 @@ closing any open connection.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Close`</span>`();`
 
-<div id="id1461" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5103,9 +5103,9 @@ IDbConnection.Close
 
 </div>
 
-<div id="id1462" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5130,9 +5130,9 @@ generated.
 
 </div>
 
-<div id="id1465" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5151,9 +5151,9 @@ VirtuosoConnection.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoCommand `</span><span class="methodname">`CreateCommand`</span>`();`
 
-<div id="id1464" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5173,9 +5173,9 @@ A VirtuosoCommand object.
 
 </div>
 
-<div id="id1468" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5193,9 +5193,9 @@ Enlists in the specified transaction as a distributed transaction.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`EnlistDistributedTransaction`</span>`(`<span class="methodparam">` `<span class="type">`ITransaction `</span>` `<span class="parameter">`transaction`</span>` `</span>`);`
 
-<div id="id1466" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5209,7 +5209,7 @@ Enlists in the specified transaction as a distributed transaction.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">transaction</span>  
 A reference to an existing transaction in which to enlist or null to
@@ -5219,9 +5219,9 @@ unenlist.
 
 </div>
 
-<div id="id1467" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5245,9 +5245,9 @@ at the data source are also committed or rolled back.
 
 </div>
 
-<div id="id1469" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5268,9 +5268,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1472" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5287,9 +5287,9 @@ not intended to be used directly from your code.
 This member supports the Microsoft® .NET Framework infrastructure and is
 not intended to be used directly from your code.
 
-<div id="id1470" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5310,9 +5310,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1471" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5335,9 +5335,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1473" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5358,9 +5358,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1476" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5379,9 +5379,9 @@ ConnectionString.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Open`</span>`();`
 
-<div id="id1474" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5399,9 +5399,9 @@ IDbConnection.Open
 
 </div>
 
-<div id="id1475" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5419,7 +5419,7 @@ The VirtuosoConnection draws an open connection from the connection pool
 if one is available. Otherwise, it establishes a new connection to an
 instance of Virtuoso server.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                 |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -5436,9 +5436,9 @@ instance of Virtuoso server.
 
 </div>
 
-<div id="vcrvirtdataadaclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5480,9 +5480,9 @@ cannot be inherited.
 }
 ```
 
-<div id="id1478" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5502,9 +5502,9 @@ guaranteed to be thread safe.
 
 </div>
 
-<div id="id1479" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5530,9 +5530,9 @@ loading and updating of data.
 
 </div>
 
-<div id="id1489" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5546,9 +5546,9 @@ loading and updating of data.
 
 </div>
 
-<div id="id1481" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5566,9 +5566,9 @@ Initializes a new instance of the VirtuosoDataAdapter class.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoDataAdapter`</span>`();`
 
-<div id="id1480" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5586,11 +5586,11 @@ When you create an instance of VirtuosoDataAdapter, the following
 read/write properties are set to their default values, as shown in the
 table.
 
-<div id="id17858" class="table">
+<div>
 
 **Table 7.8. **
 
-<div class="table-contents">
+<div>
 
 | Properties           | Default Value                    |
 |----------------------|----------------------------------|
@@ -5610,9 +5610,9 @@ call to the property.
 
 </div>
 
-<div id="id1484" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5631,9 +5631,9 @@ specified VirtuosoCommand as the SelectCommand property.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoDataAdapter`</span>`(`<span class="methodparam">` `<span class="type">`VirtuosoCommand `</span>` `<span class="parameter">`selectCommand`</span>` `</span>`);`
 
-<div id="id1482" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5647,7 +5647,7 @@ specified VirtuosoCommand as the SelectCommand property.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">selectCommand</span>  
 A VirtuosoCommand that is an SQL SELECT statement or stored procedure,
@@ -5657,9 +5657,9 @@ and is set as the SelectCommand property of the VirtuosoDataAdapter.
 
 </div>
 
-<div id="id1483" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5681,11 +5681,11 @@ When you create an instance of VirtuosoDataAdapter, the following
 read/write properties are set to their default values, as shown in the
 table.
 
-<div id="id17890" class="table">
+<div>
 
 **Table 7.9. **
 
-<div class="table-contents">
+<div>
 
 | Properties           | Default Value                    |
 |----------------------|----------------------------------|
@@ -5705,9 +5705,9 @@ call to the property.
 
 </div>
 
-<div id="id1486" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5727,9 +5727,9 @@ SELECT statement and a VirtuosoConnection.
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoDataAdapter`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`selectCommandText`</span>` `</span>`,`  
 `                           `<span class="methodparam">` `<span class="type">`VirtuosoConnection `</span>` `<span class="parameter">`selectConnection`</span>` `</span>`);`
 
-<div id="id1485" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5743,7 +5743,7 @@ SELECT statement and a VirtuosoConnection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">selectCommandText</span>  
 A string that is a SQL SELECT statement or stored procedure to be used
@@ -5758,9 +5758,9 @@ A VirtuosoConnection that represents the connection.
 
 </div>
 
-<div id="id1488" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5780,9 +5780,9 @@ SELECT statement and a connection string.
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoDataAdapter`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`selectCommandText`</span>` `</span>`,`  
 `                           `<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`selectConnectionString`</span>` `</span>`);`
 
-<div id="id1487" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5796,7 +5796,7 @@ SELECT statement and a connection string.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">selectCommandText</span>  
 A string that is a SQL SELECT statement or stored procedure to be used
@@ -5813,9 +5813,9 @@ The connection string.
 
 </div>
 
-<div id="id1502" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5829,9 +5829,9 @@ The connection string.
 
 </div>
 
-<div id="id1492" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5850,9 +5850,9 @@ in the data source.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoCommand `</span>` `<span class="varname">`DeleteCommand `</span>` ;`
 
-<div id="id1490" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5871,9 +5871,9 @@ the database that correspond to deleted rows in the DataSet.
 
 </div>
 
-<div id="id1491" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5895,9 +5895,9 @@ reference to the previously created VirtuosoCommand object.
 
 </div>
 
-<div id="id1495" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5916,9 +5916,9 @@ records in the data source.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoCommand `</span>` `<span class="varname">`InsertCommand `</span>` ;`
 
-<div id="id1493" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5937,9 +5937,9 @@ the database that correspond to new rows in the DataSet.
 
 </div>
 
-<div id="id1494" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5961,9 +5961,9 @@ reference to the previously created VirtuosoCommand object.
 
 </div>
 
-<div id="id1498" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5982,9 +5982,9 @@ in the data source.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoCommand `</span>` `<span class="varname">`SelectCommand `</span>` ;`
 
-<div id="id1496" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6003,9 +6003,9 @@ for placement in the DataSet.
 
 </div>
 
-<div id="id1497" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6030,9 +6030,9 @@ the DataSet, and no exception is raised.
 
 </div>
 
-<div id="id1501" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6051,9 +6051,9 @@ in the data source.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoCommand `</span>` `<span class="varname">`UpdateCommand `</span>` ;`
 
-<div id="id1499" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6072,9 +6072,9 @@ the database that correspond to modified rows in the DataSet.
 
 </div>
 
-<div id="id1500" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6098,9 +6098,9 @@ reference to the previously created VirtuosoCommand object.
 
 </div>
 
-<div id="id1511" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6114,9 +6114,9 @@ reference to the previously created VirtuosoCommand object.
 
 </div>
 
-<div id="id1503" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6139,9 +6139,9 @@ This member overrides DbDataAdapter.CreateRowUpdatedEvent.
 
 </div>
 
-<div id="id1504" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6164,9 +6164,9 @@ This member overrides DbDataAdapter.CreateRowUpdatingEvent.
 
 </div>
 
-<div id="id1507" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6184,9 +6184,9 @@ Raises the RowUpdated event.
 
 <span class="modifier">`protected `</span><span class="modifier">`override `</span><span class="void">`void `</span><span class="methodname">`OnRowUpdated`</span>`(`<span class="methodparam">` `<span class="type">`RowUpdatedEventArgs `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1505" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6200,7 +6200,7 @@ Raises the RowUpdated event.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">value</span>  
 A System.Data.Common.RowUpdatedEventArgs object that contains the event
@@ -6210,9 +6210,9 @@ data.
 
 </div>
 
-<div id="id1506" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6234,9 +6234,9 @@ documentation.
 
 </div>
 
-<div id="id1510" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6254,9 +6254,9 @@ Raises the RowUpdating event.
 
 <span class="modifier">`protected `</span><span class="modifier">`override `</span><span class="void">`void `</span><span class="methodname">`OnRowUpdating`</span>`(`<span class="methodparam">` `<span class="type">`RowUpdatingEventArgs `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1508" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6270,7 +6270,7 @@ Raises the RowUpdating event.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">value</span>  
 A System.Data.Common.RowUpdatingEventArgs object that contains the event
@@ -6280,9 +6280,9 @@ data.
 
 </div>
 
-<div id="id1509" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6306,9 +6306,9 @@ documentation.
 
 </div>
 
-<div id="id1518" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6322,9 +6322,9 @@ documentation.
 
 </div>
 
-<div id="id1514" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6343,9 +6343,9 @@ the data source.
 
 ` `<span class="modifier">`public `</span>` `<span class="modifier">`event `</span>` `<span class="type">`VirtuosoRowUpdatedEventHandler `</span>` `<span class="varname">`RowUpdated `</span>` ;`
 
-<div id="id1512" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6364,11 +6364,11 @@ VirtuosoRowUpdatedEventArgs containing data related to this event. The
 following VirtuosoRowUpdatedEventArgs properties provide information
 specific to this event.
 
-<div id="id18074" class="table">
+<div>
 
 **Table 7.10. **
 
-<div class="table-contents">
+<div>
 
 | Property                                             | Description                                                                              |
 |------------------------------------------------------|------------------------------------------------------------------------------------------|
@@ -6388,9 +6388,9 @@ specific to this event.
 
 </div>
 
-<div id="id1513" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6407,7 +6407,7 @@ specific to this event.
 When using the Update method, there are two events that occur per data
 row updated. The order of execution is as follows:
 
-<div class="orderedlist">
+<div>
 
 1.  The values in the DataRow are moved to the parameter values.
 
@@ -6430,9 +6430,9 @@ row updated. The order of execution is as follows:
 
 </div>
 
-<div id="id1517" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6451,9 +6451,9 @@ the data source.
 
 ` `<span class="modifier">`public `</span>` `<span class="modifier">`event `</span>` `<span class="type">`VirtuosoRowUpdatingEventHandler `</span>` `<span class="varname">`RowUpdating `</span>` ;`
 
-<div id="id1515" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6472,11 +6472,11 @@ VirtuosoRowUpdatingEventArgs containing data related to this event. The
 following VirtuosoRowUpdatingEventArgs properties provide information
 specific to this event.
 
-<div id="id18129" class="table">
+<div>
 
 **Table 7.11. **
 
-<div class="table-contents">
+<div>
 
 | Property                                            | Description                                                                    |
 |-----------------------------------------------------|--------------------------------------------------------------------------------|
@@ -6495,9 +6495,9 @@ specific to this event.
 
 </div>
 
-<div id="id1516" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6514,7 +6514,7 @@ specific to this event.
 When using the Update method, there are two events that occur per data
 row updated. The order of execution is as follows:
 
-<div class="orderedlist">
+<div>
 
 1.  The values in the DataRow are moved to the parameter values.
 
@@ -6541,9 +6541,9 @@ row updated. The order of execution is as follows:
 
 </div>
 
-<div id="vcrvirtdatareadrclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6587,9 +6587,9 @@ Virtuoso database. This class cannot be inherited.
 }
 ```
 
-<div id="id1519" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6609,9 +6609,9 @@ be thread safe.
 
 </div>
 
-<div id="id1520" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6638,9 +6638,9 @@ Close before you can call RecordsAffected.
 
 </div>
 
-<div id="id1546" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6654,9 +6654,9 @@ Close before you can call RecordsAffected.
 
 </div>
 
-<div id="id1524" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6674,9 +6674,9 @@ Gets a value indicating the depth of nesting for the current row.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`Depth `</span>` ;`
 
-<div id="id1521" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6694,9 +6694,9 @@ The depth of nesting for the current row.
 
 </div>
 
-<div id="id1522" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6714,9 +6714,9 @@ IDataReader.Depth
 
 </div>
 
-<div id="id1523" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6737,9 +6737,9 @@ does not support nesting and always returns zero.
 
 </div>
 
-<div id="id1528" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6757,9 +6757,9 @@ Gets the number of columns in the current row.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`FieldCount `</span>` ;`
 
-<div id="id1525" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6778,9 +6778,9 @@ columns in the current record. The default is -1.
 
 </div>
 
-<div id="id1526" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6798,9 +6798,9 @@ IDataRecord.FieldCount
 
 </div>
 
-<div id="id1527" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6820,9 +6820,9 @@ After executing a query that does not return rows, FieldCount returns 0.
 
 </div>
 
-<div id="id1532" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6840,9 +6840,9 @@ Gets a value indicating whether the data reader is closed.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`bool `</span>` `<span class="varname">`IsClosed `</span>` ;`
 
-<div id="id1529" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6860,9 +6860,9 @@ Gets a value indicating whether the data reader is closed.
 
 </div>
 
-<div id="id1530" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6880,9 +6880,9 @@ IDataReader.IsClosed
 
 </div>
 
-<div id="id1531" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6903,9 +6903,9 @@ after the VirtuosoDataReader is closed.
 
 </div>
 
-<div id="id1541" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6919,9 +6919,9 @@ after the VirtuosoDataReader is closed.
 
 </div>
 
-<div id="id1536" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6940,9 +6940,9 @@ column ordinal.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`object `</span>` `<span class="varname">`this[int i] `</span>` ;`
 
-<div id="id1533" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6956,7 +6956,7 @@ column ordinal.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -6965,9 +6965,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1534" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6985,9 +6985,9 @@ The value of the specified column in its native format.
 
 </div>
 
-<div id="id1535" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7007,9 +7007,9 @@ IDataRecord.Item
 
 </div>
 
-<div id="id1540" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7028,9 +7028,9 @@ column name.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`object `</span>` `<span class="varname">`this[string name] `</span>` ;`
 
-<div id="id1537" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7044,7 +7044,7 @@ column name.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">name</span>  
 The column name.
@@ -7053,9 +7053,9 @@ The column name.
 
 </div>
 
-<div id="id1538" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7073,9 +7073,9 @@ The value of the specified column in its native format.
 
 </div>
 
-<div id="id1539" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7097,9 +7097,9 @@ IDataRecord.Item
 
 </div>
 
-<div id="id1545" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7118,9 +7118,9 @@ the SQL statement.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`RecordsAffected `</span>` ;`
 
-<div id="id1542" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7139,9 +7139,9 @@ affected or the statement failed; and -1 for SELECT statements.
 
 </div>
 
-<div id="id1543" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7159,9 +7159,9 @@ IDataReader.RecordsAffected
 
 </div>
 
-<div id="id1544" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7184,9 +7184,9 @@ after the VirtuosoDataReader is closed.
 
 </div>
 
-<div id="id1667" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7200,9 +7200,9 @@ after the VirtuosoDataReader is closed.
 
 </div>
 
-<div id="id1549" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7220,9 +7220,9 @@ Closes the VirtuosoDataReader object.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Close`</span>`();`
 
-<div id="id1547" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7240,9 +7240,9 @@ IDataReader.Close
 
 </div>
 
-<div id="id1548" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7267,9 +7267,9 @@ values and RecordsAffected.
 
 </div>
 
-<div id="id1554" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7287,9 +7287,9 @@ Gets the value of the specified column as a Boolean.
 
 <span class="modifier">`public `</span><span class="type">`bool `</span><span class="methodname">`GetBoolean`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1550" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7303,7 +7303,7 @@ Gets the value of the specified column as a Boolean.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -7312,9 +7312,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1551" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7332,9 +7332,9 @@ A Boolean that is the value of the column.
 
 </div>
 
-<div id="id1552" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7352,9 +7352,9 @@ IDataRecord.GetBoolean
 
 </div>
 
-<div id="id1553" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7374,9 +7374,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1559" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7392,9 +7392,9 @@ Call IsDBNull to check for null values before calling this method.
 
 <span class="modifier">`public `</span><span class="type">`byte `</span><span class="methodname">`GetByte`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1555" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7408,7 +7408,7 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -7417,9 +7417,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1556" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7437,9 +7437,9 @@ The value of the specified column as a byte.
 
 </div>
 
-<div id="id1557" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7457,9 +7457,9 @@ IDataRecord.GetByte
 
 </div>
 
-<div id="id1558" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7479,9 +7479,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1564" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7504,9 +7504,9 @@ as an array, starting at the given buffer offset.
 `                     `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`bufferOffset`</span>` `</span>`,`  
 `                     `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`length`</span>` `</span>`);`
 
-<div id="id1560" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7520,7 +7520,7 @@ as an array, starting at the given buffer offset.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -7541,9 +7541,9 @@ The number of bytes to read.
 
 </div>
 
-<div id="id1561" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7561,9 +7561,9 @@ The actual number of bytes read.
 
 </div>
 
-<div id="id1562" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7581,9 +7581,9 @@ IDataRecord.GetBytes
 
 </div>
 
-<div id="id1563" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7613,9 +7613,9 @@ of the field in bytes.
 
 </div>
 
-<div id="id1569" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7631,9 +7631,9 @@ of the field in bytes.
 
 <span class="modifier">`public `</span><span class="type">`char `</span><span class="methodname">`GetChar`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1565" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7647,7 +7647,7 @@ of the field in bytes.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -7656,9 +7656,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1566" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7676,9 +7676,9 @@ The value of the specified column as a character.
 
 </div>
 
-<div id="id1567" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7696,9 +7696,9 @@ IDataRecord.GetChar
 
 </div>
 
-<div id="id1568" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7718,9 +7718,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1574" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7743,9 +7743,9 @@ buffer as an array, starting at the given buffer offset.
 `                     `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`bufferOffset`</span>` `</span>`,`  
 `                     `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`length`</span>` `</span>`);`
 
-<div id="id1570" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7759,7 +7759,7 @@ buffer as an array, starting at the given buffer offset.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -7780,9 +7780,9 @@ The number of characters to read.
 
 </div>
 
-<div id="id1571" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7800,9 +7800,9 @@ The actual number of characters read.
 
 </div>
 
-<div id="id1572" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7820,9 +7820,9 @@ IDataRecord.GetChars
 
 </div>
 
-<div id="id1573" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7852,9 +7852,9 @@ of the field in characters.
 
 </div>
 
-<div id="id1576" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7872,9 +7872,9 @@ Not currently supported.
 
 <span class="modifier">`public `</span><span class="type">`IDataReader `</span><span class="methodname">`GetData`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1575" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7894,9 +7894,9 @@ IDataRecord.GetData
 
 </div>
 
-<div id="id1580" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7914,9 +7914,9 @@ Gets the name of the source data type.
 
 <span class="modifier">`public `</span><span class="type">`string `</span><span class="methodname">`GetDataTypeName`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1577" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7930,7 +7930,7 @@ Gets the name of the source data type.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -7939,9 +7939,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1578" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7959,9 +7959,9 @@ The name of the source data type.
 
 </div>
 
-<div id="id1579" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7981,9 +7981,9 @@ IDataRecord.GetDataTypeName
 
 </div>
 
-<div id="id1585" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8001,9 +8001,9 @@ Gets the value of the specified column as a DateTime object.
 
 <span class="modifier">`public `</span><span class="type">`DateTime `</span><span class="methodname">`GetDateTime`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1581" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8017,7 +8017,7 @@ Gets the value of the specified column as a DateTime object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8026,9 +8026,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1582" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8046,9 +8046,9 @@ The value of the specified column as a DateTime object.
 
 </div>
 
-<div id="id1583" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8066,9 +8066,9 @@ IDataRecord.GetDateTime
 
 </div>
 
-<div id="id1584" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8088,9 +8088,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1590" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8108,9 +8108,9 @@ Gets the value of the specified column as a Decimal object.
 
 <span class="modifier">`public `</span><span class="type">`decimal `</span><span class="methodname">`GetDecimal`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1586" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8124,7 +8124,7 @@ Gets the value of the specified column as a Decimal object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8133,9 +8133,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1587" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8153,9 +8153,9 @@ The value of the specified column as a Decimal object.
 
 </div>
 
-<div id="id1588" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8173,9 +8173,9 @@ IDataRecord.GetDecimal
 
 </div>
 
-<div id="id1589" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8195,9 +8195,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1595" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8213,9 +8213,9 @@ Call IsDBNull to check for null values before calling this method.
 
 <span class="modifier">`public `</span><span class="type">`double `</span><span class="methodname">`GetDouble`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1591" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8229,7 +8229,7 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8238,9 +8238,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1592" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8259,9 +8259,9 @@ number.
 
 </div>
 
-<div id="id1593" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8279,9 +8279,9 @@ IDataRecord.GetDouble
 
 </div>
 
-<div id="id1594" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8301,9 +8301,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1599" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8321,9 +8321,9 @@ Gets the Type that is the data type of the object.
 
 <span class="modifier">`public `</span><span class="type">`Type `</span><span class="methodname">`GetFieldType`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1596" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8337,7 +8337,7 @@ Gets the Type that is the data type of the object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8346,9 +8346,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1597" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8366,9 +8366,9 @@ The Type that is the data type of the object.
 
 </div>
 
-<div id="id1598" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8388,9 +8388,9 @@ IDataRecord.GetFieldType
 
 </div>
 
-<div id="id1604" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8406,9 +8406,9 @@ IDataRecord.GetFieldType
 
 <span class="modifier">`public `</span><span class="type">`float `</span><span class="methodname">`GetFloat`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1600" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8422,7 +8422,7 @@ IDataRecord.GetFieldType
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8431,9 +8431,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1601" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8452,9 +8452,9 @@ number.
 
 </div>
 
-<div id="id1602" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8472,9 +8472,9 @@ IDataRecord.GetFloat
 
 </div>
 
-<div id="id1603" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8494,9 +8494,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1609" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8515,9 +8515,9 @@ Gets the value of the specified column as a globally-unique identifier
 
 <span class="modifier">`public `</span><span class="type">`Guid `</span><span class="methodname">`GetGuid`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1605" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8531,7 +8531,7 @@ Gets the value of the specified column as a globally-unique identifier
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8540,9 +8540,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1606" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8560,9 +8560,9 @@ The value of the specified column as a GUID.
 
 </div>
 
-<div id="id1607" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8580,9 +8580,9 @@ IDataRecord.GetGuid
 
 </div>
 
-<div id="id1608" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8602,9 +8602,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1614" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8622,9 +8622,9 @@ Gets the value of the specified column as a 16-bit signed integer.
 
 <span class="modifier">`public `</span><span class="type">`short `</span><span class="methodname">`GetInt16`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1610" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8638,7 +8638,7 @@ Gets the value of the specified column as a 16-bit signed integer.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8647,9 +8647,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1611" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8667,9 +8667,9 @@ The value of the specified column as a 16-bit signed integer.
 
 </div>
 
-<div id="id1612" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8687,9 +8687,9 @@ IDataRecord.GetInt16
 
 </div>
 
-<div id="id1613" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8709,9 +8709,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1619" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8729,9 +8729,9 @@ Gets the value of the specified column as a 32-bit signed integer
 
 <span class="modifier">`public `</span><span class="type">`int `</span><span class="methodname">`GetInt32`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1615" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8745,7 +8745,7 @@ Gets the value of the specified column as a 32-bit signed integer
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8754,9 +8754,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1616" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8774,9 +8774,9 @@ The value of the specified column as a 32-bit signed integer.
 
 </div>
 
-<div id="id1617" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8794,9 +8794,9 @@ IDataRecord.GetInt32
 
 </div>
 
-<div id="id1618" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8816,9 +8816,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1624" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8836,9 +8836,9 @@ Gets the value of the specified column as a 64-bit signed integer.
 
 <span class="modifier">`public `</span><span class="type">`long `</span><span class="methodname">`GetInt64`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1620" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8852,7 +8852,7 @@ Gets the value of the specified column as a 64-bit signed integer.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8861,9 +8861,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1621" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8881,9 +8881,9 @@ The value of the specified column as a 64-bit signed integer.
 
 </div>
 
-<div id="id1622" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8901,9 +8901,9 @@ IDataRecord.GetInt64
 
 </div>
 
-<div id="id1623" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8923,9 +8923,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1628" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8943,9 +8943,9 @@ Gets the name of the specified column.
 
 <span class="modifier">`public `</span><span class="type">`string `</span><span class="methodname">`GetName`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1625" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8959,7 +8959,7 @@ Gets the name of the specified column.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -8968,9 +8968,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1626" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8988,9 +8988,9 @@ A string that is the name of the specified column.
 
 </div>
 
-<div id="id1627" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9010,9 +9010,9 @@ IDataRecord.GetName
 
 </div>
 
-<div id="id1632" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9030,9 +9030,9 @@ Gets the column ordinal, given the name of the column.
 
 <span class="modifier">`public `</span><span class="type">`int `</span><span class="methodname">`GetOrdinal`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`name`</span>` `</span>`);`
 
-<div id="id1629" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9046,7 +9046,7 @@ Gets the column ordinal, given the name of the column.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">name</span>  
 The name of the column.
@@ -9055,9 +9055,9 @@ The name of the column.
 
 </div>
 
-<div id="id1630" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9075,9 +9075,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1631" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9097,9 +9097,9 @@ IDataRecord.GetOrdinal
 
 </div>
 
-<div id="id1636" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9118,9 +9118,9 @@ VirtuosoDataReader.
 
 <span class="modifier">`public `</span><span class="type">`DataTable `</span><span class="methodname">`GetSchemaTable`</span>`();`
 
-<div id="id1633" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9138,9 +9138,9 @@ A DataTable that describes the column metadata.
 
 </div>
 
-<div id="id1634" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9158,9 +9158,9 @@ IDataReader.GetSchemaTable
 
 </div>
 
-<div id="id1635" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9177,11 +9177,11 @@ IDataReader.GetSchemaTable
 For the GetSchemaTable method returns metadata about each column in the
 following order:
 
-<div id="id18725" class="table">
+<div>
 
 **Table 7.12. **
 
-<div class="table-contents">
+<div>
 
 | DataReader Column | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -9214,9 +9214,9 @@ following order:
 
 </div>
 
-<div id="id1641" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9234,9 +9234,9 @@ Gets the value of the specified column as a string.
 
 <span class="modifier">`public `</span><span class="type">`string `</span><span class="methodname">`GetString`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1637" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9250,7 +9250,7 @@ Gets the value of the specified column as a string.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -9259,9 +9259,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1638" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9279,9 +9279,9 @@ The value of the specified column as a string.
 
 </div>
 
-<div id="id1639" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9299,9 +9299,9 @@ IDataRecord.GetString
 
 </div>
 
-<div id="id1640" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9321,9 +9321,9 @@ Call IsDBNull to check for null values before calling this method.
 
 </div>
 
-<div id="id1646" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9342,9 +9342,9 @@ format.
 
 <span class="modifier">`public `</span><span class="type">`object `</span><span class="methodname">`GetValue`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1642" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9358,7 +9358,7 @@ format.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -9367,9 +9367,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1643" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9387,9 +9387,9 @@ The value to return.
 
 </div>
 
-<div id="id1644" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9407,9 +9407,9 @@ IDataRecord.GetValue
 
 </div>
 
-<div id="id1645" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9429,9 +9429,9 @@ This method returns DBNull for null database columns.
 
 </div>
 
-<div id="id1651" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9449,9 +9449,9 @@ Gets all the attribute columns in the current row.
 
 <span class="modifier">`public `</span><span class="type">`int `</span><span class="methodname">`GetValues`</span>`(`<span class="methodparam">` `<span class="type">`object[] `</span>` `<span class="parameter">`values`</span>` `</span>`);`
 
-<div id="id1647" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9465,7 +9465,7 @@ Gets all the attribute columns in the current row.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">values</span>  
 An array of type Object into which to copy the attribute columns.
@@ -9474,9 +9474,9 @@ An array of type Object into which to copy the attribute columns.
 
 </div>
 
-<div id="id1648" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9494,9 +9494,9 @@ The number of instances of Object in the array.
 
 </div>
 
-<div id="id1649" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9514,9 +9514,9 @@ IDataRecord.GetValues
 
 </div>
 
-<div id="id1650" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9546,9 +9546,9 @@ This method returns DBNull for null database columns.
 
 </div>
 
-<div id="id1652" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9569,9 +9569,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1653" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9592,9 +9592,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1658" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9613,9 +9613,9 @@ missing values.
 
 <span class="modifier">`public `</span><span class="type">`bool `</span><span class="methodname">`IsDBNull`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1654" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9629,7 +9629,7 @@ missing values.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based column ordinal.
@@ -9638,9 +9638,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1655" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9659,9 +9659,9 @@ The zero-based column ordinal.
 
 </div>
 
-<div id="id1656" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9679,9 +9679,9 @@ IDataRecord.IsDBNull
 
 </div>
 
-<div id="id1657" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9703,9 +9703,9 @@ GetChar, and so on).
 
 </div>
 
-<div id="id1662" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9724,9 +9724,9 @@ results of batch SQL statements.
 
 <span class="modifier">`public `</span><span class="type">`bool `</span><span class="methodname">`NextResult`</span>`();`
 
-<div id="id1659" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9744,9 +9744,9 @@ results of batch SQL statements.
 
 </div>
 
-<div id="id1660" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9764,9 +9764,9 @@ IDataReader.NextResult
 
 </div>
 
-<div id="id1661" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9789,9 +9789,9 @@ By default, the VirtuosoDataReader is positioned on the first result.
 
 </div>
 
-<div id="id1666" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9809,9 +9809,9 @@ Advances the VirtuosoDataReader to the next record.
 
 <span class="modifier">`public `</span><span class="type">`bool `</span><span class="methodname">`Read`</span>`();`
 
-<div id="id1663" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9829,9 +9829,9 @@ Advances the VirtuosoDataReader to the next record.
 
 </div>
 
-<div id="id1664" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9849,9 +9849,9 @@ IDataReader.Read
 
 </div>
 
-<div id="id1665" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9876,9 +9876,9 @@ record. Therefore, you must call Read to begin accessing any data.
 
 </div>
 
-<div id="vcrvirterrclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9910,9 +9910,9 @@ server. This class cannot be inherited.
 }
 ```
 
-<div id="id1668" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9932,9 +9932,9 @@ be thread safe.
 
 </div>
 
-<div id="id1669" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9955,9 +9955,9 @@ VirtuosoException class.
 
 </div>
 
-<div id="id1674" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9971,9 +9971,9 @@ VirtuosoException class.
 
 </div>
 
-<div id="id1671" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9991,9 +9991,9 @@ Gets a short description of the error.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`Message `</span>` ;`
 
-<div id="id1670" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10013,9 +10013,9 @@ A description of the error.
 
 </div>
 
-<div id="id1673" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10034,9 +10034,9 @@ for the database.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`SQLState `</span>` ;`
 
-<div id="id1672" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10060,9 +10060,9 @@ The five-character error code, which identifies the source of the error.
 
 </div>
 
-<div id="vcrvirterrcollclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10096,9 +10096,9 @@ class cannot be inherited.
 }
 ```
 
-<div id="id1675" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10118,9 +10118,9 @@ be thread safe.
 
 </div>
 
-<div id="id1676" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10140,9 +10140,9 @@ one instance of the VirtuosoError class.
 
 </div>
 
-<div id="id1683" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10156,9 +10156,9 @@ one instance of the VirtuosoError class.
 
 </div>
 
-<div id="id1679" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10176,9 +10176,9 @@ Gets the number of errors in the collection.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`Count `</span>` ;`
 
-<div id="id1677" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10196,9 +10196,9 @@ The total number of errors in the collection.
 
 </div>
 
-<div id="id1678" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10218,9 +10218,9 @@ ICollection.Count
 
 </div>
 
-<div id="id1682" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10238,9 +10238,9 @@ Gets the error at the specified index.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoError `</span>` `<span class="varname">`this[int i] `</span>` ;`
 
-<div id="id1680" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10254,7 +10254,7 @@ Gets the error at the specified index.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">i</span>  
 The zero-based index of the error to retrieve.
@@ -10263,9 +10263,9 @@ The zero-based index of the error to retrieve.
 
 </div>
 
-<div id="id1681" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10287,9 +10287,9 @@ A VirtuosoError that contains the error at the specified index.
 
 </div>
 
-<div id="id1688" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10303,9 +10303,9 @@ A VirtuosoError that contains the error at the specified index.
 
 </div>
 
-<div id="id1686" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10325,9 +10325,9 @@ starting at the given index within the array.
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`CopyTo`</span>`(`<span class="methodparam">` `<span class="type">`Array `</span>` `<span class="parameter">`array`</span>` `</span>`,`  
 `                   `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`i`</span>` `</span>`);`
 
-<div id="id1684" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10341,7 +10341,7 @@ starting at the given index within the array.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">array</span>  
 The array into which to copy the elements.
@@ -10353,9 +10353,9 @@ The starting index of array.
 
 </div>
 
-<div id="id1685" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10375,9 +10375,9 @@ ICollection.CopyTo
 
 </div>
 
-<div id="id1687" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10402,9 +10402,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="vcrvirtexcepclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10440,9 +10440,9 @@ error. This class cannot be inherited.
 }
 ```
 
-<div id="id1689" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10462,9 +10462,9 @@ be thread safe.
 
 </div>
 
-<div id="id1690" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10485,9 +10485,9 @@ contains at least one instance of VirtuosoError.
 
 </div>
 
-<div id="id1697" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10501,9 +10501,9 @@ contains at least one instance of VirtuosoError.
 
 </div>
 
-<div id="id1693" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10523,9 +10523,9 @@ Data Provider.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoErrorCollection `</span>` `<span class="varname">`Errors `</span>` ;`
 
-<div id="id1691" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10543,9 +10543,9 @@ The collected instances of the VirtuosoError class.
 
 </div>
 
-<div id="id1692" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10565,9 +10565,9 @@ This property is a wrapper for the VirtuosoErrorCollection.
 
 </div>
 
-<div id="id1696" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10585,9 +10585,9 @@ Gets the text describing the error.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`Message `</span>` ;`
 
-<div id="id1694" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10605,9 +10605,9 @@ The text describing the error.
 
 </div>
 
-<div id="id1695" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10632,9 +10632,9 @@ the Errors property.
 
 </div>
 
-<div id="vcrvirtinfmsgevtargclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10668,9 +10668,9 @@ Provides data for the InfoMessage event. This class cannot be inherited.
 }
 ```
 
-<div id="id1698" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10690,9 +10690,9 @@ be thread safe.
 
 </div>
 
-<div id="id1699" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10711,9 +10711,9 @@ warnings sent from the Virtuoso srver.
 
 </div>
 
-<div id="id1702" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10727,9 +10727,9 @@ warnings sent from the Virtuoso srver.
 
 </div>
 
-<div id="id1701" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10747,9 +10747,9 @@ Gets the collection of warnings sent from the Virtuoso server.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoErrorCollection `</span>` `<span class="varname">`Errors `</span>` ;`
 
-<div id="id1700" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10773,9 +10773,9 @@ The collection of warnings sent from the server.
 
 </div>
 
-<div id="vcrvirtinfmsgevthndlrdel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10795,9 +10795,9 @@ VirtuosoConnection.
 <span class="modifier">`public `</span><span class="modifier">`delegate `</span><span class="void">`void `</span><span class="methodname">`VirtuosoInfoMessageEventHandler`</span>`(`<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`sender`</span>` `</span>`,`  
 `                                                     `<span class="methodparam">` `<span class="type">`VirtuosoInfoMessageEventArgs `</span>` `<span class="parameter">`e`</span>` `</span>`);`
 
-<div id="id1703" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10814,7 +10814,7 @@ VirtuosoConnection.
 The declaration of your event handler must have the same parameters as
 the VirtuosoInfoMessageEventHandler delegate declaration.
 
-<div class="variablelist">
+<div>
 
 <span class="term">sender</span>  
 The source of the event.
@@ -10826,9 +10826,9 @@ A VirtuosoInfoMessageEventArgs object that contains the event data.
 
 </div>
 
-<div id="id1704" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10853,9 +10853,9 @@ delegate. For more information about event handler delegates, see
 
 </div>
 
-<div id="vcrvirtparamclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10897,9 +10897,9 @@ to a DataColumn. This class cannot be inherited.
 }
 ```
 
-<div id="id1705" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10919,9 +10919,9 @@ be thread safe.
 
 </div>
 
-<div id="id1722" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10935,9 +10935,9 @@ be thread safe.
 
 </div>
 
-<div id="id1706" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10957,9 +10957,9 @@ Initializes a new instance of the VirtuosoParameter class.
 
 </div>
 
-<div id="id1709" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10979,9 +10979,9 @@ parameter name and value.
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoParameter`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`parameterName`</span>` `</span>`,`  
 `                         `<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`object`</span>` `</span>`);`
 
-<div id="id1707" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10995,7 +10995,7 @@ parameter name and value.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter to map.
@@ -11007,9 +11007,9 @@ An Object that is the value of the VirtuosoParameter.
 
 </div>
 
-<div id="id1708" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11030,9 +11030,9 @@ inferred from the .NET Framework type of the Object.
 
 </div>
 
-<div id="id1712" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11052,9 +11052,9 @@ parameter name and the data type.
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoParameter`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`parameterName`</span>` `</span>`,`  
 `                         `<span class="methodparam">` `<span class="type">`VirtDbType `</span>` `<span class="parameter">`dbType`</span>` `</span>`);`
 
-<div id="id1710" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11068,7 +11068,7 @@ parameter name and the data type.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter to map.
@@ -11080,9 +11080,9 @@ One of the VirtDbType values.
 
 </div>
 
-<div id="id1711" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11103,9 +11103,9 @@ the value of the dbType parameter.
 
 </div>
 
-<div id="id1715" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11126,9 +11126,9 @@ parameter name, the VirtDbType, and the size.
 `                         `<span class="methodparam">` `<span class="type">`VirtDbType `</span>` `<span class="parameter">`dbType`</span>` `</span>`,`  
 `                         `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`size`</span>` `</span>`);`
 
-<div id="id1713" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11142,7 +11142,7 @@ parameter name, the VirtDbType, and the size.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter to map.
@@ -11157,9 +11157,9 @@ The width of the parameter.
 
 </div>
 
-<div id="id1714" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11180,9 +11180,9 @@ explicitly set in the size parameter.
 
 </div>
 
-<div id="id1718" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11204,9 +11204,9 @@ parameter name, VirtDbType, size, and source column name.
 `                         `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`size`</span>` `</span>`,`  
 `                         `<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`sourceColumn`</span>` `</span>`);`
 
-<div id="id1716" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11220,7 +11220,7 @@ parameter name, VirtDbType, size, and source column name.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter to map.
@@ -11238,9 +11238,9 @@ The name of the source column.
 
 </div>
 
-<div id="id1717" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11261,9 +11261,9 @@ explicitly set in the size parameter.
 
 </div>
 
-<div id="id1721" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11294,9 +11294,9 @@ the parameter.
 `                         `<span class="methodparam">` `<span class="type">`DataRowVersion `</span>` `<span class="parameter">`sourceVersion`</span>` `</span>`,`  
 `                         `<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1719" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11310,7 +11310,7 @@ the parameter.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter to map.
@@ -11347,9 +11347,9 @@ An Object that is the value of the VirtuosoParameter.
 
 </div>
 
-<div id="id1720" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11373,9 +11373,9 @@ parameters.
 
 </div>
 
-<div id="id1766" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11389,9 +11389,9 @@ parameters.
 
 </div>
 
-<div id="id1726" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11409,9 +11409,9 @@ Gets or sets the DbType of the parameter.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`DbType `</span>` `<span class="varname">`DbType `</span>` ;`
 
-<div id="id1723" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11429,9 +11429,9 @@ One of the System.Data.DbType values. The default is String.
 
 </div>
 
-<div id="id1724" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11449,9 +11449,9 @@ IDataParameter.DbType
 
 </div>
 
-<div id="id1725" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11475,9 +11475,9 @@ member.
 
 </div>
 
-<div id="id1730" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11497,9 +11497,9 @@ parameter.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`ParameterDirection `</span>` `<span class="varname">`Direction `</span>` ;`
 
-<div id="id1727" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11517,9 +11517,9 @@ One of the System.Data.ParameterDirection values. The default is Input.
 
 </div>
 
-<div id="id1728" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11537,9 +11537,9 @@ IDataParameter.Direction
 
 </div>
 
-<div id="id1729" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11563,9 +11563,9 @@ InputOut, and ReturnValue parameters are updated.
 
 </div>
 
-<div id="id1734" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11584,9 +11584,9 @@ values.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`bool `</span>` `<span class="varname">`IsNullable `</span>` ;`
 
-<div id="id1731" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11605,9 +11605,9 @@ values.
 
 </div>
 
-<div id="id1732" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11625,9 +11625,9 @@ IDataParameter.IsNullable
 
 </div>
 
-<div id="id1733" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11647,9 +11647,9 @@ Null values are handled using the System.DBNull class.
 
 </div>
 
-<div id="id1738" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11667,9 +11667,9 @@ Gets or sets the name of the VirtuosoParameter.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`ParameterName `</span>` ;`
 
-<div id="id1735" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11687,9 +11687,9 @@ The name of the VirtuosoParameter. The default is an empty string ("").
 
 </div>
 
-<div id="id1736" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11707,9 +11707,9 @@ IDataParameter.ParameterName
 
 </div>
 
-<div id="id1737" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11736,9 +11736,9 @@ be supplied, but will be ignored during parameter object binding.
 
 </div>
 
-<div id="id1742" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11757,9 +11757,9 @@ property.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`byte `</span>` `<span class="varname">`Precision `</span>` ;`
 
-<div id="id1739" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11778,9 +11778,9 @@ default value is 0.
 
 </div>
 
-<div id="id1740" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11798,9 +11798,9 @@ IDbDataParameter.Precision
 
 </div>
 
-<div id="id1741" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11821,9 +11821,9 @@ parameters.
 
 </div>
 
-<div id="id1746" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11841,9 +11841,9 @@ Gets or sets the number of decimal places to which Value is resolved.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`byte `</span>` `<span class="varname">`Scale `</span>` ;`
 
-<div id="id1743" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11862,9 +11862,9 @@ The number of decimal places to which Value is resolved. The default is
 
 </div>
 
-<div id="id1744" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11882,9 +11882,9 @@ IDbDataParameter.Scale
 
 </div>
 
-<div id="id1745" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11905,9 +11905,9 @@ parameters.
 
 </div>
 
-<div id="id1750" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11925,9 +11925,9 @@ Gets or sets the maximum size, in bytes, of the data within the column.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`Size `</span>` ;`
 
-<div id="id1747" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11946,9 +11946,9 @@ value is inferred from the parameter value.
 
 </div>
 
-<div id="id1748" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11966,9 +11966,9 @@ IDbDataParameter.Size
 
 </div>
 
-<div id="id1749" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12006,9 +12006,9 @@ the server.
 
 </div>
 
-<div id="id1754" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12027,9 +12027,9 @@ used for loading or returning the Value.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`string `</span>` `<span class="varname">`SourceColumn `</span>` ;`
 
-<div id="id1751" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12048,9 +12048,9 @@ parameter. The default is an empty string ("").
 
 </div>
 
-<div id="id1752" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12068,9 +12068,9 @@ IDataParameter.SourceColumn
 
 </div>
 
-<div id="id1753" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12094,9 +12094,9 @@ data source. A Direction of InputOutput is a combination of both.
 
 </div>
 
-<div id="id1758" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12114,9 +12114,9 @@ Gets or sets the DataRowVersion to use when loading Value.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`DataRowVersion `</span>` `<span class="varname">`DataRowVersion `</span>` ;`
 
-<div id="id1755" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12134,9 +12134,9 @@ One of the System.Data.DataRowVersion values. The default is Current.
 
 </div>
 
-<div id="id1756" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12154,9 +12154,9 @@ IDataParameter.SourceVersion
 
 </div>
 
-<div id="id1757" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12183,9 +12183,9 @@ DataRow object.
 
 </div>
 
-<div id="id1762" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12203,9 +12203,9 @@ Gets or sets the value of the parameter.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`object `</span>` `<span class="varname">`Value `</span>` ;`
 
-<div id="id1759" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12223,9 +12223,9 @@ An Object that is the value of the parameter. The default value is null.
 
 </div>
 
-<div id="id1760" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12243,9 +12243,9 @@ IDataParameter.Value
 
 </div>
 
-<div id="id1761" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12284,9 +12284,9 @@ The Value property is overwritten by the Update method.
 
 </div>
 
-<div id="id1765" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12304,9 +12304,9 @@ Gets or sets the VirtDbType of the parameter.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtDbType `</span>` `<span class="varname">`VirtDbType `</span>` ;`
 
-<div id="id1763" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12324,9 +12324,9 @@ One of the VirtDbType values. The default is NVarChar.
 
 </div>
 
-<div id="id1764" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12353,9 +12353,9 @@ in the Microsoft® .NET Framework SDK documentation.
 
 </div>
 
-<div id="id1770" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12369,9 +12369,9 @@ in the Microsoft® .NET Framework SDK documentation.
 
 </div>
 
-<div id="id1767" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12392,9 +12392,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1769" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12412,9 +12412,9 @@ Gets a string containing the ParameterName.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="type">`string `</span><span class="methodname">`ToString`</span>`();`
 
-<div id="id1768" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12438,9 +12438,9 @@ A string containing the ParameterName.
 
 </div>
 
-<div id="vcrvirtparamcollclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12485,9 +12485,9 @@ cannot be inherited.
 }
 ```
 
-<div id="id1771" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12507,9 +12507,9 @@ be thread safe.
 
 </div>
 
-<div id="id1782" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12523,9 +12523,9 @@ be thread safe.
 
 </div>
 
-<div id="id1774" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12543,9 +12543,9 @@ Gets the number of VirtuosoParameter objects in the collection.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`int `</span>` `<span class="varname">`Count `</span>` ;`
 
-<div id="id1772" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12563,9 +12563,9 @@ The number of VirtuosoParameter objects in the collection.
 
 </div>
 
-<div id="id1773" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12585,9 +12585,9 @@ ICollection.Count
 
 </div>
 
-<div id="id1781" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12601,9 +12601,9 @@ ICollection.Count
 
 </div>
 
-<div id="id1777" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12621,9 +12621,9 @@ Gets or sets the VirtuosoParameter at the specified index.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`object `</span>` `<span class="varname">`this[int i] `</span>` ;`
 
-<div id="id1775" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12637,7 +12637,7 @@ Gets or sets the VirtuosoParameter at the specified index.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">index</span>  
 The zero-based index of the parameter to retrieve.
@@ -12646,9 +12646,9 @@ The zero-based index of the parameter to retrieve.
 
 </div>
 
-<div id="id1776" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12668,9 +12668,9 @@ The VirtuosoParameter at the specified index.
 
 </div>
 
-<div id="id1780" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12688,9 +12688,9 @@ Gets or sets the VirtuosoParameter with the specified name.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`object `</span>` `<span class="varname">`this[string parameterName] `</span>` ;`
 
-<div id="id1778" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12704,7 +12704,7 @@ Gets or sets the VirtuosoParameter with the specified name.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter to retrieve.
@@ -12713,9 +12713,9 @@ The name of the parameter to retrieve.
 
 </div>
 
-<div id="id1779" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12739,9 +12739,9 @@ The VirtuosoParameter with the specified name.
 
 </div>
 
-<div id="id1840" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12755,9 +12755,9 @@ The VirtuosoParameter with the specified name.
 
 </div>
 
-<div id="id1802" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12771,9 +12771,9 @@ The VirtuosoParameter with the specified name.
 
 </div>
 
-<div id="id1786" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12792,9 +12792,9 @@ VirtuosoParameterCollection.
 
 <span class="modifier">`public `</span><span class="type">`int `</span><span class="methodname">`Add`</span>`(`<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1783" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12808,7 +12808,7 @@ VirtuosoParameterCollection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">value</span>  
 The VirtuosoParameter to add to the collection.
@@ -12817,9 +12817,9 @@ The VirtuosoParameter to add to the collection.
 
 </div>
 
-<div id="id1784" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12837,9 +12837,9 @@ The index in the collection of the new VirtuosoParameter object.
 
 </div>
 
-<div id="id1785" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12859,9 +12859,9 @@ IList.Add
 
 </div>
 
-<div id="id1789" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12880,9 +12880,9 @@ VirtuosoParameterCollection.
 
 <span class="modifier">`public `</span><span class="type">`VirtuosoParameter `</span><span class="methodname">`Add`</span>`(`<span class="methodparam">` `<span class="type">`VirtuosoParameter `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1787" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12896,7 +12896,7 @@ VirtuosoParameterCollection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">value</span>  
 The VirtuosoParameter to add to the collection.
@@ -12905,9 +12905,9 @@ The VirtuosoParameter to add to the collection.
 
 </div>
 
-<div id="id1788" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12927,9 +12927,9 @@ A reference to the new VirtuosoParameter object.
 
 </div>
 
-<div id="id1792" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12949,9 +12949,9 @@ specified parameter name and value.
 <span class="modifier">`public `</span><span class="type">`VirtuosoParameter `</span><span class="methodname">`Add`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`parameterName`</span>` `</span>`,`  
 `                             `<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1790" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12965,7 +12965,7 @@ specified parameter name and value.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter.
@@ -12977,9 +12977,9 @@ The Value of the VirtuosoParameter to add to the collection.
 
 </div>
 
-<div id="id1791" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12999,9 +12999,9 @@ The new VirtuosoParameter object.
 
 </div>
 
-<div id="id1795" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13021,9 +13021,9 @@ specified parameter name and data type.
 <span class="modifier">`public `</span><span class="type">`VirtuosoParameter `</span><span class="methodname">`Add`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`parameterName`</span>` `</span>`,`  
 `                             `<span class="methodparam">` `<span class="type">`VirtDbType `</span>` `<span class="parameter">`dbType`</span>` `</span>`);`
 
-<div id="id1793" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13037,7 +13037,7 @@ specified parameter name and data type.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter.
@@ -13049,9 +13049,9 @@ One of the VirtDbType values.
 
 </div>
 
-<div id="id1794" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13071,9 +13071,9 @@ The new VirtuosoParameter object.
 
 </div>
 
-<div id="id1798" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13094,9 +13094,9 @@ specified parameter name, data type, and parameter size.
 `                             `<span class="methodparam">` `<span class="type">`VirtDbType `</span>` `<span class="parameter">`dbType`</span>` `</span>`,`  
 `                             `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`size`</span>` `</span>`);`
 
-<div id="id1796" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13110,7 +13110,7 @@ specified parameter name, data type, and parameter size.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter.
@@ -13125,9 +13125,9 @@ The size of the parameter (width of the column).
 
 </div>
 
-<div id="id1797" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13147,9 +13147,9 @@ The new VirtuosoParameter object.
 
 </div>
 
-<div id="id1801" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13172,9 +13172,9 @@ name.
 `                             `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`size`</span>` `</span>`,`  
 `                             `<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`sourceColumn`</span>` `</span>`);`
 
-<div id="id1799" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13188,7 +13188,7 @@ name.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter.
@@ -13206,9 +13206,9 @@ The name of the source column.
 
 </div>
 
-<div id="id1800" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13230,9 +13230,9 @@ The new VirtuosoParameter object.
 
 </div>
 
-<div id="id1804" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13250,9 +13250,9 @@ Removes all items from the collection.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Clear`</span>`();`
 
-<div id="id1803" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13272,9 +13272,9 @@ IList.Clear
 
 </div>
 
-<div id="id1813" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13288,9 +13288,9 @@ IList.Clear
 
 </div>
 
-<div id="id1808" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13309,9 +13309,9 @@ collection.
 
 <span class="modifier">`public `</span><span class="type">`bool `</span><span class="methodname">`Contains`</span>`(`<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1805" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13325,7 +13325,7 @@ collection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">value</span>  
 The value of the VirtuosoParameter object to find.
@@ -13334,9 +13334,9 @@ The value of the VirtuosoParameter object to find.
 
 </div>
 
-<div id="id1806" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13355,9 +13355,9 @@ The value of the VirtuosoParameter object to find.
 
 </div>
 
-<div id="id1807" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13377,9 +13377,9 @@ IList.Contains
 
 </div>
 
-<div id="id1812" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13398,9 +13398,9 @@ specified parameter name exists in the collection.
 
 <span class="modifier">`public `</span><span class="type">`bool `</span><span class="methodname">`Contains`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`parameterName`</span>` `</span>`);`
 
-<div id="id1809" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13414,7 +13414,7 @@ specified parameter name exists in the collection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the VirtuosoParameter object to find.
@@ -13423,9 +13423,9 @@ The name of the VirtuosoParameter object to find.
 
 </div>
 
-<div id="id1810" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13444,9 +13444,9 @@ The name of the VirtuosoParameter object to find.
 
 </div>
 
-<div id="id1811" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13468,9 +13468,9 @@ IDataParameterCollection.Contains
 
 </div>
 
-<div id="id1816" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13490,9 +13490,9 @@ the specified array.
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`CopyTo`</span>`(`<span class="methodparam">` `<span class="type">`Array `</span>` `<span class="parameter">`array`</span>` `</span>`,`  
 `                   `<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`index`</span>` `</span>`);`
 
-<div id="id1814" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13506,7 +13506,7 @@ the specified array.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">array</span>  
 The array into which to copy the VirtuosoParameter objects.
@@ -13518,9 +13518,9 @@ The starting index of the array.
 
 </div>
 
-<div id="id1815" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13540,9 +13540,9 @@ ICollection.CopyTo
 
 </div>
 
-<div id="id1817" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13563,9 +13563,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1826" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13579,9 +13579,9 @@ not intended to be used directly from your code.
 
 </div>
 
-<div id="id1821" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13599,9 +13599,9 @@ Gets the location in the collection of a VirtuosoParameter object.
 
 <span class="modifier">`public `</span><span class="type">`int `</span><span class="methodname">`IndexOf`</span>`(`<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1818" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13615,7 +13615,7 @@ Gets the location in the collection of a VirtuosoParameter object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">value</span>  
 The VirtuosoParameter object to find.
@@ -13624,9 +13624,9 @@ The VirtuosoParameter object to find.
 
 </div>
 
-<div id="id1819" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13644,9 +13644,9 @@ The zero-based location of the VirtuosoParameter in the collection.
 
 </div>
 
-<div id="id1820" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13666,9 +13666,9 @@ IList.IndexOf
 
 </div>
 
-<div id="id1825" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13687,9 +13687,9 @@ the specified parameter name.
 
 <span class="modifier">`public `</span><span class="type">`int `</span><span class="methodname">`IndexOf`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`parameterName`</span>` `</span>`);`
 
-<div id="id1822" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13703,7 +13703,7 @@ the specified parameter name.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the VirtuosoParameter object to find.
@@ -13712,9 +13712,9 @@ The name of the VirtuosoParameter object to find.
 
 </div>
 
-<div id="id1823" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13732,9 +13732,9 @@ The zero-based location of the VirtuosoParameter in the collection.
 
 </div>
 
-<div id="id1824" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13756,9 +13756,9 @@ IDataParameterCollection.IndexOf
 
 </div>
 
-<div id="id1829" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13777,9 +13777,9 @@ Inserts a VirtuosoParameter into the collection at the specified index.
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Insert`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`index`</span>` `</span>`,`  
 `                   `<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1827" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13793,7 +13793,7 @@ Inserts a VirtuosoParameter into the collection at the specified index.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">index</span>  
 The zero-based index where the parameter is to be inserted within the
@@ -13806,9 +13806,9 @@ The VirtuosoParameter to add to the collection.
 
 </div>
 
-<div id="id1828" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13828,9 +13828,9 @@ IList.Insert
 
 </div>
 
-<div id="id1832" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13848,9 +13848,9 @@ Removes the specified VirtuosoParameter from the collection.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Remove`</span>`(`<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`value`</span>` `</span>`);`
 
-<div id="id1830" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13864,7 +13864,7 @@ Removes the specified VirtuosoParameter from the collection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">value</span>  
 The VirtuosoParameter object to remove from the collection.
@@ -13873,9 +13873,9 @@ The VirtuosoParameter object to remove from the collection.
 
 </div>
 
-<div id="id1831" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13895,9 +13895,9 @@ IList.Remove
 
 </div>
 
-<div id="id1839" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13911,9 +13911,9 @@ IList.Remove
 
 </div>
 
-<div id="id1835" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13932,9 +13932,9 @@ collection.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`RemoveAt`</span>`(`<span class="methodparam">` `<span class="type">`int `</span>` `<span class="parameter">`index`</span>` `</span>`);`
 
-<div id="id1833" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13948,7 +13948,7 @@ collection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">index</span>  
 The zero-based index of the parameter to remove.
@@ -13957,9 +13957,9 @@ The zero-based index of the parameter to remove.
 
 </div>
 
-<div id="id1834" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -13979,9 +13979,9 @@ IList.RemoveAt
 
 </div>
 
-<div id="id1838" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14000,9 +14000,9 @@ collection.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`RemoveAt`</span>`(`<span class="methodparam">` `<span class="type">`string `</span>` `<span class="parameter">`parameterName`</span>` `</span>`);`
 
-<div id="id1836" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14016,7 +14016,7 @@ collection.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">parameterName</span>  
 The name of the parameter to remove.
@@ -14025,9 +14025,9 @@ The name of the parameter to remove.
 
 </div>
 
-<div id="id1837" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14053,9 +14053,9 @@ IDataParameterCollection.RemoveAt
 
 </div>
 
-<div id="vcrvirtpermclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14094,9 +14094,9 @@ class cannot be inherited.
 }
 ```
 
-<div id="id1841" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14116,9 +14116,9 @@ be thread safe.
 
 </div>
 
-<div id="id1845" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14132,9 +14132,9 @@ be thread safe.
 
 </div>
 
-<div id="id1842" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14154,9 +14154,9 @@ Initializes a new instance of the VirtuosoPermission class.
 
 </div>
 
-<div id="id1844" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14174,9 +14174,9 @@ Initializes a new instance of the VirtuosoPermission class.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoPermission`</span>`(`<span class="methodparam">` `<span class="type">`PermissionState `</span>` `<span class="parameter">`state`</span>` `</span>`);`
 
-<div id="id1843" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14190,7 +14190,7 @@ Initializes a new instance of the VirtuosoPermission class.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">state</span>  
 One of the System.Security.Permissions.PermissionState values.
@@ -14203,9 +14203,9 @@ One of the System.Security.Permissions.PermissionState values.
 
 </div>
 
-<div id="id1873" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14219,9 +14219,9 @@ One of the System.Security.Permissions.PermissionState values.
 
 </div>
 
-<div id="id1849" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14239,9 +14239,9 @@ Creates and returns an identical copy of the current permission object.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="type">`IPermission `</span><span class="methodname">`Copy`</span>`();`
 
-<div id="id1846" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14259,9 +14259,9 @@ A copy of the current permission object.
 
 </div>
 
-<div id="id1847" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14279,9 +14279,9 @@ IPermission.Copy
 
 </div>
 
-<div id="id1848" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14302,9 +14302,9 @@ the original permission object.
 
 </div>
 
-<div id="id1852" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14323,9 +14323,9 @@ encoding.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="void">`void `</span><span class="methodname">`FromXml`</span>`(`<span class="methodparam">` `<span class="type">`SecurityElement `</span>` `<span class="parameter">`securityElement`</span>` `</span>`);`
 
-<div id="id1850" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14339,7 +14339,7 @@ encoding.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">securityElement</span>  
 The XML encoding to use to reconstruct the security object.
@@ -14348,9 +14348,9 @@ The XML encoding to use to reconstruct the security object.
 
 </div>
 
-<div id="id1851" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14370,9 +14370,9 @@ ISecurityEncodable.FromXml
 
 </div>
 
-<div id="id1857" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14391,9 +14391,9 @@ current permission object and the specified permission object.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="type">`IPermission `</span><span class="methodname">`Intersect`</span>`(`<span class="methodparam">` `<span class="type">`IPermission `</span>` `<span class="parameter">`target`</span>` `</span>`);`
 
-<div id="id1853" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14407,7 +14407,7 @@ current permission object and the specified permission object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">target</span>  
 A permission object to intersect with the current permission object. It
@@ -14417,9 +14417,9 @@ must be of the same type as the current permission object.
 
 </div>
 
-<div id="id1854" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14440,9 +14440,9 @@ intersection is empty.
 
 </div>
 
-<div id="id1855" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14460,9 +14460,9 @@ IPermission.Intersect
 
 </div>
 
-<div id="id1856" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14484,9 +14484,9 @@ passes both original permissions will pass the intersection.
 
 </div>
 
-<div id="id1862" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14505,9 +14505,9 @@ subset of the specified permission object.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="type">`bool `</span><span class="methodname">`IsSubsetOf`</span>`(`<span class="methodparam">` `<span class="type">`IPermission `</span>` `<span class="parameter">`target`</span>` `</span>`);`
 
-<div id="id1858" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14521,7 +14521,7 @@ subset of the specified permission object.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">target</span>  
 A permission object that is to be tested for the subset relationship.
@@ -14531,9 +14531,9 @@ This object must be of the same type as the current permission object.
 
 </div>
 
-<div id="id1859" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14552,9 +14552,9 @@ permission object; otherwise `false` .
 
 </div>
 
-<div id="id1860" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14572,9 +14572,9 @@ IPermission.IsSubsetOf
 
 </div>
 
-<div id="id1861" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14600,9 +14600,9 @@ the protected resource than does the specified permission object.
 
 </div>
 
-<div id="id1865" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14621,9 +14621,9 @@ unrestricted without any knowledge of the permission semantics.
 
 <span class="modifier">`public `</span><span class="type">`bool `</span><span class="methodname">`IsUnrestricted`</span>`();`
 
-<div id="id1863" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14642,9 +14642,9 @@ PermissionState.Unrestricted; otherwise, `false` .
 
 </div>
 
-<div id="id1864" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14664,9 +14664,9 @@ IUnrestrictedPermission.IsUnrestricted
 
 </div>
 
-<div id="id1868" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14684,9 +14684,9 @@ Creates an XML encoding of the security object and its current state.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="type">`SecurityElement `</span><span class="methodname">`ToXml`</span>`();`
 
-<div id="id1866" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14704,9 +14704,9 @@ An XML encoding of the security object, including any state information.
 
 </div>
 
-<div id="id1867" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14726,9 +14726,9 @@ ISecurityEncodable.ToXml
 
 </div>
 
-<div id="id1872" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14747,9 +14747,9 @@ specified permission.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="type">`IPermission `</span><span class="methodname">`Union`</span>`(`<span class="methodparam">` `<span class="type">`IPermission `</span>` `<span class="parameter">`target`</span>` `</span>`);`
 
-<div id="id1869" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14763,7 +14763,7 @@ specified permission.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">target</span>  
 A permission to combine with the current permission. It must be of the
@@ -14773,9 +14773,9 @@ same type as the current permission.
 
 </div>
 
-<div id="id1870" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14794,9 +14794,9 @@ the specified permission.
 
 </div>
 
-<div id="id1871" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14822,9 +14822,9 @@ permission. Any demand that passes either permission passes their union.
 
 </div>
 
-<div id="vcrvirtpermattr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14861,9 +14861,9 @@ using declarative security. This class cannot be inherited.
 }
 ```
 
-<div id="id1874" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14883,9 +14883,9 @@ be thread safe.
 
 </div>
 
-<div id="id1876" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14903,9 +14903,9 @@ Initializes a new instance of the VirtuosoPermissionAttribute class.
 
 <span class="modifier">`public `</span><span class="methodname">`VirtuosoPermissionAttribute`</span>`();`
 
-<div id="id1875" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14919,7 +14919,7 @@ Initializes a new instance of the VirtuosoPermissionAttribute class.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">action</span>  
 One of the SecurityAction values representing an action that can be
@@ -14931,9 +14931,9 @@ performed using declarative security.
 
 </div>
 
-<div id="id1879" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14947,9 +14947,9 @@ performed using declarative security.
 
 </div>
 
-<div id="id1878" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14968,9 +14968,9 @@ attribute properties.
 
 <span class="modifier">`public `</span><span class="modifier">`override `</span><span class="type">`IPermission `</span><span class="methodname">`CreatePermission`</span>`();`
 
-<div id="id1877" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14994,9 +14994,9 @@ A VirtuosoPermission object.
 
 </div>
 
-<div id="vcrvirtrowupdevtargclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15031,9 +15031,9 @@ Provides data for the RowUpdated event. This class cannot be inherited.
 }
 ```
 
-<div id="id1880" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15053,9 +15053,9 @@ be thread safe.
 
 </div>
 
-<div id="id1882" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15076,9 +15076,9 @@ Initializes a new instance of the VirtuosoRowUpdatedEventArgs class.
 `                                   `<span class="methodparam">` `<span class="type">`StatementType `</span>` `<span class="parameter">`statementType`</span>` `</span>`,`  
 `                                   `<span class="methodparam">` `<span class="type">`DataTableMapping `</span>` `<span class="parameter">`tableMapping`</span>` `</span>`);`
 
-<div id="id1881" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15092,7 +15092,7 @@ Initializes a new instance of the VirtuosoRowUpdatedEventArgs class.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">row</span>  
 The DataRow sent through an Update.
@@ -15113,9 +15113,9 @@ The DataTableMapping sent through an Update.
 
 </div>
 
-<div id="id1885" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15129,9 +15129,9 @@ The DataTableMapping sent through an Update.
 
 </div>
 
-<div id="id1884" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15149,9 +15149,9 @@ Gets the VirtuosoCommand executed when Update is called.
 
 ` `<span class="modifier">`public `</span>` `<span class="modifier">`new `</span>` `<span class="type">`VirtuosoCommand `</span>` `<span class="varname">`Command `</span>` ;`
 
-<div id="id1883" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15175,9 +15175,9 @@ The VirtuosoCommand executed when Update is called.
 
 </div>
 
-<div id="vcrvirtrowupdevthndlrdel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15197,9 +15197,9 @@ VirtuosoDataAdapter.
 <span class="modifier">`public `</span><span class="modifier">`delegate `</span><span class="void">`void `</span><span class="methodname">`VirtuosoRowUpdatedEventHandler`</span>`(`<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`sender`</span>` `</span>`,`  
 `                                                    `<span class="methodparam">` `<span class="type">`VirtuosoRowUpdatedEventArgs `</span>` `<span class="parameter">`e`</span>` `</span>`);`
 
-<div id="id1886" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15216,7 +15216,7 @@ VirtuosoDataAdapter.
 The declaration of your event handler must have the same parameters as
 the VirtuosoRowUpdatedEventHandler delegate declaration.
 
-<div class="variablelist">
+<div>
 
 <span class="term">sender</span>  
 The source of the event.
@@ -15228,9 +15228,9 @@ A VirtuosoRowUpdatedEventArgs object that contains the event data.
 
 </div>
 
-<div id="id1887" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15258,9 +15258,9 @@ delegate. For more information about event handler delegates, see
 
 </div>
 
-<div id="vcrvirtrowupsevtargsclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15295,9 +15295,9 @@ Provides data for the RowUpdating event. This class cannot be inherited.
 }
 ```
 
-<div id="id1888" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15317,9 +15317,9 @@ be thread safe.
 
 </div>
 
-<div id="id1890" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15340,9 +15340,9 @@ Initializes a new instance of the VirtuosoRowUpdatingEventArgs class.
 `                                    `<span class="methodparam">` `<span class="type">`StatementType `</span>` `<span class="parameter">`statementType`</span>` `</span>`,`  
 `                                    `<span class="methodparam">` `<span class="type">`DataTableMapping `</span>` `<span class="parameter">`tableMapping`</span>` `</span>`);`
 
-<div id="id1889" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15356,7 +15356,7 @@ Initializes a new instance of the VirtuosoRowUpdatingEventArgs class.
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">row</span>  
 The DataRow sent through an Update.
@@ -15377,9 +15377,9 @@ The DataTableMapping sent through an Update.
 
 </div>
 
-<div id="id1893" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15393,9 +15393,9 @@ The DataTableMapping sent through an Update.
 
 </div>
 
-<div id="id1892" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15413,9 +15413,9 @@ Gets or sets the VirtuosoCommand executed when Update is called.
 
 ` `<span class="modifier">`public `</span>` `<span class="modifier">`new `</span>` `<span class="type">`VirtuosoCommand `</span>` `<span class="varname">`Command `</span>` ;`
 
-<div id="id1891" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15439,9 +15439,9 @@ The VirtuosoCommand executed when Update is called.
 
 </div>
 
-<div id="vcrvirtrowupdingevthndlrdel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15461,9 +15461,9 @@ VirtuosoDataAdapter.
 <span class="modifier">`public `</span><span class="modifier">`delegate `</span><span class="void">`void `</span><span class="methodname">`VirtuosoRowUpdatingEventHandler`</span>`(`<span class="methodparam">` `<span class="type">`object `</span>` `<span class="parameter">`sender`</span>` `</span>`,`  
 `                                                     `<span class="methodparam">` `<span class="type">`VirtuosoRowUpdatingEventArgs `</span>` `<span class="parameter">`e`</span>` `</span>`);`
 
-<div id="id1894" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15480,7 +15480,7 @@ VirtuosoDataAdapter.
 The declaration of your event handler must have the same parameters as
 the VirtuosoRowUpdatingEventHandler delegate declaration.
 
-<div class="variablelist">
+<div>
 
 <span class="term">sender</span>  
 The source of the event.
@@ -15492,9 +15492,9 @@ A VirtuosoRowUpdatingEventArgs object that contains the event data.
 
 </div>
 
-<div id="id1895" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15522,9 +15522,9 @@ delegate. For more information about event handler delegates, see
 
 </div>
 
-<div id="vcrvirttransclass" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15564,9 +15564,9 @@ cannot be inherited.
 }
 ```
 
-<div id="id1896" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15586,9 +15586,9 @@ be thread safe.
 
 </div>
 
-<div id="id1897" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15610,9 +15610,9 @@ object.
 
 </div>
 
-<div id="id1905" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15626,9 +15626,9 @@ object.
 
 </div>
 
-<div id="id1900" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15646,9 +15646,9 @@ Gets the VirtuosoConnection object associated with the transaction.
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`VirtuosoConnection `</span>` `<span class="varname">`Connection `</span>` ;`
 
-<div id="id1898" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15666,9 +15666,9 @@ The VirtuosoConnection object to associate with the transaction.
 
 </div>
 
-<div id="id1899" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15690,9 +15690,9 @@ connection object associated with a particular transaction.
 
 </div>
 
-<div id="id1904" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15710,9 +15710,9 @@ Specifies the IsolationLevel for this transaction
 
 ` `<span class="modifier">`public `</span>` `<span class="type">`IsolationLevel `</span>` `<span class="varname">`IsolationLevel `</span>` ;`
 
-<div id="id1901" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15730,9 +15730,9 @@ The IsolationLevel for this transaction.
 
 </div>
 
-<div id="id1902" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15750,9 +15750,9 @@ IDbTransaction.IsolationLevel
 
 </div>
 
-<div id="id1903" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15775,9 +15775,9 @@ applies to the entire transaction.
 
 </div>
 
-<div id="id1912" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15791,9 +15791,9 @@ applies to the entire transaction.
 
 </div>
 
-<div id="id1906" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15813,9 +15813,9 @@ Commits the database transaction.
 
 </div>
 
-<div id="id1908" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15834,9 +15834,9 @@ optionally releases the managed resources.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Dispose`</span>`();`
 
-<div id="id1907" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15856,9 +15856,9 @@ IDisposable.Dispose
 
 </div>
 
-<div id="id1911" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15876,9 +15876,9 @@ Rolls back a transaction from a pending state.
 
 <span class="modifier">`public `</span><span class="void">`void `</span><span class="methodname">`Rollback`</span>`();`
 
-<div id="id1909" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -15896,9 +15896,9 @@ IDbTransaction.Rollback
 
 </div>
 
-<div id="id1910" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

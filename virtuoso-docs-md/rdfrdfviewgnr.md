@@ -1,6 +1,6 @@
-<div id="rdfrdfviewgnr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfrdfviewgnrintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,7 +42,7 @@ needs to be as unobtrusive as possible. Naturally, a balance has to be
 struck between unobtrusive generation of Linked Data and traditional
 relational database management system (RDBMS) virtues such as:
 
-<div class="itemizedlist">
+<div>
 
 - Scalability
 
@@ -57,7 +57,7 @@ relational database management system (RDBMS) virtues such as:
 
 The following steps must be taken to publish RDF-based Linked Data:
 
-<div class="orderedlist">
+<div>
 
 1.  Identifying ODBC or JDBC data sources that host the data you seek to
     publish (assuming the data isn't Virtuoso RDBMS hosted -- in which

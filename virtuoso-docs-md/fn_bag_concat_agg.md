@@ -1,10 +1,10 @@
-<div id="fn_bag_concat_agg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ is a concatenation of all passed vectors.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bag_concat_agg" class="funcsynopsis">
+<div>
 
 |                                          |                    |
 |------------------------------------------|--------------------|
 | `vector `**`DB.DBA.BAG_CONCAT_AGG`**` (` | `_items ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ is a concatenation of all passed vectors.
 
 </div>
 
-<div id="desc_bag_concat_agg" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ is a concatenation of all passed vectors.
 
 </div>
 
-<div id="params_bag_concat_agg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80203" class="refsect2">
+<div>
 
 ### \_items
 
@@ -56,7 +56,7 @@ SQL vectors.
 
 </div>
 
-<div id="ret_bag_concat_agg" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Any
 
 </div>
 
-<div id="examples_bag_concat_agg" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_bag_concat_agg_1" class="example">
+<div>
 
 **Example 24.10. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The most typical usage is the composing of get-keyword style vector, for
 ex:
@@ -99,7 +99,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_bag_concat_agg" class="refsect1">
+<div>
 
 ## See Also
 

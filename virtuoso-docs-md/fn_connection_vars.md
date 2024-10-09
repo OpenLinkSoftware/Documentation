@@ -1,10 +1,10 @@
-<div id="fn_connection_vars" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ connection_vars — Retrieve all connection variables
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_connection_vars" class="funcsynopsis">
+<div>
 
 |                                 |      |
 |---------------------------------|------|
 | `any `**`connection_vars`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ connection_vars — Retrieve all connection variables
 
 </div>
 
-<div id="desc_connection_vars" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,7 +46,7 @@ title="14.1.4. Session Management">Session Variables</a> Section.
 
 </div>
 
-<div id="ret_connection_vars" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -54,15 +54,15 @@ Array of name-value pairs of all connection variables.
 
 </div>
 
-<div id="examples_connection_vars" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_connection_vars" class="example">
+<div>
 
 **Example 24.52. Retrieving Connection Variables**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp
@@ -80,7 +80,7 @@ Array of name-value pairs of all connection variables.
 
 </div>
 
-<div id="seealso_connection_vars" class="refsect1">
+<div>
 
 ## See Also
 

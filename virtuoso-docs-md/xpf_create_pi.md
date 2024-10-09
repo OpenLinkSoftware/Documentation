@@ -1,10 +1,10 @@
-<div id="xpf_create_pi" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ create-pi — Creates a "processing instruction" XML tree entity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_create_pi" class="funcsynopsis">
+<div>
 
 |                              |                        |
 |------------------------------|------------------------|
 | `entity `**`create-pi`**` (` | `piname ` string ,     |
 |                              | `pivalue ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ create-pi — Creates a "processing instruction" XML tree entity.
 
 </div>
 
-<div id="xpf_desc_create_pi" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ at all.
 
 </div>
 
-<div id="xpf_params_create_pi" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126706" class="refsect2">
+<div>
 
 ### piname
 
@@ -60,7 +60,7 @@ Name of processing instruction that should be created
 
 </div>
 
-<div id="id126709" class="refsect2">
+<div>
 
 ### pivalue
 
@@ -70,7 +70,7 @@ String data stored in processing instruction
 
 </div>
 
-<div id="xpf_ret_create_pi" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,7 +78,7 @@ XML tree entity of type "processing instruction"
 
 </div>
 
-<div id="xpf_seealso_create_pi" class="refsect1">
+<div>
 
 ## See Also
 

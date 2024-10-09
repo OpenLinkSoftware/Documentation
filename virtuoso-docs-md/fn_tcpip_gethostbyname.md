@@ -1,10 +1,10 @@
-<div id="fn_tcpip_gethostbyname" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ tcpip_gethostbyname — Returns IP address by host domain name
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_tcpip_gethostbyname" class="funcsynopsis">
+<div>
 
 |                                         |                         |
 |-----------------------------------------|-------------------------|
 | `varchar `**`tcpip_gethostbyname`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ tcpip_gethostbyname — Returns IP address by host domain name
 
 </div>
 
-<div id="desc_tcpip_gethostbyname" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ the hostent structure or empty string if no hostent structure returned
 
 </div>
 
-<div id="params_tcpip_gethostbyname" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113294" class="refsect2">
+<div>
 
 ### name
 
@@ -56,7 +56,7 @@ DNS name of the host
 
 </div>
 
-<div id="ret_tcpip_gethostbyname" class="refsect1">
+<div>
 
 ## Return Types
 

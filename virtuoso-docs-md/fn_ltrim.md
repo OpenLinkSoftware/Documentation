@@ -1,10 +1,10 @@
-<div id="fn_ltrim" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ ltrim — removes specific characters from a string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ltrim" class="funcsynopsis">
+<div>
 
 |                    |                          |
 |--------------------|--------------------------|
 | ` `**`ltrim`**` (` | `str ` string ,          |
 |                    | `trimchars ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ ltrim — removes specific characters from a string
 
 </div>
 
-<div id="desc_ltrim" class="refsect1">
+<div>
 
 ## Description
 

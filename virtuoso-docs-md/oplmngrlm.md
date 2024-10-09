@@ -1,6 +1,6 @@
-<div id="oplmngrlm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="oplmngrlmml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,7 +35,7 @@ to use License statistics and monitoring facility. This page introduces
 you to that facility and provides alternative techniques for versions of
 the software that do not contain it.
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Virtuoso Web interface.
 
@@ -70,9 +70,9 @@ the software that do not contain it.
 
 </div>
 
-<div id="oplmngrlmsl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -86,9 +86,9 @@ the software that do not contain it.
 
 </div>
 
-<div id="oplmngrlmslm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -102,7 +102,7 @@ the software that do not contain it.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch ` Terminal.app (/Applications/Utilities/) `
 
@@ -115,9 +115,9 @@ the software that do not contain it.
 
 </div>
 
-<div id="oplmngrlmslw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -131,7 +131,7 @@ the software that do not contain it.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the
 
@@ -159,9 +159,9 @@ the software that do not contain it.
 
 </div>
 
-<div id="oplmngrlmslu" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -175,7 +175,7 @@ the software that do not contain it.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Open a Unix terminal.
 
@@ -185,7 +185,7 @@ the software that do not contain it.
     environment variables. (Note that they do, and must, begin with
     dot-space-dot-slash.)
 
-    <div class="itemizedlist">
+    <div>
 
     - `. ./virtuoso-enterprise.sh ` \> - bash, bsh, ksh, and related
       shells
@@ -206,9 +206,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmlp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -222,9 +222,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmlpm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -238,7 +238,7 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch ` Terminal.app (/Applications/Utilities/) `
 
@@ -251,9 +251,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmlpw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -267,7 +267,7 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the
 
@@ -295,9 +295,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmlpu" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -311,7 +311,7 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Open a Unix terminal.
 
@@ -321,7 +321,7 @@ create an `/etc/init.d/` script that sets the environment and runs
     environment variables. (Note that they do, and must, begin with
     dot-space-dot-slash.)
 
-    <div class="itemizedlist">
+    <div>
 
     - `. ./virtuoso-enterprise.sh ` - bash, bsh, ksh, and related shells
 
@@ -337,9 +337,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmrl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -353,9 +353,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmrlm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -369,7 +369,7 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch ` Terminal.app (/Applications/Utilities/) `
 
@@ -382,9 +382,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmrlw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -398,7 +398,7 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the
 
@@ -426,9 +426,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmrlu" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -442,7 +442,7 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Open a Unix terminal.
 
@@ -452,7 +452,7 @@ create an `/etc/init.d/` script that sets the environment and runs
     environment variables. (Note that they do, and must, begin with
     dot-space-dot-slash.)
 
-    <div class="itemizedlist">
+    <div>
 
     - `. ./virtuoso-enterprise.sh ` - bash, bsh, ksh, and related shells
 
@@ -468,9 +468,9 @@ create an `/etc/init.d/` script that sets the environment and runs
 
 </div>
 
-<div id="oplmngrlmau" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

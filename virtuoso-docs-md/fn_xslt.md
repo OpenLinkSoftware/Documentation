@@ -1,10 +1,10 @@
-<div id="fn_xslt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xslt — returns an XML document transformed by an XSLT stylesheet
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xslt" class="funcsynopsis">
+<div>
 
 |                             |                                |
 |-----------------------------|--------------------------------|
@@ -24,7 +24,7 @@ xslt — returns an XML document transformed by an XSLT stylesheet
 |                             | in `entity ` any ,             |
 |                             | in `sheet_params ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ xslt — returns an XML document transformed by an XSLT stylesheet
 
 </div>
 
-<div id="desc_xslt" class="refsect1">
+<div>
 
 ## Description
 
@@ -89,11 +89,11 @@ settings.
 
 </div>
 
-<div id="params_xslt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124611" class="refsect2">
+<div>
 
 ### sheet_uri
 
@@ -101,7 +101,7 @@ URI pointing to the location of an XSL stylesheet.
 
 </div>
 
-<div id="id124614" class="refsect2">
+<div>
 
 ### entity
 
@@ -109,7 +109,7 @@ parsed XML entity such as that returned by the xtree_doc() function
 
 </div>
 
-<div id="id124617" class="refsect2">
+<div>
 
 ### sheet_params
 
@@ -120,7 +120,7 @@ use in the transformation.
 
 </div>
 
-<div id="ret_xslt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -129,15 +129,15 @@ with the given style sheet.
 
 </div>
 
-<div id="examples_xslt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xslt" class="example">
+<div>
 
 **Example 24.533. Basic Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare sheet, xml varchar;
@@ -185,7 +185,7 @@ using the *`xsl:param`* tag.
 
 </div>
 
-<div id="seealso_xslt" class="refsect1">
+<div>
 
 ## See Also
 

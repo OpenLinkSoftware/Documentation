@@ -1,10 +1,10 @@
-<div id="fn_st_srid" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ shape on plane.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_srid" class="funcsynopsis">
+<div>
 
 |                      |                  |
 |----------------------|------------------|
 | ` `**`ST_SRID`**` (` | in `g ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ shape on plane.
 
 </div>
 
-<div id="desc_st_srid" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Returns the SRID of a geometry.
 
 </div>
 
-<div id="params_st_srid" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90851" class="refsect2">
+<div>
 
 ### g
 
@@ -55,7 +55,7 @@ Geometry.
 
 </div>
 
-<div id="ret_st_srid" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ Returns int.
 
 </div>
 
-<div id="examples_st_srid" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_srid" class="example">
+<div>
 
 **Example 24.140. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SPARQL
@@ -112,7 +112,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_st_srid" class="refsect1">
+<div>
 
 ## See Also
 

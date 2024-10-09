@@ -1,10 +1,10 @@
-<div id="fn_xmltype.getrootelement" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ XMLType.getRootElement — Returns top-level element of the given instance
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.getrootelement" class="funcsynopsis">
+<div>
 
 |                                     |      |
 |-------------------------------------|------|
 | ` `**`XMLType.getRootElement`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ XMLType.getRootElement — Returns top-level element of the given instance
 
 </div>
 
-<div id="desc_xmltype.getrootelement" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,7 +60,7 @@ based on the same schema.
 
 </div>
 
-<div id="ret_xmltype.getrootelement" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -68,15 +68,15 @@ The function returns an XMLType instance.
 
 </div>
 
-<div id="examples_xmltype.getrootelement" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.getrootelement" class="example">
+<div>
 
 **Example 24.552. A table with an XMLType column**
 
-<div class="example-contents">
+<div>
 
 First select statement lists well-formed documents; second one lists the
 only fragment in the table.
@@ -123,7 +123,7 @@ xml:id="14b_05" water="0.402" />
 
 </div>
 
-<div id="seealso_xmltype.getrootelement" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_pldbg_stats_load" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ as an array.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_pldbg_stats_load" class="funcsynopsis">
+<div>
 
 |                               |                     |
 |-------------------------------|---------------------|
 | ` `**`pldbg_stats_load`**` (` | in `info ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ as an array.
 
 </div>
 
-<div id="desc_pldbg_stats_load" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ acceptable.
 
 </div>
 
-<div id="params_pldbg_stats_load" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98849" class="refsect2">
+<div>
 
 ### info
 
@@ -67,7 +67,7 @@ An array with the following format:
 
 </div>
 
-<div id="ret_pldbg_stats_load" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,7 +75,7 @@ None.
 
 </div>
 
-<div id="seealso_pldbg_stats_load" class="refsect1">
+<div>
 
 ## See Also
 

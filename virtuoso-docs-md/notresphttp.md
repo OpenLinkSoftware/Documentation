@@ -1,6 +1,6 @@
-<div id="notresphttp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ Assume the Virtuoso server is not responding to HTTP requests although
 SQL connection is working. In order to determine what activity is being
 performed that might account for this:
 
-<div class="orderedlist">
+<div>
 
 1.  Check the status:
 

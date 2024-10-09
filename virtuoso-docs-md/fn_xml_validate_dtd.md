@@ -1,10 +1,10 @@
-<div id="fn_xml_validate_dtd" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ validator on reading given XML document
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_validate_dtd" class="funcsynopsis">
+<div>
 
 |                               |                                         |
 |-------------------------------|-----------------------------------------|
@@ -28,7 +28,7 @@ validator on reading given XML document
 |                               | in `content_language ` varchar ,        |
 |                               | in `dtd_validator_config ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ validator on reading given XML document
 
 </div>
 
-<div id="desc_70" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ violations in source XML will be signalled as SQL runtime errors.
 
 </div>
 
-<div id="params_34" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123616" class="refsect2">
+<div>
 
 ### document
 
@@ -64,7 +64,7 @@ XML or HTML document to check
 
 </div>
 
-<div id="id123619" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -72,7 +72,7 @@ XML or HTML document to check
 
 </div>
 
-<div id="id123622" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -81,7 +81,7 @@ given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id123625" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -91,7 +91,7 @@ mode and 'LATIN-1' for HTML mode
 
 </div>
 
-<div id="id123628" class="refsect2">
+<div>
 
 ### content_language
 
@@ -101,7 +101,7 @@ various human languages)
 
 </div>
 
-<div id="id123631" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -115,7 +115,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="ret_10_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -123,15 +123,15 @@ Human readable list of errors if applicable as a varchar.
 
 </div>
 
-<div id="examples_18_01" class="refsect1">
+<div>
 
 ## Validating XML Against a DTD
 
-<div id="ex_xml_validate_dtd" class="example">
+<div>
 
 **Example 24.521. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare _result varchar;
@@ -150,7 +150,7 @@ if (_res = '') _res := 'NO ERRORS DETECTED';
 
 </div>
 
-<div id="seealso_43" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="plscrollcrsrs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ the various fetch directions & cursor modes. The Virtuoso/PL scrollable
 cursors always operate with a rowset size equal to 1. The keyset size
 (where applicable) is as per the default.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                           |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -30,9 +30,9 @@ cursors always operate with a rowset size equal to 1. The keyset size
 
 </div>
 
-<div id="plscrolldeclare" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,7 +55,7 @@ appropriate destructor, which will close the cursor when the cursor
 variable goes out of scope. Variables in the surrounding context are
 referenced similarly to the forward-only cursor.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                             |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

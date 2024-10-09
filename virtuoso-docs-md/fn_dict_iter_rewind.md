@@ -1,10 +1,10 @@
-<div id="fn_dict_iter_rewind" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ by dict_iter_next()
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_iter_rewind" class="funcsynopsis">
+<div>
 
 |                               |                               |
 |-------------------------------|-------------------------------|
 | ` `**`dict_iter_rewind`**` (` | inout `dict ` dictionary `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ by dict_iter_next()
 
 </div>
 
-<div id="desc_dict_iter_rewind" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ function sets the iterator to the very first item of the dictionary.
 
 </div>
 
-<div id="params_dict_iter_rewind" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86661" class="refsect2">
+<div>
 
 ### dict
 
@@ -59,7 +59,7 @@ The reference to a dictionary to use as an iterator
 
 </div>
 
-<div id="ret_dict_iter_rewind" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -69,15 +69,15 @@ later by dict_iter_next() if a dictionary is edited by some thread.
 
 </div>
 
-<div id="examples_dict_iter_rewind" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_dict_iter_rewind" class="example">
+<div>
 
 **Example 24.93. Simplest read throughout the dictionary.**
 
-<div class="example-contents">
+<div>
 
 The procedure creates a dictionary, puts couple of items into it and
 then print them to the server's console
@@ -102,7 +102,7 @@ create function dict_iterator_test ()
 
 </div>
 
-<div id="seealso_dict_iter_rewind" class="refsect1">
+<div>
 
 ## See Also
 

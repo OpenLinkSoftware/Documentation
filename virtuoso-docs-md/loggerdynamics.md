@@ -1,6 +1,6 @@
-<div id="loggerdynamics" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

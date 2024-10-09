@@ -1,10 +1,10 @@
-<div id="fn_log_text" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ log_text — inserts statements into the roll forward log
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_log_text" class="funcsynopsis">
+<div>
 
 |                       |                      |
 |-----------------------|----------------------|
@@ -24,7 +24,7 @@ log_text — inserts statements into the roll forward log
 |                       | in `arg_1 ` any ,    |
 |                       | `... ` `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ log_text — inserts statements into the roll forward log
 
 </div>
 
-<div id="desc_log_text" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ arrays.
 
 </div>
 
-<div id="params_log_text" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96023" class="refsect2">
+<div>
 
 ### text
 
@@ -62,7 +62,7 @@ transaction log.
 
 </div>
 
-<div id="id96027" class="refsect2">
+<div>
 
 ### arg1..arg8
 
@@ -72,15 +72,15 @@ Parameters to be passed to logged statement.
 
 </div>
 
-<div id="examples_log_text" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_log_text_1" class="example">
+<div>
 
 **Example 24.210. Log a procedure call**
 
-<div class="example-contents">
+<div>
 
 Log a procedure call instead of its effects.
 
@@ -102,7 +102,7 @@ create procedure xx ()
 
 </div>
 
-<div id="seealso_log_text" class="refsect1">
+<div>
 
 ## See Also
 

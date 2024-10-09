@@ -1,6 +1,6 @@
-<div id="qsclientcon" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ Virtuoso supports a number of data access API's such as ODBC and JDBC.
 They both provide high performance native connectivity to the Virtuoso
 database system.
 
-<div id="qsodbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

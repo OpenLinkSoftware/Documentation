@@ -1,6 +1,6 @@
-<div id="vscrlcursors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ and JDBC 2.0 API's are supported.
 
 Cursor types include:
 
-<div class="itemizedlist">
+<div>
 
 - **Forward only. ** This is the default, non-scrollable cursor.
 
@@ -54,9 +54,9 @@ Cursor types include:
 
 </div>
 
-<div id="fwdonlycursors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -77,9 +77,9 @@ supported but only the SQL_FETCH_NEXT fetch type is then allowed.
 
 </div>
 
-<div id="cursoroperation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -97,7 +97,7 @@ Virtuoso supports all ODBC scrollable cursor operations. These include
 
 **SQLExtendedFetch / SQLScrollFetch fetch type. **
 
-<div class="itemizedlist">
+<div>
 
 - SQL_FETCH_FIRST
 
@@ -117,7 +117,7 @@ Virtuoso supports all ODBC scrollable cursor operations. These include
 
 **SQLSetPos operations. **
 
-<div class="itemizedlist">
+<div>
 
 - SQL_POSITION
 
@@ -136,9 +136,9 @@ supported for scrollable cursors.
 
 </div>
 
-<div id="cursoroptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -154,7 +154,7 @@ supported for scrollable cursors.
 
 The cursor options
 
-<div class="itemizedlist">
+<div>
 
 - SQL_CURSOR_TYPE
 
@@ -172,9 +172,9 @@ The SQL_ROWSET_SIZE can be varied while a cursor is open.
 
 </div>
 
-<div id="cursorstransactions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -203,9 +203,9 @@ exclusive mode, respectively.
 
 </div>
 
-<div id="optimisticconcurrency" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -244,9 +244,9 @@ long and can span multiple transactions.
 
 </div>
 
-<div id="cursorinfo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -260,11 +260,11 @@ long and can span multiple transactions.
 
 </div>
 
-<div id="id21073" class="decimalstyle">
+<div>
 
 **Table 7.13. Cursor Support**
 
-<div class="decimalstyle-contents">
+<div>
 
 |                | Static | Keyset | Dynamic |
 |:---------------|--------|--------|---------|
@@ -303,9 +303,9 @@ re-scrolls over the rows in question.
 
 </div>
 
-<div id="cursorsvdb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -330,9 +330,9 @@ native cursor support.
 
 </div>
 
-<div id="cursorspecialcases" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -362,9 +362,9 @@ cursors regardless of the declared cursor type.
 
 </div>
 
-<div id="cursorperf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

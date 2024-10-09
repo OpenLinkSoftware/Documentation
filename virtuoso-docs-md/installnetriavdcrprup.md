@@ -1,6 +1,6 @@
-<div id="installnetriavdcrprup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Add a 'Submit' button just after the DataForm in MainPage.xaml by
     adding the following code.
@@ -38,15 +38,15 @@
 3.  Build and run the application. If you now edit data in the form and
     click the submit button the data in Virtuoso will be updated.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="riad4" class="figure">
+    <div>
 
     **Figure 2.184. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/riad4.png)
 

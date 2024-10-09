@@ -1,10 +1,10 @@
-<div id="fn_strchr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ the character.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_strchr" class="funcsynopsis">
+<div>
 
 |                     |                                |
 |---------------------|--------------------------------|
 | ` `**`strchr`**` (` | `str ` string ,                |
 |                     | `char ` string or integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ the character.
 
 </div>
 
-<div id="desc_31" class="refsect1">
+<div>
 
 ## Description
 

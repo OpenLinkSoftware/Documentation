@@ -1,6 +1,6 @@
-<div id="rdfsparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfsparqlimplementationextent" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,7 +38,7 @@ security, custom authentication, and named graphs.
 
 The current implementation does not support some SPARQL features:
 
-<div class="itemizedlist">
+<div>
 
 - Unicode characters in names are not supported.
 
@@ -49,7 +49,7 @@ The current implementation does not support some SPARQL features:
 
 On the other hand, Virtuoso implements some extensions to SPARQL:
 
-<div class="itemizedlist">
+<div>
 
 - SPARUL statements, such as
 
@@ -426,9 +426,9 @@ OFFSET 50000
 LIMIT 1000
 ```
 
-<div id="rdfsparqlandxquery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

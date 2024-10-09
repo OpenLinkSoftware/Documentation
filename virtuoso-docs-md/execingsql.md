@@ -1,6 +1,6 @@
-<div id="execingsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,11 +33,11 @@ queries the text can be compiled once and reused at infinitum.
 
 qr_free will free a query returned by sql_compile.
 
-<div id="id65167" class="example">
+<div>
 
 **Example 18.3. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 {

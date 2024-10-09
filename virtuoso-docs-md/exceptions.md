@@ -1,6 +1,6 @@
-<div id="exceptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="sqlrefgeospatialugcp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,7 +28,7 @@ st_geomfromtext or as numeric coordinate values for st_point or related
 functions. This applies to all clients, ODBC, JDBC, .net and any RDF
 frameworks.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                      |
 |:--------------------------:|:-----------------------------------------------------|

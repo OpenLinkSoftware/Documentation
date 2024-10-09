@@ -1,10 +1,10 @@
-<div id="xpf_serialize" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ the host RDBMS.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_serialize" class="funcsynopsis">
+<div>
 
 |                              |                 |
 |------------------------------|-----------------|
 | `string `**`serialize`**` (` | `obj ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,13 +33,13 @@ the host RDBMS.
 
 </div>
 
-<div id="xpf_desc_serialize" class="refsect1">
+<div>
 
 ## Description
 
 The serialize() function converts an object to a string as follows:
 
-<div class="itemizedlist">
+<div>
 
 - An empty sequence is converted to an empty string.
 
@@ -61,11 +61,11 @@ is a node-set of one element.
 
 </div>
 
-<div id="xpf_params_serialize" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128901" class="refsect2">
+<div>
 
 ### obj
 
@@ -75,7 +75,7 @@ Value to be converted into the string
 
 </div>
 
-<div id="xpf_ret_serialize" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,21 +83,21 @@ String
 
 </div>
 
-<div id="xpf_errors_serialize" class="refsect1">
+<div>
 
 ## Errors
 
 </div>
 
-<div id="xpf_examples_serialize" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_serialize" class="example">
+<div>
 
 **Example 24.617. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 string(//title)
@@ -111,7 +111,7 @@ string(//title)
 
 </div>
 
-<div id="xpf_seealso_serialize" class="refsect1">
+<div>
 
 ## See Also
 

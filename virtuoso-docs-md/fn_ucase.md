@@ -1,10 +1,10 @@
-<div id="fn_ucase" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ucase — returns upper case version of string argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ucase" class="funcsynopsis">
+<div>
 
 |                    |                    |
 |--------------------|--------------------|
 | ` `**`ucase`**` (` | `str ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ucase — returns upper case version of string argument
 
 </div>
 
-<div id="desc_47" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ ucase('AbracadabrA')  -> 'ABRACADABRA'
 
 </div>
 
-<div id="params_15" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id114412" class="refsect2">
+<div>
 
 ### str
 

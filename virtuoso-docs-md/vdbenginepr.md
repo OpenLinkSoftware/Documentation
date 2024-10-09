@@ -1,6 +1,6 @@
-<div id="vdbenginepr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -102,15 +102,15 @@ term "Mandatory"
 The following section will provide more specific details about how to
 ensure Progress PKs are not nullable:
 
-<div class="itemizedlist">
+<div>
 
 - Ensuring Progress PKs are not nullable
 
 </div>
 
-<div id="vdbengineprinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -134,7 +134,7 @@ ODBC Driver can be used.
 Installation instructions for the OpenLink ODBC Driver for Oracle are
 available from:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC"

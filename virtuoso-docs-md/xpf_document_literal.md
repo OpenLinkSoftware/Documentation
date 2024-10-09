@@ -1,10 +1,10 @@
-<div id="xpf_document_literal" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ data.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_document_literal" class="funcsynopsis">
+<div>
 
 |                                       |                                      |
 |---------------------------------------|--------------------------------------|
@@ -28,7 +28,7 @@ data.
 |                                       | `content_language ` varchar ,        |
 |                                       | `dtd_validator_config ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ data.
 
 </div>
 
-<div id="xpf_desc_document_literal" class="refsect1">
+<div>
 
 ## Description
 
@@ -75,11 +75,11 @@ Note that the `document-literal` is not a part of XPATH 1.0 or XQuery
 
 </div>
 
-<div id="xpf_params_document_literal" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126992" class="refsect2">
+<div>
 
 ### document_text
 
@@ -87,7 +87,7 @@ well formed XML or HTML text
 
 </div>
 
-<div id="id126995" class="refsect2">
+<div>
 
 ### cache_uri
 
@@ -97,7 +97,7 @@ into absolute in order to locate and load subdocuments) and to change
 
 </div>
 
-<div id="id126998" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -106,7 +106,7 @@ mode (with quiet recovery after any syntax error)
 
 </div>
 
-<div id="id127001" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -116,7 +116,7 @@ string with content encoding type of *`document_text `* ; valid are
 
 </div>
 
-<div id="id127005" class="refsect2">
+<div>
 
 ### content_language
 
@@ -126,7 +126,7 @@ from various human languages')
 
 </div>
 
-<div id="id127009" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -143,7 +143,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="xpf_ret_document_literal" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -151,15 +151,15 @@ Node-set
 
 </div>
 
-<div id="xpf_errors_document_literal" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id127018" class="table">
+<div>
 
-**Table 24.141. Errors signalled by document-literal()**
+**Table 24.140. Errors signalled by document-literal()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                     | Description                                         |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------|
@@ -173,15 +173,15 @@ Node-set
 
 </div>
 
-<div id="xpf_examples_document_literal" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_document_literal1" class="example">
+<div>
 
 **Example 24.581. Simple reading of a standalone XML document**
 
-<div class="example-contents">
+<div>
 
 Read a short document from string
 
@@ -197,11 +197,11 @@ document-literal("
 
   
 
-<div id="xpf_ex_document_literal2" class="example">
+<div>
 
 **Example 24.582. Simple reading of a non-standalone document**
 
-<div class="example-contents">
+<div>
 
 Read a non-standalone document from local mirror but access its
 subdocuments as if it is retrieved directly from
@@ -231,7 +231,7 @@ document-literal('
 
 </div>
 
-<div id="xpf_seealso_document_literal" class="refsect1">
+<div>
 
 ## See Also
 

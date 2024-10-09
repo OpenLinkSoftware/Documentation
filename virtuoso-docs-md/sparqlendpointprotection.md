@@ -1,6 +1,6 @@
-<div id="sparqlendpointprotection" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 Virtuoso supports the following SPARQL Endpoint protection methods:
 
-<div class="orderedlist">
+<div>
 
 1.  <a
     href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSecurityWebID"

@@ -1,10 +1,10 @@
-<div id="me_uddi_get_bindingdetail" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ information.
 
 </div>
 
-<div id="syntax_uddi_get_bindingdetail_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -29,7 +29,7 @@ information.
 
 </div>
 
-<div id="desc_uddi_get_bindingdetail_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -39,11 +39,11 @@ business API.
 
 </div>
 
-<div id="params_uddi_get_bindingdetail_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id115159" class="refsect2">
+<div>
 
 ### bindingKey
 
@@ -52,7 +52,7 @@ known *`bindingTemplate `* data.
 
 </div>
 
-<div id="id115164" class="refsect2">
+<div>
 
 ### Behavior
 
@@ -69,7 +69,7 @@ at a disaster recovery site.
 
 </div>
 
-<div id="ret_uddi_get_bindingdetail_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,7 +85,7 @@ true.
 
 </div>
 
-<div id="errors_uddi_get_bindingdetail_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -93,11 +93,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id115184" class="table">
+<div>
 
-**Table 24.96. Errors signalled by uddi_get_bindingDetail**
+**Table 24.95. Errors signalled by uddi_get_bindingDetail**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                         | Description                                                                                                                                                                                                                                              |
 |----------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

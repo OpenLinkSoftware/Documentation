@@ -1,10 +1,10 @@
-<div id="fn_rdf_graph_collect_fp_list" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ for given graphs.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_graph_collect_fp_list" class="funcsynopsis">
+<div>
 
 |                                               |                           |
 |-----------------------------------------------|---------------------------|
@@ -25,7 +25,7 @@ for given graphs.
 |                                               | in `direct_fp ` integer , |
 |                                               | inout `fp_list ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ for given graphs.
 
 </div>
 
-<div id="desc_rdf_graph_collect_fp_list" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ will take some time if graphs are big and/or numerous.
 
 </div>
 
-<div id="params_rdf_graph_collect_fp_list" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102151" class="refsect2">
+<div>
 
 ### g_iid_list
 
@@ -57,7 +57,7 @@ Vector of IRI_IDs of sample graphs
 
 </div>
 
-<div id="id102154" class="refsect2">
+<div>
 
 ### direct_fp
 
@@ -66,7 +66,7 @@ functional properties.
 
 </div>
 
-<div id="id102157" class="refsect2">
+<div>
 
 ### fp_list
 
@@ -76,7 +76,7 @@ Variable that will be set to the vector of properties.
 
 </div>
 
-<div id="ret_rdf_graph_collect_fp_list" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,7 +84,7 @@ any
 
 </div>
 
-<div id="seealso_rdf_graph_collect_fp_list" class="refsect1">
+<div>
 
 ## See Also
 

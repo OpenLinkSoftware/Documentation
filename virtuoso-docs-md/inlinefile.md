@@ -1,6 +1,6 @@
-<div id="inlinefile" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,11 +33,11 @@ function to reflect the content of the HTTP body, such as specifying the
 encoding through "Content-Encoding" attribute, or a MIME type through
 "Content-Type" attribute).
 
-<div id="ex_inlinefile" class="example">
+<div>
 
 **Example 14.9. Using /INLINEFILE**
 
-<div class="example-contents">
+<div>
 
 Here is a simple example for showing JPEG images stored in DAV. The page
 will list the first ten images found in the DAV resources table as
@@ -79,7 +79,7 @@ hyper-links. Clicking on them will fetch the content and display using
 </html>
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>
@@ -114,7 +114,7 @@ because we are making sure that only JPEGs are being returned.</p></td>
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

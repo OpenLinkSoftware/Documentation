@@ -1,10 +1,10 @@
-<div id="fn_http_st_ewkt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ session.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_st_ewkt" class="funcsynopsis">
+<div>
 
 |                           |                        |
 |---------------------------|------------------------|
 | ` `**`http_st_ewkt`**` (` | in `shape ` any ,      |
 |                           | inout `sess ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ session.
 
 </div>
 
-<div id="desc_http_st_ewkt" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ replacement for http (st_astext (shape), ses).
 
 </div>
 
-<div id="params_http_st_ewkt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130617" class="refsect2">
+<div>
 
 ### shape
 
@@ -55,7 +55,7 @@ A given shape.
 
 </div>
 
-<div id="id130620" class="refsect2">
+<div>
 
 ### sess
 
@@ -65,7 +65,7 @@ Session.
 
 </div>
 
-<div id="ret_http_st_ewkt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ Returns any.
 
 </div>
 
-<div id="examples_http_st_ewkt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_st_ewkt" class="example">
+<div>
 
 **Example 24.655. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure Example_http_st_ewkt ()
@@ -109,7 +109,7 @@ create procedure Example_http_st_ewkt ()
 
 </div>
 
-<div id="seealso_http_st_ewkt" class="refsect1">
+<div>
 
 ## See Also
 

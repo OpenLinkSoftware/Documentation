@@ -1,6 +1,6 @@
-<div id="virtuosospongerinstall" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Download the <a
     href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.3/virtuoso/cartridges_dav.vad"
@@ -43,7 +43,7 @@
     class="link" title="Registering &amp; Configuring Cartridges">Cartridge
     Configuration</a>
 
-    <div class="itemizedlist">
+    <div>
 
     - <a href="virtuosospongerarch.html#virtuosospongercartridgesextr"
       class="link" title="Extractor Cartridges">Extractor Cartridges</a>

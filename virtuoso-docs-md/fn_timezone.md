@@ -1,10 +1,10 @@
-<div id="fn_timezone" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ timezone — get timezone difference from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_timezone_01" class="funcsynopsis">
+<div>
 
 |                       |                                    |
 |-----------------------|------------------------------------|
 | ` `**`timezone`**` (` | in `dt ` datetime ,                |
 |                       | in `ignore_timezone ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ timezone — get timezone difference from a datetime
 
 </div>
 
-<div id="desc_timezone" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ the returned value is 0.
 
 </div>
 
-<div id="params_timezone" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113782" class="refsect2">
+<div>
 
 ### dt
 
@@ -57,7 +57,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="id113786" class="refsect2">
+<div>
 
 ### ignore_timezone
 
@@ -67,15 +67,15 @@ Flag
 
 </div>
 
-<div id="examples_timezone" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_timezone" class="example">
+<div>
 
 **Example 24.420. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current timezone.
 
@@ -96,7 +96,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_timezone" class="refsect1">
+<div>
 
 ## See Also
 

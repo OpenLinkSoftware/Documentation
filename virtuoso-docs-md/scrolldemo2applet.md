@@ -1,6 +1,6 @@
-<div id="scrolldemo2applet" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,20 +14,20 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Start the Virtuoso Admin Assistant and then follow the Sample
     Applications--\>JDBC Applet Demos menu path.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample016" class="figure">
+    <div>
 
     **Figure 4.19. Scroll Demo 2**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Scroll Demo 2](images/sampl018.gif)
 

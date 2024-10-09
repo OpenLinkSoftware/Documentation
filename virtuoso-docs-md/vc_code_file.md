@@ -1,10 +1,10 @@
-<div id="vc_code_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ code-file — Code-behind file containing SQL script.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_code_file" class="funcsynopsis">
+<div>
 
 |                           |                              |
 |---------------------------|------------------------------|
@@ -25,7 +25,7 @@ code-file — Code-behind file containing SQL script.
 |                           | `debug-srcline` (optional) , |
 |                           | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ code-file — Code-behind file containing SQL script.
 
 </div>
 
-<div id="vc_desc_code_file" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,7 +47,7 @@ from application logic.
 
 </div>
 
-<div id="vc_attrs_code_file" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -65,15 +65,15 @@ debugging log.
 
 </div>
 
-<div id="vc_ex_code_file" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_code_file__0" class="example">
+<div>
 
 **Example 14.23.  Code-behind SQL script**
 
-<div class="example-contents">
+<div>
 
 The script of a button's post event is in separate SQL file.
 

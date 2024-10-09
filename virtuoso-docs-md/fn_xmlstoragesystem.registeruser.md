@@ -1,10 +1,10 @@
-<div id="fn_xmlstoragesystem.registeruser" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ System
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlstoragesystem.registeruser" class="funcsynopsis">
+<div>
 
 |                                                     |                                |
 |-----------------------------------------------------|--------------------------------|
@@ -28,7 +28,7 @@ System
 |                                                     | in `userAgent ` string ,       |
 |                                                     | in `serialNumber ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ System
 
 </div>
 
-<div id="desc_xmlstoragesystem.registeruser" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ actions performed on the server are:
 
 </div>
 
-<div id="params_xmlstoragesystem.registeruser" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124890" class="refsect2">
+<div>
 
 ### email
 
@@ -65,7 +65,7 @@ For user identification, this should be a valid email account.
 
 </div>
 
-<div id="id124893" class="refsect2">
+<div>
 
 ### name
 
@@ -73,7 +73,7 @@ A human readable name for the user account.
 
 </div>
 
-<div id="id124896" class="refsect2">
+<div>
 
 ### password
 
@@ -83,7 +83,7 @@ as a MD5 hash.
 
 </div>
 
-<div id="id124899" class="refsect2">
+<div>
 
 ### clientPort
 
@@ -91,7 +91,7 @@ Currently ignored and reserved for future use.
 
 </div>
 
-<div id="id124902" class="refsect2">
+<div>
 
 ### userAgent
 
@@ -99,7 +99,7 @@ Currently ignored and reserved for future use.
 
 </div>
 
-<div id="id124905" class="refsect2">
+<div>
 
 ### serialNumber
 
@@ -109,7 +109,7 @@ Currently ignored and reserved for future use.
 
 </div>
 
-<div id="ret_xmlstoragesystem.registeruser" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -123,15 +123,15 @@ This method returns a structure as follows:
 
 </div>
 
-<div id="examples_xmlstoragesystem.registeruser" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlstoragesystem" class="example">
+<div>
 
 **Example 24.538. Registering a new user**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> SOAP_CLIENT (url=>'http://example.com/xmlStorageSystem',
@@ -157,7 +157,7 @@ SQL> SOAP_CLIENT (url=>'http://example.com/xmlStorageSystem',
 
 </div>
 
-<div id="seealso_xmlstoragesystem.registeruser" class="refsect1">
+<div>
 
 ## See Also
 

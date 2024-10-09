@@ -1,6 +1,6 @@
-<div id="bidirrepl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -69,7 +69,7 @@ resolution. After all snapshot logs from subscribers are processed an
 updating procedure reads snapshot log on publisher and replays it on all
 subscribers.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                   |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -78,11 +78,11 @@ subscribers.
 
 </div>
 
-<div id="id36785" class="example">
+<div>
 
 **Example 13.1. Creating bi-directional snapshot publication**
 
-<div class="example-contents">
+<div>
 
 This example demonstrates creating bi-directional snapshot publication
 of table 'Demo.demo.Shippers'.
@@ -97,11 +97,11 @@ SQL> REPL_CREATE_SNAPSHOT_PUB ('Demo.demo.Shippers', 2);
 
   
 
-<div id="id36789" class="example">
+<div>
 
 **Example 13.2. Creating bi-directional snapshot subscription**
 
-<div class="example-contents">
+<div>
 
 This example demonstrates creating bi-directional snapshot subscription
 for table 'Demo.demo.Shippers' and loading initial data on subscriber
@@ -119,11 +119,11 @@ SQL> REPL_INIT_SNAPSHOT (REPL_SERVER_NAME ('localhost:1121'), 'Demo.demo.Shipper
 
   
 
-<div id="id36793" class="example">
+<div>
 
 **Example 13.3. Syncing bi-directional snapshot publication**
 
-<div class="example-contents">
+<div>
 
 This example demonstrates syncing bi-directional snapshot publication of
 table 'Demo.demo.Shippers'.
@@ -138,7 +138,7 @@ SQL> REPL_UPDATE_SNAPSHOT ('Demo.demo.Shippers', 2);
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -155,28 +155,28 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The following
 functions are used for creating, dropping and updating publications and
 subscriptions to them:</p>
-<p><a href="fn_repl_create_snapshot_sub.html" class="link" shape="rect"
+<p><a href="fn_repl_create_snapshot_sub.html" class="link"
 title="REPL_CREATE_SNAPSHOT_SUB"><code
 class="function">REPL_CREATE_SNAPSHOT_SUB()</code></a></p>
-<p><a href="fn_repl_create_snapshot_pub.html" class="link" shape="rect"
+<p><a href="fn_repl_create_snapshot_pub.html" class="link"
 title="REPL_CREATE_SNAPSHOT_PUB"><code
 class="function">REPL_CREATE_SNAPSHOT_PUB()</code></a></p>
-<p><a href="fn_repl_drop_snapshot_sub.html" class="link" shape="rect"
+<p><a href="fn_repl_drop_snapshot_sub.html" class="link"
 title="REPL_DROP_SNAPSHOT_SUB"><code
 class="function">REPL_DROP_SNAPSHOT_SUB()</code></a></p>
-<p><a href="fn_repl_drop_snapshot_pub.html" class="link" shape="rect"
+<p><a href="fn_repl_drop_snapshot_pub.html" class="link"
 title="REPL_DROP_SNAPSHOT_PUB"><code
 class="function">REPL_DROP_SNAPSHOT_PUB()</code></a></p>
-<p><a href="fn_repl_init_snapshot.html" class="link" shape="rect"
+<p><a href="fn_repl_init_snapshot.html" class="link"
 title="REPL_INIT_SNAPSHOT"><code
 class="function">REPL_INIT_SNAPSHOT()</code></a></p>
-<p><a href="fn_repl_update_snapshot.html" class="link" shape="rect"
+<p><a href="fn_repl_update_snapshot.html" class="link"
 title="REPL_UPDATE_SNAPSHOT"><code
 class="function">REPL_UPDATE_SNAPSHOT()</code></a></p>
-<p><a href="fn_repl_snp_server.html" class="link" shape="rect"
+<p><a href="fn_repl_snp_server.html" class="link"
 title="REPL_SNP_SERVER"><code
 class="function">REPL_SNP_SERVER()</code></a></p>
-<p><a href="fn_repl_server_name.html" class="link" shape="rect"
+<p><a href="fn_repl_server_name.html" class="link"
 title="REPL_SERVER_NAME"><code
 class="function">REPL_SERVER_NAME()</code></a></p></td>
 </tr>
@@ -185,9 +185,9 @@ class="function">REPL_SERVER_NAME()</code></a></p></td>
 
 </div>
 
-<div id="bidireplconflictrsln" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -206,7 +206,7 @@ on the publisher when modifications from a subscriber are attempted.
 When DML operations originating on a subscriber are being replayed on
 the publisher, three types of conflicts can arise:
 
-<div class="orderedlist">
+<div>
 
 1.  **uniqueness conflict (insert conflict). ** occurs when the row with
     some primary key \<PK\> already exists in publisher's table.
@@ -251,7 +251,7 @@ transaction originator.
 Conflict resolvers can return the following integer values; The conflict
 resolver types concerned for each are listed in parentheses:
 
-<div class="itemizedlist">
+<div>
 
 - **0 - un-decide (I, U, D). ** next conflict resolver will be fired.
 
@@ -280,11 +280,11 @@ resolver types concerned for each are listed in parentheses:
 Conflict resolution stops when some conflict resolver returns a non-zero
 value meaning that it has made a decision.
 
-<div id="ex_conflictresln" class="example">
+<div>
 
 **Example 13.4. Conflict Resolution**
 
-<div class="example-contents">
+<div>
 
 Suppose we have the following table:
 
@@ -366,7 +366,7 @@ create procedure items_cr(
 
 Conflict resolution occurs differently for each kind of DML operation:
 
-<div class="itemizedlist">
+<div>
 
 - **INSERT. ** When INSERT of some row with primary key \<PK\> is
   replayed, the row in the publisher's table with such \<PK\> is
@@ -404,9 +404,9 @@ Conflict resolution occurs differently for each kind of DML operation:
 
 </div>
 
-<div id="bidirreplconflictdav" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -450,9 +450,9 @@ not exist on remote peer it will be created.
 
 </div>
 
-<div id="bidirreplsutogenres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -470,7 +470,7 @@ Simple table conflict resolvers can be generated automatically by
 calling the `REPL_ADD_SNAPSHOT_CR()` function. DAV conflict resolvers be
 generated by calling `REPL_ADD_DAV_CR()` function.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -485,10 +485,10 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;" data-valign="top"><p><a
-href="fn_repl_add_dav_cr.html" class="link" shape="rect"
+href="fn_repl_add_dav_cr.html" class="link"
 title="REPL_ADD_DAV_CR"><code
 class="function">REPL_ADD_DAV_CR()</code></a></p>
-<p><a href="fn_repl_add_snapshot_cr.html" class="link" shape="rect"
+<p><a href="fn_repl_add_snapshot_cr.html" class="link"
 title="REPL_ADD_SNAPSHOT_CR"><code
 class="function">REPL_ADD_SNAPSHOT_CR()</code></a></p></td>
 </tr>

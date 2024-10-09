@@ -1,7 +1,7 @@
 <div id="virtuosotipsandtricksdefinegraphwithspongeroption"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@ class="section">
 
 Suppose we have the following scenario:
 
-<div class="orderedlist">
+<div>
 
 1.  Create Virtuoso user using Conductor for ex. with name "john" and
     pwd 1.
@@ -45,15 +45,15 @@ Suppose we have the following scenario:
 
 4.  Add another property virt:rdf_sponger with value "on".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sink1" class="figure">
+    <div>
 
     **Figure 1.2. **
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![](images/ui/sink1.png)
 
@@ -70,15 +70,15 @@ Suppose we have the following scenario:
 5.  Upload RDF files to the RDF Sink folder "MySinkFolder", for ex.
     upload file with name "data.rdf":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sink2" class="figure">
+    <div>
 
     **Figure 1.3. **
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![](images/ui/sink2.png)
 
@@ -102,7 +102,7 @@ Suppose we have the following scenario:
     http:///local.virt/DAV/home/john/MySinkFolder/data.rdf
     ```
 
-    <div class="orderedlist">
+    <div>
 
     1.  Go to http://host:port/sparql ;
 
@@ -117,15 +117,15 @@ Suppose we have the following scenario:
           }
         ```
 
-        <div class="figure-float">
+        <div>
 
-        <div id="sink3" class="figure">
+        <div>
 
         **Figure 1.4. **
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![](images/ui/sink3.png)
 
@@ -139,15 +139,15 @@ Suppose we have the following scenario:
 
         </div>
 
-        <div class="figure-float">
+        <div>
 
-        <div id="sink4" class="figure">
+        <div>
 
         **Figure 1.5. **
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![](images/ui/sink4.png)
 
@@ -173,7 +173,7 @@ Suppose we have the following scenario:
     SQL> DAV_PROP_SET ('/DAV/home/john/MySinkFolder/',  'virt:rdf_graph', 'http://mydata.com', 'john', '1');
     ```
 
-    <div class="itemizedlist">
+    <div>
 
     - Note: calling this function uses the given IRI as the graph IRI
       when sponging stuff put in \<your-rdf-sink-folder\>.

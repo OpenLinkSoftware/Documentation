@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_create_cert" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xenc_key_create_cert — Import a key from a certificate
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_create_cert" class="funcsynopsis">
+<div>
 
 |                                   |                         |
 |-----------------------------------|-------------------------|
@@ -27,7 +27,7 @@ xenc_key_create_cert — Import a key from a certificate
 |                                   | in `pkey ` varchar ,    |
 |                                   | in `pass ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ xenc_key_create_cert — Import a key from a certificate
 
 </div>
 
-<div id="desc_xenc_key_create_cert" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ or DSA) into user's space from a certificate.
 
 </div>
 
-<div id="params_xenc_key_create_cert" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120496" class="refsect2">
+<div>
 
 ### name
 
@@ -58,7 +58,7 @@ The name of the key to be registered
 
 </div>
 
-<div id="id120499" class="refsect2">
+<div>
 
 ### cert
 
@@ -66,7 +66,7 @@ String containing the certificate
 
 </div>
 
-<div id="id120502" class="refsect2">
+<div>
 
 ### type
 
@@ -74,7 +74,7 @@ String containing the certificate
 
 </div>
 
-<div id="id120505" class="refsect2">
+<div>
 
 ### fmt
 
@@ -83,7 +83,7 @@ The input format of the certificate: 3 - "DER", 1 - "PEM" or 2 -
 
 </div>
 
-<div id="id120508" class="refsect2">
+<div>
 
 ### pkey
 
@@ -94,7 +94,7 @@ is in the 'cert', hence this parameter in such case must be omitted.
 
 </div>
 
-<div id="id120511" class="refsect2">
+<div>
 
 ### pass
 
@@ -105,15 +105,15 @@ to indicate no password is needed.
 
 </div>
 
-<div id="examples_xenc_key_create_cert" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_key_create_cert" class="example">
+<div>
 
 **Example 24.471. Importing a key from X.509 certificate**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ...
@@ -130,7 +130,7 @@ xenc_set_primary_key ('myRSA');
 
 </div>
 
-<div id="seealso_xenc_key_create_cert" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_dbname" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ dbname — get current catalog
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dbname" class="funcsynopsis">
+<div>
 
 |                     |          |     |
 |---------------------|----------|-----|
 | ` `**`dbname`**` (` | `void)`; |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ dbname — get current catalog
 
 </div>
 
-<div id="desc_dbname" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,7 +40,7 @@ Returns the current qualifier as set by the USE statement or default.
 
 </div>
 
-<div id="params_dbname" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -48,7 +48,7 @@ None
 
 </div>
 
-<div id="ret_dbname" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -57,15 +57,15 @@ name/qualifier.
 
 </div>
 
-<div id="examples_dbname" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dbname_1" class="example">
+<div>
 
 **Example 24.88. Simple Example**
 
-<div class="example-contents">
+<div>
 
 Get current catalog/qualifier
 

@@ -1,6 +1,6 @@
-<div id="installwfasmodify" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,7 +27,7 @@ RDFDemo to Display More Compact Labels</a> .
 
 <span class="emphasis">*Pre-requisites*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  A working copy of the RDFDemo application created in
     <a href="installwfasxtendcomplab.html" class="link"
@@ -36,9 +36,9 @@ RDFDemo to Display More Compact Labels</a> .
 
 </div>
 
-<div id="installwfasmodifyeditont" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -73,11 +73,11 @@ missing properties so that there should be a label in all cases.
 
 There are two methods for registering the changes in Virtuoso:
 
-<div class="orderedlist">
+<div>
 
 1.  Method I:
 
-    <div class="itemizedlist">
+    <div>
 
     - Copy the edited version of nw.owl back into the DAV.
 
@@ -86,7 +86,7 @@ There are two methods for registering the changes in Virtuoso:
 
     </div>
 
-2.  <div class="itemizedlist">
+2.  <div>
 
     - Ensure that your new version of nw.owl is in a folder accessible
       by Virtuoso. You may need to edit your virtuoso.ini file and
@@ -104,7 +104,7 @@ There are two methods for registering the changes in Virtuoso:
 Modify RDFDemo so that it looks for the graph used to describe the
 Northwind data and searches that graph for the predicate details:
 
-<div class="orderedlist">
+<div>
 
 1.  Add a new member variable to the ExtendedStringHandler class to hold
     the graphs that we need to search for the predicate information.
@@ -208,15 +208,15 @@ Northwind data and searches that graph for the predicate details:
 4.  Build and run, the Northwind resources should now be correctly and
     concisely labeled
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf15" class="figure">
+    <div>
 
     **Figure 2.150. Northwind resources**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Northwind resources](images/ui/sparqlwinf15.png)
 
@@ -237,7 +237,7 @@ Northwind data and searches that graph for the predicate details:
 The following changes are not strictly necessary but improve the
 appearance of the form:
 
-<div class="itemizedlist">
+<div>
 
 - Line up the right hand edge of the labels with the text boxes by
   setting TextAlign to MiddleRight and reduce the width of the labels.
@@ -266,15 +266,15 @@ appearance of the form:
   describeForm.Controls.Add(textBoxList[i]);
   ```
 
-  <div class="figure-float">
+  <div>
 
-  <div id="sparqlwinf16" class="figure">
+  <div>
 
   **Figure 2.151. Alter the positioning**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Alter the positioning](images/ui/sparqlwinf16.png)
 
@@ -295,15 +295,15 @@ appearance of the form:
 The image below shows some of the information about an employee in the
 Northwind dataset.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf17" class="figure">
+<div>
 
 **Figure 2.152. employee**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![employee](images/ui/sparqlwinf17.png)
 

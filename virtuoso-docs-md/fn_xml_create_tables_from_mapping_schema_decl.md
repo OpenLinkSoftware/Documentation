@@ -1,11 +1,11 @@
 <div id="fn_xml_create_tables_from_mapping_schema_decl"
 class="refentry">
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -15,7 +15,7 @@ create table.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
@@ -29,7 +29,7 @@ class="funcsynopsis">
 |                                                         | in `content_encoding ` varchar ,    |
 |                                                         | in `content_language ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ class="funcsynopsis">
 
 </div>
 
-<div id="desc_64" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ defined in the mapping schema, the VARCHAR type is used.
 
 </div>
 
-<div id="params_28" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122890" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -64,7 +64,7 @@ given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id122893" class="refsect2">
+<div>
 
 ### mapping_schema_file
 
@@ -72,7 +72,7 @@ well formed XML document containing a mapping schema
 
 </div>
 
-<div id="id122896" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -82,7 +82,7 @@ mode and 'LATIN-1' for HTML mode
 
 </div>
 
-<div id="id122899" class="refsect2">
+<div>
 
 ### content_language
 
@@ -94,7 +94,7 @@ various human languages)
 
 </div>
 
-<div id="ret_07_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -102,15 +102,15 @@ A vector containing strings
 
 </div>
 
-<div id="examples_13_01" class="refsect1">
+<div>
 
 ## 
 
-<div id="ex_xml_create_tables_from_mapping_schema_decl" class="example">
+<div>
 
 **Example 24.510. Extracting tables from mapping schema**
 
-<div class="example-contents">
+<div>
 
 Let we have the following mapping schema in the catmp.xsd file
 
@@ -178,7 +178,7 @@ FOREIGN KEY ("CategoryID") REFERENCES "Demo"."demo"."Categories" ("CategoryID")
 
 </div>
 
-<div id="seealso_37" class="refsect1">
+<div>
 
 ## See Also
 

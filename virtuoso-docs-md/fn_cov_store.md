@@ -1,10 +1,10 @@
-<div id="fn_cov_store" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ cov_store — Writes a test coverage to a file.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cov_store" class="funcsynopsis">
+<div>
 
 |                        |                                 |
 |------------------------|---------------------------------|
 | ` `**`cov_store`**` (` | in `fname ` varchar ,           |
 |                        | in `add_comments ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ cov_store — Writes a test coverage to a file.
 
 </div>
 
-<div id="desc_cov_store" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ contained in line entities.
 
 </div>
 
-<div id="params_cov_store" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83170" class="refsect2">
+<div>
 
 ### fname
 
@@ -59,7 +59,7 @@ Name of coverage file to load.
 
 </div>
 
-<div id="id83173" class="refsect2">
+<div>
 
 ### add_comments
 
@@ -70,7 +70,7 @@ is 0. If 1 is supplied then extensions are used.
 
 </div>
 
-<div id="ret_cov_store" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,7 +78,7 @@ None.
 
 </div>
 
-<div id="seealso_cov_store" class="refsect1">
+<div>
 
 ## See Also
 

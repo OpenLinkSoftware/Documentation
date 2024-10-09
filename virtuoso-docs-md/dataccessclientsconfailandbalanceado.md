@@ -1,6 +1,6 @@
-<div id="dataccessclientsconfailandbalanceado" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="dataccessclientsconfailandbalanceadof" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ Server=server1:port1,server2:port2,server3;UserId=dba;Password=dba;
 
 </div>
 
-<div id="dataccessclientsconfailandbalanceador" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_st_affine" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ST_Affine — performs standard 2d affine transformation
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_affine" class="funcsynopsis">
+<div>
 
 |                        |                     |
 |------------------------|---------------------|
@@ -26,7 +26,7 @@ ST_Affine — performs standard 2d affine transformation
 |                        | in `Xoff ` any ,    |
 |                        | in `Yoff ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ ST_Affine — performs standard 2d affine transformation
 
 </div>
 
-<div id="desc_st_affine" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ and shift (Xoff, Yoff, 0)
 
 </div>
 
-<div id="params_st_affine" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90438" class="refsect2">
+<div>
 
 ### XXa
 
@@ -64,7 +64,7 @@ matrix a
 
 </div>
 
-<div id="id90441" class="refsect2">
+<div>
 
 ### XYb
 
@@ -72,7 +72,7 @@ matrix b
 
 </div>
 
-<div id="id90444" class="refsect2">
+<div>
 
 ### YYe
 
@@ -80,7 +80,7 @@ matrix e
 
 </div>
 
-<div id="id90447" class="refsect2">
+<div>
 
 ### Xoff
 
@@ -88,7 +88,7 @@ x
 
 </div>
 
-<div id="id90450" class="refsect2">
+<div>
 
 ### Yoff
 
@@ -98,7 +98,7 @@ y
 
 </div>
 
-<div id="ret_st_affine" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -106,15 +106,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_affine" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_affine" class="example">
+<div>
 
 **Example 24.135. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select st_affine (st_ewkt_read ('POLYGON((1 3,2 4,1 5,0 4,1 3),
@@ -143,7 +143,7 @@ POLYGON((39.001000 1.902000,
 
 </div>
 
-<div id="seealso_st_affine" class="refsect1">
+<div>
 
 ## See Also
 

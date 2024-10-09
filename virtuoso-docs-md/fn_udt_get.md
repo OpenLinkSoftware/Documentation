@@ -1,10 +1,10 @@
-<div id="fn_udt_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ type instance
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_udt_get" class="funcsynopsis">
+<div>
 
 |                         |                                |
 |-------------------------|--------------------------------|
 | `any `**`udt_get`**` (` | in `udt_inst ` any ,           |
 |                         | in `member_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ type instance
 
 </div>
 
-<div id="desc_udt_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ observer.
 
 </div>
 
-<div id="params_udt_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id115936" class="refsect2">
+<div>
 
 ### udt_inst
 
@@ -56,7 +56,7 @@ a user defined type instance.
 
 </div>
 
-<div id="id115939" class="refsect2">
+<div>
 
 ### member_name
 
@@ -66,7 +66,7 @@ the name of the requested member.
 
 </div>
 
-<div id="ret_udt_get" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ This function returns a copy of the requested member, if any.
 
 </div>
 
-<div id="examples_udt_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_udt_get" class="example">
+<div>
 
 **Example 24.426. Observing members**
 
-<div class="example-contents">
+<div>
 
 This example simply fetches a member from a user defined type.
 
@@ -103,7 +103,7 @@ return udt_get (inst, 'A');
 
 </div>
 
-<div id="seealso_udt_get" class="refsect1">
+<div>
 
 ## See Also
 

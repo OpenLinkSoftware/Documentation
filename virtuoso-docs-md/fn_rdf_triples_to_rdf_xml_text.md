@@ -1,10 +1,10 @@
-<div id="fn_rdf_triples_to_rdf_xml_text" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ session, in RDF/XML syntax.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_triples_to_rdf_xml_text" class="funcsynopsis">
+<div>
 
 |                                                 |                             |
 |-------------------------------------------------|-----------------------------|
@@ -25,7 +25,7 @@ session, in RDF/XML syntax.
 |                                                 | in `print_top_level ` any , |
 |                                                 | inout `ses ` any `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ session, in RDF/XML syntax.
 
 </div>
 
-<div id="desc_rdf_triples_to_rdf_xml_text" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ optimization.
 
 </div>
 
-<div id="params_rdf_triples_to_rdf_xml_text" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101250" class="refsect2">
+<div>
 
 ### triples
 
@@ -58,7 +58,7 @@ vector of triples in 'long valmode'.
 
 </div>
 
-<div id="id101253" class="refsect2">
+<div>
 
 ### print_top_level
 
@@ -67,7 +67,7 @@ rdf:RDF top-level element should also be written
 
 </div>
 
-<div id="id101256" class="refsect2">
+<div>
 
 ### ses
 
@@ -77,15 +77,15 @@ an output stream in server default encoding
 
 </div>
 
-<div id="examples_rdf_triples_to_rdf_xml_text" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_triples_to_rdf_xml_text" class="example">
+<div>
 
 **Example 24.270. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure simple_test(in query varchar, in dflt_graph varchar)
@@ -110,7 +110,7 @@ create procedure simple_test(in query varchar, in dflt_graph varchar)
 
 </div>
 
-<div id="seealso_rdf_triples_to_rdf_xml_text" class="refsect1">
+<div>
 
 ## See Also
 

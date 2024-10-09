@@ -1,10 +1,10 @@
-<div id="fn_xmlupdate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ nodes.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlupdate" class="funcsynopsis">
+<div>
 
 |                           |                             |
 |---------------------------|-----------------------------|
@@ -30,7 +30,7 @@ nodes.
 |                           | in `pathN ` varchar ,       |
 |                           | in `replacementN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ nodes.
 
 </div>
 
-<div id="desc_xmlupdate" class="refsect1">
+<div>
 
 ## Description
 
@@ -126,11 +126,11 @@ priority.
 
 </div>
 
-<div id="params_xmlupdate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124015" class="refsect2">
+<div>
 
 ### source
 
@@ -139,7 +139,7 @@ as an argument.
 
 </div>
 
-<div id="id124018" class="refsect2">
+<div>
 
 ### pathI
 
@@ -147,7 +147,7 @@ A text of XPATH expression to be used in order to find nodes to replace.
 
 </div>
 
-<div id="id124021" class="refsect2">
+<div>
 
 ### replacementI
 
@@ -159,7 +159,7 @@ entity.
 
 </div>
 
-<div id="ret_xmlupdate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -171,15 +171,15 @@ resulting XML tree entity.
 
 </div>
 
-<div id="examples_xmlupdate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlupdate_1" class="example">
+<div>
 
 **Example 24.525. A simple replacement of one element with other**
 
-<div class="example-contents">
+<div>
 
 The call of function `XMLUpdate ` replaces element 'c' with a copy of
 element 'replacement'.
@@ -204,11 +204,11 @@ _______________________________________________________________________________
 
   
 
-<div id="ex_xmlupdate_2" class="example">
+<div>
 
 **Example 24.526. Two replacements in parallel**
 
-<div class="example-contents">
+<div>
 
 Elements titled 'c1' and 'c3' are replaced with text nodes.
 
@@ -244,7 +244,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmlupdate" class="refsect1">
+<div>
 
 ## See Also
 

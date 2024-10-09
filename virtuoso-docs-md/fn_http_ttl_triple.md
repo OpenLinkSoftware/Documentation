@@ -1,10 +1,10 @@
-<div id="fn_http_ttl_triple" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_ttl_triple — outputs next triple to ses in TTL serialization.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_ttl_triple" class="funcsynopsis">
+<div>
 
 |                              |                    |
 |------------------------------|--------------------|
@@ -26,7 +26,7 @@ http_ttl_triple — outputs next triple to ses in TTL serialization.
 |                              | in `arg3 ` any ,   |
 |                              | in `ses ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ http_ttl_triple — outputs next triple to ses in TTL serialization.
 
 </div>
 
-<div id="desc_http_ttl_triple" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ used instead of "trailing" dot.
 
 </div>
 
-<div id="params_http_ttl_triple" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102936" class="refsect2">
+<div>
 
 ### env
 
@@ -70,7 +70,7 @@ possible grand total for all four.
 
 </div>
 
-<div id="id102941" class="refsect2">
+<div>
 
 ### arg1
 
@@ -78,7 +78,7 @@ Triple subject.
 
 </div>
 
-<div id="id102944" class="refsect2">
+<div>
 
 ### arg2
 
@@ -86,7 +86,7 @@ Triple predicate.
 
 </div>
 
-<div id="id102947" class="refsect2">
+<div>
 
 ### arg3
 
@@ -94,7 +94,7 @@ Triple object.
 
 </div>
 
-<div id="id102950" class="refsect2">
+<div>
 
 ### ses
 
@@ -104,7 +104,7 @@ Session output.
 
 </div>
 
-<div id="ret_http_ttl_triple" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -112,15 +112,15 @@ Any
 
 </div>
 
-<div id="examples_http_ttl_triple" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_ttl_triple" class="example">
+<div>
 
 **Example 24.291. Example 1**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE PROCEDURE dump_one_graph
@@ -231,7 +231,7 @@ end_subj_sort: ;
 
 </div>
 
-<div id="seealso_http_ttl_triple" class="refsect1">
+<div>
 
 ## See Also
 

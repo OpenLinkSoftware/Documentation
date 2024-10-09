@@ -1,10 +1,10 @@
-<div id="fn_subseq" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ subseq — returns substring of a string or sub-vector of a vector
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_subseq" class="funcsynopsis">
+<div>
 
 |                     |                            |
 |---------------------|----------------------------|
@@ -24,7 +24,7 @@ subseq — returns substring of a string or sub-vector of a vector
 |                     | `from ` integer ,          |
 |                     | `to ` integer or NULL `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ subseq — returns substring of a string or sub-vector of a vector
 
 </div>
 
-<div id="desc_38" class="refsect1">
+<div>
 
 ## Description
 

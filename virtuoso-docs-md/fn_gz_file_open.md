@@ -1,10 +1,10 @@
-<div id="fn_gz_file_open" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ gz_file_open — returns the contents of a gzipped file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_gz_file_open" class="funcsynopsis">
+<div>
 
 |                                  |                         |
 |----------------------------------|-------------------------|
 | `varchar `**`gz_file_open`**` (` | in `path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ gz_file_open — returns the contents of a gzipped file
 
 </div>
 
-<div id="desc_gz_file_open" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ directory of the database server.
 
 </div>
 
-<div id="params_gz_file_open" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89421" class="refsect2">
+<div>
 
 ### path
 
@@ -55,15 +55,15 @@ Path name of the file to read.
 
 </div>
 
-<div id="examples_gz_file_open" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_gz_file_open" class="example">
+<div>
 
 **Example 24.122. Simple Use**
 
-<div class="example-contents">
+<div>
 
 For loading gzipped N3 and Turtle files you can use:
 
@@ -82,7 +82,7 @@ rules, the default value of 0 means strict syntax rules.
 
 </div>
 
-<div id="seealso_gz_file_open" class="refsect1">
+<div>
 
 ## See Also
 

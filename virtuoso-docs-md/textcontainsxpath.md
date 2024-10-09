@@ -1,6 +1,6 @@
-<div id="textcontainsxpath" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,7 +24,7 @@ should be a constant string whose syntax corresponds to the top
 production of the free text syntax for patterns in `contains()` . The
 string also may not consist exclusively of spaces or noise words.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                              |
 |:--------------------------:|:---------------------------------------------------------------------------------------------|
@@ -34,11 +34,11 @@ string also may not consist exclusively of spaces or noise words.
 
 </div>
 
-<div id="id46235" class="example">
+<div>
 
 **Example 15.14. Selecting All Titles About Aliasing**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select n from xml_text2 where
@@ -55,12 +55,12 @@ select n from xml_text2 where
 This selects all title elements that contain the word "Aliasing" using
 free text match rules: case insensitive and whole word.
 
-<div id="id46239" class="example">
+<div>
 
 **Example 15.15. Select All Trees with Elements Containing "sql
 reference"**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select n from xml_text2 where

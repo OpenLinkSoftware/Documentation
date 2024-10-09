@@ -1,6 +1,6 @@
-<div id="vdbengineodbcoduedm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ Now that a Microsoft Entity Data Model has been created for the
 Northwind database, Entity Framework applications can be created to make
 use of it.
 
-<div id="vdbengineodbcoduedmw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,19 +38,19 @@ This section details the steps required to create a simple Visual Studio
 2008 Windows Form application, with associated DataGridView control for
 displaying data in selected tables from the target database.
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora1" class="figure">
+    <div>
 
     **Figure 8.573. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -78,15 +78,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_19" class="figure">
+    <div>
 
     **Figure 8.574. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -130,15 +130,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora2" class="figure">
+    <div>
 
     **Figure 8.575. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/dora2.png)
 
@@ -166,15 +166,15 @@ displaying data in selected tables from the target database.
 
     control onto the form.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora3" class="figure">
+    <div>
 
     **Figure 8.576. Toolbox**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Toolbox](images/ui/dora3.png)
 
@@ -202,15 +202,15 @@ displaying data in selected tables from the target database.
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora4" class="figure">
+    <div>
 
     **Figure 8.577. DataGridView Task**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView Task](images/ui/dora4.png)
 
@@ -230,15 +230,15 @@ displaying data in selected tables from the target database.
 
     list box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora5" class="figure">
+    <div>
 
     **Figure 8.578. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora5.png)
 
@@ -258,15 +258,15 @@ displaying data in selected tables from the target database.
 
     link to connect to a data source.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora6" class="figure">
+    <div>
 
     **Figure 8.579. Add Project Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Project Data Source](images/ui/dora6.png)
 
@@ -298,15 +298,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora7_03" class="figure">
+    <div>
 
     **Figure 8.580. Data Source Type**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Type](images/ui/dora7.png)
 
@@ -334,15 +334,15 @@ displaying data in selected tables from the target database.
 
     button
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora8" class="figure">
+    <div>
 
     **Figure 8.581. Data Source Configuration Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Configuration Wizard](images/ui/dora8.png)
 
@@ -370,15 +370,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora9" class="figure">
+    <div>
 
     **Figure 8.582. Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source](images/ui/dora9.png)
 
@@ -404,15 +404,15 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora10_07" class="figure">
+    <div>
 
     **Figure 8.583. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -436,15 +436,15 @@ displaying data in selected tables from the target database.
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora11" class="figure">
+    <div>
 
     **Figure 8.584. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/odora11.png)
 
@@ -464,15 +464,15 @@ displaying data in selected tables from the target database.
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora12_04" class="figure">
+    <div>
 
     **Figure 8.585. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -494,15 +494,15 @@ displaying data in selected tables from the target database.
 
     <span class="emphasis">*Next*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora13" class="figure">
+    <div>
 
     **Figure 8.586. NWINDConnectionString**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![NWINDConnectionString](images/ui/odora13.png)
 
@@ -527,15 +527,15 @@ displaying data in selected tables from the target database.
 
     control.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora14" class="figure">
+    <div>
 
     **Figure 8.587. Northwind database**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Northwind database](images/ui/odora14.png)
 
@@ -552,15 +552,15 @@ displaying data in selected tables from the target database.
 18. The columns names of the select table will be displayed in the
     DataGridView.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora15" class="figure">
+    <div>
 
     **Figure 8.588. DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView](images/ui/odora15.png)
 
@@ -577,15 +577,15 @@ displaying data in selected tables from the target database.
 19. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora16" class="figure">
+    <div>
 
     **Figure 8.589. Resize the Form and DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Resize the Form and DataGridView](images/ui/odora16.png)
 
@@ -613,15 +613,15 @@ displaying data in selected tables from the target database.
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora17_03" class="figure">
+    <div>
 
     **Figure 8.590. Start Debugging**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Start Debugging](images/ui/dora17.png)
 
@@ -645,15 +645,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="odora18" class="figure">
+    <div>
 
     **Figure 8.591. DataGrid**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGrid](images/ui/odora18.png)
 

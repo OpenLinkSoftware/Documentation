@@ -1,10 +1,10 @@
-<div id="fn_explain" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ explain — describe SQL statement compilation
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_explain" class="funcsynopsis">
+<div>
 
 |                      |                                |
 |----------------------|--------------------------------|
 | ` `**`explain`**` (` | in `text ` varchar ,           |
 |                      | in `cursor_type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ explain — describe SQL statement compilation
 
 </div>
 
-<div id="desc_explain" class="refsect1">
+<div>
 
 ## Description
 
@@ -54,11 +54,11 @@ ONLY. The special values each have special effect, as listed. If the
 statement is a SELECT and the cursor type is not FORWARD ONLY, the
 auxiliary SQL statements used by the cursor implementation are shown.
 
-<div id="id88334" class="table">
+<div>
 
-**Table 24.31. Cursor Type**
+**Table 24.30. Cursor Type**
 
-<div class="table-contents">
+<div>
 
 | Cursor Type | Effect                                                                                                                                                             |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -79,11 +79,11 @@ auxiliary SQL statements used by the cursor implementation are shown.
 
 </div>
 
-<div id="params_explain" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88368" class="refsect2">
+<div>
 
 ### text
 
@@ -91,7 +91,7 @@ auxiliary SQL statements used by the cursor implementation are shown.
 
 </div>
 
-<div id="id88372" class="refsect2">
+<div>
 
 ### cursor_type
 
@@ -101,17 +101,17 @@ auxiliary SQL statements used by the cursor implementation are shown.
 
 </div>
 
-<div id="ret_explain" class="refsect1">
+<div>
 
 ## Return Types
 
 Returns types vary with the specified cursor type.
 
-<div id="id88379" class="table">
+<div>
 
-**Table 24.32. Return Types**
+**Table 24.31. Return Types**
 
-<div class="table-contents">
+<div>
 
 | Cursor Type        | Return Type   |
 |--------------------|---------------|
@@ -127,15 +127,15 @@ Returns types vary with the specified cursor type.
 
 </div>
 
-<div id="examples_explain" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_explainsmp" class="example">
+<div>
 
 **Example 24.108. Simple Example Usage**
 
-<div class="example-contents">
+<div>
 
 Execute from ISQL:
 
@@ -166,11 +166,11 @@ _HOOK", $31 ".U_PASSWORD_HOOK_DATA", $30 ".U_GET_PASSWORD", $29 ".U_DEF_QUAL", $
 
   
 
-<div id="ex_explain1" class="example">
+<div>
 
 **Example 24.109. Example with type -1**
 
-<div class="example-contents">
+<div>
 
 Execute from ISQL:
 
@@ -211,11 +211,11 @@ Select (TOP <constant (10)>) ($34 "s", $35 "p", $36 "o", <$33 "<DB.DBA.RDF_QUAD 
 
   
 
-<div id="ex_explain2" class="example">
+<div>
 
 **Example 24.110. Example with type -2**
 
-<div class="example-contents">
+<div>
 
 Execute from ISQL:
 
@@ -247,11 +247,11 @@ __rdf_sqlval_of_obj' ((201 's-1-1-t0' 'O' ) ) ) 0 'o' 0 ) ) 0 (106 ((107 (200 'D
 
   
 
-<div id="ex_explain5" class="example">
+<div>
 
 **Example 24.111. Example with type -5**
 
-<div class="example-contents">
+<div>
 
 Execute from ISQL:
 
@@ -319,11 +319,11 @@ Out cols :
 
   
 
-<div id="ex_explain7" class="example">
+<div>
 
 **Example 24.112. Example with type -7**
 
-<div class="example-contents">
+<div>
 
 Execute from ISQL:
 
@@ -347,12 +347,12 @@ _______________________________________________________________________________
 
   
 
-<div id="ex_explainvsp" class="example">
+<div>
 
 **Example 24.113. Example with vsp printing the result from executing
 explain:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <?vsp
@@ -405,7 +405,7 @@ Select ($47 ".U_ID", $46 ".U_NAME", $45 ".U_IS_ROLE", $44 ".U_FULL_NAME", $43 ".
 
 </div>
 
-<div id="seealso_explain" class="refsect1">
+<div>
 
 ## See Also
 

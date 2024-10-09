@@ -1,10 +1,10 @@
-<div id="fn_rdf_all_user_perms_del" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ of an user, both default permissions and permissions on specific graphs.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_all_user_perms_del" class="funcsynopsis">
+<div>
 
 |                                            |                                |
 |--------------------------------------------|--------------------------------|
 | ` `**`DB.DBA.RDF_ALL_USER_PERMS_DEL`**` (` | in `uname ` varchar ,          |
 |                                            | in `uid ` integer := null `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ of an user, both default permissions and permissions on specific graphs.
 
 </div>
 
-<div id="desc_rdf_all_user_perms_del" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ argument.
 
 </div>
 
-<div id="params_rdf_all_user_perms_del" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101841" class="refsect2">
+<div>
 
 ### uname
 
@@ -63,7 +63,7 @@ User name
 
 </div>
 
-<div id="id101844" class="refsect2">
+<div>
 
 ### uid
 
@@ -73,15 +73,15 @@ The user U_ID in the system table DB.DBA.SYS_USERS.
 
 </div>
 
-<div id="examples_rdf_all_user_perms_del" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_all_user_perms_del" class="example">
+<div>
 
 **Example 24.279. Example**
 
-<div class="example-contents">
+<div>
 
 See <a href="rdfgraphsecurityintconfsec.html#rdfgraphsecurityintex"
 class="link" title="Example: Blogs and Resource Sharing">Example for
@@ -95,7 +95,7 @@ Blogs and Resource Sharing</a>
 
 </div>
 
-<div id="seealso_rdf_all_user_perms_del" class="refsect1">
+<div>
 
 ## See Also
 

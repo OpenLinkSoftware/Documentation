@@ -1,6 +1,6 @@
-<div id="jdbcdriverinstallconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 Perform the following steps in order to make use of your Virtuoso
 Drivers for JDBC:
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                   |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -26,7 +26,7 @@ Drivers for JDBC:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure your PATH environment variable is pointing to a version of
     the Java Virtual Machine (JVM) that is compatible with the version
@@ -48,7 +48,7 @@ Drivers for JDBC:
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>

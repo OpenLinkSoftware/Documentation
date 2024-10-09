@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtrickscrawlercustompl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -53,7 +53,7 @@ create procedure EUROPEANA_STORE (
 }
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                     |
 |:--------------------------:|:--------------------------------------------------------------------|

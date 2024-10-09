@@ -1,6 +1,6 @@
-<div id="bpelvadinstall" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="bpelvadinstall_conductor" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,7 +30,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Step 1. Download BPEL4WS VAD and copy it to a local directory.
 
@@ -54,9 +54,9 @@
 
 </div>
 
-<div id="bpelvadinstall_isql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="installvsentgenmodel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 <span class="emphasis">*Add the ADO.NET Entity Data Model item
 template*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Select the CourseManager project in Solution Explorer, right-click,
     point to Add, and then click New Item.
@@ -27,15 +27,15 @@ template*</span>
 3.  Type School.edmx for the model name and click Add. The opening page
     of the Entity Data Model Wizard is displayed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado8" class="figure">
+    <div>
 
     **Figure 2.103. School.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![School.edmx](images/ui/uado8.png)
 
@@ -53,7 +53,7 @@ template*</span>
 
 <span class="emphasis">*Generate the EDM*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Select
 
@@ -69,15 +69,15 @@ template*</span>
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado9" class="figure">
+    <div>
 
     **Figure 2.104. Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Model Contents](images/ui/uado9.png)
 
@@ -97,15 +97,15 @@ template*</span>
 
     button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado10" class="figure">
+    <div>
 
     **Figure 2.105. New Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![New Connection](images/ui/uado10.png)
 
@@ -129,15 +129,15 @@ template*</span>
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado11" class="figure">
+    <div>
 
     **Figure 2.106. Virtuoso Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Data Source](images/ui/uado11.png)
 
@@ -166,15 +166,15 @@ template*</span>
 
     button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado12" class="figure">
+    <div>
 
     **Figure 2.107. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/uado12.png)
 
@@ -202,15 +202,15 @@ template*</span>
 
     and click OK.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado13" class="figure">
+    <div>
 
     **Figure 2.108. Advanced Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Advanced Properties](images/ui/uado13.png)
 
@@ -230,15 +230,15 @@ template*</span>
 
     dialog to verify the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado14" class="figure">
+    <div>
 
     **Figure 2.109. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/uado14.png)
 
@@ -266,15 +266,15 @@ template*</span>
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado15" class="figure">
+    <div>
 
     **Figure 2.110. entity connect string name**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string name](images/ui/uado15.png)
 
@@ -314,15 +314,15 @@ template*</span>
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado16" class="figure">
+    <div>
 
     **Figure 2.111. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/uado16.png)
 
@@ -341,7 +341,7 @@ template*</span>
 <span class="emphasis">*View the EDM in the ADO.NET Entity Data Model
 Designer*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  In the
 
@@ -354,15 +354,15 @@ Designer*</span>
     file. This displays the School model in the ADO.NET Entity Data
     Model Designer window.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado17" class="figure">
+    <div>
 
     **Figure 2.112. Solution Explorer**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Solution Explorer](images/ui/uado17.png)
 
@@ -404,15 +404,15 @@ Designer*</span>
 
     nodes to view conceptual and store definitions, respectively.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado20" class="figure">
+    <div>
 
     **Figure 2.113. SchoolModel**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SchoolModel](images/ui/uado20.png)
 
@@ -444,15 +444,15 @@ Designer*</span>
 5.  This displays the Entity Mapping Details window with information
     about the object-relational mapping for the selected object.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado21" class="figure">
+    <div>
 
     **Figure 2.114. View menu**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![View menu](images/ui/uado21.png)
 

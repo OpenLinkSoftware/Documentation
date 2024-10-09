@@ -1,6 +1,6 @@
-<div id="virtuoso_clients_isql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@ as the statement end and executes the statement.
 
 ISQL also has a form of script language by itself.
 
-<div id="invokingisql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -149,7 +149,7 @@ after the -i is filled in the ISQL \$ARGV\[\] array.
 
 The order of execution is:
 
-<div class="orderedlist">
+<div>
 
 1.  Connect to 'localhost:1111' using UserID/Password dba/dba.
 

@@ -1,10 +1,10 @@
-<div id="fn_user_key_load" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ USER_KEY_LOAD — Register and existing key.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_key_load" class="funcsynopsis">
+<div>
 
 |                            |                            |
 |----------------------------|----------------------------|
@@ -27,7 +27,7 @@ USER_KEY_LOAD — Register and existing key.
 |                            | in `key_passwd ` varchar , |
 |                            | in `key_pkey ` any `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ USER_KEY_LOAD — Register and existing key.
 
 </div>
 
-<div id="desc_user_key_load" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ erased and has to be redefined.
 
 </div>
 
-<div id="params_user_key_load" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119376" class="refsect2">
+<div>
 
 ### key_name
 
@@ -60,7 +60,7 @@ The key reference, as a 'Sample Key' or 'file:keys/srv.pem'
 
 </div>
 
-<div id="id119379" class="refsect2">
+<div>
 
 ### key_value
 
@@ -69,7 +69,7 @@ key. The default value is NULL.
 
 </div>
 
-<div id="id119382" class="refsect2">
+<div>
 
 ### key_type
 
@@ -78,7 +78,7 @@ The key algorithm, possible values are "3DES", "RSA", "DSA", "X.509",
 
 </div>
 
-<div id="id119385" class="refsect2">
+<div>
 
 ### key_format
 
@@ -87,7 +87,7 @@ The format of the key content storage, possible values are "DER", "PEM",
 
 </div>
 
-<div id="id119388" class="refsect2">
+<div>
 
 ### key_passwd
 
@@ -96,7 +96,7 @@ indicate no password required.
 
 </div>
 
-<div id="id119391" class="refsect2">
+<div>
 
 ### key_pkey
 
@@ -110,7 +110,7 @@ omitted.
 
 </div>
 
-<div id="ret_user_key_load" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -118,15 +118,15 @@ None.
 
 </div>
 
-<div id="examples_user_key_load" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_user_key_load" class="example">
+<div>
 
 **Example 24.452. Simple Use**
 
-<div class="example-contents">
+<div>
 
 To load and persist an X.509 certificate contained in the file wss.pfx
 in the server working directory one can use:

@@ -1,10 +1,10 @@
-<div id="fn_equ" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ lt , lte , gt , gte , equ , neq — comparison functions
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_lt" class="funcsynopsis">
+<div>
 
 |                 |                     |
 |-----------------|---------------------|
 | ` `**`lt`**` (` | in `arg1 ` any ,    |
 |                 | in `arg2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -31,14 +31,14 @@ lt , lte , gt , gte , equ , neq — comparison functions
 
 </div>
 
-<div id="fsyn_lte" class="funcsynopsis">
+<div>
 
 |                  |                     |
 |------------------|---------------------|
 | ` `**`lte`**` (` | in `arg1 ` any ,    |
 |                  | in `arg2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -46,14 +46,14 @@ lt , lte , gt , gte , equ , neq — comparison functions
 
 </div>
 
-<div id="fsyn_gt" class="funcsynopsis">
+<div>
 
 |                 |                     |
 |-----------------|---------------------|
 | ` `**`gt`**` (` | in `arg1 ` any ,    |
 |                 | in `arg2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -61,14 +61,14 @@ lt , lte , gt , gte , equ , neq — comparison functions
 
 </div>
 
-<div id="fsyn_gte" class="funcsynopsis">
+<div>
 
 |                  |                     |
 |------------------|---------------------|
 | ` `**`gte`**` (` | in `arg1 ` any ,    |
 |                  | in `arg2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -76,14 +76,14 @@ lt , lte , gt , gte , equ , neq — comparison functions
 
 </div>
 
-<div id="fsyn_equ" class="funcsynopsis">
+<div>
 
 |                  |                  |
 |------------------|------------------|
 | ` `**`equ`**` (` | `arg1 ` any ,    |
 |                  | `arg2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -91,14 +91,14 @@ lt , lte , gt , gte , equ , neq — comparison functions
 
 </div>
 
-<div id="fsyn_neq" class="funcsynopsis">
+<div>
 
 |                  |                     |
 |------------------|---------------------|
 | ` `**`neq`**` (` | in `arg1 ` any ,    |
 |                  | in `arg2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -108,7 +108,7 @@ lt , lte , gt , gte , equ , neq — comparison functions
 
 </div>
 
-<div id="desc_equ" class="refsect1">
+<div>
 
 ## Description
 
@@ -125,11 +125,11 @@ statement.
 
 </div>
 
-<div id="params_equ" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87731" class="refsect2">
+<div>
 
 ### *`arg1 `* , *`arg2 `*
 
@@ -141,7 +141,7 @@ statement.
 
 </div>
 
-<div id="ret_equ" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -149,15 +149,15 @@ An <span class="type">integer </span> value of 1 or 0 is returned.
 
 </div>
 
-<div id="examples_equ" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_equ" class="example">
+<div>
 
 **Example 24.101. Simple Example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 lt('pata','pato')  -> 1 (Yes, 'pata' is less than 'pato')

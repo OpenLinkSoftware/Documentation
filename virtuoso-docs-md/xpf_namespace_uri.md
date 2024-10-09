@@ -1,10 +1,10 @@
-<div id="xpf_namespace_uri" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ given node
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_namespace_uri" class="funcsynopsis">
+<div>
 
 |                                  |                      |
 |----------------------------------|----------------------|
 | `string `**`namespace-uri`**` (` | `node_obj ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ given node
 
 </div>
 
-<div id="xpf_desc_namespace_uri" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ node-set of one element.
 
 </div>
 
-<div id="xpf_params_namespace_uri" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128294" class="refsect2">
+<div>
 
 ### node_obj
 
@@ -62,7 +62,7 @@ Node whose namespace URI is to be returned.
 
 </div>
 
-<div id="xpf_ret_namespace_uri" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -70,15 +70,15 @@ String
 
 </div>
 
-<div id="xpf_examples_namespace_uri" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_namespace_uri" class="example">
+<div>
 
 **Example 24.604. **
 
-<div class="example-contents">
+<div>
 
 Find all elements whose namespace URIs contain "html" substring
 
@@ -94,7 +94,7 @@ Find all elements whose namespace URIs contain "html" substring
 
 </div>
 
-<div id="xpf_seealso_namespace_uri" class="refsect1">
+<div>
 
 ## See Also
 

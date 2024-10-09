@@ -1,6 +1,6 @@
-<div id="uddi_overview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="uddiconcepts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

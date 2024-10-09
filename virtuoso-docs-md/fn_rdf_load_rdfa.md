@@ -1,10 +1,10 @@
-<div id="fn_rdf_load_rdfa" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ as a sequence of separate RDF triples.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_load_rdfa" class="funcsynopsis">
+<div>
 
 |                                   |                              |
 |-----------------------------------|------------------------------|
@@ -25,7 +25,7 @@ as a sequence of separate RDF triples.
 |                                   | in `omt_top_rdf ` varchar ,  |
 |                                   | in `graph_uri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ as a sequence of separate RDF triples.
 
 </div>
 
-<div id="desc_rdf_load_rdfa" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ separate RDF triples.
 
 </div>
 
-<div id="params_rdf_load_rdfa" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100823" class="refsect2">
+<div>
 
 ### rdfa_text
 
@@ -56,7 +56,7 @@ text of document containing RDFa data
 
 </div>
 
-<div id="id100826" class="refsect2">
+<div>
 
 ### omt_top_rdf
 
@@ -64,7 +64,7 @@ base IRI to resolve relative IRIs
 
 </div>
 
-<div id="id100829" class="refsect2">
+<div>
 
 ### graph_uri
 
@@ -74,7 +74,7 @@ the IRI of destination graph
 
 </div>
 
-<div id="ret_rdf_load_rdfa" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,15 +82,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_rdf_load_rdfa" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_load_rdfa" class="example">
+<div>
 
 **Example 24.264. Simple Use**
 
-<div class="example-contents">
+<div>
 
 Load from local file:
 
@@ -130,7 +130,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_rdf_load_rdfa" class="refsect1">
+<div>
 
 ## See Also
 

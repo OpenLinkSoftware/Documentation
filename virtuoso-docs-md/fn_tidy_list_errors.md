@@ -1,10 +1,10 @@
-<div id="fn_tidy_list_errors" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ list of errors in given input HTML text
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_tidy_list_errors" class="funcsynopsis">
+<div>
 
 |                               |                                |
 |-------------------------------|--------------------------------|
 | ` `**`tidy_list_errors`**` (` | in `raw_html ` varchar ,       |
 |                               | in `tidy_config ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ list of errors in given input HTML text
 
 </div>
 
-<div id="desc_42" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ target="_top">http://www.w3.org/People/Raggett/tidy/</a> .
 
 </div>
 
-<div id="params_14" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113740" class="refsect2">
+<div>
 
 ### raw_html
 
@@ -59,7 +59,7 @@ will not be mentioned by Tidy.
 
 </div>
 
-<div id="id113744" class="refsect2">
+<div>
 
 ### tidy_config
 
@@ -76,7 +76,7 @@ class="function">tidy_html</code></a> .
 
 </div>
 
-<div id="ret_12" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,7 +85,7 @@ varchar.
 
 </div>
 
-<div id="errors_tidy_list_errors" class="refsect1">
+<div>
 
 ## Errors
 
@@ -96,7 +96,7 @@ resulting string without signalling them.
 
 </div>
 
-<div id="seealso_22" class="refsect1">
+<div>
 
 ## See Also
 

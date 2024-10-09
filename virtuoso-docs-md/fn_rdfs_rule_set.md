@@ -1,10 +1,10 @@
-<div id="fn_rdfs_rule_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ rdfs_rule_set — Adds the applicable facts of the graph into a rule set.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdfs_rule_set" class="funcsynopsis">
+<div>
 
 |                            |                           |
 |----------------------------|---------------------------|
@@ -24,7 +24,7 @@ rdfs_rule_set — Adds the applicable facts of the graph into a rule set.
 |                            | in `graph_iri ` varchar , |
 |                            | in `remove ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ rdfs_rule_set — Adds the applicable facts of the graph into a rule set.
 
 </div>
 
-<div id="desc_rdfs_rule_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ part as part of a rule-enhancement effort.
 
 </div>
 
-<div id="params_rdfs_rule_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101901" class="refsect2">
+<div>
 
 ### rule_name
 
@@ -58,7 +58,7 @@ Rule name (literal that identifies the rule).
 
 </div>
 
-<div id="id101904" class="refsect2">
+<div>
 
 ### graph_iri
 
@@ -67,7 +67,7 @@ used as inference rules,
 
 </div>
 
-<div id="id101907" class="refsect2">
+<div>
 
 ### remove
 
@@ -78,15 +78,15 @@ removed from the rule set.
 
 </div>
 
-<div id="examples_rdfs_rule_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdfs_rule_set1" class="example">
+<div>
 
 **Example 24.280. Simple Usage Example**
 
-<div class="example-contents">
+<div>
 
 Google and Bloomberg Stock Quote Services return HTML5+Microdata based
 Linked Open Data using terms from Schema.org. As will be quite common,
@@ -124,11 +124,11 @@ SQL> RDFS_RULE_SET ('schema_stock_quotes', 'http://example.com/inference-rule-fo
 
   
 
-<div id="ex_rdfs_rule_set2" class="example">
+<div>
 
 **Example 24.281. Create Rule example**
 
-<div class="example-contents">
+<div>
 
 Create rule set and verify rule's existence:
 
@@ -158,7 +158,7 @@ virtrdf-meta-entity-class            http://www.openlinksw.com/schemas/virtrdf-m
 
 </div>
 
-<div id="seealso_rdfs_rule_set" class="refsect1">
+<div>
 
 ## See Also
 

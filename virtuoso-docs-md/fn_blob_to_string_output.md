@@ -1,10 +1,10 @@
-<div id="fn_blob_to_string_output" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ blob_to_string_output — Convert a blob to string session
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div class="funcsynopsis">
+<div>
 
 |                                           |                     |
 |-------------------------------------------|---------------------|
 | `varchar `**`blob_to_string_output`**` (` | in `blob ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ blob_to_string_output — Convert a blob to string session
 
 </div>
 
-<div id="desc_blob_to_string_output" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ XML (XPER)</span> and <span class="type">string_output streams </span> .
 
 </div>
 
-<div id="params_blob_to_string_output" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81491" class="refsect2">
+<div>
 
 ### *`blob `*
 
@@ -61,7 +61,7 @@ XML (XPER)</span> and <span class="type">string_output streams </span> .
 
 </div>
 
-<div id="ret_blob_to_string_output" class="refsect1">
+<div>
 
 ## Return types
 
@@ -69,15 +69,15 @@ XML (XPER)</span> and <span class="type">string_output streams </span> .
 
 </div>
 
-<div id="errors_blob_to_string_output" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id81505" class="table">
+<div>
 
 **Table 24.7. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                            | Description |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------|-------------|
@@ -93,15 +93,15 @@ XML (XPER)</span> and <span class="type">string_output streams </span> .
 
 </div>
 
-<div id="examples_blob_to_string_output" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_blob_to_string_output" class="example">
+<div>
 
 **Example 24.29. Various conversions**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> use Demo;
@@ -133,7 +133,7 @@ SQL>
 
 </div>
 
-<div id="seealso_blob_to_string_output" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="bloggerclientcompatibility" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,27 +17,27 @@
 The Virtuoso Blog server implementation has been tested against the
 following blog client applications:
 
-|                                                                                                                    |
-|--------------------------------------------------------------------------------------------------------------------|
-| <a href="http://radio.userland.com/download" class="ulink" target="_top"                                           
- shape="rect">Radio Userland</a> (Manila Blogger Bridge tool and Upstreaming), available for MS Windows and MacOS X  |
-| <a href="http://www.newzcrawler.com/downloads.shtml" class="ulink"                                                 
- target="_top" shape="rect">NewzCrawler</a> , available for MS Windows                                               |
-| <a href="http://wbloggar.com/download/" class="ulink" target="_top"                                                
- shape="rect">w.bloggar</a> , available for MS Windows                                                               |
-| <a href="http://blogbuddy.sourceforge.net/" class="ulink" target="_top"                                            
- shape="rect">blogBuddy</a> , available for MS Windows                                                               |
-| <a href="http://www.zempt.com/download/" class="ulink" target="_top"                                               
- shape="rect">Zempt</a> , available for MS Windows                                                                   |
-| <a href="http://www.farook.org/BlogMan.htm" class="ulink" target="_top"                                            
- shape="rect">BlogMan</a> , available for MS Windows                                                                 |
-| <a href="http://www.myelin.co.nz/thinblog/" class="ulink" target="_top"                                            
- shape="rect">thinblog</a> , Java based client                                                                       |
+|                                                                                                                     |
+|---------------------------------------------------------------------------------------------------------------------|
+| <a href="http://radio.userland.com/download" class="ulink"                                                          
+ target="_top">Radio Userland</a> (Manila Blogger Bridge tool and Upstreaming), available for MS Windows and MacOS X  |
+| <a href="http://www.newzcrawler.com/downloads.shtml" class="ulink"                                                  
+ target="_top">NewzCrawler</a> , available for MS Windows                                                             |
+| <a href="http://wbloggar.com/download/" class="ulink"                                                               
+ target="_top">w.bloggar</a> , available for MS Windows                                                               |
+| <a href="http://blogbuddy.sourceforge.net/" class="ulink"                                                           
+ target="_top">blogBuddy</a> , available for MS Windows                                                               |
+| <a href="http://www.zempt.com/download/" class="ulink"                                                              
+ target="_top">Zempt</a> , available for MS Windows                                                                   |
+| <a href="http://www.farook.org/BlogMan.htm" class="ulink"                                                           
+ target="_top">BlogMan</a> , available for MS Windows                                                                 |
+| <a href="http://www.myelin.co.nz/thinblog/" class="ulink"                                                           
+ target="_top">thinblog</a> , Java based client                                                                       |
 
 The steps required to allow third-party clients to operate with Virtuoso
 are:
 
-<div class="orderedlist">
+<div>
 
 1.  Create a WebDAV account using the Server Administration Interface
     making sure that the home directory is created as /DAV/\<username\>/

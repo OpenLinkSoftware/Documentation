@@ -1,6 +1,6 @@
-<div id="installnetriavd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,9 +21,9 @@ title="2.12. Creating A Simple .NET RIA Services Application To Display Data Fr
 a Simple .Net RIA Services Application to Display Data From Virtuoso</a>
 .
 
-<div id="installnetriavdpreq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,7 +37,7 @@ a Simple .Net RIA Services Application to Display Data From Virtuoso</a>
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  A working copy of the application created in
     <a href="installnetriadd.html" class="link"

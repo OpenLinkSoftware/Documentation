@@ -1,10 +1,10 @@
-<div id="fn_rdf_geo_fill" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ properties into geometries.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_geo_fill" class="funcsynopsis">
+<div>
 
 |                                  |                                                 |
 |----------------------------------|-------------------------------------------------|
 | ` `**`DB.DBA.RDF_GEO_FILL`**` (` | `n_threads ` integer (optional, default 4) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ properties into geometries.
 
 </div>
 
-<div id="desc_rdf_geo_fill" class="refsect1">
+<div>
 
 ## Description
 
@@ -62,11 +62,11 @@ checkpoint is made.
 
 </div>
 
-<div id="params_rdf_geo_fill" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101985" class="refsect2">
+<div>
 
 ### n_threads
 
@@ -78,15 +78,15 @@ geo:lat and geo:long properties).
 
 </div>
 
-<div id="examples_rdf_geo_fill" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_geo_fill" class="example">
+<div>
 
 **Example 24.282. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> rdf_geo_fill ();
@@ -102,7 +102,7 @@ Done. -- 282 msec.
 
 </div>
 
-<div id="seealso_rdf_geo_fill" class="refsect1">
+<div>
 
 ## See Also
 

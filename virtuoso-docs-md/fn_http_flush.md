@@ -1,10 +1,10 @@
-<div id="fn_http_flush" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ HTTP stream and try sending data in chunked mode.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_flush" class="funcsynopsis">
+<div>
 
 |                         |                             |
 |-------------------------|-----------------------------|
 | ` `**`http_flush`**` (` | in `try_what ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ HTTP stream and try sending data in chunked mode.
 
 </div>
 
-<div id="desc_http_flush" class="refsect1">
+<div>
 
 ## Description
 
@@ -76,11 +76,11 @@ Chunked mode is not supported for static content.
 
 </div>
 
-<div id="params_http_flush" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92557" class="refsect2">
+<div>
 
 ### try_what
 
@@ -91,15 +91,15 @@ Virtuoso to try sending the output of the VSP page in chunked mode.
 
 </div>
 
-<div id="examples_http_flush" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_flush" class="example">
+<div>
 
 **Example 24.160. Using http_flush()**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp
@@ -115,11 +115,11 @@ Virtuoso to try sending the output of the VSP page in chunked mode.
 
   
 
-<div id="ex_http_flush_01" class="example">
+<div>
 
 **Example 24.161. Using http_flush() small chunks**
 
-<div class="example-contents">
+<div>
 
 The following example will render in browser at every loop iteration
 'state=N'; so this will be visible at 'run-time' not when loop finished
@@ -148,7 +148,7 @@ which may take a long.
 
 </div>
 
-<div id="seealso_http_flush" class="refsect1">
+<div>
 
 ## See Also
 

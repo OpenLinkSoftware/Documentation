@@ -1,10 +1,10 @@
-<div id="fn_http_client" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_client — returns a varchar containing the body of the request uri
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_client" class="funcsynopsis">
+<div>
 
 |                                 |                                |
 |---------------------------------|--------------------------------|
@@ -34,7 +34,7 @@ http_client — returns a varchar containing the body of the request uri
 |                                 | in `insecure ` integer ,       |
 |                                 | in `n_redirects ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -44,7 +44,7 @@ http_client — returns a varchar containing the body of the request uri
 
 </div>
 
-<div id="desc_http_client" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ as https client w/o client certificate.
 
 </div>
 
-<div id="params_http_client" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92162" class="refsect2">
+<div>
 
 ### url
 
@@ -70,7 +70,7 @@ target URL (http: or https: are supported)
 
 </div>
 
-<div id="id92165" class="refsect2">
+<div>
 
 ### uid
 
@@ -78,7 +78,7 @@ user name
 
 </div>
 
-<div id="id92168" class="refsect2">
+<div>
 
 ### pwd
 
@@ -86,7 +86,7 @@ user password
 
 </div>
 
-<div id="id92171" class="refsect2">
+<div>
 
 ### http_method
 
@@ -94,7 +94,7 @@ user password
 
 </div>
 
-<div id="id92174" class="refsect2">
+<div>
 
 ### http_headers
 
@@ -102,7 +102,7 @@ a string containing a HTTP headers supplied by application
 
 </div>
 
-<div id="id92177" class="refsect2">
+<div>
 
 ### body
 
@@ -110,7 +110,7 @@ content to be sent
 
 </div>
 
-<div id="id92180" class="refsect2">
+<div>
 
 ### cert_file
 
@@ -122,7 +122,7 @@ repository.
 
 </div>
 
-<div id="id92184" class="refsect2">
+<div>
 
 ### cert_pwd
 
@@ -130,7 +130,7 @@ password for opening the certificate file.
 
 </div>
 
-<div id="id92187" class="refsect2">
+<div>
 
 ### timeout
 
@@ -138,7 +138,7 @@ use to set how many seconds to wait for reply from the client
 
 </div>
 
-<div id="id92190" class="refsect2">
+<div>
 
 ### proxy
 
@@ -171,7 +171,7 @@ Exception could be also 127.0.0.\* i.e. there could have also wildcard.
 
 </div>
 
-<div id="id92200" class="refsect2">
+<div>
 
 ### ca_certs
 
@@ -179,7 +179,7 @@ Certificate CA. Default is null.
 
 </div>
 
-<div id="id92203" class="refsect2">
+<div>
 
 ### insecure
 
@@ -187,7 +187,7 @@ Sets secure or not. Default is 0.
 
 </div>
 
-<div id="id92206" class="refsect2">
+<div>
 
 ### n_redirects
 

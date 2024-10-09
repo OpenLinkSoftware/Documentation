@@ -1,6 +1,6 @@
-<div id="vdbenginedb2crvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the DB2 Samples database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora1" class="figure">
+    <div>
 
     **Figure 8.286. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the DB2 Samples database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_08" class="figure">
+    <div>
 
     **Figure 8.287. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the DB2 Samples database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora2" class="figure">
+    <div>
 
     **Figure 8.288. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/ebora2.png)
 
@@ -137,15 +137,15 @@ the DB2 Samples database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora3" class="figure">
+    <div>
 
     **Figure 8.289. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/eora3.png)
 
@@ -161,15 +161,15 @@ the DB2 Samples database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora4" class="figure">
+    <div>
 
     **Figure 8.290. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the DB2 Samples database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora5" class="figure">
+    <div>
 
     **Figure 8.291. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/eora5.png)
 
@@ -241,15 +241,15 @@ the DB2 Samples database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora6" class="figure">
+    <div>
 
     **Figure 8.292. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the DB2 Samples database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora7" class="figure">
+    <div>
 
     **Figure 8.293. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the DB2 Samples database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora8" class="figure">
+    <div>
 
     **Figure 8.294. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the DB2 Samples database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora9" class="figure">
+    <div>
 
     **Figure 8.295. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -370,15 +370,15 @@ the DB2 Samples database:
 13. Select the Select Database From List radio button and choose SAMPLE
     from the drop down list. Click OK.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora10" class="figure">
+    <div>
 
     **Figure 8.296. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/ebora10.png)
 
@@ -398,15 +398,15 @@ the DB2 Samples database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora11" class="figure">
+    <div>
 
     **Figure 8.297. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -435,15 +435,15 @@ the DB2 Samples database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora12" class="figure">
+    <div>
 
     **Figure 8.298. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/ebora12.png)
 
@@ -480,15 +480,15 @@ the DB2 Samples database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora13" class="figure">
+    <div>
 
     **Figure 8.299. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/ebora13.png)
 
@@ -509,15 +509,15 @@ the DB2 Samples database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ebora14" class="figure">
+    <div>
 
     **Figure 8.300. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/ebora14.png)
 

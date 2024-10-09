@@ -1,10 +1,10 @@
-<div id="fn_checkpoint_interval" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ checkpoint_interval — Configure database checkpointing
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_checkpoint_interval" class="funcsynopsis">
+<div>
 
 |                                         |                            |
 |-----------------------------------------|----------------------------|
 | `integer `**`checkpoint_interval`**` (` | in `minutes ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ checkpoint_interval — Configure database checkpointing
 
 </div>
 
-<div id="desc_checkpoint_interval" class="refsect1">
+<div>
 
 ## Description
 
@@ -59,11 +59,11 @@ checkpoint.
 
 </div>
 
-<div id="params_checkpoint_interval" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82210" class="refsect2">
+<div>
 
 ### minutes
 
@@ -74,7 +74,7 @@ checkpoints.
 
 </div>
 
-<div id="ret_checkpoint_interval" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,7 +83,7 @@ integer.
 
 </div>
 
-<div id="errors_checkpoint_interval" class="refsect1">
+<div>
 
 ## Errors
 
@@ -92,15 +92,15 @@ title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
 </div>
 
-<div id="examples_checkpoint_interval" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_checkpoint_interval" class="example">
+<div>
 
 **Example 24.41. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Disable checkpoints:
 
@@ -131,7 +131,7 @@ Done. -- 4 msec.
 
 </div>
 
-<div id="seealso_checkpoint_interval" class="refsect1">
+<div>
 
 ## See Also
 

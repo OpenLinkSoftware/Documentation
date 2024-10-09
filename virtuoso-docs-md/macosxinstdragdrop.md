@@ -1,6 +1,6 @@
-<div id="macosxinstdragdrop" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ Installer for Mac OS X require Lion (10.7.x), Mountain Lion (10.8.x),
 Mavericks (10.9.x), or later. Virtuoso 6 remains available for
 deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
-<div class="orderedlist">
+<div>
 
 1.  <a href="http://virtuoso.openlinksw.com/download/" class="ulink"
     target="_top">Download</a> and double-click on the Virtuoso
@@ -29,15 +29,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
     , to start the installation.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe1" class="figure">
+    <div>
 
     **Figure 2.17. Mac OS X installer: Start installation**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Start installation](images/mac/v7pe1.png)
 
@@ -54,15 +54,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 2.  Drag the Virtuoso application icon to your Applications folder
     (recommended) or any preferred location on your Mac.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe2" class="figure">
+    <div>
 
     **Figure 2.18. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe2.png)
@@ -81,15 +81,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
     launch the Virtuoso Application Manager Menu Extra, which will
     display as a V symbol in the menu bar.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe6" class="figure">
+    <div>
 
     **Figure 2.19. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe6.png)
@@ -114,15 +114,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe7" class="figure">
+    <div>
 
     **Figure 2.20. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe7.png)
@@ -140,15 +140,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 5.  If this is a first time installation of OpenLink components, a
     dialog will be prompt you to install the OpenLink License Manager.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe8" class="figure">
+    <div>
 
     **Figure 2.21. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe8.png)
@@ -163,7 +163,7 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
     </div>
 
-    <div class="orderedlist">
+    <div>
 
     1.  Click the
 
@@ -171,15 +171,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
         button to start the installation.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="v7pe9" class="figure">
+        <div>
 
         **Figure 2.22. Mac OS X installer: Drag Virtuoso Application**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Mac OS X installer: Drag Virtuoso
         Application](images/mac/v7pe9.png)
@@ -196,15 +196,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
     2.  Select the disk the installation should be performed on.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="v7pe10" class="figure">
+        <div>
 
         **Figure 2.23. Mac OS X installer: Drag Virtuoso Application**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Mac OS X installer: Drag Virtuoso
         Application](images/mac/v7pe10.png)
@@ -225,15 +225,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
         to commence the installation of the License Manager components.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="v7pe11" class="figure">
+        <div>
 
         **Figure 2.24. Mac OS X installer: Drag Virtuoso Application**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Mac OS X installer: Drag Virtuoso
         Application](images/mac/v7pe11.png)
@@ -252,15 +252,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
         installation of the License Manager, which will be automatically
         started and ready for use upon installation.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="v7pe12" class="figure">
+        <div>
 
         **Figure 2.25. Mac OS X installer: Drag Virtuoso Application**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Mac OS X installer: Drag Virtuoso
         Application](images/mac/v7pe12.png)
@@ -282,15 +282,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
     installation. Click the Install button to install the license file
     of your choice.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe13" class="figure">
+    <div>
 
     **Figure 2.26. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe13.png)
@@ -305,7 +305,7 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
     </div>
 
-    <div class="orderedlist">
+    <div>
 
     1.  Navigate to the location of the license file to be installed,
         and click the
@@ -319,15 +319,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
         folder.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="v7pe14" class="figure">
+        <div>
 
         **Figure 2.27. Mac OS X installer: Drag Virtuoso Application**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Mac OS X installer: Drag Virtuoso
         Application](images/mac/v7pe14.png)
@@ -345,15 +345,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
     2.  A dialog confirming the successful installation of the license
         file will be displayed.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="v7pe15" class="figure">
+        <div>
 
         **Figure 2.28. Mac OS X installer: Drag Virtuoso Application**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Mac OS X installer: Drag Virtuoso
         Application](images/mac/v7pe15.png)
@@ -376,15 +376,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
     button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe16" class="figure">
+    <div>
 
     **Figure 2.29. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe16.png)
@@ -411,15 +411,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe17" class="figure">
+    <div>
 
     **Figure 2.30. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe17.png)
@@ -439,15 +439,15 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
     \<http://full-hostname.example.com:8890/conductor\> from a remote
     host) into any web browser.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="v7pe18" class="figure">
+    <div>
 
     **Figure 2.31. Mac OS X installer: Drag Virtuoso Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mac OS X installer: Drag Virtuoso
     Application](images/mac/v7pe18.png)
@@ -464,9 +464,9 @@ deployment on Leopard (10.5.x) or Snow Leopard (10.6.x).
 
 </div>
 
-<div id="macosxinstdragdroptrbsh" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -484,15 +484,15 @@ Many issues may be quickly diagnosed and resolved by reviewing
 Virtuoso's `.log` file, typically located alongside the active `.db`
 file.
 
-<div class="figure-float">
+<div>
 
-<div id="v7pe19" class="figure">
+<div>
 
 **Figure 2.32. Mac OS X installer: Troubleshooting**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Mac OS X installer: Troubleshooting](images/mac/v7pe19.png)
 
@@ -509,7 +509,7 @@ file.
 The default instance log file may be opened in Mac OS X's Console.app
 by:
 
-<div class="itemizedlist">
+<div>
 
 - selecting
 
@@ -534,15 +534,15 @@ by:
   <span class="emphasis">*Contents -\> virtuoso -\> database -\>
   virtuoso.log*</span>
 
-  <div class="figure-float">
+  <div>
 
-  <div id="v7pe20" class="figure">
+  <div>
 
   **Figure 2.33. Mac OS X installer: Troubleshooting**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Mac OS X installer: Troubleshooting](images/mac/v7pe20.png)
 
@@ -568,9 +568,9 @@ by:
 
 </div>
 
-<div id="macosxinstdragdroptrbshmissingl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -599,9 +599,9 @@ cd /Library/Application\ Support/openlink/bin
 
 </div>
 
-<div id="macosxinstdragdroptrbshexpiredl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -623,9 +623,9 @@ class="ulink" target="_top">documented</a> .
 
 </div>
 
-<div id="macosxinstdragdroptrbsnolm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

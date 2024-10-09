@@ -1,6 +1,6 @@
-<div id="updatestmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,11 +25,11 @@ The update statement is made up by selecting the table to update, the
 search condition that identifies which rows you want to update, and the
 `column=value` of each column you wish to change.
 
-<div id="ex_updatestatement" class="example">
+<div>
 
 **Example 9.30. Basic Update Statement**
 
-<div class="example-contents">
+<div>
 
 A table can be updated using:
 
@@ -46,11 +46,11 @@ update demo.dba.employees e
 
   
 
-<div id="ex_updatestatementfrom" class="example">
+<div>
 
 **Example 9.31. Update from Select**
 
-<div class="example-contents">
+<div>
 
 It is possible to update one table based on a select from another table.
 Ensure that the selection is properly conditioned to update.

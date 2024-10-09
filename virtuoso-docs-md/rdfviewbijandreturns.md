@@ -1,6 +1,6 @@
-<div id="rdfviewbijandreturns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,7 +24,7 @@ class declaration should end with <span class="emphasis">*option
 may recognize the bijection automatically but an explicit declaration is
 always a good idea.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>
@@ -83,7 +83,7 @@ create iri class oplsioc:grantee_iri using
 It is very important to keep IRI classes easily distinguishable by the
 text of IRI string and easy to parse.
 
-<div class="itemizedlist">
+<div>
 
 - Format
 

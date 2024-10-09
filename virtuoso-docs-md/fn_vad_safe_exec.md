@@ -1,10 +1,10 @@
-<div id="fn_vad_safe_exec" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAD_SAFE_EXEC — execute without signalling errors
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_safe_exec" class="funcsynopsis">
+<div>
 
 |                                   |                         |
 |-----------------------------------|-------------------------|
 | `DB.DBA. `**`VAD_SAFE_EXEC`**` (` | in `expr ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ VAD_SAFE_EXEC — execute without signalling errors
 
 </div>
 
-<div id="desc_59" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ is necessary to drop a table without insurance of it's existence.
 
 </div>
 
-<div id="params_25" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117871" class="refsect2">
+<div>
 
 ### expr
 
@@ -55,7 +55,7 @@ text of expression
 
 </div>
 
-<div id="seealso_31" class="refsect1">
+<div>
 
 ## See Also
 

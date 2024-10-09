@@ -1,10 +1,10 @@
-<div id="fn_bit_xor" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ bit_xor — Returns bitwise XOR (exclusive "or") of two 32-bit integers.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bit_xor" class="funcsynopsis">
+<div>
 
 |                      |                       |
 |----------------------|-----------------------|
 | ` `**`bit_xor`**` (` | in `n1 ` integer ,    |
 |                      | in `n2 ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ bit_xor — Returns bitwise XOR (exclusive "or") of two 32-bit integers.
 
 </div>
 
-<div id="desc_bit_xor" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ bits, to provide compartibility.
 
 </div>
 
-<div id="ret_bit_xor" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -52,15 +52,15 @@ Integer.
 
 </div>
 
-<div id="examples_bit_xor" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_bit_xor" class="example">
+<div>
 
 **Example 24.27. Bitwise-XOR**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select bit_xor (18, 6);
@@ -81,7 +81,7 @@ select bit_xor (-18, 6);
 
 </div>
 
-<div id="seealso_bit_xor" class="refsect1">
+<div>
 
 ## See Also
 

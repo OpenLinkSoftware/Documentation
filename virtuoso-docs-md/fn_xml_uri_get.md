@@ -1,10 +1,10 @@
-<div id="fn_xml_uri_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xml_uri_get — Retrieve a resource based on a URI
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_uri_get" class="funcsynopsis">
+<div>
 
 |                                         |                        |
 |-----------------------------------------|------------------------|
 | `varchar DB.DBA. `**`xml_uri_get`**` (` | in `base ` varchar ,   |
 |                                         | in `ref ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xml_uri_get — Retrieve a resource based on a URI
 
 </div>
 
-<div id="desc_69" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ http_get directly.
 
 </div>
 
-<div id="params_33" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123540" class="refsect2">
+<div>
 
 ### base
 
@@ -71,7 +71,7 @@ referenced.
 
 </div>
 
-<div id="id123543" class="refsect2">
+<div>
 
 ### ref
 
@@ -81,7 +81,7 @@ The name of the resource as a relative reference from the base URI.
 
 </div>
 
-<div id="ret_09_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -89,15 +89,15 @@ The referenced resource.
 
 </div>
 
-<div id="errors_xml_uri_get" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id123551" class="table">
+<div>
 
-**Table 24.132. Errors signalled by**
+**Table 24.131. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQL State                       | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -111,15 +111,15 @@ The referenced resource.
 
 </div>
 
-<div id="examples_17_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_uri_get" class="example">
+<div>
 
 **Example 24.520. Basic Application of xml_uri_get()**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare doc_base varchar;
@@ -145,7 +145,7 @@ http_value(
 
 </div>
 
-<div id="seealso_42" class="refsect1">
+<div>
 
 ## See Also
 

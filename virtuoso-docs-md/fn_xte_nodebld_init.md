@@ -1,10 +1,10 @@
-<div id="fn_xte_nodebld_init" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xte_nodebld_init — Creates the empty vector
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xte_nodebld_init" class="funcsynopsis">
+<div>
 
 |                               |                       |
 |-------------------------------|-----------------------|
 | ` `**`xte_nodebld_init`**` (` | inout `arg ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xte_nodebld_init — Creates the empty vector
 
 </div>
 
-<div id="desc_xte_nodebld_init" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ This function creates the empty vector and assign it to the argument.
 
 </div>
 
-<div id="xte_nodebld_init" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121879" class="refsect2">
+<div>
 
 ### arg
 
@@ -54,15 +54,15 @@ Variable of any type
 
 </div>
 
-<div id="errors_xte_nodebld_init" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121884" class="table">
+<div>
 
-**Table 24.126. Errors signalled by `xte_nodebld_init `**
+**Table 24.125. Errors signalled by `xte_nodebld_init `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                             | Description |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------|-------------|
@@ -76,15 +76,15 @@ Variable of any type
 
 </div>
 
-<div id="xte_nodebld_init_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xte_nodebld_init" class="example">
+<div>
 
 **Example 24.493. Simple Use**
 
-<div class="example-contents">
+<div>
 
 After calling xte_nodebld_init() the vector acc of type any is empty and
 may be used by xte_nodebld_acc function
@@ -101,7 +101,7 @@ may be used by xte_nodebld_acc function
 
 </div>
 
-<div id="seealso_xte_nodebld_init" class="refsect1">
+<div>
 
 ## See Also
 

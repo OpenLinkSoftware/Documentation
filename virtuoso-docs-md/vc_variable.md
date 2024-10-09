@@ -1,10 +1,10 @@
-<div id="vc_variable" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ variable — Page variable - a user defined member of page class.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_variable" class="funcsynopsis">
+<div>
 
 |                          |                               |
 |--------------------------|-------------------------------|
@@ -32,7 +32,7 @@ variable — Page variable - a user defined member of page class.
 |                          | `debug-srcline` (optional) ,  |
 |                          | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -42,7 +42,7 @@ variable — Page variable - a user defined member of page class.
 
 </div>
 
-<div id="vc_desc_variable" class="refsect1">
+<div>
 
 ## Description
 
@@ -64,7 +64,7 @@ the VSPX page after page initialization.
 
 </div>
 
-<div id="vc_attrs_variable" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -83,11 +83,11 @@ default clause of a user defined type member.
 
 **persist. **
 
-<div id="id43932" class="table">
+<div>
 
 **Table 14.13. Allowed values of the 'persist' attribute**
 
-<div class="table-contents">
+<div>
 
 |           |                                                                       |
 |-----------|-----------------------------------------------------------------------|
@@ -131,15 +131,15 @@ debugging log.
 
 </div>
 
-<div id="vc_ex_variable" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_variable__0" class="example">
+<div>
 
 **Example 14.47.  Declaration of page variable**
 
-<div class="example-contents">
+<div>
 
 The v:variable element defines a new member of page class and hance we
 can access it with self.mask in rest of VSPX code.

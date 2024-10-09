@@ -1,10 +1,10 @@
-<div id="fn_xml_auto_dtd" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ FOR XML clause
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_auto_dtd" class="funcsynopsis">
+<div>
 
 |                                  |                                 |
 |----------------------------------|---------------------------------|
 | `varchar `**`xml_auto_dtd`**` (` | in `query ` varchar ,           |
 |                                  | in `root_element ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ FOR XML clause
 
 </div>
 
-<div id="desc_xml_auto_dtd" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ root element.
 
 </div>
 
-<div id="params_xml_auto_dtd" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122790" class="refsect2">
+<div>
 
 ### query
 
@@ -57,7 +57,7 @@ valid SQL query
 
 </div>
 
-<div id="id122793" class="refsect2">
+<div>
 
 ### root_element
 
@@ -67,7 +67,7 @@ name of root element to wrap result into
 
 </div>
 
-<div id="ret_xml_auto_dtd" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,7 +75,7 @@ varchar of the resultant DTD
 
 </div>
 
-<div id="errors_xml_auto_dtd" class="refsect1">
+<div>
 
 ## Errors
 
@@ -84,15 +84,15 @@ compiler signals an error message, the function resignals the error.
 
 </div>
 
-<div id="examples_xml_auto_dtd" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_auto_dtd" class="example">
+<div>
 
 **Example 24.508. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select xml_auto_dtd ('  select "category"."CategoryID", "CategoryName",
@@ -138,7 +138,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xml_auto_dtd" class="refsect1">
+<div>
 
 ## See Also
 

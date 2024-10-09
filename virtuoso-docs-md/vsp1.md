@@ -1,6 +1,6 @@
-<div id="vsp1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,15 +18,15 @@ The Virtuoso Server Pages subsystem is an integral part of the Virtuoso
 server. A VSP page is a file system or DAV resident resource that
 contains Virtuoso/PL code intermixed with HTML or other static content.
 
-<div class="figure-float">
+<div>
 
-<div id="vspconcept" class="figure">
+<div>
 
 **Figure 14.14. VSP Conceptual Diagram**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![VSP Conceptual Diagram](images/vspconcept.jpg)
 
@@ -120,7 +120,7 @@ servelets or other web server functions. Virtuoso, however, is capable
 of hosting many other dynamic engines also, such as PHP, JSP and
 ASP.Net.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -152,9 +152,9 @@ title="Virtuoso As A Proxy">Virtuoso as a Proxy</a></p></td>
 
 </div>
 
-<div id="vspmarkup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -186,7 +186,7 @@ tag and end in another. Code outside of these blocks is ignored by
 Virtuoso and placed directly on the HTTP stream to be sent to the
 client.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                           |
 |:--------------------------:|:------------------------------------------|
@@ -249,11 +249,11 @@ string composition based on a template. When using
 compose data to send to the user agent the %V and %U letters can be used
 to introduce escapes similar to http_value and http_url, respectively.
 
-<div id="ex_httpfunctions" class="example">
+<div>
 
 **Example 14.6. HTTP Functions**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 http (' % <b>')          ' % <b>'
@@ -268,9 +268,9 @@ http_value (12, 'li')    '<li>12</li>'
 
   
 
-<div id="vspmarkupshort" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -301,11 +301,11 @@ the output. The `<?= ` tag accepts a SQL expression and casts the value
 into a string, which is sent to the output. The `<?/ ` markup sends the
 value of the expression to the client with HTTP URL escapes.
 
-<div id="vspmkup" class="example">
+<div>
 
 **Example 14.7. VSP Markup**
 
-<div class="example-contents">
+<div>
 
 Here is a very simple example of making a two column HTML table from the
 results of a "select" SQL statement. First using normal functions:

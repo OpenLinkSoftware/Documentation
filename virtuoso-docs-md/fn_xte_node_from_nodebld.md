@@ -1,10 +1,10 @@
-<div id="fn_xte_node_from_nodebld" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ element
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xte_node_from_nodebld" class="funcsynopsis">
+<div>
 
 |                                    |                           |
 |------------------------------------|---------------------------|
 | ` `**`xte_node_from_nodebld`**` (` | in `head ` any ,          |
 |                                    | inout `element ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ element
 
 </div>
 
-<div id="desc_xte_node_from_nodebld" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ first argument and returns a vector corresponding to an XML element.
 
 </div>
 
-<div id="xte_node_from_nodebld" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121644" class="refsect2">
+<div>
 
 ### head
 
@@ -55,7 +55,7 @@ This argument is a vector returned by xte_head() function
 
 </div>
 
-<div id="id121647" class="refsect2">
+<div>
 
 ### element
 
@@ -66,15 +66,15 @@ then filled by xte_nodebld_acc and xte_nodebld_final() functions
 
 </div>
 
-<div id="errors_xte_node_from_nodebld" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121652" class="table">
+<div>
 
-**Table 24.123. Errors signalled by `xte_node_from_nodebld `**
+**Table 24.122. Errors signalled by `xte_node_from_nodebld `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                              | Description |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -89,15 +89,15 @@ then filled by xte_nodebld_acc and xte_nodebld_final() functions
 
 </div>
 
-<div id="xte_node_from_nodebld_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xte_node_from_nodebld" class="example">
+<div>
 
 **Example 24.489. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The vector res below is corresponding to the following XML element:
 
@@ -130,7 +130,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xte_node_from_nodebld" class="refsect1">
+<div>
 
 ## See Also
 

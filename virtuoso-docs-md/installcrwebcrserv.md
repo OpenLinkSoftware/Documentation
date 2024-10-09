@@ -1,6 +1,6 @@
-<div id="installcrwebcrserv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -29,7 +29,7 @@ where {?s a <http://demo.openlinksw.com/schemas/northwind#Customer>}
 
 Note:
 
-<div class="itemizedlist">
+<div>
 
 - If the view is added to the Visual Studio project as user "demo" (or
   any other than "dba'), then it must be ensured that the
@@ -46,15 +46,15 @@ Note:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf25" class="figure">
+<div>
 
 **Figure 2.160. create a view**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![create a view](images/ui/sparqlwinf25.png)
 
@@ -71,7 +71,7 @@ Note:
 <span class="emphasis">*Step 2 - Create the Visual Studio Project and
 Add the Model*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Open
 
@@ -83,15 +83,15 @@ Add the Model*</span>
 
     called RDFWebDemo.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf26" class="figure">
+    <div>
 
     **Figure 2.161. create new application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create new application](images/ui/sparqlwinf26.png)
 
@@ -148,15 +148,15 @@ Add the Model*</span>
     and select sparqlview. Check that the Model Namespace is DemoModel
     and click Finish.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf27" class="figure">
+    <div>
 
     **Figure 2.162. Model Namespace**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Model Namespace](images/ui/sparqlwinf27.png)
 
@@ -174,7 +174,7 @@ Add the Model*</span>
 
 <span class="emphasis">*Step 3 - Add the Web Service*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Right click RDFWebDemo in the
 

@@ -1,10 +1,10 @@
-<div id="fn_exec" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ exec — dynamic execution of SQL returning state and result set
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exec" class="funcsynopsis">
+<div>
 
 |                   |                                |
 |-------------------|--------------------------------|
@@ -29,7 +29,7 @@ exec — dynamic execution of SQL returning state and result set
 |                   | out `rows ` vector ,           |
 |                   | out `cursor_handle ` long `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ exec — dynamic execution of SQL returning state and result set
 
 </div>
 
-<div id="desc_exec" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ client.
 
 </div>
 
-<div id="params_exec" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87784" class="refsect2">
+<div>
 
 ### *`str `*
 
@@ -68,7 +68,7 @@ for parameter markers.
 
 </div>
 
-<div id="id87789" class="refsect2">
+<div>
 
 ### state
 
@@ -78,7 +78,7 @@ error is not present.
 
 </div>
 
-<div id="id87793" class="refsect2">
+<div>
 
 ### message
 
@@ -88,7 +88,7 @@ present.
 
 </div>
 
-<div id="id87797" class="refsect2">
+<div>
 
 ### params
 
@@ -97,7 +97,7 @@ SQL being executed. Element 0 corresponding to first ?, etc.
 
 </div>
 
-<div id="id87801" class="refsect2">
+<div>
 
 ### maxrows
 
@@ -106,18 +106,18 @@ retrieve in case of a statement returning a result set.
 
 </div>
 
-<div id="id87805" class="refsect2">
+<div>
 
 ### metadata
 
 An output parameter of type <span class="type">vector </span> returning
 the metadata of the statement and its result.
 
-<div id="id87809" class="table">
+<div>
 
-**Table 24.27. The stmt_meta array**
+**Table 24.26. The stmt_meta array**
 
-<div class="table-contents">
+<div>
 
 | Element | Name        | Description                                                                                                        |
 |---------|-------------|--------------------------------------------------------------------------------------------------------------------|
@@ -131,11 +131,11 @@ the metadata of the statement and its result.
 
   
 
-<div id="id87831" class="table">
+<div>
 
-**Table 24.28. Columns array of metadata**
+**Table 24.27. Columns array of metadata**
 
-<div class="table-contents">
+<div>
 
 | Element | Name       | Description                                                                               |
 |---------|------------|-------------------------------------------------------------------------------------------|
@@ -155,7 +155,7 @@ the metadata of the statement and its result.
 
 </div>
 
-<div id="id87868" class="refsect2">
+<div>
 
 ### rows
 
@@ -164,7 +164,7 @@ the leftmost column as element 0 and so forth.
 
 </div>
 
-<div id="id87871" class="refsect2">
+<div>
 
 ### cursor_handle
 
@@ -174,15 +174,15 @@ The cursor handle for use with related functions.
 
 </div>
 
-<div id="examples_exec" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_exec" class="example">
+<div>
 
 **Example 24.102. Procedure Example**
 
-<div class="example-contents">
+<div>
 
 This stored procedure returns 1 if a given table is empty. An error such
 as a timeout or deadlock would be reported back to the caller as an
@@ -216,7 +216,7 @@ create procedure tb_is_empty (in tb varchar)
 
 </div>
 
-<div id="seealso_exec" class="refsect1">
+<div>
 
 ## See Also
 

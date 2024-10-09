@@ -1,10 +1,10 @@
-<div id="fn_vhost_define" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ VHOST_DEFINE — define a virtual host or virtual directory
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vhost_define" class="funcsynopsis">
+<div>
 
 |                                       |                                    |
 |---------------------------------------|------------------------------------|
@@ -39,7 +39,7 @@ VHOST_DEFINE — define a virtual host or virtual directory
 |                                       | in `opts ` any ,                   |
 |                                       | in `is_default_host ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -49,7 +49,7 @@ VHOST_DEFINE — define a virtual host or virtual directory
 
 </div>
 
-<div id="desc_vhost_define" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ IP-based and name-based.
 
 </div>
 
-<div id="params_vhost_define" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118394" class="refsect2">
+<div>
 
 ### *`vhost `*
 
@@ -75,7 +75,7 @@ INI file.
 
 </div>
 
-<div id="id118399" class="refsect2">
+<div>
 
 ### *`lhost `*
 
@@ -85,7 +85,7 @@ connections. The default value is taken from the Virtuoso INI file.
 
 </div>
 
-<div id="id118404" class="refsect2">
+<div>
 
 ### *`lpath `*
 
@@ -94,7 +94,7 @@ URI for the logical path.
 
 </div>
 
-<div id="id118409" class="refsect2">
+<div>
 
 ### *`ppath `*
 
@@ -103,7 +103,7 @@ i.e. a directory or a path to dav collection on server.
 
 </div>
 
-<div id="id118413" class="refsect2">
+<div>
 
 ### *`is_dav `*
 
@@ -113,7 +113,7 @@ value is 0.
 
 </div>
 
-<div id="id118419" class="refsect2">
+<div>
 
 ### *`is_brws `*
 
@@ -123,7 +123,7 @@ absent. Default value is 0.
 
 </div>
 
-<div id="id118424" class="refsect2">
+<div>
 
 ### *`def_page `*
 
@@ -132,7 +132,7 @@ default page. Default value is NULL.
 
 </div>
 
-<div id="id118429" class="refsect2">
+<div>
 
 ### *`auth_fn `*
 
@@ -144,7 +144,7 @@ NULL.
 
 </div>
 
-<div id="id118434" class="refsect2">
+<div>
 
 ### *`realm `*
 
@@ -153,7 +153,7 @@ authentication function *`auth_func`* . The default value is NULL.
 
 </div>
 
-<div id="id118440" class="refsect2">
+<div>
 
 ### *`ppr_fn `*
 
@@ -163,7 +163,7 @@ page. The default values is NULL.
 
 </div>
 
-<div id="id118445" class="refsect2">
+<div>
 
 ### *`vsp_user `*
 
@@ -174,7 +174,7 @@ is NULL.
 
 </div>
 
-<div id="id118450" class="refsect2">
+<div>
 
 ### *`soap_user `*
 
@@ -183,7 +183,7 @@ SOAP calls. The default values is NULL.
 
 </div>
 
-<div id="id118455" class="refsect2">
+<div>
 
 ### *`sec `*
 
@@ -191,7 +191,7 @@ Security restrictions (SSL, Digest). The default values is NULL.
 
 </div>
 
-<div id="id118459" class="refsect2">
+<div>
 
 ### *`ses_vars `*
 
@@ -200,7 +200,7 @@ session variables are persistent. The default values is 0.
 
 </div>
 
-<div id="id118464" class="refsect2">
+<div>
 
 ### *`soap_opts `*
 
@@ -213,7 +213,7 @@ endpoint</a> .
 
 </div>
 
-<div id="id118469" class="refsect2">
+<div>
 
 ### *`auth_opts `*
 
@@ -228,7 +228,7 @@ checking.
 
 </div>
 
-<div id="id118473" class="refsect2">
+<div>
 
 ### *`opts`*
 
@@ -246,7 +246,7 @@ executed no matter what are their execution permission flag)
 
 </div>
 
-<div id="id118477" class="refsect2">
+<div>
 
 ### *`is_default_host`*
 
@@ -254,7 +254,7 @@ executed no matter what are their execution permission flag)
 
 </div>
 
-<div id="ret_vhost_define" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -262,15 +262,15 @@ The Return is VOID.
 
 </div>
 
-<div id="examples_vhost_define" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vhost_define" class="example">
+<div>
 
 **Example 24.442. Define Virtual Hosts**
 
-<div class="example-contents">
+<div>
 
 The following command will:
 
@@ -378,7 +378,7 @@ DB.DBA.VHOST_DEFINE (
 
 </div>
 
-<div id="seealso_vhost_define" class="refsect1">
+<div>
 
 ## See Also
 

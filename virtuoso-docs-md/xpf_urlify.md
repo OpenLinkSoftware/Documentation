@@ -1,10 +1,10 @@
-<div id="xpf_urlify" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ encoding.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_urlify" class="funcsynopsis">
+<div>
 
 |                           |                    |
 |---------------------------|--------------------|
 | `string `**`urlify`**` (` | `obj ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ encoding.
 
 </div>
 
-<div id="xpf_desc_urlify" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ values of attributes like \<A HREF=...\>.
 
 </div>
 
-<div id="xpf_params_urlify" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129778" class="refsect2">
+<div>
 
 ### obj
 
@@ -59,7 +59,7 @@ Value to be formatted as URI
 
 </div>
 
-<div id="xpf_ret_urlify" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -67,7 +67,7 @@ String
 
 </div>
 
-<div id="xpf_seealso_urlify" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_xper_right_sibling" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,17 +14,17 @@ persistent XMLs, useful for import of huge amounts of XML data
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xper_right_sibling" class="funcsynopsis">
+<div>
 
 |                                 |                                   |
 |---------------------------------|-----------------------------------|
 | ` `**`xper_right_sibling`**` (` | in `xper_entity ` XML_entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,13 +32,13 @@ persistent XMLs, useful for import of huge amounts of XML data
 
 </div>
 
-<div id="fsyn_xper_left_sibling" class="funcsynopsis">
+<div>
 
 |                                |                                   |
 |--------------------------------|-----------------------------------|
 | ` `**`xper_left_sibling`**` (` | in `xper_entity ` XML_entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -46,13 +46,13 @@ persistent XMLs, useful for import of huge amounts of XML data
 
 </div>
 
-<div id="fsyn_xper_parent" class="funcsynopsis">
+<div>
 
 |                          |                                   |
 |--------------------------|-----------------------------------|
 | ` `**`xper_parent`**` (` | in `xper_entity ` XML_entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -60,13 +60,13 @@ persistent XMLs, useful for import of huge amounts of XML data
 
 </div>
 
-<div id="fsyn_xper_root_entity" class="funcsynopsis">
+<div>
 
 |                               |                                   |
 |-------------------------------|-----------------------------------|
 | ` `**`xper_root_entity`**` (` | in `xper_entity ` XML_entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -74,13 +74,13 @@ persistent XMLs, useful for import of huge amounts of XML data
 
 </div>
 
-<div id="fsyn_xper_tell" class="funcsynopsis">
+<div>
 
 |                        |                                   |
 |------------------------|-----------------------------------|
 | ` `**`xper_tell`**` (` | in `xper_entity ` XML_entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -88,13 +88,13 @@ persistent XMLs, useful for import of huge amounts of XML data
 
 </div>
 
-<div id="fsyn_xper_length" class="funcsynopsis">
+<div>
 
 |                          |                                   |
 |--------------------------|-----------------------------------|
 | ` `**`xper_length`**` (` | in `xper_entity ` XML_entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -104,7 +104,7 @@ persistent XMLs, useful for import of huge amounts of XML data
 
 </div>
 
-<div id="desc_78" class="refsect1">
+<div>
 
 ## Description
 
@@ -288,11 +288,11 @@ create procedure
 
 </div>
 
-<div id="params_41" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124366" class="refsect2">
+<div>
 
 ### xper_entity
 
@@ -302,7 +302,7 @@ Persistent XML entity to operate on.
 
 </div>
 
-<div id="seealso_03_01" class="refsect1">
+<div>
 
 ## See Also
 

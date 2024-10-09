@@ -1,10 +1,10 @@
-<div id="fn_xte_nodebld_final" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xte_nodebld_final — Corrects input vector
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xte_nodebld_final" class="funcsynopsis">
+<div>
 
 |                                |                     |
 |--------------------------------|---------------------|
 | ` `**`xte_nodebld_final`**` (` | inout `arg ` any ,  |
 |                                | in `head ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xte_nodebld_final — Corrects input vector
 
 </div>
 
-<div id="desc_xte_nodebld_final" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ not commit the return.
 
 </div>
 
-<div id="xte_nodebld_final" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121800" class="refsect2">
+<div>
 
 ### arg
 
@@ -57,7 +57,7 @@ xte_nodebld_acc() function
 
 </div>
 
-<div id="id121803" class="refsect2">
+<div>
 
 ### head
 
@@ -67,15 +67,15 @@ A vector returned by xte_head() function
 
 </div>
 
-<div id="errors_xte_nodebld_final" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121808" class="table">
+<div>
 
-**Table 24.125. Errors signalled by `xte_nodebld_final `**
+**Table 24.124. Errors signalled by `xte_nodebld_final `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                              | Description |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -90,15 +90,15 @@ A vector returned by xte_head() function
 
 </div>
 
-<div id="xte_nodebld_final_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xte_nodebld_final" class="example">
+<div>
 
 **Example 24.491. xte_nodebld_final() with a single argument**
 
-<div class="example-contents">
+<div>
 
 Before the xte_nodebld_final() call the length of the vector acc is
 equal to 16, after the call the length is 3. The vector acc does not
@@ -124,11 +124,11 @@ create procedure test1_nodebld()
 
   
 
-<div id="ex_xte_nodebld_final_01" class="example">
+<div>
 
 **Example 24.492. xte_nodebld_final() with two arguments.**
 
-<div class="example-contents">
+<div>
 
 The vector acc below is corresponding to the following XML element:
 
@@ -167,7 +167,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xte_nodebld_final" class="refsect1">
+<div>
 
 ## See Also
 

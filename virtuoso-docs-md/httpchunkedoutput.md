@@ -1,6 +1,6 @@
-<div id="httpchunkedoutput" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

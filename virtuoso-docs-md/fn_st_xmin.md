@@ -1,10 +1,10 @@
-<div id="fn_st_xmin" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ST_XMin — returns minimum x boundaries of a bounding box around a shape.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_xmin" class="funcsynopsis">
+<div>
 
 |                      |                      |
 |----------------------|----------------------|
 | ` `**`ST_XMin`**` (` | in `shape ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ST_XMin — returns minimum x boundaries of a bounding box around a shape.
 
 </div>
 
-<div id="desc_st_xmin" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ a half of full circle.
 
 </div>
 
-<div id="params_st_xmin" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id132290" class="refsect2">
+<div>
 
 ### shape
 
@@ -56,7 +56,7 @@ A bounding box.
 
 </div>
 
-<div id="ret_st_xmin" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Returns double precision.
 
 </div>
 
-<div id="examples_st_xmin" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_xmin" class="example">
+<div>
 
 **Example 24.677. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 DB.DBA.TTLP ('
@@ -114,7 +114,7 @@ http://geo-api-demo/polygon1      0
 
 </div>
 
-<div id="seealso_st_xmin" class="refsect1">
+<div>
 
 ## See Also
 

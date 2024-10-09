@@ -1,10 +1,10 @@
-<div id="fn_sequence_get_all" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sequence_get_all — Returns a vector of states of all sequence objects
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sequence_get_all" class="funcsynopsis">
+<div>
 
 |                                     |      |
 |-------------------------------------|------|
 | `vector `**`sequence_get_all`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sequence_get_all — Returns a vector of states of all sequence objects
 
 </div>
 
-<div id="desc_sequence_get_all" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,7 +48,7 @@ database. To change actual sequence objects, use `sequence_set` ().
 
 </div>
 
-<div id="ret_sequence_get_all" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -56,7 +56,7 @@ The function returns a vector of even length.
 
 </div>
 
-<div id="seealso_sequence_get_all" class="refsect1">
+<div>
 
 ## See Also
 

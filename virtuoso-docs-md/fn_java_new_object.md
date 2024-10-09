@@ -1,10 +1,10 @@
-<div id="fn_java_new_object" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ java_new_object — Creates and instance of a Java class.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_java_new_object" class="funcsynopsis">
+<div>
 
 |                                 |                            |
 |---------------------------------|----------------------------|
@@ -24,7 +24,7 @@ java_new_object — Creates and instance of a Java class.
 |                                 | in `arg1 ` any ,           |
 |                                 | `... ` `)`;                |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ java_new_object — Creates and instance of a Java class.
 
 </div>
 
-<div id="desc_java_new_object" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ Java VM and returns it to Virtuoso as a PL object reference value.
 
 </div>
 
-<div id="params_java_new_object" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94820" class="refsect2">
+<div>
 
 ### class_name
 
@@ -55,7 +55,7 @@ the name of the java class to be instantiated. (eg: java.util.Date)
 
 </div>
 
-<div id="id94823" class="refsect2">
+<div>
 
 ### arg1, ....
 
@@ -65,7 +65,7 @@ the arguments to the constructor called.
 
 </div>
 
-<div id="ret_java_new_object" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ Virtuoso object reference value.
 
 </div>
 
-<div id="examples_java_new_object" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_java_new_object" class="example">
+<div>
 
 **Example 24.198. Creating new Java class instances**
 
-<div class="example-contents">
+<div>
 
 creates a new java.util.Date class instance and initializes it with the
 current time from Virtuoso.
@@ -105,7 +105,7 @@ cal := java_new_object ('java.util.Date');
 
 </div>
 
-<div id="seealso_java_new_object" class="refsect1">
+<div>
 
 ## See Also
 

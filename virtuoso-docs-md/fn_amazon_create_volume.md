@@ -1,10 +1,10 @@
-<div id="fn_amazon_create_volume" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ attached to any Amazon EC2 instance in the same Availability Zone.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_amazon_create_volume" class="funcsynopsis">
+<div>
 
 |                                          |                                              |
 |------------------------------------------|----------------------------------------------|
@@ -28,7 +28,7 @@ attached to any Amazon EC2 instance in the same Availability Zone.
 |                                          | in `volume_size ` integer (default 1) ,      |
 |                                          | in `http_proxy ` varchar (default null) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ attached to any Amazon EC2 instance in the same Availability Zone.
 
 </div>
 
-<div id="desc_amazon_create_volume" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ codes from the snapshot are propagated to the volume.
 
 </div>
 
-<div id="params_amazon_create_volume" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97860" class="refsect2">
+<div>
 
 ### aws_access_key
 
@@ -60,7 +60,7 @@ Amazon Access Key ID.
 
 </div>
 
-<div id="id97863" class="refsect2">
+<div>
 
 ### availabilityZone
 
@@ -68,7 +68,7 @@ The Availability Zone for the new volume.
 
 </div>
 
-<div id="id97866" class="refsect2">
+<div>
 
 ### secret_key
 
@@ -76,7 +76,7 @@ AWS Security Token.
 
 </div>
 
-<div id="id97869" class="refsect2">
+<div>
 
 ### snapshotId
 
@@ -84,7 +84,7 @@ The snapshot from which to create the new volume.
 
 </div>
 
-<div id="id97872" class="refsect2">
+<div>
 
 ### volume_size
 
@@ -92,7 +92,7 @@ The size of the volume, in GiBs.
 
 </div>
 
-<div id="id97875" class="refsect2">
+<div>
 
 ### http_proxy
 
@@ -102,15 +102,15 @@ Proxy server, can be null or empty.
 
 </div>
 
-<div id="examples_amazon_create_volume" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_amazon_create_volume" class="example">
+<div>
 
 **Example 24.233. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure simple_test()
@@ -135,7 +135,7 @@ create procedure simple_test()
 
 </div>
 
-<div id="seealso_amazon_create_volume" class="refsect1">
+<div>
 
 ## See Also
 

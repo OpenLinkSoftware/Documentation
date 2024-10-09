@@ -1,6 +1,6 @@
-<div id="rdfinsertcrawlingmethods" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ Data generation and import*</span>
 The Virtuoso Conductor can be used to set up various Content Crawler
 Jobs:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="rdfinsertmethodvirtuosocrawler.html" class="link"
   title="16.9.8. Using Virtuoso Crawler">Setting up a Content Crawler Job

@@ -1,6 +1,6 @@
-<div id="fault" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -27,7 +27,7 @@ following aspects are covered:
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Setting up a fault tolerant logical cluster inside a physical cluster.
   Creating tables and indices for fault tolerance.
@@ -46,9 +46,9 @@ following aspects are covered:
 
 </div>
 
-<div id="faultfaulttolerinto" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="preface" class="preface">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -22,9 +22,9 @@
 
 </div>
 
-<div id="conventions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -52,7 +52,7 @@ This monospaced font is used to describe screen output,
 differentiated from code if required.
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                              |
 |:--------------------------:|:---------------------------------------------------------------------------------------------|
@@ -61,7 +61,7 @@ differentiated from code if required.
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                     |
 |:----------------------------:|:--------------------------------------------------------------------|
@@ -76,7 +76,7 @@ Special formatting is used to highlight `functions()` and their
 Important keywords are <span class="emphasis">*emphasized*</span> using
 bolding (or strong character typing) and text that is
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                                        |                                    |
 |:--------------------------------------:|:-----------------------------------|

@@ -1,10 +1,10 @@
-<div id="fn_rdf_ttl2hash" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.RDF_TTL2HASH — Returns a dict of triples in 'long valmode'.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_ttl2hash" class="funcsynopsis">
+<div>
 
 |                                  |                          |
 |----------------------------------|--------------------------|
@@ -24,7 +24,7 @@ DB.DBA.RDF_TTL2HASH — Returns a dict of triples in 'long valmode'.
 |                                  | in `base ` varchar ,     |
 |                                  | in `graph ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ DB.DBA.RDF_TTL2HASH — Returns a dict of triples in 'long valmode'.
 
 </div>
 
-<div id="desc_rdf_ttl2hash" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ Returns a dict of triples in 'long valmode'.
 
 </div>
 
-<div id="params_rdf_ttl2hash" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103975" class="refsect2">
+<div>
 
 ### strg
 
@@ -54,7 +54,7 @@ text of the resource
 
 </div>
 
-<div id="id103978" class="refsect2">
+<div>
 
 ### base
 
@@ -62,7 +62,7 @@ base IRI to resolve relative IRIs to absolute
 
 </div>
 
-<div id="id103981" class="refsect2">
+<div>
 
 ### graph
 
@@ -72,7 +72,7 @@ target graph IRI, parsed triples will appear in that graph.
 
 </div>
 
-<div id="ret_rdf_ttl2hash" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,15 +80,15 @@ any
 
 </div>
 
-<div id="examples_rdf_ttl2hash" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_ttl2hash" class="example">
+<div>
 
 **Example 24.307. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ```
@@ -101,7 +101,7 @@ any
 
 </div>
 
-<div id="seealso_rdf_ttl2hash" class="refsect1">
+<div>
 
 ## See Also
 

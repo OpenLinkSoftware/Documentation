@@ -1,6 +1,6 @@
-<div id="plmodules" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,9 +24,9 @@ Module procedures do not appear in SQLProcedures output. Module names
 are in the same domain as the procedure names, so it is not possible to
 have a procedure with the same name as an existing module.
 
-<div id="plmodsyntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,11 +55,11 @@ CREATE MODULE
 DROP MODULE m_name;
 ```
 
-<div id="ex_plmod2" class="example">
+<div>
 
 **Example 11.15. Procedure Modules**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create module

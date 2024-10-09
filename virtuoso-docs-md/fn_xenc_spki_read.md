@@ -1,10 +1,10 @@
-<div id="fn_xenc_spki_read" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ infrastructure (SPKI)
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_spki_read" class="funcsynopsis">
+<div>
 
 |                             |                             |
 |-----------------------------|-----------------------------|
 | ` `**`xenc_SPKI_read`**` (` | in `key_name ` varchar ,    |
 |                             | in `key_data ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ infrastructure (SPKI)
 
 </div>
 
-<div id="desc_xenc_spki_read" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ This function is used to read an RSA public key from SPKI content.
 
 </div>
 
-<div id="params_xenc_spki_read" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121056" class="refsect2">
+<div>
 
 ### key_name
 
@@ -55,7 +55,7 @@ created
 
 </div>
 
-<div id="id121059" class="refsect2">
+<div>
 
 ### key_data
 
@@ -65,15 +65,15 @@ The SPKI content
 
 </div>
 
-<div id="examples_xenc_spki_read" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_spki_read" class="example">
+<div>
 
 **Example 24.483. SPKI reading**
 
-<div class="example-contents">
+<div>
 
 The example below creates a temp key.
 
@@ -89,7 +89,7 @@ kname := xenc_SPKI_read (null, replace (get_keyword ('key', params), '\r\n', '')
 
 </div>
 
-<div id="seealso_xenc_spki_read" class="refsect1">
+<div>
 
 ## See Also
 

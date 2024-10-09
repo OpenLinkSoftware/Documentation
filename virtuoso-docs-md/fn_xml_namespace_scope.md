@@ -1,10 +1,10 @@
-<div id="fn_xml_namespace_scope" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ all ancestors of the given XML entity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_namespace_scope" class="funcsynopsis">
+<div>
 
 |                                        |                                   |
 |----------------------------------------|-----------------------------------|
 | `vector `**`xml_namespace_scope`**` (` | in `ent ` XML Entity ,            |
 |                                        | in `use_default_ns ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ all ancestors of the given XML entity.
 
 </div>
 
-<div id="desc_xml_namespace_scope" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ documents.
 
 </div>
 
-<div id="params_xml_namespace_scope" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123162" class="refsect2">
+<div>
 
 ### ent
 
@@ -58,7 +58,7 @@ The entity to process.
 
 </div>
 
-<div id="id123165" class="refsect2">
+<div>
 
 ### use_default_ns
 
@@ -70,7 +70,7 @@ are listed; if non-zero then all declarations are listed.
 
 </div>
 
-<div id="ret_xml_namespace_scope" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -79,16 +79,16 @@ strings in UTF-8 encoding.
 
 </div>
 
-<div id="examples_xml_namespace_scope" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_namespace_scope" class="example">
+<div>
 
 **Example 24.515. Adding namespace declarations to the XPath
 expression**
 
-<div class="example-contents">
+<div>
 
 The function gets an entity whose string-value is an XPATH expression
 and returns the text of expression with all namespace declarations that
@@ -157,7 +157,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xml_namespace_scope" class="refsect1">
+<div>
 
 ## See Also
 

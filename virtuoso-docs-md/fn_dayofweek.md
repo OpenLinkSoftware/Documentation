@@ -1,10 +1,10 @@
-<div id="fn_dayofweek" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ dayofweek — get day of week from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dayofweek_01" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
 | ` `**`dayofweek`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ dayofweek — get day of week from a datetime
 
 </div>
 
-<div id="desc_dayofweek" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ day of week of the datetime.
 
 </div>
 
-<div id="params_dayofweek" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id85878" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_dayofweek" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -65,15 +65,15 @@ week.
 
 </div>
 
-<div id="examples_dayofweek" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dayofweek" class="example">
+<div>
 
 **Example 24.84. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current day of week.
 
@@ -94,7 +94,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_dayofweek" class="refsect1">
+<div>
 
 ## See Also
 

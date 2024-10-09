@@ -1,6 +1,6 @@
-<div id="querybisql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,15 +22,15 @@ Demo.VirtuosoDemoTest.CustomersLinked. Click the "Execute" button.
 
 Press the Execute button and review the results.
 
-<div class="figure-float">
+<div>
 
-<div id="rmtdsnqry" class="figure">
+<div>
 
 **Figure 3.21. Remote Table Query**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Remote Table Query](images/rmtdsnqry.png)
 

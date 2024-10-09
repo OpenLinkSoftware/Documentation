@@ -1,10 +1,10 @@
-<div id="me_uddi_get_tmodeldetail" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ uddi_get_tModelDetail — Request full information about a known
 
 </div>
 
-<div id="syntax_uddi_get_tmodeldetail_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -28,11 +28,11 @@ uddi_get_tModelDetail — Request full information about a known
 
 </div>
 
-<div id="params_uddi_get_tmodeldetail_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id115419" class="refsect2">
+<div>
 
 ### tModelKey
 
@@ -45,7 +45,7 @@ uuid value.
 
 </div>
 
-<div id="ret_uddi_get_tmodeldetail_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -60,7 +60,7 @@ attribute with the value of this attribute set to true.
 
 </div>
 
-<div id="errors_uddi_get_tmodeldetail_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -68,11 +68,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id115438" class="table">
+<div>
 
-**Table 24.101. Errors signalled by uddi_get_tModelDetail**
+**Table 24.100. Errors signalled by uddi_get_tModelDetail**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                         | Description                                                                                                                                                                                                                                                                                                                         |
 |----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

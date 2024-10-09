@@ -1,10 +1,10 @@
-<div id="fn_st_transform_by_custom_projection" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ shape, using the specified algorithm and algorithm-specific arguments.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_transform_by_custom_projection" class="funcsynopsis">
+<div>
 
 |                                                |                             |
 |------------------------------------------------|-----------------------------|
 | ` `**`st_transform_by_custom_projection`**` (` | in `shape ` any ,           |
 |                                                | in `algorithm_id ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ shape, using the specified algorithm and algorithm-specific arguments.
 
 </div>
 
-<div id="desc_st_transform_by_custom_projection" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ algorithm-specific arguments.
 
 </div>
 
-<div id="params_st_transform_by_custom_projection" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131977" class="refsect2">
+<div>
 
 ### shape
 
@@ -55,7 +55,7 @@ Geometry.
 
 </div>
 
-<div id="id131980" class="refsect2">
+<div>
 
 ### algorithm_id
 
@@ -68,7 +68,7 @@ System with the specified center point.
 
 </div>
 
-<div id="ret_st_transform_by_custom_projection" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -76,15 +76,15 @@ Returns varchar.
 
 </div>
 
-<div id="examples_st_transform_by_custom_projection" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_transform_by_custom_projection" class="example">
+<div>
 
 **Example 24.673. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select st_transform_by_custom_projection (
@@ -115,7 +115,7 @@ SRID=0;POLYGON((-0.352161 -0.627582,
 
 </div>
 
-<div id="seealso_st_transform_by_custom_projection" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_mts_get_timeout" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ milliseconds.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mts_get_timeout" class="funcsynopsis">
+<div>
 
 |                              |      |
 |------------------------------|------|
 | ` `**`mts_get_timeout`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ milliseconds.
 
 </div>
 
-<div id="desc_mts_get_timeout" class="refsect1">
+<div>
 
 ## Description
 

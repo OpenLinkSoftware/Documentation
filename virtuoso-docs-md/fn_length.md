@@ -1,10 +1,10 @@
-<div id="fn_length" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ length — Get length of argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_length" class="funcsynopsis">
+<div>
 
 |                            |                    |
 |----------------------------|--------------------|
 | `integer `**`length`**` (` | in `arg ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,17 +32,17 @@ length — Get length of argument
 
 </div>
 
-<div id="desc_length" class="refsect1">
+<div>
 
 ## Description
 
 Returns the length of its argument.
 
-<div id="id95595" class="table">
+<div>
 
-**Table 24.51. Value returned by `length ` by argument datatype**
+**Table 24.50. Value returned by `length ` by argument datatype**
 
-<div class="table-contents">
+<div>
 
 | Argument type                             | Value returned                                           |
 |-------------------------------------------|----------------------------------------------------------|
@@ -59,7 +59,7 @@ Returns the length of its argument.
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                 |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -70,11 +70,11 @@ Returns the length of its argument.
 
 </div>
 
-<div id="params_length" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95631" class="refsect2">
+<div>
 
 ### arg
 
@@ -84,7 +84,7 @@ Any type that can be tested for length.
 
 </div>
 
-<div id="ret_length" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -92,15 +92,15 @@ Integer length of the argument
 
 </div>
 
-<div id="errors_length" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id95639" class="table">
+<div>
 
-**Table 24.52. Errors signalled by `length `**
+**Table 24.51. Errors signalled by `length `**
 
-<div class="table-contents">
+<div>
 
 | sqlstate                              | error code                            | error text                                                                           |                                                                      |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------|
@@ -115,15 +115,15 @@ Integer length of the argument
 
 </div>
 
-<div id="examples_length" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_length" class="example">
+<div>
 
 **Example 24.205. Some uses of length()**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select length('abacus'), length (NULL);

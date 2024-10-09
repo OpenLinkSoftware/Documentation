@@ -1,10 +1,10 @@
-<div id="fn___xml_get_ns_prefix" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___xml_get_ns_prefix" class="funcsynopsis">
+<div>
 
 |                                  |                       |
 |----------------------------------|-----------------------|
 | ` `**`__xml_get_ns_prefix`**` (` | in `str ` varchar ,   |
 |                                  | out `flags ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@
 
 </div>
 
-<div id="desc___xml_get_ns_prefix" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ the global set of known prefixes.
 
 </div>
 
-<div id="params___xml_get_ns_prefix" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103256" class="refsect2">
+<div>
 
 ### str
 
@@ -55,7 +55,7 @@ uri
 
 </div>
 
-<div id="id103259" class="refsect2">
+<div>
 
 ### flags
 
@@ -66,7 +66,7 @@ use 0.
 
 </div>
 
-<div id="seealso__xml_get_ns_prefix" class="refsect1">
+<div>
 
 ## See Also
 

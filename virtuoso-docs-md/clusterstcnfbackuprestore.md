@@ -1,6 +1,6 @@
-<div id="clusterstcnfbackuprestore" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@
 
 There are 2 ways to backup Virtuoso Cluster DB:
 
-<div class="orderedlist">
+<div>
 
 1.  Backup every node using
     <a href="fn_backup_online.html" class="link" title="backup_online"><code

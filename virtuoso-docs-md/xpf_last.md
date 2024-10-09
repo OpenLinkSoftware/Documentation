@@ -1,10 +1,10 @@
-<div id="xpf_last" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ last — Returns the context size from expression evaluation context.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_last" class="funcsynopsis">
+<div>
 
 |                         |          |     |
 |-------------------------|----------|-----|
 | `number `**`last`**` (` | `void)`; |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ last — Returns the context size from expression evaluation context.
 
 </div>
 
-<div id="xpf_desc_last" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ number of elements to be tested by predicate.
 
 </div>
 
-<div id="xpf_ret_last" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -52,15 +52,15 @@ Positive integer.
 
 </div>
 
-<div id="xpf_examples_last" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_last" class="example">
+<div>
 
 **Example 24.597. Call of last() inside a predicate**
 
-<div class="example-contents">
+<div>
 
 Find all waybills with more than one \<address\> child inside the
 \<waybill\> element.
@@ -77,7 +77,7 @@ Find all waybills with more than one \<address\> child inside the
 
 </div>
 
-<div id="xpf_seealso_last" class="refsect1">
+<div>
 
 ## See Also
 

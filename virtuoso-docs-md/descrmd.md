@@ -1,6 +1,6 @@
-<div id="descrmd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

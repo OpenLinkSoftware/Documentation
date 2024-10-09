@@ -1,10 +1,10 @@
-<div id="fn_xte_head" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xte_head — Returns the vector corresponding to a head of a XML element
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xte_head" class="funcsynopsis">
+<div>
 
 |                       |                             |
 |-----------------------|-----------------------------|
@@ -27,7 +27,7 @@ xte_head — Returns the vector corresponding to a head of a XML element
 |                       | in `attrNname ` varchar ,   |
 |                       | in `attrNval ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ xte_head — Returns the vector corresponding to a head of a XML element
 
 </div>
 
-<div id="desc_xte_head" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ head would have only the last pair.
 
 </div>
 
-<div id="xte_head" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121504" class="refsect2">
+<div>
 
 ### tagname
 
@@ -62,7 +62,7 @@ The tag name of the head
 
 </div>
 
-<div id="id121507" class="refsect2">
+<div>
 
 ### attrIname
 
@@ -70,7 +70,7 @@ The name of the I-th attribute
 
 </div>
 
-<div id="id121510" class="refsect2">
+<div>
 
 ### attrIval
 
@@ -80,15 +80,15 @@ The value of the I-th attribute
 
 </div>
 
-<div id="errors_xte_head" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121515" class="table">
+<div>
 
-**Table 24.121. Errors signalled by `xte_head `**
+**Table 24.120. Errors signalled by `xte_head `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                | Description |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------|-------------|
@@ -102,15 +102,15 @@ The value of the I-th attribute
 
 </div>
 
-<div id="xte_head_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xte_head" class="example">
+<div>
 
 **Example 24.487. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The xte_head() call below takes three strings
 
@@ -131,7 +131,7 @@ XML element:
 
 </div>
 
-<div id="seealso_xte_head" class="refsect1">
+<div>
 
 ## See Also
 

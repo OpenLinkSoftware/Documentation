@@ -1,10 +1,10 @@
-<div id="fn_sparql_rexec" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ produces a result set of SQL values.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_rexec" class="funcsynopsis">
+<div>
 
 |                                  |                            |
 |----------------------------------|----------------------------|
@@ -29,7 +29,7 @@ produces a result set of SQL values.
 |                                  | in `maxrows ` integer ,    |
 |                                  | in `bnode_dict ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ produces a result set of SQL values.
 
 </div>
 
-<div id="desc_sparql_rexec" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ SQL values.
 
 </div>
 
-<div id="params_sparql_rexec" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103592" class="refsect2">
+<div>
 
 ### service
 
@@ -60,7 +60,7 @@ service URI to call via HTTP.
 
 </div>
 
-<div id="id103595" class="refsect2">
+<div>
 
 ### query
 
@@ -68,7 +68,7 @@ text of SPARQL query to execute.
 
 </div>
 
-<div id="id103598" class="refsect2">
+<div>
 
 ### dflt_graph
 
@@ -77,7 +77,7 @@ query
 
 </div>
 
-<div id="id103601" class="refsect2">
+<div>
 
 ### named_graphs
 
@@ -86,7 +86,7 @@ specified in query
 
 </div>
 
-<div id="id103604" class="refsect2">
+<div>
 
 ### req_hdr
 
@@ -95,7 +95,7 @@ additional HTTP header lines that should be passed to the service;
 
 </div>
 
-<div id="id103607" class="refsect2">
+<div>
 
 ### maxrows
 
@@ -103,7 +103,7 @@ limit on numbers of rows that should be returned.
 
 </div>
 
-<div id="id103610" class="refsect2">
+<div>
 
 ### bnode_dict
 
@@ -113,7 +113,7 @@ dictionary of bnode ID references.
 
 </div>
 
-<div id="ret_sparql_rexec" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -121,15 +121,15 @@ any
 
 </div>
 
-<div id="examples_sparql_rexec" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sparql_rexec" class="example">
+<div>
 
 **Example 24.304. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure SPARQL_TEST (in rquri varchar, in graph_uri varchar, in resuri varchar, in in_result integer := 0)
@@ -185,7 +185,7 @@ create procedure SPARQL_TEST (in rquri varchar, in graph_uri varchar, in resuri 
 
 </div>
 
-<div id="seealso_sparql_rexec" class="refsect1">
+<div>
 
 ## See Also
 

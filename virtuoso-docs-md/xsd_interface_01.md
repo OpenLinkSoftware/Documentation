@@ -1,6 +1,6 @@
-<div id="xsd_interface_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

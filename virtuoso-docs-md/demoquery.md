@@ -1,6 +1,6 @@
-<div id="demoquery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,15 +23,15 @@ SQL". Enter a SQL statement and click the button "Execute". For example:
 SELECT * FROM DEMO..products WHERE UnitPrice < 7
 ```
 
-<div class="figure-float">
+<div>
 
-<div id="qsdemoquery" class="figure">
+<div>
 
 **Figure 3.16. Demo Database Query**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Demo Database Query](images/demoquery.png)
 

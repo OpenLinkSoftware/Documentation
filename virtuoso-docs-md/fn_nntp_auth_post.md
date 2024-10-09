@@ -1,10 +1,10 @@
-<div id="fn_nntp_auth_post" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ nntp_auth_post — Post message to NNTP server with authorization
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_nntp_auth_post" class="funcsynopsis">
+<div>
 
 |                                  |                          |
 |----------------------------------|--------------------------|
@@ -25,7 +25,7 @@ nntp_auth_post — Post message to NNTP server with authorization
 |                                  | in `password ` varchar , |
 |                                  | in `body ` varchar `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ nntp_auth_post — Post message to NNTP server with authorization
 
 </div>
 
-<div id="desc_nntp_auth_post" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ authorization.
 
 </div>
 
-<div id="params_nntp_auth_post" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97191" class="refsect2">
+<div>
 
 ### server
 
@@ -58,7 +58,7 @@ default for port, so to connect to the standard port for NNTP, use
 
 </div>
 
-<div id="id97194" class="refsect2">
+<div>
 
 ### user
 
@@ -66,7 +66,7 @@ The username.
 
 </div>
 
-<div id="id97197" class="refsect2">
+<div>
 
 ### password
 
@@ -74,7 +74,7 @@ The user password.
 
 </div>
 
-<div id="id97200" class="refsect2">
+<div>
 
 ### body
 
@@ -85,7 +85,7 @@ must comply with RFC 850 (Standard for Interchange of USENET Messages).
 
 </div>
 
-<div id="ret_03" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,15 +93,15 @@ must comply with RFC 850 (Standard for Interchange of USENET Messages).
 
 </div>
 
-<div id="errors_nntp_auth_post" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id97209" class="table">
+<div>
 
-**Table 24.58. Errors signalled by**
+**Table 24.57. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                  | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|-------------|

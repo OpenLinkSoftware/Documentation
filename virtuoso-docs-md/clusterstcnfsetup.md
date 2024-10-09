@@ -1,6 +1,6 @@
-<div id="clusterstcnfsetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 These sections apply to Virtuoso as of version 6.x and higher.
 
-<div class="orderedlist">
+<div>
 
 1.  Run the Virtuoso 6 Unix ( MacOsX) installer to perform a default
     installation:

@@ -1,6 +1,6 @@
-<div id="signalsandexitcodes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 This section presents the most important exit codes and signals for
 Virtuoso on Unix/Linux.
 
-<div id="signalsandexitcodesc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,11 +33,11 @@ Virtuoso on Unix/Linux.
 
 </div>
 
-<div id="id76841" class="decimalstyle">
+<div>
 
 **Table 23.2. Exit codes**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Exit Code | Category | Comment                                                                                |
 |:----------|----------|----------------------------------------------------------------------------------------|

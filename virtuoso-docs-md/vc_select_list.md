@@ -1,10 +1,10 @@
-<div id="vc_select_list" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ select-list — Fixed initialized select list.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_select_list" class="funcsynopsis">
+<div>
 
 |                             |                                      |
 |-----------------------------|--------------------------------------|
@@ -47,7 +47,7 @@ select-list — Fixed initialized select list.
 |                             | `debug-srcline` (optional) ,         |
 |                             | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -57,7 +57,7 @@ select-list — Fixed initialized select list.
 
 </div>
 
-<div id="vc_desc_select_list" class="refsect1">
+<div>
 
 ## Description
 
@@ -67,7 +67,7 @@ allowed.
 
 </div>
 
-<div id="vc_attrs_select_list" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -259,7 +259,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_select_list" class="refsect1">
+<div>
 
 ## Declaration of type vspx_select_list
 
@@ -288,15 +288,15 @@ constructor method vspx_select_list (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_select_list" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_select_list__0" class="example">
+<div>
 
 **Example 14.41.  A simple static select list**
 
-<div class="example-contents">
+<div>
 
 The form of the sample page contains a list of three items.
 
@@ -326,7 +326,7 @@ The form of the sample page contains a list of three items.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                      |
 |:--------------------------:|:---------------------------------------------------------------------|

@@ -1,10 +1,10 @@
-<div id="fn_internal_to_sql_type" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_internal_to_sql_type" class="funcsynopsis">
+<div>
 
 |                                   |                               |
 |-----------------------------------|-------------------------------|
 | ` `**`internal_to_sql_type`**` (` | `internal_type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ argument
 
 </div>
 
-<div id="desc_internal_to_sql_type" class="refsect1">
+<div>
 
 ## Description
 

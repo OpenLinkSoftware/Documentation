@@ -1,10 +1,10 @@
-<div id="fn_substring" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ substring — returns a substring of a string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_substring" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
@@ -24,7 +24,7 @@ substring — returns a substring of a string
 |                        | `from ` integer ,      |
 |                        | `sublen ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ substring — returns a substring of a string
 
 </div>
 
-<div id="desc_39" class="refsect1">
+<div>
 
 ## Description
 

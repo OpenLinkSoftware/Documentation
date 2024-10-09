@@ -1,6 +1,6 @@
-<div id="bpelerrors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 During the BPEL process execution we may consider following types of
 errors:
 
-<div class="itemizedlist">
+<div>
 
 - Server failure - This means that the server as a whole has stopped
   operations and requires manual intervention. This is the case for: out
@@ -42,7 +42,7 @@ so as to avoid repeatedly sending the same message.
 During uploading the BPEL process we may consider following types of
 errors:
 
-<div class="itemizedlist">
+<div>
 
 - bpel.xml file contains non-absolute paths and must be changed to
   absolute in order the uploading to be successful. This is in case user
@@ -62,9 +62,9 @@ errors:
 
 </div>
 
-<div id="bpelerrors_conn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -181,9 +181,9 @@ after waiting 10 seconds.
 
 </div>
 
-<div id="bpelerrors_deadlock" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

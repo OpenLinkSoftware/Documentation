@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xenc_key_remove — This will delete a key from current user's space.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_remove" class="funcsynopsis">
+<div>
 
 |                              |                             |
 |------------------------------|-----------------------------|
 | ` `**`xenc_key_remove`**` (` | in `key_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xenc_key_remove — This will delete a key from current user's space.
 
 </div>
 
-<div id="desc_xenc_key_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ This will delete a key from current user's space.
 
 </div>
 
-<div id="params_xenc_key_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120706" class="refsect2">
+<div>
 
 ### key_name
 
@@ -54,15 +54,15 @@ The name of the key.
 
 </div>
 
-<div id="examples_xenc_key_remove" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_xenc_key_remove" class="example">
+<div>
 
 **Example 24.475. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 xenc_key_remove ('file:dsa.der');
@@ -76,7 +76,7 @@ xenc_key_remove ('file:dsa.der');
 
 </div>
 
-<div id="seealso_xenc_key_remove" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_st_transscale" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ by the provided dX, dY and then multiplied by Xfactor and Yfactor.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_transscale" class="funcsynopsis">
+<div>
 
 |                            |                        |
 |----------------------------|------------------------|
@@ -27,7 +27,7 @@ by the provided dX, dY and then multiplied by Xfactor and Yfactor.
 |                            | in `Xfactor ` any ,    |
 |                            | in `Yfactor ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ by the provided dX, dY and then multiplied by Xfactor and Yfactor.
 
 </div>
 
-<div id="desc_st_transscale" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ Xfactor and Yfactor will result in distorted arcs.
 
 </div>
 
-<div id="params_st_transscale" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id132145" class="refsect2">
+<div>
 
 ### shape
 
@@ -59,7 +59,7 @@ Geometry.
 
 </div>
 
-<div id="id132148" class="refsect2">
+<div>
 
 ### dX
 
@@ -67,7 +67,7 @@ X coordinate.
 
 </div>
 
-<div id="id132151" class="refsect2">
+<div>
 
 ### dY
 
@@ -75,7 +75,7 @@ Y coordinate.
 
 </div>
 
-<div id="id132154" class="refsect2">
+<div>
 
 ### Xfactor
 
@@ -83,7 +83,7 @@ X value to multiple by.
 
 </div>
 
-<div id="id132157" class="refsect2">
+<div>
 
 ### Yfactor
 
@@ -93,7 +93,7 @@ Y value to multiple by.
 
 </div>
 
-<div id="ret_st_transscale" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -101,15 +101,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_transscale" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_transscale" class="example">
+<div>
 
 **Example 24.675. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.TTLP ('
@@ -155,7 +155,7 @@ http://geo-api-demo/polygon3      POLYGON((0.110 0.320,0.010 0.420,0.110 0.520,0
 
 </div>
 
-<div id="seealso_st_transscale" class="refsect1">
+<div>
 
 ## See Also
 

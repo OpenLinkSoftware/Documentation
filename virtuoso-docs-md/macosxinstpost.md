@@ -1,6 +1,6 @@
-<div id="macosxinstpost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="macosxinstpostsan" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,9 +42,9 @@ http://a_virtuoso_server.org:8890
 
 </div>
 
-<div id="macosxinstposttrb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,15 +65,15 @@ Check the .log file in oplmgr (License Manager) location:
 and log files etc. in order to review the installed files binaries and
 databases (defaults) for issues if install fails.
 
-<div class="figure-float">
+<div>
 
-<div id="instmac" class="figure">
+<div>
 
 **Figure 2.52. The .log file**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The .log file](images/ui/instmac.png)
 
@@ -106,15 +106,15 @@ commands:
 /Library/Application Support/openlink/bin/oplmgr +start | +stop | +reload
 ```
 
-<div class="figure-float">
+<div>
 
-<div id="instmac2" class="figure">
+<div>
 
 **Figure 2.53. The .log file**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The .log file](images/ui/instmac2.png)
 
@@ -128,7 +128,7 @@ commands:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|

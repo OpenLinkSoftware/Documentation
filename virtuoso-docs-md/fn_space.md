@@ -1,10 +1,10 @@
-<div id="fn_space" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ space — returns a new string of count spaces
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_space" class="funcsynopsis">
+<div>
 
 |                    |                          |
 |--------------------|--------------------------|
 | ` `**`space`**` (` | in `count ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ space — returns a new string of count spaces
 
 </div>
 
-<div id="desc_22" class="refsect1">
+<div>
 
 ## Description
 

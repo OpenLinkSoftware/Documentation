@@ -1,6 +1,6 @@
-<div id="replexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -237,9 +237,9 @@ WAIT_FOR_SYNC ('rep1', 'proc', 7);
 select count(*) from p_test;
 ```
 
-<div id="objectsexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

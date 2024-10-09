@@ -1,6 +1,6 @@
-<div id="rthclrmonotest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,7 +67,7 @@ Hello Rob, from Virtuoso
 Congratulations, you have proven that your Virtuoso server can run .NET
 classes via Mono Runtime.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                     |
 |:--------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -76,7 +76,7 @@ classes via Mono Runtime.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

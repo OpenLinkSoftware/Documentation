@@ -1,10 +1,10 @@
-<div id="fn_xmlappendchildren" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ given entity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlappendchildren" class="funcsynopsis">
+<div>
 
 |                                |                           |
 |--------------------------------|---------------------------|
@@ -27,7 +27,7 @@ given entity.
 |                                | `... ` ,                  |
 |                                | in `insertionN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ given entity.
 
 </div>
 
-<div id="desc_xmlappendchildren" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ can be used in the rest of caller procedure.
 
 </div>
 
-<div id="params_xmlappendchildren" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122139" class="refsect2">
+<div>
 
 ### source
 
@@ -75,7 +75,7 @@ in DOM Style</a> for details).
 
 </div>
 
-<div id="id122143" class="refsect2">
+<div>
 
 ### parameterI
 
@@ -85,7 +85,7 @@ The value to be added as as child node of *`source `* .
 
 </div>
 
-<div id="ret_xmlappendchildren" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,15 +93,15 @@ The function returns NULL.
 
 </div>
 
-<div id="examples_xmlappendchildren" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlappendchildren" class="example">
+<div>
 
 **Example 24.498. XMLAppendChildren in a Virtuoso/PL procedure**
 
-<div class="example-contents">
+<div>
 
 The sample procedure contains two calls of `XMLAppendChildren ` . First
 call append three children to a node; second call demonstrates how text
@@ -159,7 +159,7 @@ The original entity is updated            <b>Hello,  world!</b>
 
 </div>
 
-<div id="seealso_xmlappendchildren" class="refsect1">
+<div>
 
 ## See Also
 

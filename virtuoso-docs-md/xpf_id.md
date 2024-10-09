@@ -1,10 +1,10 @@
-<div id="xpf_id" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ id — Returns an entities whose ID attributes are in the given list
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_id" class="funcsynopsis">
+<div>
 
 |                         |                 |
 |-------------------------|-----------------|
 | `sequence `**`id`**` (` | `ids ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ id — Returns an entities whose ID attributes are in the given list
 
 </div>
 
-<div id="xpf_desc_id" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,11 +57,11 @@ for it.
 
 </div>
 
-<div id="xpf_params_id" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127608" class="refsect2">
+<div>
 
 ### ids
 
@@ -71,13 +71,13 @@ The list of strings that consist of IDs
 
 </div>
 
-<div id="xpf_ret_id" class="refsect1">
+<div>
 
 ## Return Types
 
 </div>
 
-<div id="xpf_errors_id" class="refsect1">
+<div>
 
 ## Errors
 
@@ -85,15 +85,15 @@ The function ignores any sort of syntax errors on input.
 
 </div>
 
-<div id="xpf_examples_id" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_id" class="example">
+<div>
 
 **Example 24.592. List errors in census data**
 
-<div class="example-contents">
+<div>
 
 List every person who is not a spouse of his own spouse.
 
@@ -109,7 +109,7 @@ document ("census.xml")//person[@spouse and not (. = id (id (@spouse)/person/@sp
 
 </div>
 
-<div id="xpf_seealso_id" class="refsect1">
+<div>
 
 ## See Also
 

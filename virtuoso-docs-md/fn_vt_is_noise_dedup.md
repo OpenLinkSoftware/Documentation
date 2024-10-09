@@ -1,6 +1,6 @@
-<div id="fn_vt_is_noise_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

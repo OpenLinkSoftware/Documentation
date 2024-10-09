@@ -1,10 +1,10 @@
-<div id="fn_st_contains" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ another geometry g1.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_contains" class="funcsynopsis">
+<div>
 
 |                          |                                  |
 |--------------------------|----------------------------------|
@@ -25,7 +25,7 @@ another geometry g1.
 |                          | in `g2 ` any ,                   |
 |                          | in `prec ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ another geometry g1.
 
 </div>
 
-<div id="desc_st_contains" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ should have the same srid.
 
 </div>
 
-<div id="params_st_contains" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91263" class="refsect2">
+<div>
 
 ### g1
 
@@ -58,7 +58,7 @@ The first geometry.
 
 </div>
 
-<div id="id91266" class="refsect2">
+<div>
 
 ### g2
 
@@ -66,7 +66,7 @@ The second geometry.
 
 </div>
 
-<div id="id91269" class="refsect2">
+<div>
 
 ### prec
 
@@ -77,7 +77,7 @@ the srid. Default is 0.
 
 </div>
 
-<div id="ret_st_contains" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,15 +85,15 @@ Returns int.
 
 </div>
 
-<div id="examples_st_contains" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_contains" class="example">
+<div>
 
 **Example 24.145. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SPARQL
@@ -141,7 +141,7 @@ No. of rows in result: 20
 
 </div>
 
-<div id="seealso_st_contains" class="refsect1">
+<div>
 
 ## See Also
 

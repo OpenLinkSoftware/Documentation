@@ -1,6 +1,6 @@
-<div id="odbcbraceesc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

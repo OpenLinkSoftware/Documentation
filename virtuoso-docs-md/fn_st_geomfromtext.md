@@ -1,10 +1,10 @@
-<div id="fn_st_geomfromtext" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ geometry.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_geomfromtext" class="funcsynopsis">
+<div>
 
 |                              |                           |
 |------------------------------|---------------------------|
 | ` `**`st_geomfromtext`**` (` | in `string ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ geometry.
 
 </div>
 
-<div id="desc_st_geomfromtext" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ to be in well known text representation (WKT).
 
 </div>
 
-<div id="params_st_geomfromtext" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91093" class="refsect2">
+<div>
 
 ### string
 
@@ -56,7 +56,7 @@ String for the corresponding geometry to be extracted from.
 
 </div>
 
-<div id="ret_st_geomfromtext" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_geomfromtext" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_geomfromtext" class="example">
+<div>
 
 **Example 24.143. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SELECT st_geomfromtext ('point (10.03 30.01)', 2000);
@@ -91,7 +91,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_st_geomfromtext" class="refsect1">
+<div>
 
 ## See Also
 

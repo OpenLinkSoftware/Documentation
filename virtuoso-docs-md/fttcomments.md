@@ -1,6 +1,6 @@
-<div id="fttcomments" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

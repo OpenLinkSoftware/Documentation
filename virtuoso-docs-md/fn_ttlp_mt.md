@@ -1,10 +1,10 @@
-<div id="fn_ttlp_mt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ threads.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ttlp_mt" class="funcsynopsis">
+<div>
 
 |                             |                                  |
 |-----------------------------|----------------------------------|
@@ -30,7 +30,7 @@ threads.
 |                             | in `threads ` integer ,          |
 |                             | in `transactional ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ threads.
 
 </div>
 
-<div id="desc_ttlp_mt" class="refsect1">
+<div>
 
 ## Description
 
@@ -54,11 +54,11 @@ a server restart does not wipe out the results.
 
 </div>
 
-<div id="params_ttlp_mt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101041" class="refsect2">
+<div>
 
 ### strg
 
@@ -66,7 +66,7 @@ text of the resource
 
 </div>
 
-<div id="id101044" class="refsect2">
+<div>
 
 ### base
 
@@ -74,7 +74,7 @@ base IRI to resolve relative IRIs to absolute
 
 </div>
 
-<div id="id101047" class="refsect2">
+<div>
 
 ### graph
 
@@ -82,7 +82,7 @@ target graph IRI, parsed triples will appear in that graph.
 
 </div>
 
-<div id="id101050" class="refsect2">
+<div>
 
 ### flags
 
@@ -106,7 +106,7 @@ Other supported bits are:
 
 </div>
 
-<div id="id101054" class="refsect2">
+<div>
 
 ### log_mode
 
@@ -125,7 +125,7 @@ backup right before the loading.
 
 </div>
 
-<div id="id101057" class="refsect2">
+<div>
 
 ### threads
 
@@ -138,7 +138,7 @@ happen at the same time.
 
 </div>
 
-<div id="id101063" class="refsect2">
+<div>
 
 ### transactional
 
@@ -149,7 +149,7 @@ be turned on by setting it to "1".
 
 </div>
 
-<div id="ret_ttlp_mt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -157,15 +157,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_ttlp_mt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ttlp_mt" class="example">
+<div>
 
 **Example 24.267. **
 
-<div class="example-contents">
+<div>
 
 <span class="emphasis">*Example 1* </span> Load ttl from local file:
 
@@ -380,7 +380,7 @@ SQL>
 
 </div>
 
-<div id="seealso_ttlp_mt" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="xaservcon" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ perform the application task. The result of whole transaction depends on
 result of the service's entry function. The scenario of typical workflow
 is as follows:
 
-<div class="itemizedlist">
+<div>
 
 - client begins global transaction by ATMI tpbegin() call,
 
@@ -37,7 +37,7 @@ is as follows:
 The tx\_\* functions also could be used, See TUXEDO TxRPC related or
 ORACLE XA documentation.
 
-<div class="itemizedlist">
+<div>
 
 - tx_begin()
 

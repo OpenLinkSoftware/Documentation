@@ -1,6 +1,6 @@
-<div id="vdbengineodtjduedm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ Now that a Microsoft Entity Data Model has been created for the
 Northwind database, Entity Framework applications can be created to make
 use of it.
 
-<div id="vdbengineodtjduedmentf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,7 +40,7 @@ created using the Entity Data Model created in the
 title="8.10.4. Creating EDM in Visual Studio 2008">Creating EDM in
 Visual Studio 2008 section</a> .
 
-<div class="orderedlist">
+<div>
 
 1.  Open the
 
@@ -53,15 +53,15 @@ Visual Studio 2008 section</a> .
 
 2.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jmsora1" class="figure">
+    <div>
 
     **Figure 8.521. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -93,15 +93,15 @@ Visual Studio 2008 section</a> .
 
     to create the ADO.Net Data Service.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jmsora2" class="figure">
+    <div>
 
     **Figure 8.522. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/fora2.png)
 
@@ -161,15 +161,15 @@ Visual Studio 2008 section</a> .
     }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jmsora3" class="figure">
+    <div>
 
     **Figure 8.523. Virtuoso.svc.cs**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.svc.cs](images/ui/fora3.png)
 
@@ -192,15 +192,15 @@ Visual Studio 2008 section</a> .
     displaying the list of available tables/entities for the Northwind
     Demo database catalog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jmsora4" class="figure">
+    <div>
 
     **Figure 8.524. Data Service test**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Service test](images/ui/jmsora4.png)
 
@@ -218,15 +218,15 @@ Visual Studio 2008 section</a> .
     record, use this convention
     http://host/vdir/Virtuoso.svc/Customers('ALFKI') .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jmsora5" class="figure">
+    <div>
 
     **Figure 8.525. Customers**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Customers](images/ui/jmsora5.png)
 
@@ -244,7 +244,7 @@ Visual Studio 2008 section</a> .
 
 <span class="emphasis">*Notes:*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*Important*</span>
 
@@ -303,9 +303,9 @@ Visual Studio 2008 section</a> .
 
 </div>
 
-<div id="vdbengineodtjduedmvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -323,19 +323,19 @@ This section details the steps required to create a simple Visual Studio
 2008 Windows Form application, with associated DataGridView control for
 displaying data in selected tables from the target database.
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora1" class="figure">
+    <div>
 
     **Figure 8.526. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -363,15 +363,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_17" class="figure">
+    <div>
 
     **Figure 8.527. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -415,15 +415,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora2" class="figure">
+    <div>
 
     **Figure 8.528. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/dora2.png)
 
@@ -451,15 +451,15 @@ displaying data in selected tables from the target database.
 
     control onto the form.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora3" class="figure">
+    <div>
 
     **Figure 8.529. Toolbox**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Toolbox](images/ui/dora3.png)
 
@@ -487,15 +487,15 @@ displaying data in selected tables from the target database.
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora4" class="figure">
+    <div>
 
     **Figure 8.530. DataGridView Task**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView Task](images/ui/dora4.png)
 
@@ -515,15 +515,15 @@ displaying data in selected tables from the target database.
 
     list box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora5" class="figure">
+    <div>
 
     **Figure 8.531. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora5.png)
 
@@ -543,15 +543,15 @@ displaying data in selected tables from the target database.
 
     link to connect to a data source.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora6" class="figure">
+    <div>
 
     **Figure 8.532. Add Project Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Project Data Source](images/ui/dora6.png)
 
@@ -583,15 +583,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora7" class="figure">
+    <div>
 
     **Figure 8.533. Data Source Type**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Type](images/ui/dora7.png)
 
@@ -619,15 +619,15 @@ displaying data in selected tables from the target database.
 
     button
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora8" class="figure">
+    <div>
 
     **Figure 8.534. Data Source Configuration Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Configuration Wizard](images/ui/dora8.png)
 
@@ -655,15 +655,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora9" class="figure">
+    <div>
 
     **Figure 8.535. Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source](images/ui/dora9.png)
 
@@ -689,15 +689,15 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora10" class="figure">
+    <div>
 
     **Figure 8.536. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -721,15 +721,15 @@ displaying data in selected tables from the target database.
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora11" class="figure">
+    <div>
 
     **Figure 8.537. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/ojdora11.png)
 
@@ -749,15 +749,15 @@ displaying data in selected tables from the target database.
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora12" class="figure">
+    <div>
 
     **Figure 8.538. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -773,15 +773,15 @@ displaying data in selected tables from the target database.
 
 16. Click OK to add the connection.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora13i" class="figure">
+    <div>
 
     **Figure 8.539. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/ojdora13i.png)
 
@@ -803,15 +803,15 @@ displaying data in selected tables from the target database.
 
     <span class="emphasis">*Next*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora13" class="figure">
+    <div>
 
     **Figure 8.540. JDBCConnectionString**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JDBCConnectionString](images/ui/ojdora13.png)
 
@@ -836,15 +836,15 @@ displaying data in selected tables from the target database.
 
     control.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora14" class="figure">
+    <div>
 
     **Figure 8.541. JDBC database**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JDBC database](images/ui/ojdora14.png)
 
@@ -861,15 +861,15 @@ displaying data in selected tables from the target database.
 19. The columns names of the select table will be displayed in the
     DataGridView.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora15" class="figure">
+    <div>
 
     **Figure 8.542. DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView](images/ui/mqdora15.png)
 
@@ -886,15 +886,15 @@ displaying data in selected tables from the target database.
 20. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora16" class="figure">
+    <div>
 
     **Figure 8.543. Resize the Form and DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Resize the Form and DataGridView](images/ui/mqdora16.png)
 
@@ -922,15 +922,15 @@ displaying data in selected tables from the target database.
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora17" class="figure">
+    <div>
 
     **Figure 8.544. Start Debugging**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Start Debugging](images/ui/mqdora17.png)
 
@@ -954,15 +954,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ojdora18" class="figure">
+    <div>
 
     **Figure 8.545. DataGrid**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGrid](images/ui/mqdora18.png)
 

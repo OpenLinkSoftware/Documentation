@@ -1,6 +1,6 @@
-<div id="oledblimitations" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Per-column properties are not supported.
 

@@ -1,6 +1,6 @@
-<div id="vdbengineodbcodcrvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the Microsoft Access Northwind database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora1" class="figure">
+    <div>
 
     **Figure 8.558. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the Microsoft Access Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_18" class="figure">
+    <div>
 
     **Figure 8.559. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the Microsoft Access Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora2" class="figure">
+    <div>
 
     **Figure 8.560. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/eora2.png)
 
@@ -137,15 +137,15 @@ the Microsoft Access Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora3" class="figure">
+    <div>
 
     **Figure 8.561. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/eora3.png)
 
@@ -161,15 +161,15 @@ the Microsoft Access Northwind database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora4" class="figure">
+    <div>
 
     **Figure 8.562. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the Microsoft Access Northwind database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora5" class="figure">
+    <div>
 
     **Figure 8.563. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/eora5.png)
 
@@ -241,15 +241,15 @@ the Microsoft Access Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora6" class="figure">
+    <div>
 
     **Figure 8.564. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the Microsoft Access Northwind database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora7" class="figure">
+    <div>
 
     **Figure 8.565. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the Microsoft Access Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora8" class="figure">
+    <div>
 
     **Figure 8.566. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the Microsoft Access Northwind database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora9" class="figure">
+    <div>
 
     **Figure 8.567. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the Microsoft Access Northwind database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora10" class="figure">
+    <div>
 
     **Figure 8.568. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/obsora10.png)
 
@@ -405,15 +405,15 @@ the Microsoft Access Northwind database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora11" class="figure">
+    <div>
 
     **Figure 8.569. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -442,15 +442,15 @@ the Microsoft Access Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora12" class="figure">
+    <div>
 
     **Figure 8.570. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/obsora12.png)
 
@@ -487,15 +487,15 @@ the Microsoft Access Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora13" class="figure">
+    <div>
 
     **Figure 8.571. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/obsora13.png)
 
@@ -516,15 +516,15 @@ the Microsoft Access Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="obsora14" class="figure">
+    <div>
 
     **Figure 8.572. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/obsora14.png)
 

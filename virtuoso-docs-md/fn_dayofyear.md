@@ -1,10 +1,10 @@
-<div id="fn_dayofyear" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ dayofyear — get day of year from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dayofyear_01" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
 | ` `**`dayofyear`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ dayofyear — get day of year from a datetime
 
 </div>
 
-<div id="desc_dayofyear" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ day of year of the datetime.
 
 </div>
 
-<div id="params_dayofyear" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id85941" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_dayofyear" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -65,15 +65,15 @@ year.
 
 </div>
 
-<div id="examples_dayofyear" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dayofyear" class="example">
+<div>
 
 **Example 24.85. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current day of year.
 
@@ -94,7 +94,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_02" class="refsect1">
+<div>
 
 ## See Also
 

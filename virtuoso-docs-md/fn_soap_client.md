@@ -1,10 +1,10 @@
-<div id="fn_soap_client" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ soap_client — Invoke a SOAP service and returns result value.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_client" class="funcsynopsis">
+<div>
 
 |                          |                                               |
 |--------------------------|-----------------------------------------------|
@@ -42,7 +42,7 @@ soap_client — Invoke a SOAP service and returns result value.
 |                          | in `security_schema ` any default null ,      |
 |                          | in `time_out ` int default 100 `)`;           |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -52,7 +52,7 @@ soap_client — Invoke a SOAP service and returns result value.
 
 </div>
 
-<div id="desc_soap_client" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ This will invoke the specified SOAP service.
 
 </div>
 
-<div id="params_soap_client" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110556" class="refsect2">
+<div>
 
 ### url
 
@@ -73,7 +73,7 @@ begin with 'https:' schema.
 
 </div>
 
-<div id="id110559" class="refsect2">
+<div>
 
 ### operation
 
@@ -81,7 +81,7 @@ The name of the SOAP method to be invoked.
 
 </div>
 
-<div id="id110562" class="refsect2">
+<div>
 
 ### target_namespace
 
@@ -89,7 +89,7 @@ The namespace of the SOAP request.
 
 </div>
 
-<div id="id110565" class="refsect2">
+<div>
 
 ### parameters
 
@@ -110,7 +110,7 @@ types to SOAP server.
 
 </div>
 
-<div id="id110572" class="refsect2">
+<div>
 
 ### headers
 
@@ -129,7 +129,7 @@ The rules for datatype of "value" are same as for 'parameters' parameter
 
 </div>
 
-<div id="id110578" class="refsect2">
+<div>
 
 ### soap_action
 
@@ -137,7 +137,7 @@ The exact value of the SOAPAction header attribute.
 
 </div>
 
-<div id="id110581" class="refsect2">
+<div>
 
 ### attachments
 
@@ -145,7 +145,7 @@ DIME/MIME message attachments as array of (id, type, content)
 
 </div>
 
-<div id="id110584" class="refsect2">
+<div>
 
 ### ticket
 
@@ -157,7 +157,7 @@ then a number as string greater than 0 must be specified (i.e. '1').
 
 </div>
 
-<div id="id110587" class="refsect2">
+<div>
 
 ### passwd
 
@@ -165,7 +165,7 @@ The password for opening the x509 certificate specified in 'ticket'.
 
 </div>
 
-<div id="id110590" class="refsect2">
+<div>
 
 ### user_name
 
@@ -173,7 +173,7 @@ name for basic/digest HTTP authentication.
 
 </div>
 
-<div id="id110593" class="refsect2">
+<div>
 
 ### user_password
 
@@ -181,7 +181,7 @@ The password for basic/digest HTTP authentication.
 
 </div>
 
-<div id="id110596" class="refsect2">
+<div>
 
 ### auth_type
 
@@ -197,7 +197,7 @@ The type of authentication to use. Valid types are:
 
 </div>
 
-<div id="id110610" class="refsect2">
+<div>
 
 ### security_type
 
@@ -207,7 +207,7 @@ only.
 
 </div>
 
-<div id="id110613" class="refsect2">
+<div>
 
 ### debug
 
@@ -217,7 +217,7 @@ request, response, and error if one occurred.
 
 </div>
 
-<div id="id110616" class="refsect2">
+<div>
 
 ### template
 
@@ -228,14 +228,14 @@ the key and default rules for making a signature.
 
 </div>
 
-<div id="id110619" class="refsect2">
+<div>
 
 ### style
 
 This is a bit-mask parameter that is used to specify the outgoing
 message format. The mask relies on the following values:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*0* </span> RPC-encoded SOAP message
 
@@ -283,7 +283,7 @@ message format. The mask relies on the following values:
 
 </div>
 
-<div id="id110662" class="refsect2">
+<div>
 
 ### version
 
@@ -292,7 +292,7 @@ the SOAP version used in call (SOAP 1.0 = 1, SOAP 1.1 = 11, SOAP 1.2 =
 
 </div>
 
-<div id="id110665" class="refsect2">
+<div>
 
 ### direction
 
@@ -302,7 +302,7 @@ headers.
 
 </div>
 
-<div id="id110668" class="refsect2">
+<div>
 
 ### http_header
 
@@ -314,7 +314,7 @@ replicating data collection(s) via SOAP.
 
 </div>
 
-<div id="id110671" class="refsect2">
+<div>
 
 ### security_schema
 
@@ -326,7 +326,7 @@ vector ('wsse', WSSE_OASIS_URI, 'wsu', WSSU_OASIS_URI).
 
 </div>
 
-<div id="id110674" class="refsect2">
+<div>
 
 ### time_out
 
@@ -337,7 +337,7 @@ server will cause client to disconnect with an connection error.
 
 </div>
 
-<div id="ret_soap_client" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -349,7 +349,7 @@ parameter description.
 
 </div>
 
-<div id="ssl_soap_client" class="refsect1">
+<div>
 
 ## Requirements for certificate files for HTTPS operation
 
@@ -363,15 +363,15 @@ server documentation about how to run an HTTPS listener.
 
 </div>
 
-<div id="examples_soap_client" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_soap_client" class="example">
+<div>
 
 **Example 24.383. **
 
-<div class="example-contents">
+<div>
 
 References: tutorial/services WS-S-2 (triple-des), WS-S-3 (RSA), WS-S-4
 (X.509 signing)
@@ -454,11 +454,11 @@ shows one-way encoding only.
 
   
 
-<div id="ex_soapheader_client" class="example">
+<div>
 
 **Example 24.384. Adding a SOAP:Header**
 
-<div class="example-contents">
+<div>
 
 This example makes call to the interop round4 test echoVoidSoapHeader
 (exists in the demo DB). Request and response wire dumps are listed
@@ -524,11 +524,11 @@ And will receive the SOAP server response:
 
   
 
-<div id="ex_soapssl_client" class="example">
+<div>
 
 **Example 24.385. Performing SOAP call over secure connection**
 
-<div class="example-contents">
+<div>
 
 The example code below makes a simple 'upper-case' service, exposes it
 under secured endpoint and invoke with x509 certificate. Note that
@@ -573,7 +573,7 @@ DEMOTEXT
 
 </div>
 
-<div id="seealso_soap_client" class="refsect1">
+<div>
 
 ## See Also
 

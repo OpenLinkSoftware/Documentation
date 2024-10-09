@@ -1,10 +1,10 @@
-<div id="fn_vad_check_installability" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ required packages and of the Virtuoso platform
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_check_installability" class="funcsynopsis">
+<div>
 
 |                                                      |                                |
 |------------------------------------------------------|--------------------------------|
 | `varchar DB.DBA. `**`VAD_CHECK_INSTALLABILITY`**` (` | in `package_uri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ required packages and of the Virtuoso platform
 
 </div>
 
-<div id="desc_52" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ successful if the check found no error.
 
 </div>
 
-<div id="params_19" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117479" class="refsect2">
+<div>
 
 ### package_uri
 
@@ -58,7 +58,7 @@ URI of VAD file
 
 </div>
 
-<div id="seealso_24" class="refsect1">
+<div>
 
 ## See Also
 

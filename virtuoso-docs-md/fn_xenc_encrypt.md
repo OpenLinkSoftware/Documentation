@@ -1,10 +1,10 @@
-<div id="fn_xenc_encrypt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xenc_encrypt — Encrypt and optionally sign a SOAP message
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_encrypt" class="funcsynopsis">
+<div>
 
 |                                  |                          |
 |----------------------------------|--------------------------|
@@ -29,7 +29,7 @@ xenc_encrypt — Encrypt and optionally sign a SOAP message
 |                                  | in `what-n ` varchar ,   |
 |                                  | `... ` `)`;              |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ xenc_encrypt — Encrypt and optionally sign a SOAP message
 
 </div>
 
-<div id="desc_xenc_encrypt" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ are retrieved from the key store of the calling user account.
 
 </div>
 
-<div id="params_xenc_encrypt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119762" class="refsect2">
+<div>
 
 ### message
 
@@ -60,7 +60,7 @@ A string containing SOAP message
 
 </div>
 
-<div id="id119765" class="refsect2">
+<div>
 
 ### soap_ver
 
@@ -68,7 +68,7 @@ SOAP version (11 = 1.1, 10 = 1.0 etc.)
 
 </div>
 
-<div id="id119768" class="refsect2">
+<div>
 
 ### template
 
@@ -76,7 +76,7 @@ a string containing Digital signature template.
 
 </div>
 
-<div id="id119771" class="refsect2">
+<div>
 
 ### ns
 
@@ -85,7 +85,7 @@ version information.
 
 </div>
 
-<div id="id119774" class="refsect2">
+<div>
 
 ### xp-n
 
@@ -93,7 +93,7 @@ XPath expression to locate n-th part of the message to be encrypted
 
 </div>
 
-<div id="id119777" class="refsect2">
+<div>
 
 ### ki-n
 
@@ -101,7 +101,7 @@ Key instance to encrypt the part
 
 </div>
 
-<div id="id119780" class="refsect2">
+<div>
 
 ### what-n
 
@@ -112,7 +112,7 @@ Key instance to encrypt the part
 
 </div>
 
-<div id="ret_xenc_encrypt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -121,15 +121,15 @@ optionally signed SOAP message.
 
 </div>
 
-<div id="examples_xenc_encrypt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_encrypt" class="example">
+<div>
 
 **Example 24.458. Encrypting and signing SOAP message**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ...
@@ -148,7 +148,7 @@ resp := xenc_encrypt (request, 11, template, ns, '/Envelope/Body', keyi, 'Conten
 
 </div>
 
-<div id="seealso_xenc_encrypt" class="refsect1">
+<div>
 
 ## See Also
 

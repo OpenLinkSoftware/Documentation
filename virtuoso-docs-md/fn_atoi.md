@@ -1,10 +1,10 @@
-<div id="fn_atoi" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ atoi — Convert a string to an integer
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_atoi" class="funcsynopsis">
+<div>
 
 |                   |                       |
 |-------------------|-----------------------|
 | ` `**`atoi`**` (` | in `arg ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ atoi — Convert a string to an integer
 
 </div>
 
-<div id="desc_atoi" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ and converted to a valid integer, a value 0 is returned.
 
 </div>
 
-<div id="params_atoi" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80620" class="refsect2">
+<div>
 
 ### *`arg `*
 
@@ -55,7 +55,7 @@ A string input parameter
 
 </div>
 
-<div id="ret_atoi" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,15 +65,15 @@ absolute value of the literal will be returned as an integer. Otherwise
 
 </div>
 
-<div id="examples_atoi" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_atoi" class="example">
+<div>
 
 **Example 24.18. Simple examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select atoi('1.23456789');
@@ -103,7 +103,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_atoi" class="refsect1">
+<div>
 
 ## See Also
 

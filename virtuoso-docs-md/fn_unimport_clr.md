@@ -1,10 +1,10 @@
-<div id="fn_unimport_clr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ based on the CLR Reflection API.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_unimport_clr" class="funcsynopsis">
+<div>
 
 |                              |                               |
 |------------------------------|-------------------------------|
 | `any `**`unimport_clr`**` (` | in `assemblies_vector ` any , |
 |                              | in `classes_vector ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ based on the CLR Reflection API.
 
 </div>
 
-<div id="desc_unimport_clr" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ executed or compiled.
 
 </div>
 
-<div id="params_unimport_clr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116157" class="refsect2">
+<div>
 
 ### assemblies_vector
 
@@ -57,7 +57,7 @@ a vector of assembly names (as VARCHAR) to look into (or null).
 
 </div>
 
-<div id="id116160" class="refsect2">
+<div>
 
 ### classes_vector
 
@@ -69,15 +69,15 @@ case the `assemblies_vector ` cannot be NULL).
 
 </div>
 
-<div id="examples_unimport_clr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_unimport_clr" class="example">
+<div>
 
 **Example 24.430. Dropping an imported Class**
 
-<div class="example-contents">
+<div>
 
 Now this library must be introduced to the Virtuoso Server. In ISQL use
 the following commands to test the CLR:
@@ -101,7 +101,7 @@ select sanity::test('Rob')
 
 </div>
 
-<div id="seealso_unimport_clr" class="refsect1">
+<div>
 
 ## See Also
 

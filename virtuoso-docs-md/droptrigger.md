@@ -1,6 +1,6 @@
-<div id="droptrigger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

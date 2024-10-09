@@ -1,10 +1,10 @@
-<div id="fn_bpel_import_script" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ BPEL.BPEL.import_script — Import a new BPEL process
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_import_script_01" class="funcsynopsis">
+<div>
 
 |                                      |                           |
 |--------------------------------------|---------------------------|
@@ -24,7 +24,7 @@ BPEL.BPEL.import_script — Import a new BPEL process
 |                                      | in `base_name ` varchar , |
 |                                      | in `scp_id ` int `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,11 +34,11 @@ BPEL.BPEL.import_script — Import a new BPEL process
 
 </div>
 
-<div id="params_import_script_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130499" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -48,7 +48,7 @@ wsdl's urls.
 
 </div>
 
-<div id="id130503" class="refsect2">
+<div>
 
 ### base_name
 
@@ -56,7 +56,7 @@ wsdl's urls.
 
 </div>
 
-<div id="id130507" class="refsect2">
+<div>
 
 ### scp_id
 
@@ -66,7 +66,7 @@ wsdl's urls.
 
 </div>
 
-<div id="desc_import_script_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -77,15 +77,15 @@ wsdl files must have absolute paths.
 
 </div>
 
-<div id="examples_import_script_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_import_script_01" class="example">
+<div>
 
 **Example 24.652. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
           SQL>create procedure echo_import ()

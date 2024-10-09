@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodsparqlqueryandodswiki" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,7 +35,7 @@ curl -i -d "INSERT {<http://example.com/dataspace/test3/wiki/testWiki> <http://a
 
 As result we should have 2 files created:
 
-<div class="itemizedlist">
+<div>
 
 - In the user DAV folder "DAV/home/test3/wiki/testWiki/" will be created
   a file "MyTest" with type "application/sparql-query". You can view the
@@ -72,7 +72,7 @@ As result we should have 2 files created:
 
 Now let's check what data was inserted in the Quad Store:
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the sparql endpoint, i.e. for ex. to http://example.com/sparql
 

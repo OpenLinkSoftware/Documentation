@@ -1,10 +1,10 @@
-<div id="fn_ld_dir_all" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ subdirectories.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ld_dir_all" class="funcsynopsis">
+<div>
 
 |                         |                                 |
 |-------------------------|---------------------------------|
@@ -25,7 +25,7 @@ subdirectories.
 |                         | in `file_mask ` varchar ,       |
 |                         | in `target_graph ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ subdirectories.
 
 </div>
 
-<div id="desc_ld_dir_all" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ subdirectories, to control list set up in the virtuoso.ini file.
 
 </div>
 
-<div id="params_ld_dir_all" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100568" class="refsect2">
+<div>
 
 ### dir_path
 
@@ -56,7 +56,7 @@ path to the folder where the files will be loaded
 
 </div>
 
-<div id="id100571" class="refsect2">
+<div>
 
 ### file_mask
 
@@ -64,7 +64,7 @@ SQL like pattern to match against the files in the directory
 
 </div>
 
-<div id="id100574" class="refsect2">
+<div>
 
 ### target_graph
 
@@ -74,7 +74,7 @@ target graph IRI, parsed triples will appear in that graph.
 
 </div>
 
-<div id="ret_ld_dir_all" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,15 +82,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_ld_dir_all" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ld_dir_all" class="example">
+<div>
 
 **Example 24.261. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 ld_dir_all ('/data8/', '%.gz', 'http://bsbm.org');
@@ -115,7 +115,7 @@ whitespace.
 
 </div>
 
-<div id="seealso_ld_dir_all" class="refsect1">
+<div>
 
 ## See Also
 

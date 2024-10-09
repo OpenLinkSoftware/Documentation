@@ -1,10 +1,10 @@
-<div id="fn_rdf_backup_metadata" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ descriptions of Linked Data Views and the like).
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_backup_metadata" class="funcsynopsis">
+<div>
 
 |                                         |                                        |
 |-----------------------------------------|----------------------------------------|
 | ` `**`DB.DBA.RDF_BACKUP_METADATA`**` (` | in `save_to_file ` integer := 0 ,      |
 |                                         | in `backup_name ` varchar := null `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ descriptions of Linked Data Views and the like).
 
 </div>
 
-<div id="desc_rdf_backup_metadata" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,11 +57,11 @@ touched only by API function calls.
 
 </div>
 
-<div id="params_rdf_backup_metadata" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100397" class="refsect2">
+<div>
 
 ### save_to_file
 
@@ -69,7 +69,7 @@ Value of 1 to backup to a files, 0 to backup into graph.
 
 </div>
 
-<div id="id100400" class="refsect2">
+<div>
 
 ### backup_name
 
@@ -84,7 +84,7 @@ backup name will contain date and time of backup creation, like
 
 </div>
 
-<div id="ret_rdf_backup_metadata" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -92,7 +92,7 @@ The function returns the actual name of the created backup as a string.
 
 </div>
 
-<div id="seealso_rdf_backup_metadata" class="refsect1">
+<div>
 
 ## See Also
 

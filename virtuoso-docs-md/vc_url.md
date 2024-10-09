@@ -1,10 +1,10 @@
-<div id="vc_url" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ url — Generic scriptable hypertext link.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_url" class="funcsynopsis">
+<div>
 
 |                     |                                      |
 |---------------------|--------------------------------------|
@@ -47,7 +47,7 @@ url — Generic scriptable hypertext link.
 |                     | `debug-srcline` (optional) ,         |
 |                     | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -57,7 +57,7 @@ url — Generic scriptable hypertext link.
 
 </div>
 
-<div id="vc_desc_url" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,7 +65,7 @@ Dynamic data bindable hypertext link.
 
 </div>
 
-<div id="vc_attrs_url" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -257,7 +257,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_url" class="refsect1">
+<div>
 
 ## Declaration of type vspx_url
 
@@ -277,15 +277,15 @@ constructor method vspx_url (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_url" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_url__0" class="example">
+<div>
 
 **Example 14.45.  Simple dynamic link**
 
-<div class="example-contents">
+<div>
 
 This draws an anchor in browser screen.
 

@@ -1,10 +1,10 @@
-<div id="xpf_avg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ avg — Returns average value of all its arguments.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_avg" class="funcsynopsis">
+<div>
 
 |                        |                  |
 |------------------------|------------------|
@@ -25,7 +25,7 @@ avg — Returns average value of all its arguments.
 |                        | `... ` ,         |
 |                        | `argN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ avg — Returns average value of all its arguments.
 
 </div>
 
-<div id="xpf_desc_avg" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ This function is not a part of XPATH 1.0 standard library.
 
 </div>
 
-<div id="xpf_params_avg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126089" class="refsect2">
+<div>
 
 ### argI
 
@@ -65,15 +65,15 @@ added to the result, or single value.
 
 </div>
 
-<div id="xpf_ret_avg" class="refsect1">
+<div>
 
 ## Return Types
 
-<div id="id126095" class="table">
+<div>
 
-**Table 24.138. Errors signalled by**
+**Table 24.137. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                                                 | Description                                                                                             |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -87,15 +87,15 @@ added to the result, or single value.
 
 </div>
 
-<div id="xpf_examples_avg" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_avg" class="example">
+<div>
 
 **Example 24.565. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 avg(/report[@type="daily-sales"]/total)
@@ -109,7 +109,7 @@ avg(/report[@type="daily-sales"]/total)
 
 </div>
 
-<div id="xpf_seealso_avg" class="refsect1">
+<div>
 
 ## See Also
 

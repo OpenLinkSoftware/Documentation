@@ -1,6 +1,6 @@
-<div id="admui.internetdomains" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="httpvirtualdirs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,15 +43,15 @@ directories available to Virtuoso through the file system or DAV.
 You can also publish stored procedures to a SOAP defined directory
 during the virtual directory definition.
 
-<div class="figure-float">
+<div>
 
-<div id="id14789" class="figure">
+<div>
 
 **Figure 6.83. Virtual Directories**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories](images/ui/admvirtdir001.png)
 
@@ -68,15 +68,15 @@ during the virtual directory definition.
 Click on the <span class="emphasis">*Add New Site*</span> button to
 start adding a new Virtual Web Site and its directories.
 
-<div class="figure-float">
+<div>
 
-<div id="id14796" class="figure">
+<div>
 
 **Figure 6.84. Virtual Directories: Site Details**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories: Site Details](images/ui/admvirtdir002.png)
 
@@ -101,15 +101,15 @@ specified in the request. This provides the virtual site.
 
 Click on "New Directory" to continue.
 
-<div class="figure-float">
+<div>
 
-<div id="id14803" class="figure">
+<div>
 
 **Figure 6.85. Virtual Directories Mappings**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories Mappings](images/ui/admvirtdir003.png)
 
@@ -129,15 +129,15 @@ SOAP virtual directories this step is particular useful.
 
 Select "Type" and then click "Next" to continue.
 
-<div class="figure-float">
+<div>
 
-<div id="id14810" class="figure">
+<div>
 
 **Figure 6.86. Virtual Directories**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories](images/ui/admvirtdir004.png)
 
@@ -167,7 +167,7 @@ systems graphically. Use the WebDAV Source Checkbox to instruct Virtuoso
 to use the WebDAV store for the physical location. "Default Page" will
 be returned if no page is specified in the incoming URL.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>
@@ -217,14 +217,14 @@ HeaderNS=http://soapinterop.org/echoheader/;
 CR-escape=yes;
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
-|                            |                                                                                                                                                      |
-|:--------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                                                                                                            |
-|                            | For a list of available SOAP Options review the end section of the SOAP chapter: <a href="ch-webservices.html#soapoptions" class="link" shape="rect" 
-                              title="17.1.20. SOAP Endpoint Options">Optional Parameters to the SOAP                                                                                
-                              Endpoint</a> .                                                                                                                                        |
+|                            |                                                                                                                                         |
+|:--------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                                                                                               |
+|                            | For a list of available SOAP Options review the end section of the SOAP chapter: <a href="ch-webservices.html#soapoptions" class="link" 
+                              title="17.1.20. SOAP Endpoint Options">Optional Parameters to the SOAP                                                                   
+                              Endpoint</a> .                                                                                                                           |
 
 </div>
 
@@ -234,15 +234,15 @@ rules for the Virtual Directory.
 Once the form details have been completed press on the Add button to
 save the them and proceed to configure mappings for the directory.
 
-<div class="figure-float">
+<div>
 
-<div id="id14831" class="figure">
+<div>
 
 **Figure 6.87. Virtual Directories Mappings**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Directories Mappings](images/ui/admvirtdir006.png)
 
@@ -262,20 +262,20 @@ displayed. The "Add Virtual Directory" button will let you define more.
 Back returns you to the start page, Edit and Delete allow you to edit or
 remove existing mappings as their link suggests.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
-|                            |                                                                       |
-|:--------------------------:|:----------------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                             |
-|                            | <a href="ch-webappdevelopment.html#virtdir" class="link" shape="rect" 
-                              title="14.1.2. Virtual Directories">Virtual Directories</a>            |
+|                            |                                                             |
+|:--------------------------:|:------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                   |
+|                            | <a href="ch-webappdevelopment.html#virtdir" class="link"    
+                              title="14.1.2. Virtual Directories">Virtual Directories</a>  |
 
 </div>
 
 For example, here are the basic steps to be performed, in order to mount
 FS folder to DAV:
 
-<div class="orderedlist">
+<div>
 
 1.  Suppose there is a folder with name "test" in your FS and it is
     under the root of the ServerRoot defined in your virtuoso ini file.
@@ -309,15 +309,15 @@ FS folder to DAV:
 
 5.  Go to Web Application Server -\> Virtual Domains & Directories.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="id14854" class="figure">
+    <div>
 
     **Figure 6.88. Mount FS to DAV**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mount FS to DAV](images/ui/admvirtdir011.png)
 
@@ -336,15 +336,15 @@ FS folder to DAV:
 7.  Check the check-box "Type" and select from the drop-down list
     "Filesystem".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="id14863" class="figure">
+    <div>
 
     **Figure 6.89. Mount FS to DAV**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mount FS to DAV](images/ui/admvirtdir012.png)
 
@@ -367,15 +367,15 @@ FS folder to DAV:
 
 10. Click "Save Changes"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="id14874" class="figure">
+    <div>
 
     **Figure 6.90. Mount FS to DAV**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mount FS to DAV](images/ui/admvirtdir013.png)
 
@@ -393,15 +393,15 @@ FS folder to DAV:
 
 12. As result the content of the index.html file will be shown:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="id14883" class="figure">
+    <div>
 
     **Figure 6.91. Mount FS to DAV**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mount FS to DAV](images/ui/admvirtdir014.png)
 

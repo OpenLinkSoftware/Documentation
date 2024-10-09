@@ -1,10 +1,10 @@
-<div id="fn_minute" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ minute — get minute from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_minute_01" class="funcsynopsis">
+<div>
 
 |                     |                        |
 |---------------------|------------------------|
 | ` `**`minute`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ minute — get minute from a datetime
 
 </div>
 
-<div id="desc_minute" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ minute of the datetime.
 
 </div>
 
-<div id="params_minute" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96643" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_minute" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ An <span class="type">INTEGER </span> containing the minute.
 
 </div>
 
-<div id="examples_minute" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_minute" class="example">
+<div>
 
 **Example 24.219. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current minute.
 
@@ -93,7 +93,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_minute" class="refsect1">
+<div>
 
 ## See Also
 

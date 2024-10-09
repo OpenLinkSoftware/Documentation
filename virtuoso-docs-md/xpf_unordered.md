@@ -1,10 +1,10 @@
-<div id="xpf_unordered" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ unordered — Returns the given sequence in any order.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_unordered" class="funcsynopsis">
+<div>
 
 |                                |                        |
 |--------------------------------|------------------------|
 | `sequence `**`unordered`**` (` | `input ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ unordered — Returns the given sequence in any order.
 
 </div>
 
-<div id="xpf_desc_unordered" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ returned in any order.
 
 </div>
 
-<div id="xpf_params_unordered" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129730" class="refsect2">
+<div>
 
 ### input
 
@@ -56,7 +56,7 @@ The sequence of nodes
 
 </div>
 
-<div id="xpf_ret_unordered" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Sequence
 
 </div>
 
-<div id="xpf_examples_unordered" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_unordered" class="example">
+<div>
 
 **Example 24.636. Finding pairs of books**
 
-<div class="example-contents">
+<div>
 
 The following example is from the XQuery standard and it illustrates how
 to find pairs of books that have different titles but the same set of

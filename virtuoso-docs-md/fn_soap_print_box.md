@@ -1,10 +1,10 @@
-<div id="fn_soap_print_box" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ fragment.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_print_box" class="funcsynopsis">
+<div>
 
 |                             |                                                    |
 |-----------------------------|----------------------------------------------------|
@@ -25,7 +25,7 @@ fragment.
 |                             | in `enclosing_tag ` varchar ,                      |
 |                             | in `date_encoding_type|soap_version ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ fragment.
 
 </div>
 
-<div id="desc_soap_print_box" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ parameter values and return values when processing a SOAP request.
 
 </div>
 
-<div id="params_soap_print_box" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110780" class="refsect2">
+<div>
 
 ### value
 
@@ -57,7 +57,7 @@ Required. Any SQL value to be represented as an XML fragment.
 
 </div>
 
-<div id="id110783" class="refsect2">
+<div>
 
 ### enclosing_tag
 
@@ -65,7 +65,7 @@ Required. The XML tag to place the value into.
 
 </div>
 
-<div id="id110786" class="refsect2">
+<div>
 
 ### date_encoding_type
 
@@ -81,7 +81,7 @@ following formats:
 
 </div>
 
-<div id="id110794" class="refsect2">
+<div>
 
 ### soap_version
 
@@ -92,7 +92,7 @@ soap_version (1 for SOAP 1.0, 11 for SOAP 1.1).
 
 </div>
 
-<div id="ret_soap_print_box" class="refsect1">
+<div>
 
 ## Return Types
 

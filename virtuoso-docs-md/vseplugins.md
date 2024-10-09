@@ -1,6 +1,6 @@
-<div id="vseplugins" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -69,7 +69,7 @@ There's a VSE to call each of the hosting modules:
 
 such that:
 
-<div class="variablelist">
+<div>
 
 <span class="term">extension</span>  
 Selects plugin by supported extension handler. e.g. pass 'pl' for the
@@ -126,11 +126,11 @@ PersistentHostingModules = 1/0 default 0
 Setting `PersistentHostingModules` to "1" prevents Virtuoso from
 removing the interpreters from the HTTP threads after each request.
 
-<div id="ex_plugshostingsharedobjects" class="example">
+<div>
 
 **Example 18.4. Using the Perl Plugin**
 
-<div class="example-contents">
+<div>
 
 Executing Perl code directly:
 
@@ -166,7 +166,7 @@ returns : hello world file
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                             |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

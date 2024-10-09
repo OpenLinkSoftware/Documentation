@@ -1,6 +1,6 @@
-<div id="referencestojvminvpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

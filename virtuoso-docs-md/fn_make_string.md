@@ -1,10 +1,10 @@
-<div id="fn_make_string" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ make_string — make a string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_make_string" class="funcsynopsis">
+<div>
 
 |                          |                          |
 |--------------------------|--------------------------|
 | ` `**`make_string`**` (` | in `count ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ make_string — make a string
 
 </div>
 
-<div id="desc_03" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ If count is zero, an empty string '' is returned.
 
 </div>
 
-<div id="params_02" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96323" class="refsect2">
+<div>
 
 ### count
 
@@ -57,7 +57,7 @@ Length of the string to be generated.
 
 </div>
 
-<div id="ret_01_01" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -65,15 +65,15 @@ A string with defined length is returned.
 
 </div>
 
-<div id="examples_02" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_make_string" class="example">
+<div>
 
 **Example 24.215. Using `make_string ` and `aref`**
 
-<div class="example-contents">
+<div>
 
 Make a string and fill it with character sequence containing the
 alphabet upper case characters from A to Z.
@@ -114,7 +114,7 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
 </div>
 
-<div id="seealso_05" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_now" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ now — returns the current transaction timestamp
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_now" class="funcsynopsis">
+<div>
 
 |                  |      |
 |------------------|------|
 | ` `**`now`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ now — returns the current transaction timestamp
 
 </div>
 
-<div id="desc_now" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,15 +42,15 @@ from the timestamp of any other transaction.
 
 </div>
 
-<div id="examples_now" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_now_1" class="example">
+<div>
 
 **Example 24.227. Get a timestamp**
 
-<div class="example-contents">
+<div>
 
 Get a timestamp in human-readable form.
 
@@ -71,11 +71,11 @@ _______________________________________________________________________________
 
   
 
-<div id="ex_now_2" class="example">
+<div>
 
 **Example 24.228. Table example**
 
-<div class="example-contents">
+<div>
 
 Store update time in a column
 
@@ -101,7 +101,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="params_now" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -109,7 +109,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="ret_now" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -117,7 +117,7 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="errors_now" class="refsect1">
+<div>
 
 ## Errors
 
@@ -125,7 +125,7 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="seealso_now" class="refsect1">
+<div>
 
 ## See Also
 

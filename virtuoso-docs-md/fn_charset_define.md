@@ -1,10 +1,10 @@
-<div id="fn_charset_define" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ charset_define — Define a character set.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_charset_define" class="funcsynopsis">
+<div>
 
 |                             |                            |
 |-----------------------------|----------------------------|
@@ -24,7 +24,7 @@ charset_define — Define a character set.
 |                             | in `charset_string ` any , |
 |                             | in `aliases ` any `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ charset_define — Define a character set.
 
 </div>
 
-<div id="desc_charset_define" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ redefines an existing one.
 
 </div>
 
-<div id="params_charset_define" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82002" class="refsect2">
+<div>
 
 ### name
 
@@ -56,7 +56,7 @@ name of the character set.
 
 </div>
 
-<div id="id82005" class="refsect2">
+<div>
 
 ### charset_string
 
@@ -66,7 +66,7 @@ narrow chars 1-255.
 
 </div>
 
-<div id="id82008" class="refsect2">
+<div>
 
 ### aliases
 
@@ -77,7 +77,7 @@ set being defined. Use NULL if there are to be no aliases.
 
 </div>
 
-<div id="ret_charset_define" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,15 +85,15 @@ None
 
 </div>
 
-<div id="errors_charset_define" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id82016" class="table">
+<div>
 
 **Table 24.9. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | sqlstate                              | error code                            | error text                                                                             |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------|
@@ -111,15 +111,15 @@ None
 
 </div>
 
-<div id="examples_charset_define" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_charset_define" class="example">
+<div>
 
 **Example 24.37. New 4th character, and aliases**
 
-<div class="example-contents">
+<div>
 
 To setup the 4th character to be Unicode 0xffce, and give the character
 set 2 aliases, you would make a call like this:
@@ -140,7 +140,7 @@ arbitrary unicode values.
 
 </div>
 
-<div id="seealso_charset_define" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="installnetriaddcrdf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,7 +26,7 @@ the Demo RDF data in Virtuoso.
 
 <span class="emphasis">*Step 1 - Create the View in Virtuoso*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Open the Virtuoso Conductor.
 
@@ -54,20 +54,20 @@ the Demo RDF data in Virtuoso.
 <span class="emphasis">*Step 2 - Modify the Solution To use the
 View*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Delete the existing Employee model and add a new one that comprises
     this new view.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ria5" class="figure">
+    <div>
 
     **Figure 2.175. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/ria5.png)
 
@@ -85,15 +85,15 @@ View*</span>
     DomainService called EmployeeService. Select the sparqlview entity.
     Build the solution.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ria6" class="figure">
+    <div>
 
     **Figure 2.176. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/ria6.png)
 
@@ -144,15 +144,15 @@ View*</span>
 4.  Build and run the application. You will see a list of IRIs that
     identify the Northwind employees.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ria7" class="figure">
+    <div>
 
     **Figure 2.177. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/ria7.png)
 
@@ -173,7 +173,7 @@ exploring this data by clicking on these IRIs.
 
 <span class="emphasis">*Step 3 - Make Hyperlinks From IRIs*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Modify the DataGrid in MainPage.xaml to bind the IRI in each cell of
     the grid to a Hyperlink button. We set the AutoGenerateColumns
@@ -216,15 +216,15 @@ exploring this data by clicking on these IRIs.
 2.  If we build and run the project now each IRI in the list appears as
     a hyperlink.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ria8" class="figure">
+    <div>
 
     **Figure 2.178. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/ria8.png)
 
@@ -243,15 +243,15 @@ exploring this data by clicking on these IRIs.
     dataset can be explored further by following the dereferenceable
     IRIs in the description pages.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ria9" class="figure">
+    <div>
 
     **Figure 2.179. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/ria9.png)
 
@@ -265,15 +265,15 @@ exploring this data by clicking on these IRIs.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ria10" class="figure">
+    <div>
 
     **Figure 2.180. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/ria10.png)
 

@@ -1,10 +1,10 @@
-<div id="fn_regr_slope" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ REGR_SLOPE — Returns the slope of the line.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regr_slope" class="funcsynopsis">
+<div>
 
 |                                |                      |
 |--------------------------------|----------------------|
 | `numeric `**`REGR_SLOPE`**` (` | in `expr1 ` any ,    |
 |                                | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ REGR_SLOPE — Returns the slope of the line.
 
 </div>
 
-<div id="desc_regr_slope" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ COVAR_POP(expr1, expr2) / VAR_POP(expr2)
 
 </div>
 
-<div id="params_regr_slope" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id79122" class="refsect2">
+<div>
 
 ### expr1
 
@@ -58,7 +58,7 @@ Number expression.
 
 </div>
 
-<div id="id79125" class="refsect2">
+<div>
 
 ### expr2
 
@@ -68,7 +68,7 @@ Number expression.
 
 </div>
 
-<div id="ret_regr_slope" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -77,7 +77,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_regr_slope" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_xmlsql_update" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ updategram.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlsql_update" class="funcsynopsis">
+<div>
 
 |                            |                                 |
 |----------------------------|---------------------------------|
@@ -25,7 +25,7 @@ updategram.
 |                            | in `input_parameters ` vector , |
 |                            | in `debug ` integer `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ updategram.
 
 </div>
 
-<div id="desc_xmlsql_update" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ the "Web and XML section" for a detailed explanation.
 
 </div>
 
-<div id="params_xmlsql_update" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123897" class="refsect2">
+<div>
 
 ### xml_grams
 
@@ -61,7 +61,7 @@ be produced with sequential calls to the `xml_tree()` and
 
 </div>
 
-<div id="id123902" class="refsect2">
+<div>
 
 ### input_parameters
 
@@ -70,7 +70,7 @@ parameter_value).
 
 </div>
 
-<div id="id123905" class="refsect2">
+<div>
 
 ### debug
 
@@ -82,7 +82,7 @@ standard output. If not specified the default is disabled (0).
 
 </div>
 
-<div id="ret_xmlsql_update" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -90,15 +90,15 @@ Zero, if no error is signalled.
 
 </div>
 
-<div id="errors_xmlsql_update" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id123913" class="table">
+<div>
 
-**Table 24.134. Errors signalled by xmlsql_update**
+**Table 24.133. Errors signalled by xmlsql_update**
 
-<div class="table-contents">
+<div>
 
 | Error Code                            | Error Text                                                                                       |
 |---------------------------------------|--------------------------------------------------------------------------------------------------|
@@ -116,7 +116,7 @@ Zero, if no error is signalled.
 
 </div>
 
-<div id="seealso_xmlsql_update" class="refsect1">
+<div>
 
 ## See Also
 

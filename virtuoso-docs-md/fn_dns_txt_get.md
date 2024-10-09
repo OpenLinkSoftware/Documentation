@@ -1,10 +1,10 @@
-<div id="fn_dns_txt_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ dns_txt_get — Use for DNS text record retrieval.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dns_txt_get" class="funcsynopsis">
+<div>
 
 |                                 |                                   |
 |---------------------------------|-----------------------------------|
 | `varchar `**`dns_txt_get`**` (` | in `dns_serevr_ip_or_null ` any , |
 |                                 | in `dns_entry ` varchar `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ dns_txt_get — Use for DNS text record retrieval.
 
 </div>
 
-<div id="desc_dns_txt_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ UNIX, Windows, Mac OS X w/o additional libraries.
 
 </div>
 
-<div id="params_dns_txt_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92375" class="refsect2">
+<div>
 
 ### dns_serevr_ip_or_null
 
@@ -60,7 +60,7 @@ mails.
 
 </div>
 
-<div id="id92380" class="refsect2">
+<div>
 
 ### dns_entry
 
@@ -70,15 +70,15 @@ DNS entry.
 
 </div>
 
-<div id="examples_dns_txt_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dns_txt_get" class="example">
+<div>
 
 **Example 24.156. Obtaining DNS text record**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SELECT dns_txt_get (null, 'x._domainkey.example.com');
@@ -97,7 +97,7 @@ v=DKIM1; k=rsa; p=...
 
 </div>
 
-<div id="seealso_dns_txt_get" class="refsect1">
+<div>
 
 ## See Also
 

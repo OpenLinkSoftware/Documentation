@@ -1,10 +1,10 @@
-<div id="fn_sql_write_file_dsn" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sql_write_file_dsn — Creates a new file DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_write_file_dsn" class="funcsynopsis">
+<div>
 
 |                                        |                          |
 |----------------------------------------|--------------------------|
@@ -24,7 +24,7 @@ sql_write_file_dsn — Creates a new file DSN
 |                                        | in `string ` varchar ,   |
 |                                        | in `value ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ sql_write_file_dsn — Creates a new file DSN
 
 </div>
 
-<div id="desc_write_file_dsn" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ SQLWriteFileDSN (dsn, 'ODBC', string, value)
 
 </div>
 
-<div id="params_sql_write_file_dsn" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -52,7 +52,7 @@ As described in the SQLWriteFileDSN
 
 </div>
 
-<div id="ret_sql_write_file_dsn" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -60,7 +60,7 @@ Returns the SQL state.
 
 </div>
 
-<div id="seealso_sql_write_file_dsn" class="refsect1">
+<div>
 
 ## See Also
 

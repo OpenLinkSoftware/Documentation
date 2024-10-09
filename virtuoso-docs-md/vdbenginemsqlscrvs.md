@@ -1,6 +1,6 @@
-<div id="vdbenginemsqlscrvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the Microsoft SQL Server Northwind database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora1_03" class="figure">
+    <div>
 
     **Figure 8.661. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -87,15 +87,15 @@ the Microsoft SQL Server Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora2_02" class="figure">
+    <div>
 
     **Figure 8.662. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/eora2.png)
 
@@ -115,15 +115,15 @@ the Microsoft SQL Server Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora3_02" class="figure">
+    <div>
 
     **Figure 8.663. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/eora3.png)
 
@@ -140,15 +140,15 @@ the Microsoft SQL Server Northwind database:
 7.  Right click on the VirtuosoDataService project name of the Solution
     Explorer pane, then select the Add -\> New Item menu options.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora4_03" class="figure">
+    <div>
 
     **Figure 8.664. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -180,15 +180,15 @@ the Microsoft SQL Server Northwind database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora5_02" class="figure">
+    <div>
 
     **Figure 8.665. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/eora5.png)
 
@@ -220,15 +220,15 @@ the Microsoft SQL Server Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora6_05" class="figure">
+    <div>
 
     **Figure 8.666. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -254,15 +254,15 @@ the Microsoft SQL Server Northwind database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora7_03" class="figure">
+    <div>
 
     **Figure 8.667. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -290,15 +290,15 @@ the Microsoft SQL Server Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora8_03" class="figure">
+    <div>
 
     **Figure 8.668. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -323,15 +323,15 @@ the Microsoft SQL Server Northwind database:
 
     for the target Virtuoso Server and click the Advanced button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora10_10" class="figure">
+    <div>
 
     **Figure 8.669. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -348,15 +348,15 @@ the Microsoft SQL Server Northwind database:
 13. Use the Select Database From List dialog to select the NWIND
     catalog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="seora10" class="figure">
+    <div>
 
     **Figure 8.670. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/seora10.png)
 
@@ -378,15 +378,15 @@ the Microsoft SQL Server Northwind database:
     persist the connection attributes, after a successful connection is
     verified.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora11_04" class="figure">
+    <div>
 
     **Figure 8.671. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -415,15 +415,15 @@ the Microsoft SQL Server Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="seora12" class="figure">
+    <div>
 
     **Figure 8.672. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/seora12.png)
 
@@ -460,15 +460,15 @@ the Microsoft SQL Server Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="seora13" class="figure">
+    <div>
 
     **Figure 8.673. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/seora13.png)
 
@@ -489,15 +489,15 @@ the Microsoft SQL Server Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="seora14" class="figure">
+    <div>
 
     **Figure 8.674. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/seora14.png)
 

@@ -1,10 +1,10 @@
-<div id="fn_vt_batch_feed" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ vt_batch_feed — Add words to a free text update batch.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_batch_feed_01" class="funcsynopsis">
+<div>
 
 |                            |                           |
 |----------------------------|---------------------------|
@@ -25,7 +25,7 @@ vt_batch_feed — Add words to a free text update batch.
 |                            | in `is_del ` integer ,    |
 |                            | in `is_xml ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ vt_batch_feed — Add words to a free text update batch.
 
 </div>
 
-<div id="desc_vt_batch_feed_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -59,11 +59,11 @@ document, only `contains ` will use all data.
 
 </div>
 
-<div id="params_vt_batch_feed_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118852" class="refsect2">
+<div>
 
 ### vt_batch
 
@@ -72,7 +72,7 @@ been called; e.g. it can be called inside the index hook function
 
 </div>
 
-<div id="id118857" class="refsect2">
+<div>
 
 ### text_or_xml
 
@@ -80,7 +80,7 @@ must be a blob, wide blob, varchar, nvarchar or XML entity object.
 
 </div>
 
-<div id="id118860" class="refsect2">
+<div>
 
 ### is_del
 
@@ -89,7 +89,7 @@ deleted.
 
 </div>
 
-<div id="id118863" class="refsect2">
+<div>
 
 ### is_xml
 
@@ -101,7 +101,7 @@ that means "plain text".
 
 </div>
 
-<div id="ret_vt_batch_feed_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -109,7 +109,7 @@ None.
 
 </div>
 
-<div id="examples_vt_batch_feed_01" class="refsect1">
+<div>
 
 ## Examples
 
@@ -119,7 +119,7 @@ title="vt_batch_feed_offband">vt_batch_feed_offband()</a> .
 
 </div>
 
-<div id="seealso_vt_batch_feed_01" class="refsect1">
+<div>
 
 ## See Also
 

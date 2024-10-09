@@ -1,6 +1,6 @@
-<div id="sqlpldatatypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,11 +42,11 @@ vector one-level deep only. The notation is by using the variable with
 the index in square brackets. Hence, `aref(vec, 1)` is the same as
 `vec[1]` . The following example reveal more:
 
-<div id="ex_vectorcontrol" class="example">
+<div>
 
 **Example 11.1. Using Vectors**
 
-<div class="example-contents">
+<div>
 
 Simple excerpt showing how to instantiate a vector.
 
@@ -153,7 +153,7 @@ displaying the contents using [] notation again
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

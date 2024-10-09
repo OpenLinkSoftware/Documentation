@@ -1,10 +1,10 @@
-<div id="fn_isblob" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isblob — returns true if its argument is of type long varchar
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isblob" class="funcsynopsis">
+<div>
 
 |                     |                      |
 |---------------------|----------------------|
 | ` `**`isblob`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isblob — returns true if its argument is of type long varchar
 
 </div>
 
-<div id="desc_isblob" class="refsect1">
+<div>
 
 ## Description
 

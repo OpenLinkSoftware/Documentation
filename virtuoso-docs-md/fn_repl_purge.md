@@ -1,10 +1,10 @@
-<div id="fn_repl_purge" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ repl_purge — purges transactional replication logs for specified account
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_purge" class="funcsynopsis">
+<div>
 
 |                         |                            |
 |-------------------------|----------------------------|
 | ` `**`repl_purge`**` (` | in `server ` varchar ,     |
 |                         | in `account ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ repl_purge — purges transactional replication logs for specified account
 
 </div>
 
-<div id="desc_repl_purge" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ is running for this account.
 
 </div>
 
-<div id="params_repl_purge" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107197" class="refsect2">
+<div>
 
 ### server
 
@@ -61,7 +61,7 @@ The server name of the publisher.
 
 </div>
 
-<div id="id107200" class="refsect2">
+<div>
 
 ### account
 
@@ -71,15 +71,15 @@ The name assigned to the publication.
 
 </div>
 
-<div id="examples_repl_purge" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_purge" class="example">
+<div>
 
 **Example 24.340. Purging transactional replication logs**
 
-<div class="example-contents">
+<div>
 
 The following shows purging transactional replication logs for pushback
 account for updateable subscription 'demopub' from 'demoserver':
@@ -96,7 +96,7 @@ SQL> repl_purge ('demoserver', '!demopub');
 
 </div>
 
-<div id="seealso_repl_purge" class="refsect1">
+<div>
 
 ## See Also
 

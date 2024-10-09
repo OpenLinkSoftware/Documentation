@@ -1,10 +1,10 @@
-<div id="vc_template" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ template — Container for a group of controls and/or HTML code.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_template" class="funcsynopsis">
+<div>
 
 |                          |                               |
 |--------------------------|-------------------------------|
@@ -39,7 +39,7 @@ template — Container for a group of controls and/or HTML code.
 |                          | `debug-srcline` (optional) ,  |
 |                          | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -49,7 +49,7 @@ template — Container for a group of controls and/or HTML code.
 
 </div>
 
-<div id="vc_desc_template" class="refsect1">
+<div>
 
 ## Description
 
@@ -59,7 +59,7 @@ or code. The type modifier is used to specify special kind of templates
 
 </div>
 
-<div id="vc_attrs_template" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -112,11 +112,11 @@ attribute will not be used when the resulting HTML is rendered.
 
 **type. ** The behaviour of the template.
 
-<div id="id42906" class="table">
+<div>
 
 **Table 14.9. Allowed values of the 'type' attribute**
 
-<div class="table-contents">
+<div>
 
 <table data-summary="Allowed values of the &#39;type&#39; attribute"
 data-border="1">
@@ -267,11 +267,11 @@ authenticated, applicable only when type is 'if-no-login'.
 **set-to-remove. ** This combined with name-to-remove gives posibility
 to remove a HTML elements from output.
 
-<div id="id42988" class="table">
+<div>
 
 **Table 14.10. Allowed values of the 'set-to-remove' attribute**
 
-<div class="table-contents">
+<div>
 
 |        |                                                                                                                                                                                                          |
 |--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -299,7 +299,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_template" class="refsect1">
+<div>
 
 ## Declaration of type vspx_template
 

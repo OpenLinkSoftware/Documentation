@@ -1,6 +1,6 @@
-<div id="virtuosospongersampleuses" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="virtuosospongerusage.html#virtuosospongerusageprocessorex"
   class="link" title="SPARQL Processor Usage Example">SPARQL Processor

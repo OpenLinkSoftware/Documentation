@@ -1,6 +1,6 @@
-<div id="likepredicate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,11 +55,11 @@ That is, the hyphen indicates a range between characters, unless it is
 the first or the last character in the group expression, in which case
 it matches just to itself.
 
-<div id="id33915" class="example">
+<div>
 
 **Example 9.32. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 [abc]          Matches any of the letters a, b, or c.
@@ -106,11 +106,11 @@ If the pattern begins with two asterisks (`**`), then we do diacritic-
 and case-insensitive substring search, trying to find the string given
 in the rest of pattern from the datum string.
 
-<div id="id33941" class="example">
+<div>
 
 **Example 9.33. Example:**
 
-<div class="example-contents">
+<div>
 
 "`**escort`" will match to "`Ford Escort vm. 1975`".
 
@@ -147,7 +147,7 @@ So the following hold for substring searches:
 | 2\) Any 7-bit ASCII letter (`A-Z` and `a-z` without any diacritic signs) in the pattern matches to any diacritic variant of the same letter (as well as to the same 7-bit ASCII letter) in the datum string, either in upper- or lower-case. |
 | 3\) Any diacritic letter (8-bit ISO8859.1 letter) in the pattern matches only to the same letter (in upper- or lower-case) in the datum string.                                                                                              |
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

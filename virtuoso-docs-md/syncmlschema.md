@@ -1,6 +1,6 @@
-<div id="syncmlschema" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="smlsdevices" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -53,9 +53,9 @@ create table SYNC_DEVICES (
 
 </div>
 
-<div id="smlsmaps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -82,9 +82,9 @@ create table SYNC_MAPS (
 
 </div>
 
-<div id="smlssyncanchors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -113,9 +113,9 @@ create table SYNC_ANCHORS (
 
 </div>
 
-<div id="smlssynclog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -142,9 +142,9 @@ create table SYNC_RPLOG (
 
 </div>
 
-<div id="smlsdevicesessions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

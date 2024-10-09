@@ -1,10 +1,10 @@
-<div id="fn_repl_drop_snapshot_sub" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ snapshot publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_drop_snapshot_sub" class="funcsynopsis">
+<div>
 
 |                                         |                         |
 |-----------------------------------------|-------------------------|
@@ -25,7 +25,7 @@ snapshot publication
 |                                         | in `item ` varchar ,    |
 |                                         | in `type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,13 +35,13 @@ snapshot publication
 
 </div>
 
-<div id="desc_repl_drop_snapshot_sub" class="refsect1">
+<div>
 
 ## Description
 
 This procedure drops a subscription to a snapshot publication.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                           |
 |:----------------------------:|:------------------------------------------|
@@ -52,11 +52,11 @@ This procedure drops a subscription to a snapshot publication.
 
 </div>
 
-<div id="params_repl_drop_snapshot_sub" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107382" class="refsect2">
+<div>
 
 ### server
 
@@ -65,7 +65,7 @@ the server can be obtained using `REPL_SERVER_NAME()` function.
 
 </div>
 
-<div id="id107387" class="refsect2">
+<div>
 
 ### item
 
@@ -73,7 +73,7 @@ Item is a DAV collection or table name.
 
 </div>
 
-<div id="id107390" class="refsect2">
+<div>
 
 ### type
 
@@ -84,7 +84,7 @@ or 2 if item is a table name.
 
 </div>
 
-<div id="ret_repl_drop_snapshot_sub" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -92,15 +92,15 @@ None.
 
 </div>
 
-<div id="examples_repl_drop_snapshot_pub" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_repl_drop_snapshot_pub" class="example">
+<div>
 
 **Example 24.343. Dropping bi-directional snapshot subscription**
 
-<div class="example-contents">
+<div>
 
 The following statement drops bi-directional snapshot subscription of
 server with DSN 'localhost:1121' for table 'Demo.demo.Shippers':
@@ -117,7 +117,7 @@ SQL> DB.DBA.REPL_DROP_SNAPSHOT_SUB (REPL_SERVER_NAME ('localhost:1121'), 'Demo.d
 
 </div>
 
-<div id="seealso_repl_drop_snapshot_sub" class="refsect1">
+<div>
 
 ## See Also
 

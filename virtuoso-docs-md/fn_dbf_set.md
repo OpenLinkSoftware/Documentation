@@ -1,10 +1,10 @@
-<div id="fn_dbf_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___dbf_set" class="funcsynopsis">
+<div>
 
 |                        |                            |
 |------------------------|----------------------------|
 | ` `**`__dbf_set`**` (` | in `flag_name ` varchar ,  |
 |                        | out `flag_value ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@
 
 </div>
 
-<div id="desc___dbf_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Sets at run time by a dba group user the vector execution parameters.
 
 </div>
 
-<div id="params___dbf_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96153" class="refsect2">
+<div>
 
 ### flag_name
 
@@ -55,7 +55,7 @@ For Configuring Vectored Execution, should be used the following values:
 
 Note: Only effective with Virtuoso 7.0 and later.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*dc_batch_sz* </span> : flag for ini parameter
   VectorSize;
@@ -76,7 +76,7 @@ Note: Only effective with Virtuoso 7.0 and later.
 
 </div>
 
-<div id="id96174" class="refsect2">
+<div>
 
 ### flag_value
 
@@ -86,15 +86,15 @@ Value of the flag.
 
 </div>
 
-<div id="examples___dbf_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex___dbf_set" class="example">
+<div>
 
 **Example 24.212. Simple Use**
 
-<div class="example-contents">
+<div>
 
 Set the maximum number of outstanding parallel work units to 16:
 

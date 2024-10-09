@@ -1,6 +1,6 @@
-<div id="odbcimplementationexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://docs.openlinksw.com/mt/odbcsam.html#cppdemo"
   class="ulink" target="_top">C++ Demo</a>

@@ -1,10 +1,10 @@
-<div id="fn_st_geometryn" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ ST_GeometryN — Given a 1-based index of a member of a MULTI... or
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_geometryn" class="funcsynopsis">
+<div>
 
 |                           |                    |
 |---------------------------|--------------------|
 | ` `**`ST_GeometryN`**` (` | in `shape ` any ,  |
 |                           | in `idx ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ ST_GeometryN — Given a 1-based index of a member of a MULTI... or
 
 </div>
 
-<div id="desc_st_geometryn" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ returns the member.
 
 </div>
 
-<div id="params_st_geometryn" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130987" class="refsect2">
+<div>
 
 ### shape
 
@@ -55,7 +55,7 @@ Shape.
 
 </div>
 
-<div id="id130990" class="refsect2">
+<div>
 
 ### idx
 
@@ -65,7 +65,7 @@ Index.
 
 </div>
 
-<div id="ret_st_geometryn" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_geometryn" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_geometryn" class="example">
+<div>
 
 **Example 24.660. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select st_geometryn (
@@ -109,7 +109,7 @@ POLYGON((1.0 3.0,2.0 4.0,1.0 5.0,0.0 4.0,1.0 3.0))
 
 </div>
 
-<div id="seealso_st_geometryn" class="refsect1">
+<div>
 
 ## See Also
 

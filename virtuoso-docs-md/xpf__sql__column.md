@@ -1,10 +1,10 @@
-<div id="xpf__sql__column" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sql:column — Returns the value of a column from SQL result-set.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn__sql__column" class="funcsynopsis">
+<div>
 
 |                            |                                      |
 |----------------------------|--------------------------------------|
 | `any `**`sql:column`**` (` | constant `column_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sql:column — Returns the value of a column from SQL result-set.
 
 </div>
 
-<div id="xpf_desc__sql__column" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ a reference to a global parameter.
 
 </div>
 
-<div id="xpf_params__sql__column" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125915" class="refsect2">
+<div>
 
 ### column_name
 
@@ -60,7 +60,7 @@ The string should not contain quotes around parts of the column name.
 
 </div>
 
-<div id="xpf_ret__sql__column" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,15 +71,15 @@ XQuery parameters.
 
 </div>
 
-<div id="xpf_examples__sql__column" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex__sql__column" class="example">
+<div>
 
 **Example 24.561. Various invocations of sql:column**
 
-<div class="example-contents">
+<div>
 
 These two statements will produce identical results:
 
@@ -94,7 +94,7 @@ These two statements will produce identical results:
 
 </div>
 
-<div id="xpf_seealso__sql__column" class="refsect1">
+<div>
 
 ## See Also
 

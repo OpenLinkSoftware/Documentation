@@ -1,6 +1,6 @@
-<div id="blogatomapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,11 +36,11 @@ authentication.
 is to find out the servers capabilities. So the 'introspection' file
 lists all the functions that a given site supports.
 
-<div id="ex_blogatomintrospection" class="example">
+<div>
 
 **Example 14.54. Intropsection**
 
-<div class="example-contents">
+<div>
 
 Request:
 
@@ -79,11 +79,11 @@ performed with MIME type '`application/x.atom+xml` ' for the request
 content. If server accepts the request a `Location:` HTTP header will be
 returned to the client containing the URL to the newly created post.
 
-<div id="ex_blogatompost" class="example">
+<div>
 
 **Example 14.55. Posting an Entry**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 POST /Atom/Http/entry?b=128 HTTP/1.1
@@ -122,11 +122,11 @@ method. The URL used for PUT must be one returned by the `Location:`
 header of the POST response or those returned from entry-search. The
 content of PUT request is same as for posting a new entry.
 
-<div id="ex_blogatomedit" class="example">
+<div>
 
 **Example 14.56. Editing a weblog entry**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 POST /Atom/Http/entry?b=128&id=nn HTTP/1.1
@@ -162,11 +162,11 @@ HTTP/1.1 205 Reset Content
 **Retrieving an Entry. ** Retrieval of an existing entry is the simple,
 usual HTTP GET request with URL to the entry.
 
-<div id="ex_blogatmgetentry" class="example">
+<div>
 
 **Example 14.57. Retrieving an Entry**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 GET /Atom/Http/entry?b=128&id=nn HTTP/1.1
@@ -202,11 +202,11 @@ Content-Length: nnn
 **Deleting an Entry. ** To remove permanently an existing entry an HTTP
 DELETE method is used with URL to the entry.
 
-<div id="ex_blogatomdelete" class="example">
+<div>
 
 **Example 14.58. Deleting an Entry**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 DELETE /Atom/Http/entry?b=128&id=nn HTTP/1.1
@@ -228,11 +228,11 @@ HTTP/1.1 200 OK
 criteria a search should be performed. The current implementation
 supports two variants: range and last_N.
 
-<div id="ex_blogatomsearch" class="example">
+<div>
 
 **Example 14.59. Searching**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 GET /Atom/Http/search?b=128?last=7 HTTP/1.1
@@ -274,9 +274,9 @@ modified via PUT/DELETE methods.
 
   
 
-<div id="blogatomclientapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -295,7 +295,7 @@ uses the Atom protocol instead of XML-RPC. Before the Atom API can be
 put to use, the introspection file must be retrieved in order to know
 the URLs for the requests.
 
-<div class="itemizedlist">
+<div>
 
 - `atom.new_Post (in uri varchar, in req "blogRequest", ) `
 
@@ -338,11 +338,11 @@ the URLs for the requests.
 
 </div>
 
-<div id="ex_blogatomclientapi" class="example">
+<div>
 
 **Example 14.60. Using the Atom Client API**
 
-<div class="example-contents">
+<div>
 
 Getting the introspection info about a blog
 
@@ -402,13 +402,13 @@ atom.delete_Post ('http://example.com/Atom/Http/entry?b=128&id=1', req);
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
-|                            |                                                                       |
-|:--------------------------:|:----------------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                             |
-|                            | <a href="https://tools.ietf.org/html/rfc5023" class="ulink"           
-                              target="_top" shape="rect">RFC 5023: The Atom Publishing Protocol</a>  |
+|                            |                                                             |
+|:--------------------------:|:------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                   |
+|                            | <a href="https://tools.ietf.org/html/rfc5023" class="ulink" 
+                              target="_top">RFC 5023: The Atom Publishing Protocol</a>     |
 
 </div>
 

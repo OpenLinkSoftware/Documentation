@@ -1,10 +1,10 @@
-<div id="xpf_processxquery" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ some XSLT or BPEL code.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_processxquery_01" class="funcsynopsis">
+<div>
 
 |                               |                           |
 |-------------------------------|---------------------------|
@@ -29,7 +29,7 @@ some XSLT or BPEL code.
 |                               | `paramN_name` string,     |
 |                               | `paramN_value` any`)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ some XSLT or BPEL code.
 
 </div>
 
-<div id="xpf_desc_processxquery_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -73,11 +73,11 @@ For compatibility, the `processXQuery()` function can also be called as
 
 </div>
 
-<div id="xpf_params_processxquery_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128547" class="refsect2">
+<div>
 
 ### module_uri
 
@@ -93,7 +93,7 @@ neither in a stylesheet nor in a module.
 
 </div>
 
-<div id="id128551" class="refsect2">
+<div>
 
 ### index
 
@@ -104,7 +104,7 @@ specified then the returned value still can be a sequence).
 
 </div>
 
-<div id="id128554" class="refsect2">
+<div>
 
 ### context
 
@@ -116,7 +116,7 @@ case, context size and context position of module call are always set to
 
 </div>
 
-<div id="id128559" class="refsect2">
+<div>
 
 ### paramI_name
 
@@ -125,7 +125,7 @@ transformation.
 
 </div>
 
-<div id="id128562" class="refsect2">
+<div>
 
 ### paramI_value
 
@@ -135,7 +135,7 @@ Value of parameter with name specified by *`paramI_name `* .
 
 </div>
 
-<div id="xpf_ret_processxquery_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -143,15 +143,15 @@ The type of return value depends on type of value returned by module.
 
 </div>
 
-<div id="xpf_examples_processxquery_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_processxquery_01" class="example">
+<div>
 
 **Example 24.611. Call of XQuery in XSLT**
 
-<div class="example-contents">
+<div>
 
 Sample templates put the result of the call of module "mymodule.xq" for
 context node into the resulting document. This assumes that both the
@@ -185,7 +185,7 @@ This is equivalent with the following template:
 
 </div>
 
-<div id="xpf_seealso_processxquery_01" class="refsect1">
+<div>
 
 ## See Also
 

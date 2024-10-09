@@ -1,10 +1,10 @@
-<div id="fn_regexp_instr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ regular-expression pattern in a given string.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regexp_instr" class="funcsynopsis">
+<div>
 
 |                                  |                                    |
 |----------------------------------|------------------------------------|
@@ -28,7 +28,7 @@ regular-expression pattern in a given string.
 |                                  | in `return_option ` integer ,      |
 |                                  | in `match_parameter ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ regular-expression pattern in a given string.
 
 </div>
 
-<div id="desc_11" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,11 +57,11 @@ a specific search string; thus providing greater versatility.
 
 </div>
 
-<div id="params_regexp_instr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104394" class="refsect2">
+<div>
 
 ### source_string
 
@@ -69,7 +69,7 @@ The string to search.
 
 </div>
 
-<div id="id104397" class="refsect2">
+<div>
 
 ### pattern
 
@@ -77,7 +77,7 @@ The regular expression to match.
 
 </div>
 
-<div id="id104400" class="refsect2">
+<div>
 
 ### start_position
 
@@ -85,7 +85,7 @@ The position to begin the search from.
 
 </div>
 
-<div id="id104403" class="refsect2">
+<div>
 
 ### occurrence
 
@@ -94,7 +94,7 @@ for.
 
 </div>
 
-<div id="id104406" class="refsect2">
+<div>
 
 ### return_option
 
@@ -104,7 +104,7 @@ the match.
 
 </div>
 
-<div id="id104409" class="refsect2">
+<div>
 
 ### match_parameter
 
@@ -114,7 +114,7 @@ Match parameter value.
 
 </div>
 
-<div id="ret_regexp_instr" class="refsect1">
+<div>
 
 ## Returns
 
@@ -122,15 +122,15 @@ This function returns the a substring matching the regular expression.
 
 </div>
 
-<div id="examples_05" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_regexp_instr" class="example">
+<div>
 
 **Example 24.311. Examples**
 
-<div class="example-contents">
+<div>
 
 This example uses `REGEXP_INSTR()` to return the starting position of
 the five-digit zip-code pattern within the string Joe Smith, 10045 Berry
@@ -157,7 +157,7 @@ SELECT REGEXP_INSTR('Joe Smith, 10045 Berry Lane, San Joseph, CA 91234',
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Compatibility:">
 <colgroup>
@@ -174,7 +174,7 @@ width="25"><img src="images/note.png" alt="[Note]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The regular
 expressions supported here follow version 7.9 of the Perl Compatible
 Regular Expression (PCRE) syntax.</p>
-<div class="orderedlist">
+<div>
 <ol type="1">
 <li><p><a
 href="https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions"
@@ -191,7 +191,7 @@ target="_top">PCRE.org</a></p></li>
 
 </div>
 
-<div id="seealso_regexp_instr" class="refsect1">
+<div>
 
 ## See Also
 

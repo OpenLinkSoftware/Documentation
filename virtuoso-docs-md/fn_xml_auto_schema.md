@@ -1,10 +1,10 @@
-<div id="fn_xml_auto_schema" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ with a FOR XML clause
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_auto_schema" class="funcsynopsis">
+<div>
 
 |                                     |                                 |
 |-------------------------------------|---------------------------------|
 | `varchar `**`xml_auto_schema`**` (` | in `query ` varchar ,           |
 |                                     | in `root_element ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ with a FOR XML clause
 
 </div>
 
-<div id="desc_xml_auto_schema" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ specified root element.
 
 </div>
 
-<div id="params_xml_auto_schema" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122838" class="refsect2">
+<div>
 
 ### query
 
@@ -57,7 +57,7 @@ SQL query
 
 </div>
 
-<div id="id122841" class="refsect2">
+<div>
 
 ### root_element
 
@@ -67,7 +67,7 @@ name of root element container
 
 </div>
 
-<div id="ret_xml_auto_schema" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,7 +75,7 @@ varchar result containing the schema of the XML document.
 
 </div>
 
-<div id="errors_xml_auto_schema" class="refsect1">
+<div>
 
 ## Errors
 
@@ -84,15 +84,15 @@ compiler signals an error message, the function resignals the error.
 
 </div>
 
-<div id="examples_xml_auto_schema" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_auto_achema" class="example">
+<div>
 
 **Example 24.509. Simple Schema Generation**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select xml_auto_schema ('  select "category"."CategoryID", "CategoryName",
@@ -149,7 +149,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xml_auto_schema" class="refsect1">
+<div>
 
 ## See Also
 

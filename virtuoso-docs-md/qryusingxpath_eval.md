@@ -1,6 +1,6 @@
-<div id="qryusingxpath_eval" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,7 +65,7 @@ SELECT xpath_eval('//beatle/@instrument', xml_tree_doc (article_xml), 1)
     AS beatle_instrument FROM t_articles WHERE article_id = 2;
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

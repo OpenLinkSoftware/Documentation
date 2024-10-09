@@ -1,10 +1,10 @@
-<div id="fn_xmltype.isschemavalidated" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ has been validated against the associated schema.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.isschemavalidated" class="funcsynopsis">
+<div>
 
 |                                        |      |
 |----------------------------------------|------|
 | ` `**`XMLType.isSchemaValidated`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ has been validated against the associated schema.
 
 </div>
 
-<div id="desc_xmltype.isschemavalidated" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ of the given XMLType instance.
 
 </div>
 
-<div id="ret_xmltype.isschemavalidated" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -50,15 +50,15 @@ An integer value 1 or 0.
 
 </div>
 
-<div id="examples_xmltype.isschemavalidated" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.isschemavalidated" class="example">
+<div>
 
 **Example 24.558. Sample use**
 
-<div class="example-contents">
+<div>
 
 These two calls demonstrate how the "is validated" flag can be set
 without making an actual validation in the call of XMLType constructor:
@@ -91,7 +91,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.isschemavalidated" class="refsect1">
+<div>
 
 ## See Also
 

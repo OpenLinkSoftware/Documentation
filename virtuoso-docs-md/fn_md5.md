@@ -1,10 +1,10 @@
-<div id="fn_md5" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ md5 — returns the md5 checksum of its argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_md5" class="funcsynopsis">
+<div>
 
 |                          |                        |
 |--------------------------|------------------------|
 | `checksum `**`md5`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ md5 — returns the md5 checksum of its argument
 
 </div>
 
-<div id="desc_md5" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ target="_top">RFC1321</a> .
 
 </div>
 
-<div id="params_md5" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96367" class="refsect2">
+<div>
 
 ### str
 
@@ -58,7 +58,7 @@ A <span class="type">string </span> or <span class="type">string_output
 
 </div>
 
-<div id="ret_md5" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -67,15 +67,15 @@ characters.
 
 </div>
 
-<div id="errors_md5" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id96378" class="table">
+<div>
 
-**Table 24.55. Errors signalled by**
+**Table 24.54. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -89,15 +89,15 @@ characters.
 
 </div>
 
-<div id="examples_md5" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_md5" class="example">
+<div>
 
 **Example 24.216. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select md5 ('blah blah');
@@ -118,7 +118,7 @@ ae661d08d1ca1576a6efcb82b7bc502f
 
 </div>
 
-<div id="seealso_md5" class="refsect1">
+<div>
 
 ## See Also
 

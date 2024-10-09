@@ -1,10 +1,10 @@
-<div id="fn_set_identity_column" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ column
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_set_identity_column" class="funcsynopsis">
+<div>
 
 |                                         |                              |
 |-----------------------------------------|------------------------------|
@@ -25,7 +25,7 @@ column
 |                                         | in `column_name ` varchar ,  |
 |                                         | in `new_value ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ column
 
 </div>
 
-<div id="desc_set_identity_column" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ calling this function is immediate.
 
 </div>
 
-<div id="params_set_identity_column" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109830" class="refsect2">
+<div>
 
 ### table_name
 
@@ -61,7 +61,7 @@ in the DB.DBA.SYS_KEYS table.
 
 </div>
 
-<div id="id109833" class="refsect2">
+<div>
 
 ### column_name
 
@@ -69,7 +69,7 @@ the exact column name as it appears in the DB.DBA.SYS_COLS table.
 
 </div>
 
-<div id="id109836" class="refsect2">
+<div>
 
 ### new_value
 
@@ -79,7 +79,7 @@ the new sequence value.
 
 </div>
 
-<div id="ret_set_identity_column" class="refsect1">
+<div>
 
 ## Return Types
 

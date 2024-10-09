@@ -1,10 +1,10 @@
-<div id="fn_iszero" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ iszero — returns true if argument is numeric zero
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_iszero" class="funcsynopsis">
+<div>
 
 |                     |                 |
 |---------------------|-----------------|
 | ` `**`iszero`**` (` | `arg ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ iszero — returns true if argument is numeric zero
 
 </div>
 
-<div id="desc_iszero" class="refsect1">
+<div>
 
 ## Description
 

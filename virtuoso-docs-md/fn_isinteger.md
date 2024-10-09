@@ -1,10 +1,10 @@
-<div id="fn_isinteger" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isinteger — returns true if its argument is of type integer
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isinteger" class="funcsynopsis">
+<div>
 
 |                        |                      |
 |------------------------|----------------------|
 | ` `**`isinteger`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isinteger — returns true if its argument is of type integer
 
 </div>
 
-<div id="desc_isinteger" class="refsect1">
+<div>
 
 ## Description
 

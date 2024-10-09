@@ -1,6 +1,6 @@
-<div id="moblog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,13 +35,13 @@ Mobile blogging (Moblog) can be configured via the Virtuoso blog UI by
 selecting the Moblog link under the Configuration section as indicated
 in the diagram below:
 
-<div id="id45214" class="figure">
+<div>
 
 **Figure 14.51. Blog page**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Blog page](images/moblog.gif)
 
@@ -57,13 +57,13 @@ The Moblog configuration page enables the details of the POP3 server
 from which messages are to be retrieved from is located as indicated in
 the diagram below:
 
-<div id="id45220" class="figure">
+<div>
 
 **Figure 14.52. Blog page**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Blog page](images/moblogconfig.gif)
 
@@ -75,7 +75,7 @@ the diagram below:
 
   
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Server Address and Port* </span>
 

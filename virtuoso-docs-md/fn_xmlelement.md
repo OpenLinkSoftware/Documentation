@@ -1,10 +1,10 @@
-<div id="fn_xmlelement" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ XMLELEMENT — Creates XML element
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlelement" class="funcsynopsis">
+<div>
 
 |                         |                                  |
 |-------------------------|----------------------------------|
@@ -27,7 +27,7 @@ XMLELEMENT — Creates XML element
 |                         | `... ` ,                         |
 |                         | `child_or_attributeN ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ XMLELEMENT — Creates XML element
 
 </div>
 
-<div id="desc_xmlelement" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ element's attributes).
 
 </div>
 
-<div id="xmlelement" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122293" class="refsect2">
+<div>
 
 ### tag_name
 
@@ -63,7 +63,7 @@ name of the element, it must be valid XML element name
 
 </div>
 
-<div id="id122296" class="refsect2">
+<div>
 
 ### list_of_attributes
 
@@ -72,7 +72,7 @@ then no attribute is created.
 
 </div>
 
-<div id="id122300" class="refsect2">
+<div>
 
 ### child_or_attributeI
 
@@ -88,15 +88,15 @@ or attribute is created for that parameter.
 
 </div>
 
-<div id="errors_xmlelement" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id122311" class="table">
+<div>
 
-**Table 24.128. Errors signalled by `XMLELEMENT `**
+**Table 24.127. Errors signalled by `XMLELEMENT `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                       | Description                         |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------|-------------------------------------|
@@ -110,15 +110,15 @@ or attribute is created for that parameter.
 
 </div>
 
-<div id="xmlelement_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlelement" class="example">
+<div>
 
 **Example 24.500. XMLELEMENT() with a single argument**
 
-<div class="example-contents">
+<div>
 
 `XMLELEMENT ` creates an 'Title' element without content.
 
@@ -140,11 +140,11 @@ _______________________________________________________________________________
 
   
 
-<div id="ex_xmlelement_01" class="example">
+<div>
 
 **Example 24.501. XMLELEMENT() with content**
 
-<div class="example-contents">
+<div>
 
 The following example produces an 'Emp' element with three attributes
 (the 'region' attribute is calculated by `xquery_eval` ) and five nested
@@ -180,11 +180,11 @@ _______________________________________________________________________________
 
   
 
-<div id="ex_xmlelement_01_01" class="example">
+<div>
 
 **Example 24.502. XMLELEMENT() with the aggregate function XMLAGG()**
 
-<div class="example-contents">
+<div>
 
 This example produces 'Emp' elements, with the list of the 'Name' of all
 employees.
@@ -218,7 +218,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmlelement" class="refsect1">
+<div>
 
 ## See Also
 

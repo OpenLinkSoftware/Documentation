@@ -1,10 +1,10 @@
-<div id="fn_smime_encrypt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ smime_encrypt — Performs encryption of a (signed) e-mail msg
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_smime_encrypt" class="funcsynopsis">
+<div>
 
 |                                   |                                             |
 |-----------------------------------|---------------------------------------------|
@@ -24,7 +24,7 @@ smime_encrypt — Performs encryption of a (signed) e-mail msg
 |                                   | in `array_of_recipient_certificates ` any , |
 |                                   | in `cipher_name ` varchar `)`;              |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ smime_encrypt — Performs encryption of a (signed) e-mail msg
 
 </div>
 
-<div id="desc_smime_encrypt" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ This function performs encryption of a (signed) e-mail message.
 
 </div>
 
-<div id="params_smime_encrypt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110208" class="refsect2">
+<div>
 
 ### mail_message
 
@@ -54,7 +54,7 @@ The text of the e-mail msg.
 
 </div>
 
-<div id="id110211" class="refsect2">
+<div>
 
 ### array_of_recipient_certificates
 
@@ -66,7 +66,7 @@ class="ulink" target="_top">here</a> .
 
 </div>
 
-<div id="id110215" class="refsect2">
+<div>
 
 ### cipher_name
 
@@ -76,7 +76,7 @@ Encryption algorithm 'des', 'des3', 'aes256', 'aes128' etc.
 
 </div>
 
-<div id="ret_smime_encrypt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,15 +84,15 @@ varchar
 
 </div>
 
-<div id="examples_smime_encrypt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_smime_encrypt" class="example">
+<div>
 
 **Example 24.375. Encrypting (signed) e-mail msg**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select smime_encrypt (file_to_string ('test.eml'), 
@@ -137,7 +137,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_smime_encrypt" class="refsect1">
+<div>
 
 ## See Also
 

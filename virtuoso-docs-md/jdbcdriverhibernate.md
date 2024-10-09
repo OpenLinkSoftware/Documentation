@@ -1,6 +1,6 @@
-<div id="jdbcdriverhibernate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="jdbcdriverhibernateintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,9 +63,9 @@ virtjdbc4.jar).
 
 </div>
 
-<div id="jdbcdriverhibernatesetupandtesting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -85,9 +85,9 @@ class="ulink" target="_top">sample programs</a> are provided to test
 Virtuoso hibernate support. Extract the contents of the zip file to a
 location of choice.
 
-<div id="jdbcdriverhibernatesetupandtestingreq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -101,7 +101,7 @@ location of choice.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="https://www.hibernate.org/" class="ulink"
   target="_top">Hibernate</a> 3.3 or higher
@@ -123,9 +123,9 @@ location of choice.
 
 </div>
 
-<div id="jdbcdriverhibernatesetupandtesting_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -149,9 +149,9 @@ run           Build and run example
 
 </div>
 
-<div id="jdbcdriverhibernateconstr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -220,7 +220,7 @@ $ more hibernate.cfg.xml
 
 The key attributes being
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*connection.driver_class*</span>
 

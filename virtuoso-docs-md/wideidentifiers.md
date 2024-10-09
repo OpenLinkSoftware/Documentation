@@ -1,6 +1,6 @@
-<div id="wideidentifiers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ will remain for backwards compatibility and performance reasons,
 however, there are two options available for support of non-ASCII
 identifier names as follows:
 
-<div class="itemizedlist">
+<div>
 
 - Maintain an 8-bit system. Pass all 8-bit codes that enter the system
   and read them back according to the current database character set.
@@ -47,7 +47,7 @@ INI file. Setting SQL_UTF8_EXECS = 1 enables UTF-8 identifier storage
 and retrieval, whereas setting SQL_UTF8_EXECS = 0 disables it. The
 default setting is 0: disabled for backwards compatible option.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                            |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -89,9 +89,9 @@ character may be represented with up to 6 bytes in UTF-8. An exception
 to that is when using single character pattern to match an ASCII
 character.
 
-<div id="utf8notes4odbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

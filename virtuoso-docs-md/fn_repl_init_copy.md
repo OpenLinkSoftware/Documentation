@@ -1,10 +1,10 @@
-<div id="fn_repl_init_copy" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_INIT_COPY — create initial subscription state
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_init_copy" class="funcsynopsis">
+<div>
 
 |                             |                                |
 |-----------------------------|--------------------------------|
@@ -24,7 +24,7 @@ REPL_INIT_COPY — create initial subscription state
 |                             | in `publication ` varchar ,    |
 |                             | in `errors_mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ REPL_INIT_COPY — create initial subscription state
 
 </div>
 
-<div id="desc_repl_init_copy" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ the publisher.
 
 </div>
 
-<div id="params_repl_init_copy" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105209" class="refsect2">
+<div>
 
 ### server_name
 
@@ -60,7 +60,7 @@ target publisher server name.
 
 </div>
 
-<div id="id105212" class="refsect2">
+<div>
 
 ### account
 
@@ -68,7 +68,7 @@ publication account name.
 
 </div>
 
-<div id="id105215" class="refsect2">
+<div>
 
 ### errors_mode
 
@@ -82,15 +82,15 @@ stopped.
 
 </div>
 
-<div id="examples_repl_init_copy" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_pub_copy_1" class="example">
+<div>
 
 **Example 24.321. Loading of the initial data on subscriber**
 
-<div class="example-contents">
+<div>
 
 This shows setting on-line of the initial state of the subscription to
 'demo_publication' from server 'demo-srv'. The data for items will be
@@ -109,7 +109,7 @@ SQL> DB.DBA.REPL_INIT_COPY ('demo-srv', 'demo_publication', 1);
 
 </div>
 
-<div id="seealso_repl_init_copy" class="refsect1">
+<div>
 
 ## See Also
 

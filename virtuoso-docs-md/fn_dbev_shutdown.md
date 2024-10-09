@@ -1,6 +1,6 @@
-<div id="fn_dbev_shutdown" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -49,11 +49,11 @@ said function.
 Result sets are prohibited, return values are discarded, errors are
 logged but not otherwise processed.
 
-<div id="id36524" class="example">
+<div>
 
 **Example 12.6. The Shutdown Hook**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure DB.DBA.DBEV_SHUTDOWN ()

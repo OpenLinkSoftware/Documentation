@@ -1,6 +1,6 @@
-<div id="howtogetfullexplainplanforsparqlquery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

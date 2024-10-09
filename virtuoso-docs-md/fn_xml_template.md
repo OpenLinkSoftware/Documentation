@@ -1,10 +1,10 @@
-<div id="fn_xml_template" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xml_template — Execute XML template from Virtuoso PL
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_template" class="funcsynopsis">
+<div>
 
 |                           |                                      |
 |---------------------------|--------------------------------------|
@@ -24,7 +24,7 @@ xml_template — Execute XML template from Virtuoso PL
 |                           | in `parameters ` vector ,            |
 |                           | inout `session ` string_session `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ xml_template — Execute XML template from Virtuoso PL
 
 </div>
 
-<div id="desc_xml_template" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ it is available, otherwise an error will be signalled.
 
 </div>
 
-<div id="params_xml_template" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123314" class="refsect2">
+<div>
 
 ### xml_document_entity
 
@@ -65,7 +65,7 @@ XML entity such as that returned by `xtree_doc() `
 
 </div>
 
-<div id="id123318" class="refsect2">
+<div>
 
 ### parameters
 
@@ -74,7 +74,7 @@ Vector or name-value pairs: vector('name1', 'value1', 'name2', 'value2',
 
 </div>
 
-<div id="id123321" class="refsect2">
+<div>
 
 ### session
 
@@ -86,7 +86,7 @@ which if not applicable will signal an error.
 
 </div>
 
-<div id="ret_xml_template" class="refsect1">
+<div>
 
 ## Return Types
 

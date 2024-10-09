@@ -1,6 +1,6 @@
-<div id="vdbenginefirebdcrvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the Firebird employee database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora1_02" class="figure">
+    <div>
 
     **Figure 8.605. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the Firebird employee database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_20" class="figure">
+    <div>
 
     **Figure 8.606. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the Firebird employee database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbeora2" class="figure">
+    <div>
 
     **Figure 8.607. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/fbeora2.png)
 
@@ -137,15 +137,15 @@ the Firebird employee database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbeora3" class="figure">
+    <div>
 
     **Figure 8.608. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/fbeora3.png)
 
@@ -161,15 +161,15 @@ the Firebird employee database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora4_02" class="figure">
+    <div>
 
     **Figure 8.609. employee**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![employee](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the Firebird employee database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbeora5" class="figure">
+    <div>
 
     **Figure 8.610. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/fbeora5.png)
 
@@ -241,15 +241,15 @@ the Firebird employee database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora6_04" class="figure">
+    <div>
 
     **Figure 8.611. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the Firebird employee database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora7_02" class="figure">
+    <div>
 
     **Figure 8.612. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the Firebird employee database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora8_02" class="figure">
+    <div>
 
     **Figure 8.613. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the Firebird employee database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora10_08" class="figure">
+    <div>
 
     **Figure 8.614. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the Firebird employee database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora11" class="figure">
+    <div>
 
     **Figure 8.615. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/fbdora11.png)
 
@@ -405,15 +405,15 @@ the Firebird employee database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora11_03" class="figure">
+    <div>
 
     **Figure 8.616. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -442,15 +442,15 @@ the Firebird employee database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbeora12" class="figure">
+    <div>
 
     **Figure 8.617. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/fbeora12.png)
 
@@ -487,15 +487,15 @@ the Firebird employee database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbeora13" class="figure">
+    <div>
 
     **Figure 8.618. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/fbeora13.png)
 
@@ -516,15 +516,15 @@ the Firebird employee database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbeora14" class="figure">
+    <div>
 
     **Figure 8.619. Model1.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Model1.edmx](images/ui/fbeora14.png)
 

@@ -1,10 +1,10 @@
-<div id="fn_month" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ month — get number of month from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_month_01" class="funcsynopsis">
+<div>
 
 |                    |                        |
 |--------------------|------------------------|
 | ` `**`month`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ month — get number of month from a datetime
 
 </div>
 
-<div id="desc_month" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ month of year of the datetime.
 
 </div>
 
-<div id="params_month" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96724" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_month" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -65,15 +65,15 @@ year.
 
 </div>
 
-<div id="examples_month" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_month" class="example">
+<div>
 
 **Example 24.220. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current month of year.
 
@@ -94,7 +94,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_06" class="refsect1">
+<div>
 
 ## See Also
 

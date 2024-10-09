@@ -1,6 +1,6 @@
-<div id="udttypeinstances" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

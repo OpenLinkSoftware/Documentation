@@ -1,10 +1,10 @@
-<div id="fn_regexp_parse" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ supplied string after an offset
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regexp_parse" class="funcsynopsis">
+<div>
 
 |                                       |                              |
 |---------------------------------------|------------------------------|
@@ -25,7 +25,7 @@ supplied string after an offset
 |                                       | in `target_string ` string , |
 |                                       | in `offset ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ supplied string after an offset
 
 </div>
 
-<div id="desc_regexp_parse" class="refsect1">
+<div>
 
 ## Description
 
@@ -62,11 +62,11 @@ Where: 2-14 is a range matched by whole expression, 2-4 is a range where
 '(2\[34\])' is matched , and 12-14 is a range where '(2\[35\])'
 subexpression matched.
 
-<div id="ex_regexp_parse" class="example">
+<div>
 
 **Example 24.252. Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE PROCEDURE all_tokens2 (IN pattern VARCHAR,IN str VARCHAR, IN offs INTEGER)
@@ -100,7 +100,7 @@ CREATE PROCEDURE all_tokens2 (IN pattern VARCHAR,IN str VARCHAR, IN offs INTEGER
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Compatibility:">
 <colgroup>
@@ -117,7 +117,7 @@ width="25"><img src="images/note.png" alt="[Note]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The regular
 expressions supported here follow version 7.9 of the Perl Compatible
 Regular Expression (PCRE) syntax.</p>
-<div class="orderedlist">
+<div>
 <ol type="1">
 <li><p><a
 href="https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions"
@@ -134,7 +134,7 @@ target="_top">PCRE.org</a></p></li>
 
 </div>
 
-<div id="seealso_regexp_parse" class="refsect1">
+<div>
 
 ## See Also
 

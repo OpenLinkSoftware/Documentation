@@ -1,10 +1,10 @@
-<div id="fn_vad_install" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ VAD_INSTALL — Invoke VAD installation process
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_install" class="funcsynopsis">
+<div>
 
 |                                         |                                |
 |-----------------------------------------|--------------------------------|
 | `varchar DB.DBA. `**`VAD_INSTALL`**` (` | in `package_uri ` varchar ,    |
 |                                         | in `source_type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,14 +33,14 @@ VAD_INSTALL — Invoke VAD installation process
 
 </div>
 
-<div id="desc_55" class="refsect1">
+<div>
 
 ## Description
 
 Invoke the install operation from interactive SQL or from the web user
 interface. This will:
 
-<div class="itemizedlist">
+<div>
 
 - enter into atomic mode
 
@@ -65,11 +65,11 @@ checkpoint as if the installation was never attempted.
 
 </div>
 
-<div id="params_21" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117639" class="refsect2">
+<div>
 
 ### package_uri
 
@@ -77,7 +77,7 @@ URI of VAD file
 
 </div>
 
-<div id="id117642" class="refsect2">
+<div>
 
 ### source_type
 
@@ -90,7 +90,7 @@ which means the VAD package is read from filesystem path.
 
 </div>
 
-<div id="seealso_27" class="refsect1">
+<div>
 
 ## See Also
 

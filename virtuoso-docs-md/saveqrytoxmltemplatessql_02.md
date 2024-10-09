@@ -1,6 +1,6 @@
-<div id="saveqrytoxmltemplatessql_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,15 +23,15 @@ First we will make a new WebDAV directory. From Web Application Server
 the shown form enter for "Folder Name": xmlt. Choose for "Owner" dav and
 click the "Create" button.
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate001y" class="figure">
+<div>
 
 **Figure 15.12. Creating a new directory (collection) in WebDAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Creating a new directory (collection) in
 WebDAV](images/xmltemplate001.png)
@@ -51,16 +51,16 @@ XML Templates can be executed later. Go to Web Application Server -\>
 Virtual Domains & Directories and for your {Default Web Site} click the
 link "New Directory". In the shown form click "Next":
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate004y" class="figure">
+<div>
 
 **Figure 15.13. Configuring a Virtual Directory to respond to XML
 Template requests from our Dav**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Configuring a Virtual Directory to respond to XML Template requests
 from our Dav](images/xmltemplate004.png)
@@ -91,15 +91,15 @@ simple XPATH query on an XML source file from this documentation. We
 will search for the existence of `<title>` tags in
 `http://host:port/DAV/docsrc/adminui.xml` :
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate009" class="figure">
+<div>
 
 **Figure 15.14. XPATH query on a file in WebDAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XPATH query on a file in WebDAV](images/xmltemplate009.png)
 
@@ -118,15 +118,15 @@ query as an XML template to be executed over HTTP. Pressing the Save
 button takes us to the save XML Template page. We ensure that the file
 to save is set to `/DAV/xmlt/xpath-template.xml` :
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate010" class="figure">
+<div>
 
 **Figure 15.15. **
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![](images/xmltemplate010.png)
 
@@ -145,15 +145,15 @@ pointing a web browser at the URL for the file as we configured our
 virtual directory for, which will be similar to:
 `http://example.com/DAV/xmlt/xpath-template.xml` :
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate011" class="figure">
+<div>
 
 **Figure 15.16. **
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![](images/xmltemplate011.png)
 
@@ -167,7 +167,7 @@ virtual directory for, which will be similar to:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                          |
 |:--------------------------:|:-----------------------------------------|

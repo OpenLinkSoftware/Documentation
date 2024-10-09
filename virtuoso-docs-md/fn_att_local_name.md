@@ -1,10 +1,10 @@
-<div id="fn_att_local_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ remote table name.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_att_local_name" class="funcsynopsis">
+<div>
 
 |                                    |                          |
 |------------------------------------|--------------------------|
 | `varchar `**`att_local_name`**` (` | in `dsn ` varchar ,      |
 |                                    | in `table ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ remote table name.
 
 </div>
 
-<div id="desc_att_local_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ characters in the name will be replaced with underscore symbol.
 
 </div>
 
-<div id="params_att_local_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80659" class="refsect2">
+<div>
 
 ### dsn
 
@@ -59,7 +59,7 @@ The name of remote data source.
 
 </div>
 
-<div id="id80662" class="refsect2">
+<div>
 
 ### table
 
@@ -69,7 +69,7 @@ The name of remote table.
 
 </div>
 
-<div id="ret_att_local_name" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -77,15 +77,15 @@ A string will be returned containing the fully qualified table name.
 
 </div>
 
-<div id="examples_att_local_name" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_att_local_name" class="example">
+<div>
 
 **Example 24.19. Using the att_local_name() function**
 
-<div class="example-contents">
+<div>
 
 This simple example shows retrieval of fully qualified table name. using
 the att_local_name() function from ISQL.

@@ -1,6 +1,6 @@
-<div id="samplegroupconcatdigest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

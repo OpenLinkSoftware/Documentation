@@ -1,10 +1,10 @@
-<div id="fn_signal" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ signal — Signal an exception in the calling procedure
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_signal" class="funcsynopsis">
+<div>
 
 |                     |                            |
 |---------------------|----------------------------|
 | ` `**`signal`**` (` | in `sqlstate ` varchar ,   |
 |                     | in `message ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ signal — Signal an exception in the calling procedure
 
 </div>
 
-<div id="desc_19" class="refsect1">
+<div>
 
 ## Description
 

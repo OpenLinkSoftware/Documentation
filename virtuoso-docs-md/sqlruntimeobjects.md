@@ -1,6 +1,6 @@
-<div id="sqlruntimeobjects" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 The Virtuoso Server Extension API introduces the following data types:
 
-<div class="variablelist">
+<div>
 
 <span class="term">box</span>  
 This is a run-time-typed block of memory which represents any SQL data

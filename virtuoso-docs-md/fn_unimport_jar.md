@@ -1,10 +1,10 @@
-<div id="fn_unimport_jar" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ unimport_jar — Drops SQL wrapper types of selected Java classes
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_unimport_jar" class="funcsynopsis">
+<div>
 
 |                               |                        |
 |-------------------------------|------------------------|
 | `void `**`unimport_jar`**` (` | in `files ` any ,      |
 |                               | in `classes ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ unimport_jar — Drops SQL wrapper types of selected Java classes
 
 </div>
 
-<div id="desc_unimport_jar" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ then transforms it to a set of DROP TYPE statements and executes them.
 
 </div>
 
-<div id="params_unimport_jar" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116197" class="refsect2">
+<div>
 
 ### files
 
@@ -57,7 +57,7 @@ physical location.
 
 </div>
 
-<div id="id116200" class="refsect2">
+<div>
 
 ### classes
 
@@ -68,15 +68,15 @@ describe in the resulting XML.
 
 </div>
 
-<div id="examples_unimport_jar" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_unimport_jar" class="example">
+<div>
 
 **Example 24.431. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> import_jar (null, vector ('java.lang.System'));
@@ -106,7 +106,7 @@ select java_lang_System::getProperty('java.vm.name')
 
 </div>
 
-<div id="seealso_unimport_jar" class="refsect1">
+<div>
 
 ## See Also
 

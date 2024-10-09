@@ -1,6 +1,6 @@
-<div id="dataccessclientsconfailandbalancejdbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="dataccessclientsconfailandbalancejdbcf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ jdbc:virtuoso://server1:port1,server2:port2,server3/UID=dba/PWD=dba/;
 
 </div>
 
-<div id="dataccessclientsconfailandbalancejdbcr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

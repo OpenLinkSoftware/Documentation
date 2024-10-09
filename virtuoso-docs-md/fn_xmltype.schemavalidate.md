@@ -1,10 +1,10 @@
-<div id="fn_xmltype.schemavalidate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ against its schema and signals an error in case of failed validation.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.schemavalidate" class="funcsynopsis">
+<div>
 
 |                                     |      |
 |-------------------------------------|------|
 | ` `**`XMLType.schemaValidate`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ against its schema and signals an error in case of failed validation.
 
 </div>
 
-<div id="desc_xmltype.schemavalidate" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,7 +46,7 @@ signalled. If the validation is successful then a special internal
 
 </div>
 
-<div id="ret_xmltype.schemavalidate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -56,15 +56,15 @@ signals an error.
 
 </div>
 
-<div id="examples_xmltype.schemavalidate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.schemavalidate" class="example">
+<div>
 
 **Example 24.559. Failed schema validation**
 
-<div class="example-contents">
+<div>
 
 The example creates an XMLType instance that is a document with a single
 element node"bad" and declared schema
@@ -87,7 +87,7 @@ select XMLType('<bad />', 'file://xmlschema/test0001/clean.xsd').schemaValidate(
 
 </div>
 
-<div id="seealso_xmltype.schemavalidate" class="refsect1">
+<div>
 
 ## See Also
 

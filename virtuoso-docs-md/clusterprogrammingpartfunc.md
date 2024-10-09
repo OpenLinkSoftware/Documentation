@@ -1,6 +1,6 @@
-<div id="clusterprogrammingpartfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

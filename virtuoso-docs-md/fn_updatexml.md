@@ -1,10 +1,10 @@
-<div id="fn_updatexml" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ nodes.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_updatexml" class="funcsynopsis">
+<div>
 
 |                           |                             |
 |---------------------------|-----------------------------|
@@ -30,7 +30,7 @@ nodes.
 |                           | in `pathN ` varchar ,       |
 |                           | in `replacementN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ nodes.
 
 </div>
 
-<div id="desc_updatexml" class="refsect1">
+<div>
 
 ## Description
 

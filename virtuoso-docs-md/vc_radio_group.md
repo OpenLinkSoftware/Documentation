@@ -1,10 +1,10 @@
-<div id="vc_radio_group" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ radio-group — A group of radio-buttons.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_radio_group" class="funcsynopsis">
+<div>
 
 |                             |                               |
 |-----------------------------|-------------------------------|
@@ -36,7 +36,7 @@ radio-group — A group of radio-buttons.
 |                             | `debug-srcline` (optional) ,  |
 |                             | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -46,7 +46,7 @@ radio-group — A group of radio-buttons.
 
 </div>
 
-<div id="vc_desc_radio_group" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,7 +57,7 @@ use 'group-name' attribute of the radio-button control.
 
 </div>
 
-<div id="vc_attrs_radio_group" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -131,7 +131,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_radio_group" class="refsect1">
+<div>
 
 ## Declaration of type vspx_radio_group
 
@@ -146,15 +146,15 @@ overriding method vc_set_model () returns any
 
 </div>
 
-<div id="vc_ex_radio_group" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_radio_group__0" class="example">
+<div>
 
 **Example 14.40.  Groups of radio buttons.**
 
-<div class="example-contents">
+<div>
 
 The form contains a groups of radio buttons, grouped with radio-group
 control.
@@ -180,7 +180,7 @@ control.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0"
 data-summary="Tip: See Also: Reference Material in the Tutorial:">

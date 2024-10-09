@@ -1,10 +1,10 @@
-<div id="fn_ftp_ls" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ftp_ls — FTP dir command; Virtuoso FTP client
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ftp_ls" class="funcsynopsis">
+<div>
 
 |                        |                                 |
 |------------------------|---------------------------------|
@@ -26,7 +26,7 @@ ftp_ls — FTP dir command; Virtuoso FTP client
 |                        | in `remote_dir_name ` varchar , |
 |                        | in `is_pasv ` integer `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ ftp_ls — FTP dir command; Virtuoso FTP client
 
 </div>
 
-<div id="desc_ftp_ls" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ any PL, this can be combined with Web Services and SOAP.
 
 </div>
 
-<div id="params_ftp_ls" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89299" class="refsect2">
+<div>
 
 ### server
 
@@ -58,7 +58,7 @@ The remote server address or IP Address.
 
 </div>
 
-<div id="id89302" class="refsect2">
+<div>
 
 ### user
 
@@ -66,7 +66,7 @@ The username for authentication at the FTP server.
 
 </div>
 
-<div id="id89305" class="refsect2">
+<div>
 
 ### pass
 
@@ -74,7 +74,7 @@ The accompanying password for authentication at the FTP server.
 
 </div>
 
-<div id="id89308" class="refsect2">
+<div>
 
 ### remote_dir_name
 
@@ -82,7 +82,7 @@ The full path of the remote directory to list the contents of.
 
 </div>
 
-<div id="id89311" class="refsect2">
+<div>
 
 ### is_pasv
 
@@ -94,7 +94,7 @@ default.
 
 </div>
 
-<div id="ret_ftp_ls" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -104,7 +104,7 @@ these will be returned instead.
 
 </div>
 
-<div id="errors_ftp_get_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -112,15 +112,15 @@ This function will return any errors returned by the remote FTP server.
 
 </div>
 
-<div id="examples_ftp_ls" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ftp_put" class="example">
+<div>
 
 **Example 24.120. Listing files on the remote FTP server**
 
-<div class="example-contents">
+<div>
 
 The following command will send the vector of the descriptions of the
 files in the virtuoso30 directory on the remote sever to the Virtuoso
@@ -139,7 +139,7 @@ select dbg_obj_print(ftp_ls ('ftp.openlinksw.com', 'user_name', 'password', 'vir
 
 </div>
 
-<div id="seealso_ftp_ls" class="refsect1">
+<div>
 
 ## See Also
 

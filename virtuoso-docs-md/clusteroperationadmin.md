@@ -1,6 +1,6 @@
-<div id="clusteroperationadmin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="clusteroperationadmclexec" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -60,7 +60,7 @@ cl_exec ('dbg_obj_print (?)', vector ('hello'));
 Any recovery, integrity checking, crash dump or similar can be done node
 by node as with single processes.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -93,9 +93,9 @@ Example</a></p></li>
 
 </div>
 
-<div id="clusteroperationadminstdispl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

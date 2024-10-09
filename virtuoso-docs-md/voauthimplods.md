@@ -1,6 +1,6 @@
-<div id="voauthimplods" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,7 +26,7 @@ instance.
 Once a consumer token is available, the sequence below must be executed
 in order to establish an authorized session:
 
-<div class="orderedlist">
+<div>
 
 1.  client uses request_token to get a token/secret pair for
     establishing session using consumer token
@@ -41,9 +41,9 @@ in order to establish an authorized session:
 
 </div>
 
-<div id="voauthimplodssoc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -162,9 +162,9 @@ this sample client, in Virtuoso/PL.
 
 </div>
 
-<div id="voauthimplodssos" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

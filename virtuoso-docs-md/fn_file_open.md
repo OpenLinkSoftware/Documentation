@@ -1,10 +1,10 @@
-<div id="fn_file_open" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ file_open — returns the contents of a file.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_open" class="funcsynopsis">
+<div>
 
 |                               |                         |
 |-------------------------------|-------------------------|
 | `varchar `**`file_open`**` (` | in `path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ file_open — returns the contents of a file.
 
 </div>
 
-<div id="desc_file_open" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ directory of the database server.
 
 </div>
 
-<div id="params_file_open" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88484" class="refsect2">
+<div>
 
 ### path
 
@@ -55,15 +55,15 @@ Path name of the file to read.
 
 </div>
 
-<div id="examples_file_open" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_file_open" class="example">
+<div>
 
 **Example 24.114. Simple Use**
 
-<div class="example-contents">
+<div>
 
 For loading N3 and Turtle files you can use:
 
@@ -79,7 +79,7 @@ SQL>DB.DBA.TTLP_MT (file_open('tmp/file1.n3'), 'base uri', 'graph uri', 255);
 
 </div>
 
-<div id="seealso_file_open" class="refsect1">
+<div>
 
 ## See Also
 

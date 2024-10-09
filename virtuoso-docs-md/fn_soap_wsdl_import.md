@@ -1,10 +1,10 @@
-<div id="fn_soap_wsdl_import" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ SOAP_WSDL_IMPORT
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_wsdl_import" class="funcsynopsis">
+<div>
 
 |                                            |                               |
 |--------------------------------------------|-------------------------------|
 | `array DB.DBA. `**`SOAP_WSDL_IMPORT`**` (` | in `target_url ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ SOAP_WSDL_IMPORT
 
 </div>
 
-<div id="desc_soap_wsdl_import" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ wrappers are automatically generated and available for use.
 
 </div>
 
-<div id="params_soap_wsdl_import" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110927" class="refsect2">
+<div>
 
 ### target_url
 
@@ -60,7 +60,7 @@ A URL to a WSDL file.
 
 </div>
 
-<div id="ret_soap_wsdl_import" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ example of the result is: vector (\[module name\], \[wrapper1\], vector
 
 </div>
 
-<div id="examples_soap_wsdl_import" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_soap_wsdl_import" class="example">
+<div>
 
 **Example 24.386. Importing and using a Web Services description file**
 
-<div class="example-contents">
+<div>
 
 ``` screen
  SQL> soap_wsdl_import('http://[host:port]/chemistry.wsdl');
@@ -114,7 +114,7 @@ example of the result is: vector (\[module name\], \[wrapper1\], vector
 
 </div>
 
-<div id="seealso_soap_wsdl_import" class="refsect1">
+<div>
 
 ## See Also
 

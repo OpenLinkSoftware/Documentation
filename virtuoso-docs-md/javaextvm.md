@@ -1,6 +1,6 @@
-<div id="javaextvm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ The Java VM is an embedded system within Virtuoso that allows the
 calling of class Java methods and getting class properties. It uses the
 JAVA JNI API to interact with the JAVA VM.
 
-<div id="virtvsjvmthreads" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

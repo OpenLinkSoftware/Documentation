@@ -1,10 +1,10 @@
-<div id="fn_row_count" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ statement in a procedure body
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_row_count" class="funcsynopsis">
+<div>
 
 |                               |      |
 |-------------------------------|------|
 | `integer `**`row_count`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ statement in a procedure body
 
 </div>
 
-<div id="desc_row_count" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,7 +47,7 @@ operation. This is not set by rexecute.
 
 </div>
 
-<div id="ret_row_count" class="refsect1">
+<div>
 
 ## Return Types
 

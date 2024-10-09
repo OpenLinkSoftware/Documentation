@@ -1,6 +1,6 @@
-<div id="virtuosofaq32" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

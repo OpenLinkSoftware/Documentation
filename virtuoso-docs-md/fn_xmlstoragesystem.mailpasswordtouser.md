@@ -1,10 +1,10 @@
-<div id="fn_xmlstoragesystem.mailpasswordtouser" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xmlStorageSystem.mailPasswordToUser — Mail password to user.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlstoragesystem.mailpasswordtouser" class="funcsynopsis">
+<div>
 
 |                                                           |                         |
 |-----------------------------------------------------------|-------------------------|
 | `structure `**`xmlStorageSystem.mailPasswordToUser`**` (` | in `email ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xmlStorageSystem.mailPasswordToUser — Mail password to user.
 
 </div>
 
-<div id="desc_xmlstoragesystem.mailpasswordtouser" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ be set properly.
 
 </div>
 
-<div id="params_xmlstoragesystem.mailpasswordtouser" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124950" class="refsect2">
+<div>
 
 ### email
 
@@ -56,7 +56,7 @@ For user identification, this should be a valid email account.
 
 </div>
 
-<div id="ret_xmlstoragesystem.mailpasswordtouser" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -69,16 +69,16 @@ This method returns a structure as follows:
 
 </div>
 
-<div id="examples_xmlstoragesystem.mailpasswordtouser" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlstoragesystem.mailpasswordtouser" class="example">
+<div>
 
 **Example 24.539. Mailing the XML Storage System Users Password to the
 User**
 
-<div class="example-contents">
+<div>
 
 Simple example of mailing the users password.
 
@@ -106,7 +106,7 @@ Note : in this case emailing was failed
 
 </div>
 
-<div id="seealso_xmlstoragesystem.mailpasswordtouser" class="refsect1">
+<div>
 
 ## See Also
 

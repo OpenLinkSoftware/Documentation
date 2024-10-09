@@ -1,10 +1,10 @@
-<div id="xpf_text_contains" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,18 +14,18 @@ returns false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_text_contains" class="funcsynopsis">
+<div>
 
 |                                   |                      |
 |-----------------------------------|----------------------|
 | `boolean `**`text_contains`**` (` | `scope ` node-set ,  |
 |                                   | `query ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ returns false.
 
 </div>
 
-<div id="xpf_desc_text_contains" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ inside a selected document.
 
 </div>
 
-<div id="xpf_params_text_contains" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129465" class="refsect2">
+<div>
 
 ### scope
 
@@ -68,7 +68,7 @@ The node-set where the text search is performed.
 
 </div>
 
-<div id="id129468" class="refsect2">
+<div>
 
 ### query
 
@@ -78,7 +78,7 @@ The text of the query.
 
 </div>
 
-<div id="xpf_ret_text_contains" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -90,15 +90,15 @@ found, 'false' is returned.
 
 </div>
 
-<div id="xpf_errors_text_contains" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id129477" class="table">
+<div>
 
-**Table 24.152. Errors signalled by text-contains()**
+**Table 24.151. Errors signalled by text-contains()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                          | Description                                                                                                  |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -113,15 +113,15 @@ found, 'false' is returned.
 
 </div>
 
-<div id="xpf_examples_text_contains" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_text_contains" class="example">
+<div>
 
 **Example 24.632. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ```
@@ -134,7 +134,7 @@ found, 'false' is returned.
 
 </div>
 
-<div id="xpf_seealso_text_contains" class="refsect1">
+<div>
 
 ## See Also
 

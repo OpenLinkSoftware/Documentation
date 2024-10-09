@@ -1,10 +1,10 @@
-<div id="fn_get_csv_row" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ parses a row and returns a vector with field values.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_get_csv_row" class="funcsynopsis">
+<div>
 
 |                          |                       |
 |--------------------------|-----------------------|
@@ -25,7 +25,7 @@ parses a row and returns a vector with field values.
 |                          | in `delim ` char ,    |
 |                          | in `quote ` char `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ parses a row and returns a vector with field values.
 
 </div>
 
-<div id="desc_get_csv_row" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ convert the string using the BIF like cast sprintf_inverse and so on.
 
 </div>
 
-<div id="params_get_csv_row" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89467" class="refsect2">
+<div>
 
 ### ses
 
@@ -64,7 +64,7 @@ string_session containing CSV data
 
 </div>
 
-<div id="id89470" class="refsect2">
+<div>
 
 ### delim
 
@@ -72,7 +72,7 @@ Optional argument to handle tab, space delimited etc. formats.
 
 </div>
 
-<div id="id89473" class="refsect2">
+<div>
 
 ### quote
 
@@ -82,7 +82,7 @@ Optional argument to handle tab, space delimited etc. formats.
 
 </div>
 
-<div id="ret_get_csv_row" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -90,15 +90,15 @@ Returns a vector with field values.
 
 </div>
 
-<div id="examples_get_csv_row" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_get_csv_row" class="example">
+<div>
 
 **Example 24.123. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The following example prints on the Virtuoso Server console the CSV
 columns names:
@@ -136,7 +136,7 @@ s Phone;Business Fax;Pager;Company;Job Title;Department;Office Location;Notes' )
 
 </div>
 
-<div id="seealso_get_csv_row" class="refsect1">
+<div>
 
 ## See Also
 

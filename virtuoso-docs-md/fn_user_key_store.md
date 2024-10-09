@@ -1,10 +1,10 @@
-<div id="fn_user_key_store" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ restarted, the key will be loaded again.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_key_store" class="funcsynopsis">
+<div>
 
 |                             |                                      |
 |-----------------------------|--------------------------------------|
@@ -28,7 +28,7 @@ restarted, the key will be loaded again.
 |                             | in `key_pwd ` varchar ,              |
 |                             | in `key_value ` varchar := NULL `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ restarted, the key will be loaded again.
 
 </div>
 
-<div id="desc_user_key_store" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ restarted, the key will be loaded again.
 
 </div>
 
-<div id="params_user_key_store" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117380" class="refsect2">
+<div>
 
 ### username
 
@@ -59,7 +59,7 @@ User name
 
 </div>
 
-<div id="id117383" class="refsect2">
+<div>
 
 ### key_name
 
@@ -67,7 +67,7 @@ Key name
 
 </div>
 
-<div id="id117386" class="refsect2">
+<div>
 
 ### key_type
 
@@ -75,7 +75,7 @@ Key type
 
 </div>
 
-<div id="id117389" class="refsect2">
+<div>
 
 ### key_format
 
@@ -83,7 +83,7 @@ Key format
 
 </div>
 
-<div id="id117392" class="refsect2">
+<div>
 
 ### key_pwd
 
@@ -91,7 +91,7 @@ Key password
 
 </div>
 
-<div id="id117395" class="refsect2">
+<div>
 
 ### key_value
 
@@ -101,15 +101,15 @@ Key value
 
 </div>
 
-<div id="examples_user_key_store" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_user_key_store" class="example">
+<div>
 
 **Example 24.436. Persisting a key & certificate**
 
-<div class="example-contents">
+<div>
 
 The example below persists a key named 'id_rsa' and certificate created
 for it into user's key space. Thus after server restart the key will be
@@ -127,7 +127,7 @@ SQL> USER_KEY_STORE (user, 'id_rsa', 'X.509', 2, '', xenc_pkcs12_export ('id_rsa
 
 </div>
 
-<div id="seealso_user_key_store" class="refsect1">
+<div>
 
 ## See Also
 

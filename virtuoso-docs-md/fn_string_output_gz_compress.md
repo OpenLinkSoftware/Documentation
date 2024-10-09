@@ -1,10 +1,10 @@
-<div id="fn_string_output_gz_compress" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ string_output_gz_compress — compress a string_output with gzip algorithm
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_string_output_gz_compress" class="funcsynopsis">
+<div>
 
 |                                        |                                        |
 |----------------------------------------|----------------------------------------|
 | ` `**`string_output_gz_compress`**` (` | in `str_out_in ` string_session ,      |
 |                                        | out `str_out_out ` string_session `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ string_output_gz_compress — compress a string_output with gzip algorithm
 
 </div>
 
-<div id="desc_string_output_gz_compress" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ given as an argument. When successful, the number of bytes written to
 
 </div>
 
-<div id="params_string_output_gz_compress" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112406" class="refsect2">
+<div>
 
 ### str_out_in
 
@@ -56,7 +56,7 @@ A string session as returned by `string_output ` function.
 
 </div>
 
-<div id="id112410" class="refsect2">
+<div>
 
 ### str_out_out
 
@@ -66,7 +66,7 @@ A string session as returned by `string_output ` function.
 
 </div>
 
-<div id="ret_string_output_gz_compress" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ A string session as returned by `string_output ` function.
 
 </div>
 
-<div id="examples_string_output_gz_compress" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_string_output_gz_compress_1" class="example">
+<div>
 
 **Example 24.409. GZIP test**
 
-<div class="example-contents">
+<div>
 
 Test if the gzip implementation works.
 
@@ -137,7 +137,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_string_output_gz_compress" class="refsect1">
+<div>
 
 ## See Also
 

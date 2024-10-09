@@ -1,10 +1,10 @@
-<div id="vc_validator" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ validator — A validator that is applied to user input.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_validator" class="funcsynopsis">
+<div>
 
 |                           |                               |
 |---------------------------|-------------------------------|
@@ -41,7 +41,7 @@ validator — A validator that is applied to user input.
 |                           | `debug-srcline` (optional) ,  |
 |                           | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -51,7 +51,7 @@ validator — A validator that is applied to user input.
 
 </div>
 
-<div id="vc_desc_validator" class="refsect1">
+<div>
 
 ## Description
 
@@ -66,7 +66,7 @@ element.
 
 </div>
 
-<div id="vc_attrs_validator" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -151,7 +151,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_validator" class="refsect1">
+<div>
 
 ## Declaration of type vspx_validator
 
@@ -160,15 +160,15 @@ debugging log.
 
 </div>
 
-<div id="vc_ex_validator" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_validator__0" class="example">
+<div>
 
 **Example 14.46.  Validation of text area input**
 
-<div class="example-contents">
+<div>
 
 The form contains a v:textarea control with v:validator assigned. When
 the OK button is pressed, data are posted back to the same URI so the
@@ -201,7 +201,7 @@ attribute to the v:textarea.)
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                    |
 |:--------------------------:|:-------------------------------------------------------------------|

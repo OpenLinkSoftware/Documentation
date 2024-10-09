@@ -1,10 +1,10 @@
-<div id="fn_abs" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ abs — Return the absolute value of a number
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_abs" class="funcsynopsis">
+<div>
 
 |                  |                    |
 |------------------|--------------------|
 | ` `**`abs`**` (` | in `num ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ abs — Return the absolute value of a number
 
 </div>
 
-<div id="desc_abs" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ abs — Return the absolute value of a number
 
 </div>
 
-<div id="params_abs" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80267" class="refsect2">
+<div>
 
 ### num
 
@@ -55,7 +55,7 @@ returned
 
 </div>
 
-<div id="ret_abs" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ Same as parameter type.
 
 </div>
 
-<div id="examples_abs" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_abs" class="example">
+<div>
 
 **Example 24.11. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get absolute values of several numeric values
 

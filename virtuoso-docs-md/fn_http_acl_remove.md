@@ -1,10 +1,10 @@
-<div id="fn_http_acl_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_acl_remove — Removes conditions against web server ACL's
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_acl_remove" class="funcsynopsis">
+<div>
 
 |                                     |                           |
 |-------------------------------------|---------------------------|
@@ -25,7 +25,7 @@ http_acl_remove — Removes conditions against web server ACL's
 |                                     | in `client_ip ` varchar , |
 |                                     | in `flag ` integer `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ http_acl_remove — Removes conditions against web server ACL's
 
 </div>
 
-<div id="desc_http_acl_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ This function can be used within application logic to remove ACLs rule.
 
 </div>
 
-<div id="params_http_acl_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92059" class="refsect2">
+<div>
 
 ### list_name
 
@@ -55,7 +55,7 @@ a string designating which list to be used
 
 </div>
 
-<div id="id92062" class="refsect2">
+<div>
 
 ### order
 
@@ -63,7 +63,7 @@ a string designating order
 
 </div>
 
-<div id="id92065" class="refsect2">
+<div>
 
 ### client_ip
 
@@ -71,7 +71,7 @@ a string containing the IP number of client to remove rules
 
 </div>
 
-<div id="id92068" class="refsect2">
+<div>
 
 ### flag
 
@@ -81,7 +81,7 @@ a string containing the IP number of client to remove rules
 
 </div>
 
-<div id="ret_http_acl_remove" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -90,7 +90,7 @@ rule. If no rule matches it returns -1.
 
 </div>
 
-<div id="seealso_http_acl_remove" class="refsect1">
+<div>
 
 ## See Also
 

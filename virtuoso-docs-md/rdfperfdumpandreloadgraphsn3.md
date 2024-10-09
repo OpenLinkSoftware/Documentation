@@ -1,6 +1,6 @@
-<div id="rdfperfdumpandreloadgraphsn3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ class="ulink" target="_top">Virtuoso RDF bulk loader</a> scripts can
 then be used to load the dumped datasets for the RDFView graphs directly
 into a Virtuoso RDF QUAD store.
 
-<div id="rdfperfdumpandreloadgraphsn3params" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,7 +50,7 @@ into a Virtuoso RDF QUAD store.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - `in` <span class="emphasis">*dest_dir*</span>
 
@@ -76,9 +76,9 @@ into a Virtuoso RDF QUAD store.
 
 </div>
 
-<div id="rdfperfdumpandreloadgraphsn3code" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

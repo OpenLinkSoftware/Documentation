@@ -1,10 +1,10 @@
-<div id="fn_regexp_match" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ the supplied string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regexp_match" class="funcsynopsis">
+<div>
 
 |                                  |                                   |
 |----------------------------------|-----------------------------------|
@@ -25,7 +25,7 @@ the supplied string
 |                                  | inout `str ` any ,                |
 |                                  | in `change_the_str ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ the supplied string
 
 </div>
 
-<div id="desc_regexp_match" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ this function operates in narrow mode by default.
 
 </div>
 
-<div id="params_regexp_match" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99946" class="refsect2">
+<div>
 
 ### pattern
 
@@ -68,7 +68,7 @@ The regular expression to match.
 
 </div>
 
-<div id="id99949" class="refsect2">
+<div>
 
 ### str
 
@@ -77,7 +77,7 @@ this string in modified, removing the matched substring.
 
 </div>
 
-<div id="id99952" class="refsect2">
+<div>
 
 ### change_the_str
 
@@ -89,7 +89,7 @@ parameter is set to "0" so that the original string is never altered.
 
 </div>
 
-<div id="ret_regexp_match" class="refsect1">
+<div>
 
 ## Returns
 
@@ -97,15 +97,15 @@ This function returns the a substring matching the regular expression.
 
 </div>
 
-<div id="examples_regexp_like" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_regexp_match" class="example">
+<div>
 
 **Example 24.251. Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE PROCEDURE all_tokens(IN pattern VARCHAR, IN str VARCHAR)
@@ -132,7 +132,7 @@ CREATE PROCEDURE all_tokens(IN pattern VARCHAR, IN str VARCHAR)
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Compatibility:">
 <colgroup>
@@ -149,7 +149,7 @@ width="25"><img src="images/note.png" alt="[Note]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The regular
 expressions supported here follow version 7.9 of the Perl Compatible
 Regular Expression (PCRE) syntax.</p>
-<div class="orderedlist">
+<div>
 <ol type="1">
 <li><p><a
 href="https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions"
@@ -166,7 +166,7 @@ target="_top">PCRE.org</a></p></li>
 
 </div>
 
-<div id="seealso_regexp_match" class="refsect1">
+<div>
 
 ## See Also
 

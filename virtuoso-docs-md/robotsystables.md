@@ -1,6 +1,6 @@
-<div id="robotsystables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

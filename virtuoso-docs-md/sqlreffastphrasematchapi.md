@@ -1,6 +1,6 @@
-<div id="sqlreffastphrasematchapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_ann_phrase_class_add.html" class="link"
   title="DB.DBA.ANN_PHRASE_CLASS_ADD"><code
@@ -29,7 +29,7 @@
   class="function">AP_BUILD_MATCH_LIST</code>:</a> The report R is a
   vector of 6 elements:
 
-  <div class="orderedlist">
+  <div>
 
   1.  R\[0\] vector of all distinct phrase classes for phrase sets of
       found phrases; every pair of items represents one phrase class:
@@ -63,11 +63,11 @@
   7.  Every "arrow" A is vector of length 5 or 6, it is longer when
       arrow points inside occurrence of some annotation phrase.
 
-      <div class="orderedlist">
+      <div>
 
       1.  A\[0\] integer that indicates type of text fragment:
 
-          <div class="itemizedlist">
+          <div>
 
           - 0 is for plain word (only this type occurs in reports for
             plain text),

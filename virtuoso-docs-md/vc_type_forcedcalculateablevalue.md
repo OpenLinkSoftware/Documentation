@@ -1,10 +1,10 @@
-<div id="vc_type_forcedcalculateablevalue" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ expression to be calculated at run time.
 
 </div>
 
-<div id="vc_desc_forcedcalculateablevalue" class="refsect1">
+<div>
 
 ## Description
 

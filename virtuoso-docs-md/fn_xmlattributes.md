@@ -1,10 +1,10 @@
-<div id="fn_xmlattributes" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ XMLATTRIBUTES — Creates a list of attributes and their values
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlattributes" class="funcsynopsis">
+<div>
 
 |                            |                                          |
 |----------------------------|------------------------------------------|
@@ -25,7 +25,7 @@ XMLATTRIBUTES — Creates a list of attributes and their values
 |                            | `... ` ,                                 |
 |                            | `string_exprN [AS aliasN] ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ XMLATTRIBUTES — Creates a list of attributes and their values
 
 </div>
 
-<div id="desc_xmlattributes" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ attribute name.
 
 </div>
 
-<div id="xmlattributes" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122008" class="refsect2">
+<div>
 
 ### String_exprI \[AS aliasI\]
 
@@ -65,15 +65,15 @@ expression of some other sort.
 
 </div>
 
-<div id="xmlattributes_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlattributes" class="example">
+<div>
 
 **Example 24.496. XMLATTRIBUTES() with two parameters**
 
-<div class="example-contents">
+<div>
 
 The following example produces an 'EmpName' elements with two attributes
 (if value of the column 'Region' is not NULL) or with one attribute (if
@@ -107,7 +107,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmlattributes" class="refsect1">
+<div>
 
 ## See Also
 

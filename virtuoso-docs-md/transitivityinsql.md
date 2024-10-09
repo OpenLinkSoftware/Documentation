@@ -1,6 +1,6 @@
-<div id="transitivityinsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -234,7 +234,7 @@ to p2.
 
 Now we may look more formally at the meaning of the transitive options:
 
-<div class="itemizedlist">
+<div>
 
 - T_MIN (INTNUM) - This means that paths shorter than the number are not
   returned. In the examples above, we had min at 0, so that a path of
@@ -283,7 +283,7 @@ Now we may look more formally at the meaning of the transitive options:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                              |
 |:--------------------------:|:-----------------------------------------------------------------------------|

@@ -1,10 +1,10 @@
-<div id="fn_csv_parse" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ csv_parse — Parses a CSV file.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_csv_parse" class="funcsynopsis">
+<div>
 
 |                        |                                       |
 |------------------------|---------------------------------------|
@@ -27,7 +27,7 @@ csv_parse — Parses a CSV file.
 |                        | in `to_line ` integer ,               |
 |                        | in `opts ` any `)`;                   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ csv_parse — Parses a CSV file.
 
 </div>
 
-<div id="desc_csv_parse" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ row, the line number, inout the callback_user_data.
 
 </div>
 
-<div id="params_csv_parse" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89835" class="refsect2">
+<div>
 
 ### string_session_input
 
@@ -64,7 +64,7 @@ from_line and to_line offsets.
 
 </div>
 
-<div id="id89838" class="refsect2">
+<div>
 
 ### callback_sp_name
 
@@ -72,7 +72,7 @@ The name of the stored procedure.
 
 </div>
 
-<div id="id89841" class="refsect2">
+<div>
 
 ### callback_user_data
 
@@ -80,7 +80,7 @@ The user data.
 
 </div>
 
-<div id="id89844" class="refsect2">
+<div>
 
 ### from_line
 
@@ -88,7 +88,7 @@ Default - 0, This means counted from the begining.
 
 </div>
 
-<div id="id89847" class="refsect2">
+<div>
 
 ### to_line
 
@@ -96,7 +96,7 @@ Default - null, This means counted to the end.
 
 </div>
 
-<div id="id89850" class="refsect2">
+<div>
 
 ### opts
 
@@ -111,15 +111,15 @@ vector ('csv-delimiter', self.delim, 'csv-quote', self.quot)
 
 </div>
 
-<div id="examples_csv_parse" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_csv_parse" class="example">
+<div>
 
 **Example 24.129. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure y_csv_cb (inout r any, in inx int, inout cbd any)
@@ -144,7 +144,7 @@ create procedure y_csv_cb (inout r any, in inx int, inout cbd any)
 
 </div>
 
-<div id="seealso_csv_parse" class="refsect1">
+<div>
 
 ## See Also
 

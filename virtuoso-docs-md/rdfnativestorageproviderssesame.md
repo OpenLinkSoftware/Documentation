@@ -1,6 +1,6 @@
-<div id="rdfnativestorageproviderssesame" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfnativestorageproviderssesamewhatis" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,7 +47,7 @@ etc., for 'Do-It-Yourself' projects with RDF.
 <div id="rdfnativestorageproviderssesamewhatisvirtuososesameprovider"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -74,15 +74,15 @@ been tested against the two latest currently available versions,
 target="_top">Sesame</a> 2.6.x, 2.7.x, 2.8.x and the new Sesame 4.x
 release, for which a new Provider is available.
 
-<div class="figure-float">
+<div>
 
-<div id="rdfnativestorageproviderssesame1" class="figure">
+<div>
 
 **Figure 16.186. Fig. 1 Sesame Component Stack**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Fig. 1 Sesame Component Stack](images/ui/VirtSesame2Provider.png)
 
@@ -104,9 +104,9 @@ class="ulink" target="_top">Setting up to use the Sesame libraries</a> .
 
 </div>
 
-<div id="rdfnativestorageproviderssesamesetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -120,9 +120,9 @@ class="ulink" target="_top">Setting up to use the Sesame libraries</a> .
 
 </div>
 
-<div id="rdfnativestorageproviderssesamereqfiles" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -158,9 +158,9 @@ $
 
 </div>
 
-<div id="rdfnativestorageproviderssesamecmppr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -174,9 +174,9 @@ $
 
 </div>
 
-<div id="rdfnativestorageproviderssesamecmpprcomp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -190,13 +190,13 @@ $
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure that full paths to the following files, or equivalents for
     your version of Sesame, are all included in the active CLASSPATH
     setting --
 
-    <div class="itemizedlist">
+    <div>
 
     - openrdf-sesame-2.1.2-onejar.jar
 
@@ -233,9 +233,9 @@ $
 
 </div>
 
-<div id="rdfnativestorageproviderssesametesting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -249,13 +249,13 @@ $
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure that full paths to the following files are all included in
     the active CLASSPATH setting (note the addition of virtuoso_driver,
     here):
 
-    <div class="itemizedlist">
+    <div>
 
     - openrdf-sesame-2.1.2-onejar.jar
 
@@ -387,9 +387,9 @@ $
 
 </div>
 
-<div id="rdfnativestorageproviderssesamecmppr4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -403,9 +403,9 @@ $
 
 </div>
 
-<div id="rdfnativestorageproviderssesamecmppr4comp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -419,13 +419,13 @@ $
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure that full paths to the following files, or equivalents for
     your version of Sesame, are all included in the active CLASSPATH
     setting --
 
-    <div class="itemizedlist">
+    <div>
 
     - openrdf-sesame-4.0.0-onejar.jar
 
@@ -460,9 +460,9 @@ $
 
 </div>
 
-<div id="rdfnativestorageproviderssesametesting4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -476,13 +476,13 @@ $
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure that full paths to the following files are all included in
     the active CLASSPATH setting (note the addition of virtuoso_driver,
     here):
 
-    <div class="itemizedlist">
+    <div>
 
     - openrdf-sesame-4.0.0-onejar.jar
 
@@ -620,9 +620,9 @@ $
 
 </div>
 
-<div id="rdfnativestorageproviderssesamegettingstarted" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -655,7 +655,7 @@ download.
 <div id="rdfnativestorageproviderssesamegettingstartedcrrep"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -703,7 +703,7 @@ repository is used as a means for manipulating an RDF model in memory.
 <div id="rdfnativestorageproviderssesamegettingstartedrdfvirtcr"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -735,7 +735,7 @@ operations using the Northwind dataset.
 <div id="rdfnativestorageproviderssesamegettingstartedrdfvirt"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -825,7 +825,7 @@ reference of the RepositoryConnection interface.
 <div id="rdfnativestorageproviderssesamegettingstartedqr"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -879,7 +879,7 @@ specification at this time.
 <div id="rdfnativestorageproviderssesamegettingstartevq"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1067,7 +1067,7 @@ can invoke con.close() after we have finished with the result.
 <div id="rdfnativestorageproviderssesamegettingstartevcnq"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1148,7 +1148,7 @@ connection and free resources.
 <div id="rdfnativestorageproviderssesamegettingstartevcnqapi"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1165,7 +1165,7 @@ class="section">
 Javadocs covers the complete set of classes, interfaces, and methods
 implemented by the provider:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://docs.openlinksw.com/sesame/" class="ulink"
   target="_top">Javadoc API Documentation for the Sesame 2.6 Provider</a>
@@ -1182,9 +1182,9 @@ implemented by the provider:
 
 </div>
 
-<div id="rdfnativestorageproviderssesamestpandtesting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1201,7 +1201,7 @@ implemented by the provider:
 <div id="rdfnativestorageproviderssesamestpandtestingwhat"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1227,7 +1227,7 @@ RDF store using the Sesame HTTP protocol.
 <div id="rdfnativestorageproviderssesamestpandtestingwhy"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1253,7 +1253,7 @@ server.
 <div id="rdfnativestorageproviderssesamestpandtestinghow"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1282,7 +1282,7 @@ configuration data.
 <div id="rdfnativestorageproviderssesamestpandtestingmain"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1303,7 +1303,7 @@ repositories.
 <div id="rdfnativestorageproviderssesamestpandtestingreq"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1317,7 +1317,7 @@ class="section">
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://www.openrdf.org/download.jsp" class="ulink"
   target="_top">Sesame 2.3.1</a> or higher
@@ -1362,7 +1362,7 @@ class="section">
 <div id="rdfnativestorageproviderssesamestpandtestinghttprep"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1379,7 +1379,7 @@ class="section">
 This section details the steps required for configuring and testing a
 Virtuoso HTTP Sesame Repository.
 
-<div class="orderedlist">
+<div>
 
 1.  Install <a href="http://tomcat.apache.org/tomcat-6.0-doc/index.html"
     class="ulink" target="_top">Apache Tomcat</a> web server
@@ -1416,16 +1416,16 @@ Virtuoso HTTP Sesame Repository.
     target="_top">http://example.com/openrdf-workbench</a> " will enable
     the default "SYSTEM" repository to be accessed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss1" class="figure">
+    <div>
 
     **Figure 16.187. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss1.png)
@@ -1443,16 +1443,16 @@ Virtuoso HTTP Sesame Repository.
 7.  Click on the "New Repository" link in the left frame to create a new
     Sesame Repository.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss2" class="figure">
+    <div>
 
     **Figure 16.188. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss2.png)
@@ -1470,16 +1470,16 @@ Virtuoso HTTP Sesame Repository.
 8.  Select the "Virtuoso RDF Store" from the "Type" drop down list box
     presented.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss3" class="figure">
+    <div>
 
     **Figure 16.189. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss3.png)
@@ -1497,16 +1497,16 @@ Virtuoso HTTP Sesame Repository.
 9.  Choose suitable repository "ID" and "Title" for the Virtuoso
     repository to be created and click "Next".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss4" class="figure">
+    <div>
 
     **Figure 16.190. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss4.png)
@@ -1526,16 +1526,16 @@ Virtuoso HTTP Sesame Repository.
     minimum required are the hostname, port number, username and
     password of the Virtuoso Server.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss5" class="figure">
+    <div>
 
     **Figure 16.191. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss5.png)
@@ -1553,16 +1553,16 @@ Virtuoso HTTP Sesame Repository.
 11. The new Virtuoso respository will be created and its summary page
     displayed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss6" class="figure">
+    <div>
 
     **Figure 16.192. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss6.png)
@@ -1580,16 +1580,16 @@ Virtuoso HTTP Sesame Repository.
 12. Click on the "Namespaces" link in the left frame to obtain a list of
     the available namespaces in the Virtuoso repository.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss7" class="figure">
+    <div>
 
     **Figure 16.193. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss7.png)
@@ -1607,16 +1607,16 @@ Virtuoso HTTP Sesame Repository.
 13. Click on the "Context" link in the left frame to obtain a list of
     the available contexts in the Virtuoso repository.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss8" class="figure">
+    <div>
 
     **Figure 16.194. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss8.png)
@@ -1634,16 +1634,16 @@ Virtuoso HTTP Sesame Repository.
 14. Click on the "Types" link in the left frame to obtain a list of the
     available types in the Virtuoso repository.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss9" class="figure">
+    <div>
 
     **Figure 16.195. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss9.png)
@@ -1662,16 +1662,16 @@ Virtuoso HTTP Sesame Repository.
     query to execute against the Virtuoso repository and click the
     "execute" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss10" class="figure">
+    <div>
 
     **Figure 16.196. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss10.png)
@@ -1688,16 +1688,16 @@ Virtuoso HTTP Sesame Repository.
 
 16. The results of the SPARQL query are returned.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss11" class="figure">
+    <div>
 
     **Figure 16.197. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss11.png)
@@ -1716,16 +1716,16 @@ Virtuoso HTTP Sesame Repository.
     created Virtuoso repository entry is displayed along side the
     default SYSTEM repository.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss12" class="figure">
+    <div>
 
     **Figure 16.198. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss12.png)
@@ -1747,7 +1747,7 @@ Virtuoso HTTP Sesame Repository.
 <div id="rdfnativestorageproviderssesamestpandtestingcons"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1764,7 +1764,7 @@ class="section">
 This section details the steps required for configuring and testing a
 Virtuoso Sesame Console Repository:
 
-<div class="orderedlist">
+<div>
 
 1.  Extract Sesame 2.3.1 or higher archive to a location of choice and
     place the virt_sesame2.jar or virt_sesame4.jar and virtjdbc4.jar
@@ -1899,7 +1899,7 @@ Virtuoso Sesame Console Repository:
 <div id="rdfnativestorageproviderssesamestpandtestinghttpcons"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1917,7 +1917,7 @@ The Sesame Console repository can connect to a Sesame HTTP repository
 and vice-versa, enabling access to remote Sesame HTTP repositories from
 a local server.
 
-<div class="orderedlist">
+<div>
 
 1.  The Sesame Console repository can connect to a Sesame HTTP
     repository and query it as if local using the "connect" command.
@@ -1992,16 +1992,16 @@ a local server.
       * export JAVA_OPTS='-Dinfo.aduna.platform.appdata.basedir=/path/to/other/dir/' (on Linux/UNIX/Mac OS X)
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ss13" class="figure">
+    <div>
 
     **Figure 16.199. Virtuoso Sesame HTTP Repository Configuration and
     Usage**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso Sesame HTTP Repository Configuration and
     Usage](images/ui/ss13.png)
@@ -2023,7 +2023,7 @@ a local server.
 <div id="rdfnativestorageproviderssesamestpandtestinghttpconsrmh"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2040,7 +2040,7 @@ class="section">
 There are two methods of making a remote Sesame HTTP connection to a
 Virtuoso repository:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Sesame Remote Repository Manager*</span>
 
@@ -2067,7 +2067,7 @@ Virtuoso repository:
 <div id="rdfnativestorageproviderssesamestpandtestinghttpconsrmhr"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2108,7 +2108,7 @@ con = repository.getConnection();
 <div id="rdfnativestorageproviderssesamestpandtestinghttpconsrmhh"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2149,9 +2149,9 @@ con = sparqlEndpoint.getConnection();
 
 </div>
 
-<div id="rdfnativestorageproviderssesamejavadoc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

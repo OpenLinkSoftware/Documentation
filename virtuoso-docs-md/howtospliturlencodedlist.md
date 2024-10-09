@@ -1,6 +1,6 @@
-<div id="howtospliturlencodedlist" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Assume the following string:
     "http://example.org/test1;http://example.org/test2".
@@ -37,7 +37,7 @@
     LIMIT 1
     ```
 
-    <div class="itemizedlist">
+    <div>
 
     - <a href="http://bit.ly/19eOiDE" class="ulink" target="_top">View the
       SPARQL Query Definition via SPARQL Protocol URL</a>

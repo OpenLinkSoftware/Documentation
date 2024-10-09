@@ -1,6 +1,6 @@
-<div id="userdefxpathfunc4xsl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

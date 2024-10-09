@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_inst_create" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xenc_key_inst_create — Key instance generation
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_inst_create" class="funcsynopsis">
+<div>
 
 |                                      |                      |
 |--------------------------------------|----------------------|
 | `any `**`xenc_key_inst_create`**` (` | in `name ` varchar , |
 |                                      | in `super ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xenc_key_inst_create — Key instance generation
 
 </div>
 
-<div id="desc_xenc_key_inst_create" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ functions.
 
 </div>
 
-<div id="params_xenc_key_inst_create" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120666" class="refsect2">
+<div>
 
 ### name
 
@@ -54,7 +54,7 @@ Name of the key to be instantiated.
 
 </div>
 
-<div id="id120669" class="refsect2">
+<div>
 
 ### super
 
@@ -66,7 +66,7 @@ super key. In other words the key used to encrypt key specified by
 
 </div>
 
-<div id="ret_xenc_key_inst_create" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ reference data.
 
 </div>
 
-<div id="examples_xenc_key_inst_create" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_key_inst_create" class="example">
+<div>
 
 **Example 24.474. Key instance creation**
 
-<div class="example-contents">
+<div>
 
 The example specifies to use an AES key to be used as a session key,
 also AES will be encrypted with a RSA one.
@@ -102,7 +102,7 @@ keyi := xenc_key_inst_create ('myAES', xenc_key_inst_create ('rsa-test'))
 
 </div>
 
-<div id="seealso_xenc_key_inst_create" class="refsect1">
+<div>
 
 ## See Also
 

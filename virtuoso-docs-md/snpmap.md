@@ -1,6 +1,6 @@
-<div id="snpmap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,11 +17,11 @@
 Heterogeneous replication requires data type mapping to be performed
 when Virtuoso table is created on replica.
 
-<div id="id36993" class="table">
+<div>
 
 **Table 13.1. Data type mappings**
 
-<div class="table-contents">
+<div>
 
 |                                                     |                                            |                                        |                                     |                                          |
 |-----------------------------------------------------|--------------------------------------------|----------------------------------------|-------------------------------------|------------------------------------------|

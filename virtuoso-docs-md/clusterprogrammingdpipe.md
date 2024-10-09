@@ -1,6 +1,6 @@
-<div id="clusterprogrammingdpipe" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,9 +65,9 @@ also produce other functions to be called for their effects, dpipe_reuse
 is called to make sure that all these functions are run until no more
 operations are left.
 
-<div id="clusterprogrammingdpipesqloptimz" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

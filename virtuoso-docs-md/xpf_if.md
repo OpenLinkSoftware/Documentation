@@ -1,10 +1,10 @@
-<div id="xpf_if" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ otherwise calculates another expression.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_if" class="funcsynopsis">
+<div>
 
 |                    |                         |
 |--------------------|-------------------------|
@@ -25,7 +25,7 @@ otherwise calculates another expression.
 |                    | `then_branch ` any ,    |
 |                    | `else_branch ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ otherwise calculates another expression.
 
 </div>
 
-<div id="xpf_desc_if" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ functions.
 
 </div>
 
-<div id="xpf_params_if" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127656" class="refsect2">
+<div>
 
 ### test
 
@@ -67,7 +67,7 @@ Boolean value used to choose an expression to execute
 
 </div>
 
-<div id="id127659" class="refsect2">
+<div>
 
 ### then_branch
 
@@ -75,7 +75,7 @@ Expression which is calculated if *`test `* argument is true
 
 </div>
 
-<div id="id127663" class="refsect2">
+<div>
 
 ### else_branch
 
@@ -85,7 +85,7 @@ Expression which is calculated if *`test `* argument is false
 
 </div>
 
-<div id="xpf_ret_if" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,15 +93,15 @@ Any
 
 </div>
 
-<div id="xpf_examples_if" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_if" class="example">
+<div>
 
 **Example 24.593. **
 
-<div class="example-contents">
+<div>
 
 These two expressions are equivalent, but first may be used in any XPATH
 while second is written in XQUERY syntax:
@@ -119,7 +119,7 @@ IF 2 * 2 = 4 THEN 'I think so' ELSE 'Unbelievable!'
 
 </div>
 
-<div id="xpf_seealso_if" class="refsect1">
+<div>
 
 ## See Also
 

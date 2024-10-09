@@ -1,6 +1,6 @@
-<div id="uddiapisupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,13 +17,13 @@
 The UDDI APIs always return a SOAP entity body which contains messages
 as described in UDDI v1 XML Schema (uddi_1.xsd).
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Authorization API*</span> - Used to establish
   authentication mechanism (tokens), dropping already established
   connections.
 
-  <div class="itemizedlist">
+  <div>
 
   - <span class="emphasis">*discard_authToken:*</span> Used to inform a
     UDDI enabled server that a previously provided authentication token
@@ -44,7 +44,7 @@ as described in UDDI v1 XML Schema (uddi_1.xsd).
 - <span class="emphasis">*Searching API* </span> The publicly accessible
   queries are:
 
-  <div class="itemizedlist">
+  <div>
 
   - <span class="emphasis">*find_binding:* </span> Used to locate
     specific bindings within a registered *`businessService`*. Returns a
@@ -86,7 +86,7 @@ as described in UDDI v1 XML Schema (uddi_1.xsd).
 
 - <span class="emphasis">*Repository Manipulation API* </span>
 
-  <div class="itemizedlist">
+  <div>
 
   - <span class="emphasis">*delete_binding:* </span> Used to remove an
     existing *`bindingTemplate `* from the *`bindingTemplate`*s

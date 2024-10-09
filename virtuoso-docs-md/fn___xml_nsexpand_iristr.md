@@ -1,10 +1,10 @@
-<div id="fn___xml_nsexpand_iristr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ then replaces namespace prefix to the full namespace IRI.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___xml_nsexpand_iristr" class="funcsynopsis">
+<div>
 
 |                                    |                        |
 |------------------------------------|------------------------|
 | ` `**`__xml_nsexpand_iristr`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ then replaces namespace prefix to the full namespace IRI.
 
 </div>
 
-<div id="desc___xml_nsexpand_iristr" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ argument is local IRI without a prefix.
 
 </div>
 
-<div id="params___xml_nsexpand_iristr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103408" class="refsect2">
+<div>
 
 ### str
 
@@ -58,15 +58,15 @@ QName. For ex. if QName is "prefix:local", then conveniently is replaced
 
 </div>
 
-<div id="examples__xml_nsexpand_iristr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_nsexpand_iristr_1" class="example">
+<div>
 
 **Example 24.298. Example with FOAF namespace prefix**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> SELECT __xml_nsexpand_iristr ('foaf:knows');
@@ -85,11 +85,11 @@ http://xmlns.com/foaf/0.1/knows
 
   
 
-<div id="ex_xml_nsexpand_iristr_2" class="example">
+<div>
 
 **Example 24.299. Example with no namespace prefix**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> SELECT __xml_nsexpand_iristr ('no-namespace-prefix-iri');
@@ -110,11 +110,11 @@ SELECT __xml_nsexpand_iristr ('no-namespace-prefix-iri')
 
   
 
-<div id="ex_xml_nsexpand_iristr_3" class="example">
+<div>
 
 **Example 24.300. Example with namespace prefix "local"**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> SELECT __xml_nsexpand_iristr ('no-such-prefix:local');
@@ -135,11 +135,11 @@ SELECT __xml_nsexpand_iristr ('no-such-prefix:local')
 
   
 
-<div id="ex_xml_nsexpand_iristr_4" class="example">
+<div>
 
 **Example 24.301. Example with namespace prefix ""no-such-prefix""**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> SELECT __xml_ns_iristr ('no-such-prefix', 'knows');
@@ -162,7 +162,7 @@ SELECT __xml_ns_iristr ('no-such-prefix', 'knows')
 
 </div>
 
-<div id="seealso__xml_nsexpand_iristr" class="refsect1">
+<div>
 
 ## See Also
 

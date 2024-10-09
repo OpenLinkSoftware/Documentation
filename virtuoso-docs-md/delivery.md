@@ -1,6 +1,6 @@
-<div id="delivery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

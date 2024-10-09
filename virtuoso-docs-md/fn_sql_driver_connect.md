@@ -1,10 +1,10 @@
-<div id="fn_sql_driver_connect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sql_driver_connect — Tries connecting using supplied connection string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_driver_connect" class="funcsynopsis">
+<div>
 
 |                                        |                             |
 |----------------------------------------|-----------------------------|
 | `integer `**`sql_driver_connect`**` (` | in `conn_str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sql_driver_connect — Tries connecting using supplied connection string
 
 </div>
 
-<div id="desc_driver_connect" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,7 +41,7 @@ and immediately disconnects after the call.
 
 </div>
 
-<div id="params_sql_driver_connect" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -49,7 +49,7 @@ As described in the SQLDriverConnect in connection string
 
 </div>
 
-<div id="ret_sql_driver_connect" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -57,7 +57,7 @@ Returns the SQL return code (or exception on an ODBC error).
 
 </div>
 
-<div id="seealso_sql_driver_connect" class="refsect1">
+<div>
 
 ## See Also
 

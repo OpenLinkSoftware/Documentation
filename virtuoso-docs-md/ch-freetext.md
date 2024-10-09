@@ -1,6 +1,6 @@
-<div id="ch-freetext" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -94,7 +94,7 @@ index refresh.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -201,9 +201,9 @@ Unicode](ftinternationalization.html)</span>
 
 </div>
 
-<div id="txtidxquickstart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -226,11 +226,11 @@ dropping the generated words table, called \<table\>\_\<column\>\_WORDS,
 where \<table\> and \<column\> are the table and column over which the
 index is made.
 
-<div id="ex_quickstartfti" class="example">
+<div>
 
 **Example 20.1. Creating a Text Index**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE TABLE FTT (ID INTEGER, FILE varchar,  DT LONG VARCHAR );

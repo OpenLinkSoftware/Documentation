@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksdroprecrdefstrg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 Currently system metadata consist of three "levels":
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*QuadMapFormats*</span>
 

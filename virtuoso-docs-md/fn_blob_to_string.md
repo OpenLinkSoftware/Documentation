@@ -1,10 +1,10 @@
-<div id="fn_blob_to_string" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ blob_to_string — Convert a blob to string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_blob_to_string" class="funcsynopsis">
+<div>
 
 |                                    |                     |
 |------------------------------------|---------------------|
 | `varchar `**`blob_to_string`**` (` | in `blob ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ blob_to_string — Convert a blob to string
 
 </div>
 
-<div id="desc_blob_to_string" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,7 +46,7 @@ converted is longer than maximum length of a
 <span class="type">string</span> , `blob_to_string` will signal an
 error.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note">
 <colgroup>
@@ -72,11 +72,11 @@ equivalent to</p>
 
 </div>
 
-<div id="params_blob_to_string" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81388" class="refsect2">
+<div>
 
 ### *`blob `*
 
@@ -88,7 +88,7 @@ equivalent to</p>
 
 </div>
 
-<div id="ret_blob_to_string" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -96,15 +96,15 @@ equivalent to</p>
 
 </div>
 
-<div id="errors_blob_to_string" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id81402" class="table">
+<div>
 
 **Table 24.6. Errors signalled by `blob_to_string `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Message                                                                                                              | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -122,15 +122,15 @@ equivalent to</p>
 
 </div>
 
-<div id="examples_blob_to_string" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_blob_to_string" class="example">
+<div>
 
 **Example 24.28. Various conversions**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> use Demo;
@@ -162,7 +162,7 @@ SQL>
 
 </div>
 
-<div id="seealso_blob_to_string" class="refsect1">
+<div>
 
 ## See Also
 

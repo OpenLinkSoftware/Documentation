@@ -1,6 +1,6 @@
-<div id="installusadocreateservice" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,19 +27,19 @@ The following steps can be used for creating a Data Service using the
 Virtuoso ADO.Net Provider for accessing the sample Northwind Demo
 database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados1" class="figure">
+    <div>
 
     **Figure 2.117. Visual Studio 2008 SP1 IDE.**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE.](images/ui/dora1.png)
 
@@ -97,15 +97,15 @@ database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados2" class="figure">
+    <div>
 
     **Figure 2.118. Name project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Name project](images/ui/eora2.png)
 
@@ -125,15 +125,15 @@ database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados3" class="figure">
+    <div>
 
     **Figure 2.119. Create project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Create project](images/ui/eora3.png)
 
@@ -157,15 +157,15 @@ database:
 
     menu options.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados4" class="figure">
+    <div>
 
     **Figure 2.120. New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![New Item](images/ui/einf4.png)
 
@@ -197,15 +197,15 @@ database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados5" class="figure">
+    <div>
 
     **Figure 2.121. Entity Model**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Model](images/ui/eora5.png)
 
@@ -237,15 +237,15 @@ database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados6" class="figure">
+    <div>
 
     **Figure 2.122. Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Model Contents](images/ui/eora6.png)
 
@@ -273,15 +273,15 @@ database:
 
     button
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados7" class="figure">
+    <div>
 
     **Figure 2.123. Data Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Connection](images/ui/ados7.png)
 
@@ -309,15 +309,15 @@ database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados8" class="figure">
+    <div>
 
     **Figure 2.124. Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source](images/ui/dora9.png)
 
@@ -346,15 +346,15 @@ database:
 
     check box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados9" class="figure">
+    <div>
 
     **Figure 2.125. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -379,15 +379,15 @@ database:
     from the drop down list, assuming the Virtuoso Demo Database is
     installed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados10" class="figure">
+    <div>
 
     **Figure 2.126. Advanced Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Advanced Properties](images/ui/ados10.png)
 
@@ -408,15 +408,15 @@ database:
     button to verify the connection is successful and then click OK to
     add the connection.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados11" class="figure">
+    <div>
 
     **Figure 2.127. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/ados11.png)
 
@@ -444,15 +444,15 @@ database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados12" class="figure">
+    <div>
 
     **Figure 2.128. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/ados12.png)
 
@@ -489,15 +489,15 @@ database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados13" class="figure">
+    <div>
 
     **Figure 2.129. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/ados13.png)
 
@@ -518,15 +518,15 @@ database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados14" class="figure">
+    <div>
 
     **Figure 2.130. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/ados14.png)
 
@@ -554,15 +554,15 @@ database:
 
     menu options.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados4_01" class="figure">
+    <div>
 
     **Figure 2.131. New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![New Item](images/ui/ados4.png)
 
@@ -594,15 +594,15 @@ database:
 
     to create the ADO.Net Data Service.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados15" class="figure">
+    <div>
 
     **Figure 2.132. ADO.NET Data Service**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ADO.NET Data Service](images/ui/ados15.png)
 
@@ -661,15 +661,15 @@ database:
     }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados16" class="figure">
+    <div>
 
     **Figure 2.133. Data Service**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Service](images/ui/ados16.png)
 
@@ -692,15 +692,15 @@ database:
     displaying the list of available tables/entities of the Demo
     database.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados17" class="figure">
+    <div>
 
     **Figure 2.134. test the Data Service**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![test the Data Service](images/ui/ados17.png)
 
@@ -725,15 +725,15 @@ database:
     record, this would be specified as
     http://host/vdir/Virtuoso.svc/Customers('ALFKI') .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ados18" class="figure">
+    <div>
 
     **Figure 2.135. Access a specific entity instance**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Access a specific entity instance](images/ui/ados18.png)
 
@@ -751,7 +751,7 @@ database:
 
 <span class="emphasis">*NOTES*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*Important*</span>
 

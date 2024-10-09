@@ -1,6 +1,6 @@
-<div id="signalsandexitcodess" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="id76873" class="decimalstyle">
+<div>
 
 **Table 23.3. Signals**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Signal | Name    | Category | Comment                                                                                                      |
 |:-------|---------|----------|--------------------------------------------------------------------------------------------------------------|
@@ -62,9 +62,9 @@ but can also be used inside shell scripts.
 The <span class="emphasis">*SIGKILL*</span> signal should only be used
 as a last resort when all other efforts to stop Virtuoso have failed.
 
-<div id="signalsandexitcodessquicksh" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -90,9 +90,9 @@ the next boot.
 
 </div>
 
-<div id="signalsandexitcodessquicknsh" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

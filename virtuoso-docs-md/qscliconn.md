@@ -1,6 +1,6 @@
-<div id="qscliconn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

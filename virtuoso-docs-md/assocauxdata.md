@@ -1,6 +1,6 @@
-<div id="assocauxdata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,15 +17,15 @@
 The following functions allow you to set and retrieve connection
 variables:
 
-<div class="itemizedlist">
+<div>
 
-- <a href="fn_connection_id.html" class="link" shape="rect"
+- <a href="fn_connection_id.html" class="link"
   title="connection_id">connection_id()</a>
 
-- <a href="fn_connection_set.html" class="link" shape="rect"
+- <a href="fn_connection_set.html" class="link"
   title="connection_set">connection_set()</a>
 
-- <a href="fn_connection_get.html" class="link" shape="rect"
+- <a href="fn_connection_get.html" class="link"
   title="connection_get">connection_get()</a>
 
 </div>

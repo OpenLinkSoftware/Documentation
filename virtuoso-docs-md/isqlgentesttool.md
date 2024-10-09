@@ -1,6 +1,6 @@
-<div id="isqlgentesttool" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

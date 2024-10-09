@@ -1,6 +1,6 @@
-<div id="voauthcontrollers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,21 +16,21 @@
 
 The following steps describe how to Setup Application OAuth keys in ODS:
 
-<div class="orderedlist">
+<div>
 
 1.  Login as user at ODS Data Space.
 
 2.  Go to Settings -\> OAuth keys
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys1" class="figure">
+    <div>
 
     **Figure 17.28. OAuth Generate Keys**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Generate Keys](images/ui/keys1.png)
 
@@ -50,15 +50,15 @@ The following steps describe how to Setup Application OAuth keys in ODS:
 4.  The generated Token and Secret values for the selected application
     will be shown as a result.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys2" class="figure">
+    <div>
 
     **Figure 17.29. OAuth Generate Keys**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Generate Keys](images/ui/keys2.png)
 

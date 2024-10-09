@@ -1,10 +1,10 @@
-<div id="fn_var_pop" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAR_POP — Returns the population variance.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_var_pop" class="funcsynopsis">
+<div>
 
 |                             |                     |
 |-----------------------------|---------------------|
 | `numeric `**`VAR_POP`**` (` | in `expr ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ VAR_POP — Returns the population variance.
 
 </div>
 
-<div id="desc_var_pop" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ calculation:
 
 </div>
 
-<div id="params_var_pop" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78090" class="refsect2">
+<div>
 
 ### expr
 
@@ -62,7 +62,7 @@ Number expression.
 
 </div>
 
-<div id="ret_var_pop" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,7 +71,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_var_pop" class="refsect1">
+<div>
 
 ## See Also
 

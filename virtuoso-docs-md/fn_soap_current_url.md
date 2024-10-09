@@ -1,10 +1,10 @@
-<div id="fn_soap_current_url" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ soap_current_url — Returns URL used to access particular HTTP resource.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_current_url" class="funcsynopsis">
+<div>
 
 |                                      |      |
 |--------------------------------------|------|
 | `varchar `**`soap_current_url`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ soap_current_url — Returns URL used to access particular HTTP resource.
 
 </div>
 
-<div id="desc_soap_current_url" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ resolved via connected socket information.
 
 </div>
 
-<div id="ret_soap_current_url" class="refsect1">
+<div>
 
 ## Return Types
 

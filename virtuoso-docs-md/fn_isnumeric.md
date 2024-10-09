@@ -1,10 +1,10 @@
-<div id="fn_isnumeric" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isnumeric — returns true if argument is of numeric type
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isnumeric" class="funcsynopsis">
+<div>
 
 |                        |                      |
 |------------------------|----------------------|
 | ` `**`isnumeric`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isnumeric — returns true if argument is of numeric type
 
 </div>
 
-<div id="desc_isnumeric" class="refsect1">
+<div>
 
 ## Description
 

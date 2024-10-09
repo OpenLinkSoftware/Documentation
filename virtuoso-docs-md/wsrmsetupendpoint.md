@@ -1,6 +1,6 @@
-<div id="wsrmsetupendpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ procedures for sender and receiver endpoints.
 
 This will be demonstrated as an example of setting up both endpoints:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Sender* </span>
 
@@ -41,11 +41,11 @@ This will be demonstrated as an example of setting up both endpoints:
 
 </div>
 
-<div id="ex_wsrmping" class="example">
+<div>
 
 **Example 17.32. WS-RM Ping Test Example**
 
-<div class="example-contents">
+<div>
 
 This is an example client used to perform the interoperability test
 "Ping" as proposed in "Interop Workshop Scenarios"

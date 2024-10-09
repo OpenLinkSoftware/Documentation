@@ -1,10 +1,10 @@
-<div id="vc_label" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ label — Generic scriptable text.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_label" class="funcsynopsis">
+<div>
 
 |                       |                                      |
 |-----------------------|--------------------------------------|
@@ -45,7 +45,7 @@ label — Generic scriptable text.
 |                       | `debug-srcline` (optional) ,         |
 |                       | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -55,7 +55,7 @@ label — Generic scriptable text.
 
 </div>
 
-<div id="vc_desc_label" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,7 +65,7 @@ value of any VSPX field.
 
 </div>
 
-<div id="vc_attrs_label" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -249,7 +249,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_label" class="refsect1">
+<div>
 
 ## Declaration of type vspx_label
 
@@ -265,15 +265,15 @@ overriding method vc_render () returns any
 
 </div>
 
-<div id="vc_ex_label" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_label__0" class="example">
+<div>
 
 **Example 14.35.  Simple dynamic text**
 
-<div class="example-contents">
+<div>
 
 This page demonstrates output of data values of various types.
 

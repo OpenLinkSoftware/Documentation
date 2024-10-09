@@ -1,10 +1,10 @@
-<div id="fn_rstmtexec" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ set where applicable.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rstmtexec" class="funcsynopsis">
+<div>
 
 |                        |                                |
 |------------------------|--------------------------------|
@@ -26,7 +26,7 @@ set where applicable.
 |                        | in `max_rows ` integer ,       |
 |                        | in `params_array ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ set where applicable.
 
 </div>
 
-<div id="desc_rstmtexec" class="refsect1">
+<div>
 
 ## Description
 
@@ -63,11 +63,11 @@ which is the underlying mechanism for providing this function.
 
 </div>
 
-<div id="params_rstmtexec" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108824" class="refsect2">
+<div>
 
 ### dsn
 
@@ -80,7 +80,7 @@ attaching tables from it.
 
 </div>
 
-<div id="id108829" class="refsect2">
+<div>
 
 ### stmt
 
@@ -88,7 +88,7 @@ the SQL statement to execute on the remote data source *`dsn `* .
 
 </div>
 
-<div id="id108833" class="refsect2">
+<div>
 
 ### max_rows
 
@@ -102,7 +102,7 @@ This controls the number of rows to be returned as follows:
 
 </div>
 
-<div id="id108840" class="refsect2">
+<div>
 
 ### in_params
 
@@ -125,7 +125,7 @@ considered IN parameters, so the rstmtexec remains backwards compatible.
 
 </div>
 
-<div id="ret_rstmtexec" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -133,7 +133,7 @@ This function returns a result set.
 
 </div>
 
-<div id="seealso_rexecute_01" class="refsect1">
+<div>
 
 ## See Also
 

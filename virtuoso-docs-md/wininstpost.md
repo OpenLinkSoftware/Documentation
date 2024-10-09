@@ -1,6 +1,6 @@
-<div id="wininstpost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="wininstpostsan" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ http://example.com:8890
 
 </div>
 
-<div id="wininstposttrb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

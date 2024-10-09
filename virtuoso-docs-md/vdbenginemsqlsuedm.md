@@ -1,6 +1,6 @@
-<div id="vdbenginemsqlsuedm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ Now that a Microsoft Entity Data Model has been created for the
 Microsoft SQL Server Northwind database, Entity Framework applications
 can be created to make use of it.
 
-<div id="vdbenginemsqlsuedmentf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,7 +40,7 @@ created using the Entity Data Model created in the
 title="8.13.4. Creating EDM in Visual Studio 2008">Creating EDM in
 Visual Studio 2008 section</a> .
 
-<div class="orderedlist">
+<div>
 
 1.  Open the
 
@@ -53,15 +53,15 @@ Visual Studio 2008 section</a> .
 
 2.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="meinf4" class="figure">
+    <div>
 
     **Figure 8.675. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/meinf4.png)
 
@@ -93,15 +93,15 @@ Visual Studio 2008 section</a> .
 
     to create the ADO.Net Data Service.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mfora2" class="figure">
+    <div>
 
     **Figure 8.676. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/mfora2.png)
 
@@ -161,15 +161,15 @@ Visual Studio 2008 section</a> .
     }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mfora4" class="figure">
+    <div>
 
     **Figure 8.677. Virtuoso.svc.cs**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.svc.cs](images/ui/mfora4.png)
 
@@ -192,15 +192,15 @@ Visual Studio 2008 section</a> .
     displaying the list of available tables/entities for the Northwind
     database catalog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mfora3" class="figure">
+    <div>
 
     **Figure 8.678. Data Service test**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Service test](images/ui/mfora3.png)
 
@@ -221,15 +221,15 @@ Visual Studio 2008 section</a> .
     table ALFKI record, use this convention
     http://host/vdir/Virtuoso.svc/Customers('ALFKI').
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mfora5" class="figure">
+    <div>
 
     **Figure 8.679. EMPLOYEES**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![EMPLOYEES](images/ui/mfora5.png)
 
@@ -247,7 +247,7 @@ Visual Studio 2008 section</a> .
 
 <span class="emphasis">*Notes:*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*Important*</span>
 

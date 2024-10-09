@@ -1,6 +1,6 @@
-<div id="updategrams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,9 +37,9 @@ delete operations performed on an existing table in the database.
 <a href="fn_xmlsql_update.html" class="link" title="xmlsql_update"><code
 class="function">xmlsql_update()</code></a>
 
-<div id="updategrambasics" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_second" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ second — get second from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_second_01" class="funcsynopsis">
+<div>
 
 |                     |                        |
 |---------------------|------------------------|
 | ` `**`second`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ second — get second from a datetime
 
 </div>
 
-<div id="desc_second" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ second of the datetime.
 
 </div>
 
-<div id="params_second" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109152" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_second" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ An <span class="type">INTEGER </span> containing the second.
 
 </div>
 
-<div id="examples_second" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_second" class="example">
+<div>
 
 **Example 24.366. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current second.
 
@@ -93,7 +93,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_second" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_getdate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ getdate — returns the current transaction timestamp, alias of `now `
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_getdate" class="funcsynopsis">
+<div>
 
 |                      |      |
 |----------------------|------|
 | ` `**`getdate`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ getdate — returns the current transaction timestamp, alias of `now `
 
 </div>
 
-<div id="desc_getdate" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,7 +41,7 @@ This is an alias of `now()` .
 
 </div>
 
-<div id="seealso_getdate" class="refsect1">
+<div>
 
 ## See Also
 

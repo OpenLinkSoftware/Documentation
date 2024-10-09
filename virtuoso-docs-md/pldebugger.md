@@ -1,6 +1,6 @@
-<div id="pldebugger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -123,11 +123,11 @@ alter the compilers notion of the current file and line number.
 specified filename and line number. This is also useful for handling
 test coverage output - see the next section.
 
-<div id="pldbgexample" class="example">
+<div>
 
 **Example 11.16. Debugging simple procedures**
 
-<div class="example-contents">
+<div>
 
 Consider the following PL procedures:
 
@@ -308,9 +308,9 @@ DEBUG>
 
   
 
-<div id="pldbgplcoverage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_sql_write_private_profile_string" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sql_write_private_profile_string — Sets a DSN's attribute value
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_write_private_profile_string" class="funcsynopsis">
+<div>
 
 |                                                      |                          |
 |------------------------------------------------------|--------------------------|
@@ -25,7 +25,7 @@ sql_write_private_profile_string — Sets a DSN's attribute value
 |                                                      | in `name ` varchar ,     |
 |                                                      | in `value ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ sql_write_private_profile_string — Sets a DSN's attribute value
 
 </div>
 
-<div id="desc_write_private_profile_string" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ from the ODBC Installer API.
 
 </div>
 
-<div id="params_sql_write_private_profile_string" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -60,7 +60,7 @@ others are passed to the SQLWritePrivateProfileString
 
 </div>
 
-<div id="ret_sql_write_private_profile_string" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -68,7 +68,7 @@ Returns the SQL state.
 
 </div>
 
-<div id="seealso_sql_write_private_profile_string" class="refsect1">
+<div>
 
 ## See Also
 

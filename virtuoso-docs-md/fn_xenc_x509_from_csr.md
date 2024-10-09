@@ -1,10 +1,10 @@
-<div id="fn_xenc_x509_from_csr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xenc_x509_from_csr — Generate x509 certificate from CSR.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_x509_from_csr" class="funcsynopsis">
+<div>
 
 |                                        |                                   |
 |----------------------------------------|-----------------------------------|
@@ -27,7 +27,7 @@ xenc_x509_from_csr — Generate x509 certificate from CSR.
 |                                        | in `days_validity ` varchar ,     |
 |                                        | in `hours_validity ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ xenc_x509_from_csr — Generate x509 certificate from CSR.
 
 </div>
 
-<div id="desc_xenc_x509_from_csr" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ class="function">xenc_pem_export(cli_key_name) </code></a> .
 
 </div>
 
-<div id="params_xenc_x509_from_csr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121333" class="refsect2">
+<div>
 
 ### ca_key_name
 
@@ -62,7 +62,7 @@ The name of CA private key which will be used to sign certificate.
 
 </div>
 
-<div id="id121336" class="refsect2">
+<div>
 
 ### cli_key_name
 
@@ -71,7 +71,7 @@ certificate.
 
 </div>
 
-<div id="id121339" class="refsect2">
+<div>
 
 ### csr_str
 
@@ -79,7 +79,7 @@ pem encoded CSR.
 
 </div>
 
-<div id="id121342" class="refsect2">
+<div>
 
 ### serial_no
 
@@ -87,7 +87,7 @@ Serial number.
 
 </div>
 
-<div id="id121345" class="refsect2">
+<div>
 
 ### days_validity
 
@@ -95,7 +95,7 @@ How many days will be valid the certificate.
 
 </div>
 
-<div id="id121348" class="refsect2">
+<div>
 
 ### hours_validity
 
@@ -105,7 +105,7 @@ How many hours will be valid the certificate.
 
 </div>
 
-<div id="ret_xenc_x509_from_csr" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -113,15 +113,15 @@ the function returns 1 upon success, sql error on failure.
 
 </div>
 
-<div id="errors_xenc_x509_from_csr" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121356" class="table">
+<div>
 
-**Table 24.120. Errors signalled by `xenc_x509_from_csr `**
+**Table 24.119. Errors signalled by `xenc_x509_from_csr `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                 | Description |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------|-------------|
@@ -145,20 +145,20 @@ the function returns 1 upon success, sql error on failure.
 
 </div>
 
-<div id="examples_xenc_x509_from_csr" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_xenc_x509_from_csr" class="example">
+<div>
 
 **Example 24.486. Generating a Certificate Signing Request (CSR)**
 
-<div class="example-contents">
+<div>
 
 The following example demonstrates how to generate Certificate Signing
 Request (CSR).
 
-<div class="itemizedlist">
+<div>
 
 - <a href="vfoafsslcacondt.html" class="link"
   title="17.3.8. CA Keys Import using Conductor">Using Conductor, for user
@@ -232,7 +232,7 @@ p0nYaVhJ9WV0ntVnx1H8/LKwrgyLlhXacVw4jyXwFMSo+YuONj+kKpobNH2cl+u1
 
 </div>
 
-<div id="seealso_xenc_x509_from_csr" class="refsect1">
+<div>
 
 ## See Also
 

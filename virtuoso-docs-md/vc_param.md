@@ -1,10 +1,10 @@
-<div id="vc_param" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ param — Named parameter for the cursor.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_param" class="funcsynopsis">
+<div>
 
 |                       |                               |
 |-----------------------|-------------------------------|
@@ -29,7 +29,7 @@ param — Named parameter for the cursor.
 |                       | `debug-srcline` (optional) ,  |
 |                       | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ param — Named parameter for the cursor.
 
 </div>
 
-<div id="vc_desc_param" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,7 +49,7 @@ leading colon.
 
 </div>
 
-<div id="vc_attrs_param" class="refsect1">
+<div>
 
 ## Attributes
 

@@ -1,6 +1,6 @@
-<div id="installvsentinsertandupdate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ Course Manager application.
 
 <span class="emphasis">*Save changes made to objects*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  In the
 
@@ -125,7 +125,7 @@ Course Manager application.
 <span class="emphasis">*Build and run the Class Scheduling
 application*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  From the
 
@@ -147,15 +147,15 @@ application*</span>
 
     control to display the courses that belong to that department.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado18" class="figure">
+    <div>
 
     **Figure 2.115. ComboBox**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ComboBox](images/ui/uado18.png)
 
@@ -180,15 +180,15 @@ application*</span>
     to save changes to the database and displays a message box that
     declares the number of saved changes.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado19" class="figure">
+    <div>
 
     **Figure 2.116. DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView](images/ui/uado19.png)
 

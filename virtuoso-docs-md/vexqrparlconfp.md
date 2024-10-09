@@ -1,6 +1,6 @@
-<div id="vexqrparlconfp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ parallelization and vectoring:
 
 Note: These settings only apply to Virtuoso 7.0 and later.
 
-<div class="itemizedlist">
+<div>
 
 - <a href="ch-server.html#ini_parameters" class="link"
   title="[Parameters]">AsyncQueueMaxThreads</a> :

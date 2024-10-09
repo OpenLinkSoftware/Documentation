@@ -1,10 +1,10 @@
-<div id="fn_st_get_bounding_box" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ st_get_bounding_box — returns BOX2D that is a bounding box of a shape.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_get_bounding_box" class="funcsynopsis">
+<div>
 
 |                                  |                      |
 |----------------------------------|----------------------|
 | ` `**`st_get_bounding_box`**` (` | in `shape ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ st_get_bounding_box — returns BOX2D that is a bounding box of a shape.
 
 </div>
 
-<div id="desc_st_get_bounding_box" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ returns BOX2D that is a bounding box of a shape.
 
 </div>
 
-<div id="params_st_get_bounding_box" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131076" class="refsect2">
+<div>
 
 ### shape
 
@@ -54,7 +54,7 @@ Shape.
 
 </div>
 
-<div id="ret_st_get_bounding_box" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_get_bounding_box" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_get_bounding_box" class="example">
+<div>
 
 **Example 24.661. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> SPARQL
@@ -99,7 +99,7 @@ BOX2D(0.0 3.0,2.0 5.000001)                    POLYGON((1.0 3.0,2.0 4.0,1.0 5.0,
 
 </div>
 
-<div id="seealso_st_get_bounding_box" class="refsect1">
+<div>
 
 ## See Also
 

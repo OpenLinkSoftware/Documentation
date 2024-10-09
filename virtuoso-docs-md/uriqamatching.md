@@ -1,6 +1,6 @@
-<div id="uriqamatching" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

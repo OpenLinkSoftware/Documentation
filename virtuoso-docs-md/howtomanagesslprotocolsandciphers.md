@@ -1,6 +1,6 @@
-<div id="howtomanagesslprotocolsandciphers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="howtomanagesslprotocolsandcipherswhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,9 +35,9 @@ for connections from all HTTP, ODBC, JDBC, ADO.NET, and OLE-DB clients.
 
 </div>
 
-<div id="howtomanagesslprotocolsandcipherswhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -60,9 +60,9 @@ administrators better protection against a moving target.
 
 </div>
 
-<div id="howtomanagesslprotocolsandciphershow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -76,9 +76,9 @@ administrators better protection against a moving target.
 
 </div>
 
-<div id="howtomanagesslprotocolsandciphershowbasicc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -98,9 +98,9 @@ comma+space-separated (", ") value lists. Including a protocol name
 explicitly enables it; preceding the protocol name with an exclamation
 point ("`!` ") explicitly disables it.
 
-<div id="howtomanagesslprotocolsandciphershowbasiccss" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -114,11 +114,11 @@ point ("`!` ") explicitly disables it.
 
 </div>
 
-<div id="id3640" class="decimalstyle">
+<div>
 
 **Table 1.1. Supported SSL Protocols and INI keyword values List**
 
-<div class="decimalstyle-contents">
+<div>
 
 | SSL/TLS Version | Value for INI file | Notes                                                                           |
 |:----------------|--------------------|---------------------------------------------------------------------------------|
@@ -138,9 +138,9 @@ point ("`!` ") explicitly disables it.
 
 </div>
 
-<div id="howtomanagesslprotocolsandciphershowbasica" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -178,9 +178,9 @@ of the list order.
 
 </div>
 
-<div id="howtomanagesslprotocolsandciphershowbasicr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

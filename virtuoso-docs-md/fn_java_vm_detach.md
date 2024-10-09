@@ -1,10 +1,10 @@
-<div id="fn_java_vm_detach" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ Java VM.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_java_vm_detach" class="funcsynopsis">
+<div>
 
 |                             |      |
 |-----------------------------|------|
 | ` `**`java_vm_detach`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ Java VM.
 
 </div>
 
-<div id="desc_java_vm_detach" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,7 +41,7 @@ Detaches the current Virtuoso working thread from the Java VM.
 
 </div>
 
-<div id="seealso_java_vm_detach" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_stddev_pop" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ STDDEV_POP — Returns the population standard deviation.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_stddev_pop" class="funcsynopsis">
+<div>
 
 |                                |                     |
 |--------------------------------|---------------------|
 | `numeric `**`STDDEV_POP`**` (` | in `expr ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ STDDEV_POP — Returns the population standard deviation.
 
 </div>
 
-<div id="desc_stddev_pop" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ null.
 
 </div>
 
-<div id="params_stddev_pop" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78338" class="refsect2">
+<div>
 
 ### expr
 
@@ -57,7 +57,7 @@ Number expression.
 
 </div>
 
-<div id="ret_stddev_pop" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,7 +66,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_stddev_pop" class="refsect1">
+<div>
 
 ## See Also
 

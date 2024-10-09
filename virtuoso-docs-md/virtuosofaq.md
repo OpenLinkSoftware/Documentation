@@ -1,6 +1,6 @@
-<div id="virtuosofaq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 We have received various inquiries on high-end metadata stores. We will
 here go through some salient questions. The requested features include:
 
-<div class="itemizedlist">
+<div>
 
 - Scaling to trillions of triples
 
@@ -37,9 +37,9 @@ here go through some salient questions. The requested features include:
 
 <span class="emphasis">*Questions:*</span>
 
-<div id="virtuosofaq1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

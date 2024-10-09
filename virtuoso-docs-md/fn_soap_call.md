@@ -1,10 +1,10 @@
-<div id="fn_soap_call" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ value; deprecated, use SOAP_CLIENT () instead
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_call" class="funcsynopsis">
+<div>
 
 |                           |                                            |
 |---------------------------|--------------------------------------------|
@@ -31,7 +31,7 @@ value; deprecated, use SOAP_CLIENT () instead
 |                           | in `password ` varchar ,                   |
 |                           | in `SOAPAction ` varchar `)`;              |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -41,7 +41,7 @@ value; deprecated, use SOAP_CLIENT () instead
 
 </div>
 
-<div id="desc_soap_call" class="refsect1">
+<div>
 
 ## Description
 
@@ -69,11 +69,11 @@ for SOAP request.
 
 </div>
 
-<div id="params_soap_call" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110465" class="refsect2">
+<div>
 
 ### host
 
@@ -81,7 +81,7 @@ DNS name or IP address of the SOAP server
 
 </div>
 
-<div id="id110468" class="refsect2">
+<div>
 
 ### path
 
@@ -89,7 +89,7 @@ path into the HTTP server containing the SOAP server page
 
 </div>
 
-<div id="id110471" class="refsect2">
+<div>
 
 ### methodURI
 
@@ -97,7 +97,7 @@ URI of the SOAP method being called
 
 </div>
 
-<div id="id110474" class="refsect2">
+<div>
 
 ### methodName
 
@@ -105,7 +105,7 @@ Name of the SOAP method being called
 
 </div>
 
-<div id="id110477" class="refsect2">
+<div>
 
 ### params
 
@@ -118,7 +118,7 @@ validation of the values to be encoded for SOAP request.
 
 </div>
 
-<div id="id110480" class="refsect2">
+<div>
 
 ### version
 
@@ -128,7 +128,7 @@ soap_call procedure enters "debug" mode
 
 </div>
 
-<div id="id110483" class="refsect2">
+<div>
 
 ### certificate
 
@@ -139,7 +139,7 @@ connection.
 
 </div>
 
-<div id="id110486" class="refsect2">
+<div>
 
 ### password
 
@@ -148,7 +148,7 @@ opening the certificate file.
 
 </div>
 
-<div id="id110489" class="refsect2">
+<div>
 
 ### SOAPAction
 
@@ -160,15 +160,15 @@ name.
 
 </div>
 
-<div id="examples_soap_call" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vdocs-soapclient-01" class="example">
+<div>
 
 **Example 24.382. Calling a SQL procedure fishselect (in str varchar)**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare ret any;

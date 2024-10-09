@@ -1,6 +1,6 @@
-<div id="vspxschema" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

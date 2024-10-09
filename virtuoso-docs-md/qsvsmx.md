@@ -1,6 +1,6 @@
-<div id="qsvsmx" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,15 +36,15 @@ demo database contains samples that can be found as:
 http://[host:port]/SOAP/services.vsmx
 ```
 
-<div class="figure-float">
+<div>
 
-<div id="id8703" class="figure">
+<div>
 
 **Figure 3.51. VSMX Test Page**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![VSMX Test Page](images/ui/vsmx001.png)
 
@@ -58,7 +58,7 @@ http://[host:port]/SOAP/services.vsmx
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                     |
 |:--------------------------:|:------------------------------------------------------------------------------------|

@@ -1,6 +1,6 @@
-<div id="bloggerclientapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,13 +14,13 @@
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                                     |                                                                    |
 |-------------------------------------|--------------------------------------------------------------------|
 | `varchar `**`blogger.new_Post`**`(` | in `uri` varchar, in `req` "blogRequest", in `content` varchar`)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -28,13 +28,13 @@
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                                         |                                                 |
 |-----------------------------------------|-------------------------------------------------|
 | `boolean `**`blogger.delete_Post`**` (` | (in `uri` varchar, in `req` "blogRequest") `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -42,13 +42,13 @@
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                                      |                                                                       |
 |--------------------------------------|-----------------------------------------------------------------------|
 | `boolean `**`blogger.edit_Post`**`(` | (in `uri` varchar, in `req` "blogRequest", in `content` varchar) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -56,13 +56,13 @@
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                                      |                                                 |
 |--------------------------------------|-------------------------------------------------|
 | `blogPost `**`blogger.get_Post`**`(` | (in `uri` varchar, in `req` "blogRequest") `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -70,13 +70,13 @@
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                                             |                                                               |
 |---------------------------------------------|---------------------------------------------------------------|
 | `vector `**`blogger.get_Recent_Posts`**` (` | (in `uri` varchar, in `req` "blogRequest", in `lim` int) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -84,11 +84,11 @@
 
 </div>
 
-<div id="ex_bloggerclient" class="example">
+<div>
 
 **Example 14.62. The Blogging Client**
 
-<div class="example-contents">
+<div>
 
 Create a new message.
 

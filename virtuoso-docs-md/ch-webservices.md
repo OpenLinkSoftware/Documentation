@@ -1,6 +1,6 @@
-<div id="ch-webservices" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -59,7 +59,7 @@ current investment while minimizing the need for rework.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -349,9 +349,9 @@ Syntax](xsql.html#xsqlsyntax)</span>
 
 </div>
 
-<div id="soap_overview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -383,9 +383,9 @@ SOAP includes:
 | a set of encoding rules for expressing instances of application-defined datatypes              |
 | a convention for representing remote procedure calls and responses.                            |
 
-<div id="soapovervw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -421,9 +421,9 @@ validation of the parameters in requests, based on schema declarations.
 
 </div>
 
-<div id="soapcallhandling" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -491,9 +491,9 @@ header fields in the request.
 
 </div>
 
-<div id="dtschsoaps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -547,11 +547,11 @@ class="function">soap_dt_define()</code></a> . The function accepts a
 schema definition excerpt, based on the element *`complexType`* . The
 definition must be a valid XML document.
 
-<div id="ex_soap_complex_dt_def" class="example">
+<div>
 
 **Example 17.1. Declaring and using complex datatypes in SOAP**
 
-<div class="example-contents">
+<div>
 
 In this example we define two complex datatypes. The first one,
 <span class="type">SOAPStruct</span> , consists of scalars; the second
@@ -623,7 +623,7 @@ SQL> DB..soap_dt_define ('ArrayOfSOAPStruct', file_to_string ('array.xsd'));
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                |
 |:----------------------------:|:-------------------------------------------------------------------------------|
@@ -634,9 +634,9 @@ SQL> DB..soap_dt_define ('ArrayOfSOAPStruct', file_to_string ('array.xsd'));
 
 </div>
 
-<div id="dtsch_inherit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -682,7 +682,7 @@ representation. This is because B is not a relative to A per se.
 To work in such situations Virtuoso SOAP server handles extensions to
 XSD types as follows:
 
-<div class="orderedlist">
+<div>
 
 1.  each type and base type have defined a User Defined SQL type (UDT).
 
@@ -698,11 +698,11 @@ When we have these preliminaries the WSDL will declare in 'schema' part
 of WSDL all depending types. Furthermore the SOAP processor will handle
 inherited members of derived types.
 
-<div id="inhertype" class="example">
+<div>
 
 **Example 17.2. Declaration and usage of depending types**
 
-<div class="example-contents">
+<div>
 
 Consider the following XSD and User Defined Type declaration for a base
 type 'BaseStruct':
@@ -830,7 +830,7 @@ xmlns:ns0="http://soapinterop.org/types" xmlns:wsdl="services.wsdl">
     
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                     |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -847,9 +847,9 @@ xmlns:ns0="http://soapinterop.org/types" xmlns:wsdl="services.wsdl">
 
 </div>
 
-<div id="dtsoapcplx" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -874,12 +874,12 @@ Important: when a UDT is used in a SOAP context, it MUST be granted to
 the SQL user for SOAP invocation. In other words the user on whose
 behalf the SOAP call is processed.
 
-<div id="ex_dtsoapcplx_1" class="example">
+<div>
 
 **Example 17.3. Procedure definition with a input and output as a
 structure**
 
-<div class="example-contents">
+<div>
 
 The following example defines a UDT 'SOAP_Struct' (containing varchar,
 integer and float members) and declares the input parameter and return
@@ -903,12 +903,12 @@ will be echoed back to the client.
 
   
 
-<div id="ex_dtsoapcplx_2" class="example">
+<div>
 
 **Example 17.4. Procedure definition with a input and output as an
 integer array**
 
-<div class="example-contents">
+<div>
 
 This example declares that input must be an array of integer values with
 maximum length of 5. If input or output contains more than five integers
@@ -930,12 +930,12 @@ back.
 
   
 
-<div id="ex_dtsoapcplx_3" class="example">
+<div>
 
 **Example 17.5. Procedure definition with a input and output as a
 two-dimensional varchar array**
 
-<div class="example-contents">
+<div>
 
 This example declares that the input must be an array of integer array
 values with unlimited length. If the input SOAP message contains a valid
@@ -958,12 +958,12 @@ to the client.
 
   
 
-<div id="ex_dtsoapcplx_4" class="example">
+<div>
 
 **Example 17.6. Procedure definition with a input and output as an
 struct array**
 
-<div class="example-contents">
+<div>
 
 This example shows how to use an array of structures (UDTs) and also
 shows usage of the array type as an member of the structure. The UDT
@@ -1046,9 +1046,9 @@ enabled virtual HTTP directories.
 
 </div>
 
-<div id="dtsch_procdef" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1069,11 +1069,11 @@ The type name is given as a string literal. The same syntax extension
 also applies to declaration of the return type. This is shown in the
 following example.
 
-<div id="ex_soap_complex_parm_proc_def" class="example">
+<div>
 
 **Example 17.7. Procedure Definition with Complex Datatype Parameters**
 
-<div class="example-contents">
+<div>
 
 We create a procedure that will accept an array of structures (as
 defined in the previous example) and return it to the client. It
@@ -1108,9 +1108,9 @@ SQL> CREATE PROCEDURE WS.SOAP.echoSOAPArray (in inArray any __soap_type 'ArrayOf
 
 </div>
 
-<div id="defaultsoapsqltypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1127,11 +1127,11 @@ SQL> CREATE PROCEDURE WS.SOAP.echoSOAPArray (in inArray any __soap_type 'ArrayOf
 When no alternative datatype is assigned, the WSDL generator and SOAP
 server will use the default mapping described below:
 
-<div id="dtsh_dtmaptable" class="table">
+<div>
 
 **Table 17.1. Default datatype mappings in SOAP**
 
-<div class="table-contents">
+<div>
 
 | Datatype         | Maps to         |
 |------------------|-----------------|
@@ -1181,9 +1181,9 @@ from the WSDL description file.
 
 </div>
 
-<div id="exposingprocsassoaps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1219,7 +1219,7 @@ the \<VSPROOT\>/SOAP directory, preventing an `HTTP 404` style error
 misleading an application into believing the SOAP endpoint is down
 regardless of whether it tried to talk SOAP to it or not.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                   |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1228,11 +1228,11 @@ regardless of whether it tried to talk SOAP to it or not.
 
 </div>
 
-<div id="ex_soap_new_vhost" class="example">
+<div>
 
 **Example 17.8. Creating a new virtual host for SOAP execution**
 
-<div class="example-contents">
+<div>
 
 Create new user in the database for SOAP:
 
@@ -1261,7 +1261,7 @@ An existing mapping could be removed using the command:
 SQL>VHOST_REMOVE (vhost=>'*ini*',lhost=>'*ini*',lpath=>'/mysoapdomain')
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                        |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------|
@@ -1383,7 +1383,7 @@ _______________________________________________________________________________
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------|
@@ -1396,9 +1396,9 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="soapudtproxy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1415,7 +1415,7 @@ _______________________________________________________________________________
 It is possible to automatically generate PL procedures or UDT classes
 for invoking a remote SOAP service.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                   |
 |:--------------------------:|:----------------------------------------------------------------------------------|
@@ -1440,7 +1440,7 @@ Once such UDT SOAP proxy is defined it can be used within application
 code or be re-exposed as a SOAP service on local server instance (see
 next chapter how to expose UDT as service).
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1452,9 +1452,9 @@ next chapter how to expose UDT as service).
 
 </div>
 
-<div id="exposingudtssoap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1498,11 +1498,11 @@ create table SYS_SOAP_UDT_PUB
         
 ```
 
-<div id="ex_soap_expose_udt" class="example">
+<div>
 
 **Example 17.9. Exposing a UDT Method using SQL statement**
 
-<div class="example-contents">
+<div>
 
 The below code creates a UDT containing two methods: static and
 non-static and exposes them on a virtual directory '/soap-udt'
@@ -1562,9 +1562,9 @@ Defined Types list and follow the wizard.
 
 </div>
 
-<div id="exposrmtprocsoap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1582,12 +1582,12 @@ Virtuoso can expose any of its available PL resources to the SOAP world.
 This includes data from remote attached tables and procedures. To do
 this, one needs to write a wrapper procedure in Virtuoso/PL.
 
-<div id="ex_exposrmtprocsoap" class="example">
+<div>
 
 **Example 17.10. Exposing a MS SQL Server procedure to SOAP using
 Virtuoso**
 
-<div class="example-contents">
+<div>
 
 Here we have a sample MS SQL Server procedure and an accompanying
 Virtuoso wrapper function. The MS SQL Server function returns a result
@@ -1659,7 +1659,7 @@ The remote procedure `ms_remote()` can now be accessed via SOAP.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                               |
 |:--------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1671,9 +1671,9 @@ The remote procedure `ms_remote()` can now be accessed via SOAP.
 
 </div>
 
-<div id="soapclient" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1693,7 +1693,7 @@ procedure as a SOAP object. The entry point to the SOAP client is
 <a href="fn_soap_client.html" class="link" title="soap_client"><code
 class="function">soap_client ()</code></a> .
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|
@@ -1706,9 +1706,9 @@ class="function">soap_client ()</code></a> .
 
 </div>
 
-<div id="execpriv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1733,9 +1733,9 @@ procedures or UDT methods will be executed with demo's privileges.
 
 </div>
 
-<div id="customsoapsrv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1792,11 +1792,11 @@ class="function">soap_print_box() </code></a>
 title="http_body_read"><code
 class="function">http_body_read() </code></a>
 
-<div id="soap1.1server" class="example">
+<div>
 
 **Example 17.11. Sample SOAP 1.1 server**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 <?vsp
@@ -1932,9 +1932,9 @@ class="function">http_body_read() </code></a>
 
 </div>
 
-<div id="soapextendedsyntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2049,11 +2049,11 @@ method. In this case the input and output value will be verified to
 confirm to the rules applicable for an array. Furthermore in this case
 an XSD definition will be added in the WSDL file at run time.
 
-<div id="ex_soapextsynt" class="example">
+<div>
 
 **Example 17.12. SOAP Extension**
 
-<div class="example-contents">
+<div>
 
 This example shows both approaches to define parameters and SOAP
 encoding style. In practice this definition is part of the Interop tests
@@ -2112,9 +2112,9 @@ create procedure
 
 </div>
 
-<div id="soapheadermessages" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2143,11 +2143,11 @@ parameters as input or output messages separately. Header binding will
 also be added to an appropriate section of the WSDL description file for
 the SOAP message.
 
-<div id="procsoapheader" class="example">
+<div>
 
 **Example 17.13. Processing of the SOAP Header element**
 
-<div class="example-contents">
+<div>
 
 Consider the following simple SOAP request message with Header element:
 
@@ -2174,7 +2174,7 @@ Consider the following simple SOAP request message with Header element:
 This request will be processed by the Virtuoso SOAP server in the
 following way:
 
-<div class="orderedlist">
+<div>
 
 1.  Check whether the echoVoid operation is defined for the given web
     directory mapping (see: exposing a PL procedure as a SOAP operation)
@@ -2184,7 +2184,7 @@ following way:
 
 3.  Test the mustUnderstand attribute:
 
-    <div class="itemizedlist">
+    <div>
 
     - If mustUnderstand is 0 or is undefined the request will continue
       without an error.
@@ -2223,7 +2223,7 @@ Interop.INTEROP.echoVoid
 };
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -2240,9 +2240,9 @@ Interop.INTEROP.echoVoid
 
 </div>
 
-<div id="soapfaultmessages" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2280,11 +2280,11 @@ in textual explanation, human readable format. In real life we will not
 need to generate 100 or 200 fault messages, but anyway it is possible to
 do that.
 
-<div id="procsoapfault" class="example">
+<div>
 
 **Example 17.14. Signalling a custom SOAP Fault element**
 
-<div class="example-contents">
+<div>
 
 Consider we need to indicate to the client that some string is not a
 valid input, we can use the custom fault message mechanism as.
@@ -2356,9 +2356,9 @@ brevity (places are denoted with '...').
 
 </div>
 
-<div id="soapdoclitenc1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2383,11 +2383,11 @@ the methods so that they can be independent (bare) or serialized as
 embedded elements within the method's SOAP structure (wrapped parameters
 style).
 
-<div id="ex_soapi3doclit" class="example">
+<div>
 
 **Example 17.15. Comparing SOAP Types**
 
-<div class="example-contents">
+<div>
 
 Here are examples of SOAP requests that represent the RPC, Doc/Literal
 and Doc/Literal with parameters types of SOAP message
@@ -2470,7 +2470,7 @@ section in this chapter and in WSDL chapter section: "Exposing SQL
 Stored Procedures containing complex datatype definitions" for details
 and examples).
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|
@@ -2480,11 +2480,11 @@ and examples).
 
 </div>
 
-<div id="ex_soapreturnrpc" class="example">
+<div>
 
 **Example 17.16. SOAP Returns RPC**
 
-<div class="example-contents">
+<div>
 
 The following example shows a procedure that will be exposed as an RPC
 encoded SOAP operation:
@@ -2504,11 +2504,11 @@ returns nvarchar __soap_type 'http://www.w3.org/2001/XMLSchema:string'
 
   
 
-<div id="ex_soapreturndoclit" class="example">
+<div>
 
 **Example 17.17. SOAP Returns Document Literal**
 
-<div class="example-contents">
+<div>
 
 The following example shows a procedure that will be exposed as a
 document literal encoded operation. Note the \_\_soap_doc keyword after
@@ -2532,11 +2532,11 @@ DocLit.echoString (in echoStringParam varchar __soap_type 'http://soapinterop.or
 
   
 
-<div id="ex_soapreturndoclitwrapped" class="example">
+<div>
 
 **Example 17.18. SOAP Returns Document Literal with Parameters**
 
-<div class="example-contents">
+<div>
 
 The following example shows a procedure that will be exposed as document
 literal encoding operation with parameters style (wrapped). note the
@@ -2562,9 +2562,9 @@ element for validation of the incoming SOAP request. Furthermore, this
 applies to the output elements and return value, as they need to be
 encoded/validated properly.
 
-<div id="wsdlschemadtandelts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2585,7 +2585,7 @@ this type will be used to validate request only within this namespace.
 Therefore it will be exposed only at this WSDL point where it is used to
 describe a parameter of an operation associated to it.
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                                        |                                                                                                                                                                                                                                                                 |
 |:--------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -2594,11 +2594,11 @@ describe a parameter of an operation associated to it.
 
 </div>
 
-<div id="ex_soapi3stringarray" class="example">
+<div>
 
 **Example 17.19. Making an array of string data type**
 
-<div class="example-contents">
+<div>
 
 Here is an example demonstrating making an array-of-string datatype:
 
@@ -2635,11 +2635,11 @@ response to enable the server to understand the requests (validate and
 process) and respond to them (validate the PL data and serialize
 properly).
 
-<div id="ex_si3params" class="example">
+<div>
 
 **Example 17.20. Example of defining elements**
 
-<div class="example-contents">
+<div>
 
 Here is an example for the DocLit.echoString SOAP operation using
 parameters (input parameter and return type):
@@ -2662,9 +2662,9 @@ select soap_dt_define('','<element xmlns="http://www.w3.org/2001/XMLSchema"
 
 </div>
 
-<div id="soapexttosimptypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2686,11 +2686,11 @@ represented as a special structure of 3 elements as follows:
 vector (<composite>, vector (<attr-name>, <attr-value>, ...), <simple type value>)
 ```
 
-<div id="ex_defsimptypedocument" class="example">
+<div>
 
 **Example 17.21. An example to define a simple type 'Document'**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select soap_dt_define('','<complexType name="Document"
@@ -2717,9 +2717,9 @@ fragment.
 
 </div>
 
-<div id="wsdlgeneration" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2785,9 +2785,9 @@ ArrayOfSOAPStruct data types declaration:
 
 </div>
 
-<div id="multnswsdlsoap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2808,11 +2808,11 @@ Hence, we can define a data type in different namespace so they will
 live together in a single WSDL file. This allows us to make more complex
 and flexible document-centric style SOAP operations.
 
-<div id="ex_mnsi3test" class="example">
+<div>
 
 **Example 17.22. Example from the SOAP Interop 3 Tests**
 
-<div class="example-contents">
+<div>
 
 This example is of the echoEmployee operation from interop 3 tests:
 
@@ -2887,9 +2887,9 @@ intervention is required besides the initial element/type definition.
 
 </div>
 
-<div id="soapi3endpoints" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2907,11 +2907,11 @@ The following endpoints are pre-defined in the Demo database for SOAP
 interop III testing (the WSDL files are in the usual services.wsdl for
 each group of tests):
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*D tests* </span>
 
-  <div class="itemizedlist">
+  <div>
 
   - /r3/EmptySA/ - echoString operation with empty ("") soapAction (PRC
     encoded)
@@ -2946,7 +2946,7 @@ each group of tests):
 
 - <span class="emphasis">*E tests* </span>
 
-  <div class="itemizedlist">
+  <div>
 
   - /r3/List/ - echo of list structure (as shown) , RPC encoded
 
@@ -2962,7 +2962,7 @@ each group of tests):
 
 - <span class="emphasis">*F tests* </span>
 
-  <div class="itemizedlist">
+  <div>
 
   - /r3/Hdr/ - Modified version of SOAPBuilders InteropTest test,
     document/literal mode Version has one operation echoString with 2
@@ -2976,9 +2976,9 @@ each group of tests):
 
 </div>
 
-<div id="soapdimeenc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3096,11 +3096,11 @@ declared as per 'WSDL Extension for SOAP in DIME' proposal, this is
 needed for indicating in the WSDL what to expect and how to send the
 attachment. See also the example below.
 
-<div id="procdimesoap" class="example">
+<div>
 
 **Example 17.23. Using DIME encapsulation**
 
-<div class="example-contents">
+<div>
 
 Suppose we need to accept a binary attachment and echo it back as string
 encoded in the popular 'base64'.
@@ -3161,9 +3161,9 @@ WSDL Extension for SOAP in DIME' proposal.
 
 </div>
 
-<div id="soapoptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

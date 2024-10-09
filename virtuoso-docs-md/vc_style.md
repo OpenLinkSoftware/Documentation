@@ -1,10 +1,10 @@
-<div id="vc_style" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ style — A markup tag for use by 'macro stylesheets'.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_style" class="funcsynopsis">
+<div>
 
 |                       |                              |
 |-----------------------|------------------------------|
@@ -25,7 +25,7 @@ style — A markup tag for use by 'macro stylesheets'.
 |                       | `debug-srcline` (optional) , |
 |                       | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ style — A markup tag for use by 'macro stylesheets'.
 
 </div>
 
-<div id="vc_desc_style" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,7 +45,7 @@ v:page element.
 
 </div>
 
-<div id="vc_attrs_style" class="refsect1">
+<div>
 
 ## Attributes
 

@@ -1,6 +1,6 @@
-<div id="xmlrpc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,11 +32,11 @@ array and structure. These two types are represented by vector () and
 soap-structure respectively, when passing the data to the PL procedure
 in question.
 
-<div id="ex_xmlrpc" class="example">
+<div>
 
 **Example 17.37. XML-RPC Procedure Definition**
 
-<div class="example-contents">
+<div>
 
 An example of a PL procedure representing an XML-RPC method
 "echoXRtypes" is:
@@ -113,7 +113,7 @@ Enabling the XML-RPC -\> SOAP bridge is very simple. You make a virtual
 directory with physical location pointing to /SOAP/ and specify the
 'XML-RPC' SOAP option as 'yes'. The following methods are available:
 
-<div class="orderedlist">
+<div>
 
 1.  **Virtual Directories Visual Administration Interface . ** From the
     main administration menu go to `Web Servers -> Virtual Directories`
@@ -131,7 +131,7 @@ directory with physical location pointing to /SOAP/ and specify the
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                    |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------|

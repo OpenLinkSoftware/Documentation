@@ -1,6 +1,6 @@
-<div id="unixodbcsamp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="odbctestnix" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,7 +32,7 @@
 
 This is a simple 'C' based and ODBC compliant Interactive SQL processor.
 
-<div class="orderedlist">
+<div>
 
 1.  Run the script virtuoso-enterprise.sh to set up your environment:
 

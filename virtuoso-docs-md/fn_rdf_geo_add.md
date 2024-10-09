@@ -1,10 +1,10 @@
-<div id="fn_rdf_geo_add" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ DB.DBA.RDF_GEO_ADD — Translates a geometry into a RDF box
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_geo_add" class="funcsynopsis">
+<div>
 
 |                                 |                  |
 |---------------------------------|------------------|
 | ` `**`DB.DBA.RDF_GEO_ADD`**` (` | in `g ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ DB.DBA.RDF_GEO_ADD — Translates a geometry into a RDF box
 
 </div>
 
-<div id="desc_rdf_geo_add" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ performance.
 
 </div>
 
-<div id="params_rdf_geo_add" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102067" class="refsect2">
+<div>
 
 ### g
 
@@ -63,15 +63,15 @@ Geometry to be translated into RDF box.
 
 </div>
 
-<div id="examples_rdf_geo_add" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_geo_add" class="example">
+<div>
 
 **Example 24.283. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 INSERT INTO RDF_QUAD (g, s, p, o)
@@ -90,7 +90,7 @@ VALUES (
 
 </div>
 
-<div id="seealso_rdf_geo_add" class="refsect1">
+<div>
 
 ## See Also
 

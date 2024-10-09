@@ -1,6 +1,6 @@
-<div id="servphpext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,15 +18,15 @@ The PHP server extension allows Virtuoso to execute PHP (v4) pages
 stored in the file system or in Virtuoso's WebDAV repository. PHP pages
 run inside the Virtuoso process.
 
-<div class="figure-float">
+<div>
 
-<div id="http_handler_php" class="figure">
+<div>
 
 **Figure 14.53. The HTTP PHP handler**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The HTTP PHP handler](images/http_handler_php.jpg)
 
@@ -49,11 +49,11 @@ widely-used Open Source general-purpose scripting language that is
 suited for Web-based development. Here is an example of a simple PHP
 page:
 
-<div id="ex_phpintro" class="example">
+<div>
 
 **Example 14.64. PHP introductory example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <html>
@@ -83,7 +83,7 @@ with some embedded code to do something. The PHP code is enclosed in
 special start and end tags that allow you to jump into and out of "PHP
 mode".
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -109,9 +109,9 @@ Client</a></p></td>
 
 </div>
 
-<div id="serverphpbuild" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -125,7 +125,7 @@ Client</a></p></td>
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Firstly you need to have the PHP4 library installed with Zend and
     ODBC interface enabled. On UNIX-es this can be enabled by doing
@@ -151,7 +151,7 @@ of starting the normal virtuoso server executable.
 To start and test the Virtuoso server with the PHP extension do the
 following:
 
-<div class="orderedlist">
+<div>
 
 1.  Make a simple file 'info.php' and place it in the HTTP root
     directory. The content of the info.php file should be the single
@@ -172,7 +172,7 @@ following:
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                            |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -181,7 +181,7 @@ following:
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                 |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

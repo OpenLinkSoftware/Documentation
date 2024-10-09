@@ -1,10 +1,10 @@
-<div id="fn_vt_create_text_index" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ vt_create_text_index — Add text index to an existing table
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vt_create_text_index" class="funcsynopsis">
+<div>
 
 |                                   |                                   |
 |-----------------------------------|-----------------------------------|
@@ -31,7 +31,7 @@ vt_create_text_index — Add text index to an existing table
 |                                   | in `encoding_name ` integer ,     |
 |                                   | in `silent ` integer `)`;         |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -41,7 +41,7 @@ vt_create_text_index — Add text index to an existing table
 
 </div>
 
-<div id="desc_63" class="refsect1">
+<div>
 
 ## Description
 
@@ -118,7 +118,7 @@ The table VTLOG\_\<datatable\>\_\<datafield\> is an update tracking
 table, similar to the snapshot log table but using the key column
 instead of the primary key.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                            |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------|
@@ -129,11 +129,11 @@ instead of the primary key.
 
 </div>
 
-<div id="params_27" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119062" class="refsect2">
+<div>
 
 ### table
 
@@ -141,7 +141,7 @@ the table containing the data to index.
 
 </div>
 
-<div id="id119065" class="refsect2">
+<div>
 
 ### col
 
@@ -150,7 +150,7 @@ varchar column).
 
 </div>
 
-<div id="id119068" class="refsect2">
+<div>
 
 ### id_col
 
@@ -162,7 +162,7 @@ index on it.
 
 </div>
 
-<div id="id119071" class="refsect2">
+<div>
 
 ### is_xml
 
@@ -172,7 +172,7 @@ it are valid XML documents.
 
 </div>
 
-<div id="id119074" class="refsect2">
+<div>
 
 ### defer_generation
 
@@ -182,7 +182,7 @@ request for "incremental indexing".
 
 </div>
 
-<div id="id119077" class="refsect2">
+<div>
 
 ### clustered_columns
 
@@ -191,7 +191,7 @@ in the index.
 
 </div>
 
-<div id="id119080" class="refsect2">
+<div>
 
 ### use_hook_function
 
@@ -204,7 +204,7 @@ to remove obsolete index information about deleted documents.
 
 </div>
 
-<div id="id119083" class="refsect2">
+<div>
 
 ### language_name
 
@@ -214,7 +214,7 @@ will use the language specified in server's configuration.
 
 </div>
 
-<div id="id119086" class="refsect2">
+<div>
 
 ### encoding_name
 
@@ -225,7 +225,7 @@ connection that is in use when the index is created.
 
 </div>
 
-<div id="id119089" class="refsect2">
+<div>
 
 ### silent
 
@@ -237,15 +237,15 @@ error if the text index exists.
 
 </div>
 
-<div id="examples_22" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vt_create_text_index" class="example">
+<div>
 
 **Example 24.448. Creating A Text Index Using FT functions**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create table xml_text (xt_id integer, xt_file varchar,

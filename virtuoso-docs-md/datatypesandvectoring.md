@@ -1,6 +1,6 @@
-<div id="datatypesandvectoring" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

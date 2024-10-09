@@ -1,6 +1,6 @@
-<div id="udtsecurity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,7 +35,7 @@ GRANT/REVOKE EXECUTE on <user_defined_type>
 GRANT/REVOKE UNDER on <user_defined_type>
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                              |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

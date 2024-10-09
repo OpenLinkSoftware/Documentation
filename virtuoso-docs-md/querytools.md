@@ -1,6 +1,6 @@
-<div id="querytools" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="sqlqueries" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -39,15 +39,15 @@ for the results which will in the "Base" tab with option to return back
 to the query area. The <span class="emphasis">*Clear*</span> clears the
 SQL Statement text box.
 
-<div class="figure-float">
+<div>
 
-<div id="id14990" class="figure">
+<div>
 
 **Figure 6.98. Querying Relational Database Using SQL**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Querying Relational Database Using SQL](images/ui/qry_sql_01.png)
 
@@ -61,15 +61,15 @@ SQL Statement text box.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id14995" class="figure">
+<div>
 
 **Figure 6.99. Results**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Results](images/ui/qry_sql_01a.png)
 
@@ -86,15 +86,15 @@ SQL Statement text box.
 Specify the location for the file to be saved to by selecting the
 "WebDAV source" or "Local file" check-box.
 
-<div class="figure-float">
+<div>
 
-<div id="id15001" class="figure">
+<div>
 
 **Figure 6.100. Saving SQL in an XML Template**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Saving SQL in an XML Template](images/ui/qry_sql_02.png)
 
@@ -116,9 +116,9 @@ location of the XML Template.
 
 </div>
 
-<div id="xqueryqueries" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -169,11 +169,11 @@ XML Template in the DAV repository.
 Pressing the Execute button causes the query result (an XML tree) to be
 shown on the page below the Statement type-in box.
 
-<div id="ex_xqtool" class="example">
+<div>
 
 **Example 6.16. XQuery Test File Example**
 
-<div class="example-contents">
+<div>
 
 In this example, we will query the table XQuery test files table, with
 "name" as the key column and "text" as the data column.
@@ -207,15 +207,15 @@ column.
 
   
 
-<div class="figure-float">
+<div>
 
-<div id="id15028" class="figure">
+<div>
 
 **Figure 6.101. XQuery Test File Results**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XQuery Test File Results](images/ui/qry_sql_02a.png)
 

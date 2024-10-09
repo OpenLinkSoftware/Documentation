@@ -1,6 +1,6 @@
-<div id="sparqlmkmeshup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

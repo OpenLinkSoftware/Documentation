@@ -1,10 +1,10 @@
-<div id="fn_complete_table_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ complete_table_name — Returns a fully qualified table name.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_complete_table_name" class="funcsynopsis">
+<div>
 
 |                                         |                           |
 |-----------------------------------------|---------------------------|
 | `varchar `**`complete_table_name`**` (` | in `tablename ` varchar , |
 |                                         | in `mode ` integer `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ complete_table_name — Returns a fully qualified table name.
 
 </div>
 
-<div id="desc_complete_table_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ if they are missing.
 
 </div>
 
-<div id="params_complete_table_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82422" class="refsect2">
+<div>
 
 ### tablename
 
@@ -55,7 +55,7 @@ The table name to be retrieved.
 
 </div>
 
-<div id="id82425" class="refsect2">
+<div>
 
 ### mode
 
@@ -71,7 +71,7 @@ current qualifier and current SQL user account names.
 
 </div>
 
-<div id="ret_complete_table_name" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -79,15 +79,15 @@ A string will be returned containing the fully qualified table name.
 
 </div>
 
-<div id="errors_complete_table_name" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id82434" class="table">
+<div>
 
-**Table 24.12. Errors signalled by**
+**Table 24.11. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                               | Description |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -102,15 +102,15 @@ A string will be returned containing the fully qualified table name.
 
 </div>
 
-<div id="examples_complete_table_name" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_complete_table_name" class="example">
+<div>
 
 **Example 24.44. Using the complete_table_name() function**
 
-<div class="example-contents">
+<div>
 
 This simple example shows retrieval of a fully qualified table name
 using the complete_table_name() function from ISQL. In the first case

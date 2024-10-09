@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodsparqlqueryandsponger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

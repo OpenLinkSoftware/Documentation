@@ -1,10 +1,10 @@
-<div id="fn_trace_status" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ trace_status — show current trace settings
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_trace_status" class="funcsynopsis">
+<div>
 
 |                               |      |
 |-------------------------------|------|
 | `void `**`trace_status`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ trace_status — show current trace settings
 
 </div>
 
-<div id="id114029" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,15 +43,15 @@ current status of the traces.
 
 </div>
 
-<div id="examples_trace_status" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_trace_status" class="example">
+<div>
 
 **Example 24.423. Example**
 
-<div class="example-contents">
+<div>
 
 This is to show the current state of all trace log options.
 
@@ -98,7 +98,7 @@ soap                      off
 
 </div>
 
-<div id="seealso_trace_status" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="replsystables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="replsys_snapshot" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -54,9 +54,9 @@ subset of the incremental definition.
 
 </div>
 
-<div id="replsys_snapshot_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

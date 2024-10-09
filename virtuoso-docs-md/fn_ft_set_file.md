@@ -1,10 +1,10 @@
-<div id="fn_ft_set_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ by CSV document content with external CSV file.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ft_set_file" class="funcsynopsis">
+<div>
 
 |                                 |                                          |
 |---------------------------------|------------------------------------------|
@@ -28,7 +28,7 @@ by CSV document content with external CSV file.
 |                                 | in `esc ` varchar (default NULL) ,       |
 |                                 | in `skip_rows ` integer (default 0) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ by CSV document content with external CSV file.
 
 </div>
 
-<div id="desc_ft_set_file" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ content with external CSV file.
 
 </div>
 
-<div id="params_ft_set_file" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88536" class="refsect2">
+<div>
 
 ### tb
 
@@ -75,7 +75,7 @@ ignored.
 
 </div>
 
-<div id="id88544" class="refsect2">
+<div>
 
 ### fname
 
@@ -83,7 +83,7 @@ External CSV file name
 
 </div>
 
-<div id="id88547" class="refsect2">
+<div>
 
 ### delimiter
 
@@ -97,7 +97,7 @@ considered `NULL` .
 
 </div>
 
-<div id="id88554" class="refsect2">
+<div>
 
 ### newline
 
@@ -105,7 +105,7 @@ Set new line encoding. By default is '\n'.
 
 </div>
 
-<div id="id88557" class="refsect2">
+<div>
 
 ### esc
 
@@ -118,7 +118,7 @@ interpretation.
 
 </div>
 
-<div id="id88561" class="refsect2">
+<div>
 
 ### skip_rows
 
@@ -130,15 +130,15 @@ rows etc.
 
 </div>
 
-<div id="examples_ft_set_file" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ft_set_file" class="example">
+<div>
 
 **Example 24.115. Using a Table as a Placeholder for CSV Attachment**
 
-<div class="example-contents">
+<div>
 
 In this example a SQL TABLE is created and then associated with an
 external CSV file. This file is situated in a host operating system
@@ -162,7 +162,7 @@ Id,Fname,Sname,Age
 
 CSV File to SQL Table association steps:
 
-<div class="orderedlist">
+<div>
 
 1.  CREATE an empty TABLE , using the SQL command:
 
@@ -177,11 +177,11 @@ CSV File to SQL Table association steps:
       );
     ```
 
-    <div class="orderedlist">
+    <div>
 
     1.  Notes:
 
-        <div class="orderedlist">
+        <div>
 
         1.  There is no special object type for File Tables
             corresponding to the tabular data structure represented by
@@ -210,11 +210,11 @@ CSV File to SQL Table association steps:
     ft_set_file ('csv.tutorial.contacts', 'contacts.csv', ',', 1) ;
     ```
 
-    <div class="orderedlist">
+    <div>
 
     1.  Notes:
 
-        <div class="orderedlist">
+        <div>
 
         1.  The text in each field is parsed according to the data type
             declared for the column whose position in the CREATE TABLE
@@ -265,7 +265,7 @@ CSV File to SQL Table association steps:
 
 </div>
 
-<div id="seealso_ft_set_file" class="refsect1">
+<div>
 
 ## See Also
 

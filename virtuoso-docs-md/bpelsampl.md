@@ -1,6 +1,6 @@
-<div id="bpelsampl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -89,9 +89,9 @@ Invoking Echo Service
          1 Rows. -- 330 msec.
 ```
 
-<div id="bpelsampl_functions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -133,7 +133,7 @@ count
       
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                           |
 |:--------------------------:|:--------------------------------------------------------------------------|
@@ -144,7 +144,7 @@ count
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0"
 data-summary="Tip: See Also: Reference Material in the BPELDemo tutorials:

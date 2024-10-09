@@ -1,6 +1,6 @@
-<div id="sparqlbi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ translation of arbitrary SQL queries to SPARQL. This extension is called
 Intelligence. The extended features apply equally to querying physical
 quads or relational tables mapped through Linked Data Views.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -30,9 +30,9 @@ quads or relational tables mapped through Linked Data Views.
 
 </div>
 
-<div id="rdfsparqlaggregate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -100,9 +100,9 @@ SELECT COUNT DISTINCT ?v1 ... ?vn
 User-defined aggregate functions are not supported in current version of
 the SPARQL compiler.
 
-<div id="rdfsparqlaggregatepathexpressions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -120,7 +120,7 @@ Virtuoso has support for paths consisting of dereferencing properties in
 SPARQL. Virtuoso allows simple paths in expressions and has a separate
 feature for transitivity:
 
-<div class="itemizedlist">
+<div>
 
 - S+\>P: for "one or many values of P of S"
 
@@ -218,9 +218,9 @@ ORDER BY
 
 </div>
 
-<div id="rdfsparqlaggregateexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -234,9 +234,9 @@ ORDER BY
 
 </div>
 
-<div id="rdfsparqlaggregateexamples1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -269,9 +269,9 @@ SELECT ?p COUNT (?o)
 
 </div>
 
-<div id="rdfsparqlaggregateexamples2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -294,9 +294,9 @@ WHERE {?s ?p ?o}
 
 </div>
 
-<div id="rdfsparqlaggregateexamples3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -319,9 +319,9 @@ SELECT count distinct ?s ?p ?o
 
 </div>
 
-<div id="rdfsparqlaggregateexamples4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -349,9 +349,9 @@ WHERE {
 
 </div>
 
-<div id="rdfsparqlaggregateexamples5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -445,9 +445,9 @@ SELECT
 
 </div>
 
-<div id="rdfsparqlaggregateexamples6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -483,9 +483,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlaggregateexamples7" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -530,9 +530,9 @@ ORDER BY DESC 6
 
 </div>
 
-<div id="rdfsparqlaggregateexamples8" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -643,9 +643,9 @@ ________________________________________________
 
 </div>
 
-<div id="rdfsparqlaggregatenote" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -687,9 +687,9 @@ therefore, likely be altered in the future.
 
 </div>
 
-<div id="rdfsparqlarrowop" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -758,9 +758,9 @@ SQL code than <span class="emphasis">*\*\>*</span> so use
 
 </div>
 
-<div id="rdfsparqlnesting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -852,9 +852,9 @@ especially important when the query is long.
 
 </div>
 
-<div id="rdfsparqlbackq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

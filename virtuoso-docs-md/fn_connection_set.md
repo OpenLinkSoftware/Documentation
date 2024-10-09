@@ -1,10 +1,10 @@
-<div id="fn_connection_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ present connection
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_connection_set" class="funcsynopsis">
+<div>
 
 |                             |                      |
 |-----------------------------|----------------------|
 | ` `**`connection_set`**` (` | in `name ` varchar , |
 |                             | in `value ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ present connection
 
 </div>
 
-<div id="desc_connection_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -61,11 +61,11 @@ used as a component for such.
 
 </div>
 
-<div id="params_connection_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82817" class="refsect2">
+<div>
 
 ### name
 
@@ -73,7 +73,7 @@ used as a component for such.
 
 </div>
 
-<div id="id82821" class="refsect2">
+<div>
 
 ### value
 
@@ -86,7 +86,7 @@ restricted types.
 
 </div>
 
-<div id="ret_connection_set" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -94,15 +94,15 @@ None
 
 </div>
 
-<div id="errors_connection_set" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id82832" class="table">
+<div>
 
-**Table 24.16. Errors signalled by connection_set**
+**Table 24.15. Errors signalled by connection_set**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                    | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------|-------------|
@@ -116,15 +116,15 @@ None
 
 </div>
 
-<div id="id82850" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_connection_set" class="example">
+<div>
 
 **Example 24.51. Setting and Retrieving Connection Variables**
 
-<div class="example-contents">
+<div>
 
 From SQL
 
@@ -165,7 +165,7 @@ From a VSP page
 
 </div>
 
-<div id="seealso_connection_set" class="refsect1">
+<div>
 
 ## See Also
 

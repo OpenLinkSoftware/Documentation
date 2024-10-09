@@ -1,10 +1,10 @@
-<div id="fn_st_m" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ST_M — returns the M coordinate.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_m" class="funcsynopsis">
+<div>
 
 |                   |                  |
 |-------------------|------------------|
 | ` `**`ST_M`**` (` | in `g ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ST_M — returns the M coordinate.
 
 </div>
 
-<div id="desc_st_m" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ similar.
 
 </div>
 
-<div id="params_st_m" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131520" class="refsect2">
+<div>
 
 ### g
 
@@ -56,7 +56,7 @@ Geometry point
 
 </div>
 
-<div id="ret_st_m" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Returns double precision.
 
 </div>
 
-<div id="examples_st_m" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_m" class="example">
+<div>
 
 **Example 24.666. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SELECT st_m( st_point (10, 20, 30, 40));
@@ -89,7 +89,7 @@ DOUBLE PRECISION
 
 </div>
 
-<div id="seealso_st_m" class="refsect1">
+<div>
 
 ## See Also
 

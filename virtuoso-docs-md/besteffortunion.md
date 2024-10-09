@@ -1,6 +1,6 @@
-<div id="besteffortunion" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,7 +40,7 @@ the union term number respectively. If neither of these is specified and
 a union term fails without producing any result rows the error will not
 be visible.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                          |
 |:----------------------------:|:-----------------------------------------------------------------------------------------|
@@ -60,11 +60,11 @@ effort union. The VDB will however get the transaction error when
 attempting to commit the transaction where the best effort union took
 place since the remote transaction branch will still be deadlocked.
 
-<div id="id34253" class="example">
+<div>
 
 **Example 9.42. Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select 2222, 1 / 0 from sys_users best union all select key_id, 1 / (1000 - key_id)  from sys_keys;
@@ -87,7 +87,7 @@ all select '00000' as __sqlstate, '', key_id, 1 / (1001 - key_id)  from sys_keys
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                   |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------|

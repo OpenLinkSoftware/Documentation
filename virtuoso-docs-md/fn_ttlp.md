@@ -1,10 +1,10 @@
-<div id="fn_ttlp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ into DB.DBA.RDF_QUAD.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ttlp" class="funcsynopsis">
+<div>
 
 |                          |                          |
 |--------------------------|--------------------------|
@@ -26,7 +26,7 @@ into DB.DBA.RDF_QUAD.
 |                          | in `graph ` varchar ,    |
 |                          | in `flags ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ into DB.DBA.RDF_QUAD.
 
 </div>
 
-<div id="desc_ttlp" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ DB.DBA.RDF_QUAD.
 
 </div>
 
-<div id="params_ttlp" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100954" class="refsect2">
+<div>
 
 ### strg
 
@@ -57,7 +57,7 @@ text of the resource
 
 </div>
 
-<div id="id100957" class="refsect2">
+<div>
 
 ### base
 
@@ -65,7 +65,7 @@ base IRI to resolve relative IRIs to absolute
 
 </div>
 
-<div id="id100960" class="refsect2">
+<div>
 
 ### graph
 
@@ -73,7 +73,7 @@ target graph IRI, parsed triples will appear in that graph.
 
 </div>
 
-<div id="id100963" class="refsect2">
+<div>
 
 ### flags
 
@@ -100,7 +100,7 @@ Other supported bits are:
 
 </div>
 
-<div id="ret_ttlp" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -108,15 +108,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_ttlp" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ttlp" class="example">
+<div>
 
 **Example 24.266. **
 
-<div class="example-contents">
+<div>
 
 For loading a file of any greater length, it is most practical to use
 the file_to_string_output function.
@@ -208,7 +208,7 @@ from the NQuad file i.e.: \<http://www.w3.org/People/Berners-Lee/card\>:
 
 </div>
 
-<div id="seealso_ttlp" class="refsect1">
+<div>
 
 ## See Also
 

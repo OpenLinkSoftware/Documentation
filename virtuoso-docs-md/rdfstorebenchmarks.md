@@ -1,6 +1,6 @@
-<div id="rdfstorebenchmarks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfstorebenchmarksintroduction" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,9 +40,9 @@ results.
 
 </div>
 
-<div id="rdfstorebenchmarksindexusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,7 +59,7 @@ results.
 If is known in advance for the current RDF Store Benchmarks that some
 users will not indicate specific graphs then should be done:
 
-<div class="itemizedlist">
+<div>
 
 - either create indexes with graph in last position
 
@@ -70,7 +70,7 @@ users will not indicate specific graphs then should be done:
 
 Both methods do not require any changes in query texts
 
-<div class="itemizedlist">
+<div>
 
 - For users using Virtuoso 5 is strongly recommended is the usage of
   additional bitmap indexes:

@@ -1,6 +1,6 @@
-<div id="langfuncapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,7 +41,7 @@ pointers to required functions, these NULLs will be replaced with
 pointers to generic handler's functions automatically when the custom
 handler will be activated.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -85,7 +85,7 @@ it requires data to be decoded before processing, functions of "encoded
 language" handler may accept buffers of encoded text, eliminating
 decoding.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

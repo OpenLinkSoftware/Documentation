@@ -1,10 +1,10 @@
-<div id="fn_rdf_view_sync_to_physical" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -16,11 +16,11 @@ sources.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_view_sync_to_physical" class="funcsynopsis">
+<div>
 
 |                                        |                                   |
 |----------------------------------------|-----------------------------------|
@@ -30,7 +30,7 @@ sources.
 |                                        | in `transaction_mode ` int := 1 , |
 |                                        | in `atomicity ` int := 1 `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ sources.
 
 </div>
 
-<div id="desc_rdf_view_sync_to_physical" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ run. Note: applicable for Virtuoso 6.0 and higher.
 
 </div>
 
-<div id="params_rdf_view_sync_to_physical" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101384" class="refsect2">
+<div>
 
 ### vgraph
 
@@ -66,13 +66,13 @@ named graph in the quad store.
 
 </div>
 
-<div id="id101387" class="refsect2">
+<div>
 
 ### load_data
 
 Flag that determines which operations are performed:
 
-<div class="itemizedlist">
+<div>
 
 - 0 -- only create synchronization triggers;
 
@@ -83,7 +83,7 @@ Flag that determines which operations are performed:
 
 </div>
 
-<div id="id101395" class="refsect2">
+<div>
 
 ### pgraph
 
@@ -91,7 +91,7 @@ Designated quad store named graph IRI.
 
 </div>
 
-<div id="id101398" class="refsect2">
+<div>
 
 ### transaction_mode
 
@@ -101,7 +101,7 @@ with the same values.
 
 </div>
 
-<div id="id101401" class="refsect2">
+<div>
 
 ### atomicity
 
@@ -114,7 +114,7 @@ tables.
 
 </div>
 
-<div id="ret_rdf_view_sync_to_physical" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -122,15 +122,15 @@ any
 
 </div>
 
-<div id="examples_rdf_view_sync_to_physical" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_view_sync_to_physical" class="example">
+<div>
 
 **Example 24.272. **
 
-<div class="example-contents">
+<div>
 
 Example 1
 
@@ -138,7 +138,7 @@ Using the command-line iSQL utility or its variant hosted in the HTML
 based Conductor, and assuming named graphs denoted by the following
 IRIs:
 
-<div class="orderedlist">
+<div>
 
 1.  \<http://www.openlinksw.com/schemas/odbcCustomers#\> -- a named
     graph associated with virtual (and transient) RDF statements
@@ -176,7 +176,7 @@ SQL> RDF_VIEW_SYNC_TO_PHYSICAL ('http://www.openlinksw.com/schemas/odbcCustomers
 
 </div>
 
-<div id="seealso_rdf_view_sync_to_physical" class="refsect1">
+<div>
 
 ## See Also
 

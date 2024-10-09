@@ -1,6 +1,6 @@
-<div id="clusterstcnf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="clusterstcnf7" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,9 +32,9 @@
 
 These sections apply to Virtuoso as of version 7.x .
 
-<div id="clusterstcnfconf7what" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,9 +55,9 @@ server processes and can migrate between them.
 
 </div>
 
-<div id="clusterstcnfconf7why" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -78,9 +78,9 @@ partitions is required.
 
 </div>
 
-<div id="clusterstcnfconf7how" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -97,7 +97,7 @@ partitions is required.
 This documentation details the steps for the installation and
 configuration of a Virtuoso Elastic Cluster on Unix:
 
-<div class="orderedlist">
+<div>
 
 1.  <a href="clusterstcnf.html#clusterstcnfconf7unix" class="link"
     title="Virtuoso 7 Unix installation">Perform Virtuoso 7 Unix
@@ -121,9 +121,9 @@ configuration of a Virtuoso Elastic Cluster on Unix:
 
 </div>
 
-<div id="clusterstcnfconf7unix" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -188,9 +188,9 @@ $
 
 </div>
 
-<div id="clusterstcnfconf7clsize" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -206,7 +206,7 @@ $
 
 <span class="emphasis">*Step 2*</span> : Determine Elastic Cluster size
 
-<div class="orderedlist">
+<div>
 
 1.  Determine how many nodes you want to start the elastic cluster with:
     2, 3, 4, 5, 6, 7, 8 etc. Note: the number of the nodes must be \>= 2
@@ -349,9 +349,9 @@ $
 
 </div>
 
-<div id="clusterstcnfconf7enmode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -367,7 +367,7 @@ $
 
 <span class="emphasis">*Step 3*</span> : Enable Elastic Cluster mode
 
-<div class="orderedlist">
+<div>
 
 1.  The `cluster.ini` files need to be reconfigured as detailed below
     for elastic cluster and file slicing/sharding to be enabled.
@@ -469,9 +469,9 @@ $
 
 </div>
 
-<div id="clusterstcnfconf7start" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -487,7 +487,7 @@ $
 
 <span class="emphasis">*Step 4*</span> : Start Elastic Cluster
 
-<div class="orderedlist">
+<div>
 
 1.  Start the Elastic cluster using the standard `virtuoso-start.sh`
     script run from the home directory of the Virtuoso
@@ -650,9 +650,9 @@ $
 
 </div>
 
-<div id="clusterstcnfconf7split" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -669,7 +669,7 @@ $
 <span class="emphasis">*Step 5*</span> : Splitting Cluster nodes across
 different machines
 
-<div class="orderedlist">
+<div>
 
 1.  To split the node across across physical machines for better scale
     out performance, scalability and growth, simply perform a parallel

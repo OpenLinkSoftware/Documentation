@@ -1,10 +1,10 @@
-<div id="xpf_some" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ criterion.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_some" class="funcsynopsis">
+<div>
 
 |                          |                           |
 |--------------------------|---------------------------|
@@ -25,7 +25,7 @@ criterion.
 |                          | `test_set ` sequence ,    |
 |                          | `test_expn ` boolean `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ criterion.
 
 </div>
 
-<div id="xpf_desc_some" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ functions.
 
 </div>
 
-<div id="xpf_params_some" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129017" class="refsect2">
+<div>
 
 ### varname
 
@@ -70,7 +70,7 @@ Name of temporary variable
 
 </div>
 
-<div id="id129020" class="refsect2">
+<div>
 
 ### test_set
 
@@ -78,7 +78,7 @@ Sequence of items; these items will be tested by *`test_expn `*
 
 </div>
 
-<div id="id129024" class="refsect2">
+<div>
 
 ### test_expn
 
@@ -89,7 +89,7 @@ Boolean expression which should be calculated for items of *`test_set `*
 
 </div>
 
-<div id="xpf_ret_some" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -97,15 +97,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_some" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_some" class="example">
+<div>
 
 **Example 24.619. **
 
-<div class="example-contents">
+<div>
 
 This expression returns true if some reports have zero incomes recorded.
 
@@ -121,7 +121,7 @@ some('income_value', /report/income, $income_value = 0)
 
 </div>
 
-<div id="xpf_seealso_some" class="refsect1">
+<div>
 
 ## See Also
 

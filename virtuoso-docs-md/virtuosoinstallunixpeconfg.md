@@ -1,6 +1,6 @@
-<div id="virtuosoinstallunixpeconfg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,21 +14,21 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Once the URL above has been loaded into a browser, you can select a
   license file for use with the installation; if a license file is
   already in place, you can "Skip" this task with the obvious button:
 
-  <div class="figure-float">
+  <div>
 
-  <div id="v50peunx00" class="figure">
+  <div>
 
   **Figure 2.14. License file**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![License file](images/inst/v50-pe-unx-00.png)
 
@@ -45,15 +45,15 @@
 - It is strongly advised that the standard "dba" and "dav" user account
   password be changed using the post installation page provided:
 
-  <div class="figure-float">
+  <div>
 
-  <div id="v50peunx01" class="figure">
+  <div>
 
   **Figure 2.15. DAV/DBA authentication Setting page**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![DAV/DBA authentication Setting page](images/inst/v50-pe-unx-01.png)
 
@@ -70,15 +70,15 @@
 - The post installation page is now complete and the Virtuoso Welcome
   page is presented:
 
-  <div class="figure-float">
+  <div>
 
-  <div id="v50peunx02" class="figure">
+  <div>
 
   **Figure 2.16. Post installation page**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Post installation page](images/inst/v50-pe-unx-02.png)
 

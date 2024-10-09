@@ -1,10 +1,10 @@
-<div id="vc_login" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ login — Authentication parameters of a page.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_login" class="funcsynopsis">
+<div>
 
 |                       |                                    |
 |-----------------------|------------------------------------|
@@ -37,7 +37,7 @@ login — Authentication parameters of a page.
 |                       | `debug-srcline` (optional) ,       |
 |                       | `debug-log` (optional) `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ login — Authentication parameters of a page.
 
 </div>
 
-<div id="vc_desc_login" class="refsect1">
+<div>
 
 ## Description
 
@@ -86,7 +86,7 @@ pages need to have login control (in most cases it is invisible).
 
 </div>
 
-<div id="vc_attrs_login" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -148,11 +148,11 @@ via SSL only. Many values may be separated by spaces. This is the order
 of preference. The system will use the first available depending on the
 user agent.
 
-<div id="id41552" class="table">
+<div>
 
 **Table 14.8. Allowed values of the 'mode' attribute**
 
-<div class="table-contents">
+<div>
 
 |        |                                                                                                                                                                                                 |
 |--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -226,7 +226,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_login" class="refsect1">
+<div>
 
 ## Declaration of type vspx_login
 
@@ -251,15 +251,15 @@ constructor method vspx_login (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_login" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_login__0" class="example">
+<div>
 
 **Example 14.36.  Simple login dialog**
 
-<div class="example-contents">
+<div>
 
 This example will show simltaniously 'not-autneticated' message and a
 simple post counter.
@@ -294,7 +294,7 @@ simple post counter.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                     |
 |:--------------------------:|:--------------------------------------------------------------------|

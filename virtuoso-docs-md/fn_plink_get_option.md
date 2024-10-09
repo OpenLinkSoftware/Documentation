@@ -1,10 +1,10 @@
-<div id="fn_plink_get_option" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ BPEL.BPEL.plink_get_option — retrieving a partner link option
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_plink_get_option_01" class="funcsynopsis">
+<div>
 
 |                                         |                        |
 |-----------------------------------------|------------------------|
@@ -24,7 +24,7 @@ BPEL.BPEL.plink_get_option — retrieving a partner link option
 |                                         | in `plink ` varchar ,  |
 |                                         | in `opt ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,11 +34,11 @@ BPEL.BPEL.plink_get_option — retrieving a partner link option
 
 </div>
 
-<div id="params_get_var_04" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130363" class="refsect2">
+<div>
 
 ### script
 
@@ -47,7 +47,7 @@ belongs to
 
 </div>
 
-<div id="id130367" class="refsect2">
+<div>
 
 ### plink
 
@@ -55,7 +55,7 @@ belongs to
 
 </div>
 
-<div id="id130371" class="refsect2">
+<div>
 
 ### opt
 
@@ -65,7 +65,7 @@ belongs to
 
 </div>
 
-<div id="ret_plink_get_option_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,7 +74,7 @@ requested option.
 
 </div>
 
-<div id="desc_plink_get_option_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -88,15 +88,15 @@ class="function">plink_set_option()</code></a> function.
 
 </div>
 
-<div id="examples_plink_get_option_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_plink_get_option_01" class="example">
+<div>
 
 **Example 24.650. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select BPEL.BPEL.plink_get_option ('WSSecho', 'service', 'wss-in-encrypt');

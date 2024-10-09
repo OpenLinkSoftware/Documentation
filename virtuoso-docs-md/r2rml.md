@@ -1,6 +1,6 @@
-<div id="r2rml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="r2rmlwhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

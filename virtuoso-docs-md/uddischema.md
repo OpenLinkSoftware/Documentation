@@ -1,6 +1,6 @@
-<div id="uddischema" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

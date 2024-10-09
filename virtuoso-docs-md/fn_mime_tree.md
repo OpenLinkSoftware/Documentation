@@ -1,10 +1,10 @@
-<div id="fn_mime_tree" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ mime_tree — parses MIME messages into an array structure
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mime_tree_01" class="funcsynopsis">
+<div>
 
 |                             |                             |
 |-----------------------------|-----------------------------|
 | `array `**`mime_tree`**` (` | in `message_text ` string , |
 |                             | in `flag ` integer `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ mime_tree — parses MIME messages into an array structure
 
 </div>
 
-<div id="desc_mime_tree_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -73,7 +73,7 @@ the following structure:
 
 </div>
 
-<div id="examples_mime_tree_01" class="refsect1">
+<div>
 
 ## Examples
 

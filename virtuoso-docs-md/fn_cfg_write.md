@@ -1,10 +1,10 @@
-<div id="fn_cfg_write" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ cfg_write — Writes the item=value to an INI file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cfg_write" class="funcsynopsis">
+<div>
 
 |                        |                               |
 |------------------------|-------------------------------|
@@ -25,7 +25,7 @@ cfg_write — Writes the item=value to an INI file
 |                        | in `item_name ` varchar ,     |
 |                        | in `item_value ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ cfg_write — Writes the item=value to an INI file
 
 </div>
 
-<div id="desc_cfg_write" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ updating existing items in an INI file.
 
 </div>
 
-<div id="params_cfg_write" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81946" class="refsect2">
+<div>
 
 ### path
 
@@ -58,7 +58,7 @@ Name of the INI file.
 
 </div>
 
-<div id="id81949" class="refsect2">
+<div>
 
 ### section
 
@@ -66,7 +66,7 @@ Name of the section in the INI file.
 
 </div>
 
-<div id="id81952" class="refsect2">
+<div>
 
 ### item_name
 
@@ -74,7 +74,7 @@ Name of item that will be assigned the item_value.
 
 </div>
 
-<div id="id81955" class="refsect2">
+<div>
 
 ### item_value
 
@@ -84,15 +84,15 @@ Value to be assigned to the item_name.
 
 </div>
 
-<div id="examples_cfg_write" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_cfg_write" class="example">
+<div>
 
 **Example 24.36. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Write ServerPort=2222 under the \[Parameters\] section of the current
 virtuoso.ini file.
@@ -117,7 +117,7 @@ ___________________________________________________________________________
 
 </div>
 
-<div id="seealso_cfg_write" class="refsect1">
+<div>
 
 ## See Also
 

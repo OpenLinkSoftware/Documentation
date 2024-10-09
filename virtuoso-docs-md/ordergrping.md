@@ -1,6 +1,6 @@
-<div id="ordergrping" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ there is no appropriate index or if ascending and descending order is
 combined for columns of the same table the SQL interpreter will first
 evaluate the query and then sort the results before returning them.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                           |
 |:--------------------------:|:------------------------------------------|
@@ -59,9 +59,9 @@ written identically to the same expression in the SELECT left.
 The 2 in the order by refers to the second column of the select, which
 has no name, it being a function reference.
 
-<div id="ordergrping_cube" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -83,7 +83,7 @@ using these option but rahter with additional coding and queries.
 
 The options `ROLLUP` and `CUBE` extend the result set of `GROUP BY` :
 
-<div class="itemizedlist">
+<div>
 
 - `ROLLUP` : builds a consequence of subtotal aggregates on every
   queried level including the grand total.

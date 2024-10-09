@@ -1,6 +1,6 @@
-<div id="virtuososponger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtuosospongerintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,15 +50,15 @@ products supports a number of routes for creating or consuming Linked
 Data. The Sponger provides a key platform for developers to generate
 quality data meshes from unstructured or semi-structured data sources.
 
-<div class="figure-float">
+<div>
 
-<div id="virtuosospongerdiagram" class="figure">
+<div>
 
 **Figure 16.96. OpenLink Linked Data generation options**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![OpenLink Linked Data generation
 options](images/Sponger_LinkedDataGenOptions_2014_v3.png)
@@ -88,23 +88,23 @@ of the Virtuoso <a
 href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.3/virtuoso/cartridges_dav.vad"
 class="ulink" target="_top">Cartridges VAD package</a> .
 
-<div class="figure-float">
+<div>
 
-<div id="virtuosospongerdiagram_01" class="figure">
+<div>
 
 **Figure 16.97. Virtuoso metadata extraction & RDF structured data
 generation**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso metadata extraction & RDF structured data
 generation](images/linked_data_gen_opts4.png)
 
 </div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso metadata extraction & RDF structured data
 generation](images/linked_data_gen_opts4.png)

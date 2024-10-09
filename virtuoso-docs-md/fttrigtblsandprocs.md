@@ -1,6 +1,6 @@
-<div id="fttrigtblsandprocs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -94,9 +94,9 @@ index is updated. If text index maintenance is in synchronous
 (non-batched) mode, the text trigger match and hit generation is in the
 same transaction as the update to the content being watched.
 
-<div id="fttprocs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -128,9 +128,9 @@ vt_hits_[TARGET_TABLE_NAME] (inout [batch] any, inout [words array] any)
 
 </div>
 
-<div id="ftttrigs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -152,9 +152,9 @@ for hits removal after document delete occurred
 
 </div>
 
-<div id="fttexamples_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

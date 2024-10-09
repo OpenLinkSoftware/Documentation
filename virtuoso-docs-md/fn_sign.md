@@ -1,10 +1,10 @@
-<div id="fn_sign" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sign — returns -1, 0, or 1 depending on the sign of its numerical
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sign" class="funcsynopsis">
+<div>
 
 |                   |                     |
 |-------------------|---------------------|
 | ` `**`sign`**` (` | `num ` numeric `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sign — returns -1, 0, or 1 depending on the sign of its numerical
 
 </div>
 
-<div id="desc_18" class="refsect1">
+<div>
 
 ## Description
 

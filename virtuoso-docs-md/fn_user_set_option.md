@@ -1,10 +1,10 @@
-<div id="fn_user_set_option" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ USER_SET_OPTION — Set a user option for a given user account.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_set_option" class="funcsynopsis">
+<div>
 
 |                              |                      |
 |------------------------------|----------------------|
@@ -24,7 +24,7 @@ USER_SET_OPTION — Set a user option for a given user account.
 |                              | in `opt ` varchar ,  |
 |                              | in `value ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ USER_SET_OPTION — Set a user option for a given user account.
 
 </div>
 
-<div id="desc_user_set_option" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ that existing option will be replaced.
 
 </div>
 
-<div id="params_user_set_option" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116853" class="refsect2">
+<div>
 
 ### name
 
@@ -58,7 +58,7 @@ The name of the user account to affect.
 
 </div>
 
-<div id="id116856" class="refsect2">
+<div>
 
 ### opt
 
@@ -66,7 +66,7 @@ Option name.
 
 </div>
 
-<div id="id116859" class="refsect2">
+<div>
 
 ### value
 
@@ -76,7 +76,7 @@ The new value of the named option.
 
 </div>
 
-<div id="ret_user_set_option" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,7 +84,7 @@ None
 
 </div>
 
-<div id="seealso_user_set_option" class="refsect1">
+<div>
 
 ## See Also
 

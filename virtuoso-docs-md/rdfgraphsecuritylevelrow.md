@@ -1,6 +1,6 @@
-<div id="rdfgraphsecuritylevelrow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,9 +38,9 @@ members of `the SPARQL_SELECT_RAW` group.
 <span class="emphasis">*Note:*</span>`SPARQL_SELECT_RAW` group is a
 feature applicable to Virtuoso 7.5 or higher.
 
-<div id="rdfgraphsecuritylevelrowex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="mksimpledynapages" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ this can be one.
 Suppose we have a table Demo.demo.Shippers (from the Demo database of
 the standard distribution). We can make a simple page for editing it.
 
-<div class="orderedlist">
+<div>
 
 1.  **Building The HTML Skeleton. ** We define one form for editing and
     adding entries and a table for listing the existing shippers.

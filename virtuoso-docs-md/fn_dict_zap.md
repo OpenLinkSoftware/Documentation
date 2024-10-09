@@ -1,10 +1,10 @@
-<div id="fn_dict_zap" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ dict_zap — Removes all data from the given dictionary
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_zap" class="funcsynopsis">
+<div>
 
 |                       |                                |
 |-----------------------|--------------------------------|
 | ` `**`dict_zap`**` (` | inout `dict ` dictionary ,     |
 |                       | in `destructive ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ dict_zap — Removes all data from the given dictionary
 
 </div>
 
-<div id="desc_dict_zap" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ only in some part of a long procedure.
 
 </div>
 
-<div id="params_dict_zap" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87260" class="refsect2">
+<div>
 
 ### dict
 
@@ -71,7 +71,7 @@ effect and returned value is zero.
 
 </div>
 
-<div id="id87263" class="refsect2">
+<div>
 
 ### destructive
 
@@ -83,7 +83,7 @@ signal an error otherwise, 2 = clean unconditionally).
 
 </div>
 
-<div id="ret_dict_zap" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -92,7 +92,7 @@ operation.
 
 </div>
 
-<div id="seealso_dict_zap" class="refsect1">
+<div>
 
 ## See Also
 

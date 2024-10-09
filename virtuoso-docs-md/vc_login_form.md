@@ -1,10 +1,10 @@
-<div id="vc_login_form" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ login-form — A form to be shown if the user is not logged in.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_login_form" class="funcsynopsis">
+<div>
 
 |                            |                               |
 |----------------------------|-------------------------------|
@@ -38,7 +38,7 @@ login-form — A form to be shown if the user is not logged in.
 |                            | `debug-srcline` (optional) ,  |
 |                            | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -48,7 +48,7 @@ login-form — A form to be shown if the user is not logged in.
 
 </div>
 
-<div id="vc_desc_login_form" class="refsect1">
+<div>
 
 ## Description
 
@@ -71,7 +71,7 @@ place of the login control. This can be arbitrary content.
 
 </div>
 
-<div id="vc_attrs_login_form" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -144,7 +144,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_login_form" class="refsect1">
+<div>
 
 ## Declaration of type vspx_login_form
 
@@ -165,15 +165,15 @@ overriding method vc_render () returns any
 
 </div>
 
-<div id="vc_ex_login_form" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_login_form__0" class="example">
+<div>
 
 **Example 14.37.  A simple default login-form**
 
-<div class="example-contents">
+<div>
 
 This example will render just a login form:
 

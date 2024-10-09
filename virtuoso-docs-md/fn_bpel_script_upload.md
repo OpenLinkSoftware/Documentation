@@ -1,10 +1,10 @@
-<div id="fn_bpel_script_upload" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ BPEL.BPEL.script_upload — Upload a new BPEL script source
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_script_upload_01" class="funcsynopsis">
+<div>
 
 |                                      |                        |
 |--------------------------------------|------------------------|
@@ -24,7 +24,7 @@ BPEL.BPEL.script_upload — Upload a new BPEL script source
 |                                      | in `url ` varchar ,    |
 |                                      | in `content ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,11 +34,11 @@ BPEL.BPEL.script_upload — Upload a new BPEL script source
 
 </div>
 
-<div id="params_script_upload_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130173" class="refsect2">
+<div>
 
 ### name
 
@@ -46,7 +46,7 @@ BPEL.BPEL.script_upload — Upload a new BPEL script source
 
 </div>
 
-<div id="id130177" class="refsect2">
+<div>
 
 ### url
 
@@ -54,7 +54,7 @@ BPEL.BPEL.script_upload — Upload a new BPEL script source
 
 </div>
 
-<div id="id130181" class="refsect2">
+<div>
 
 ### content
 
@@ -65,7 +65,7 @@ can be specified.
 
 </div>
 
-<div id="ret_script_upload_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,7 +73,7 @@ returns an integer unique identifier for the uploaded script
 
 </div>
 
-<div id="desc_script_upload_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -83,15 +83,15 @@ will not try to download or check the URL specified.
 
 </div>
 
-<div id="examples_script_upload_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_script_upload_01" class="example">
+<div>
 
 **Example 24.646. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
       SQL> select BPEL.BPEL.script_upload ('LoanFlow', 'file:/LoanFlow.bpel', null);

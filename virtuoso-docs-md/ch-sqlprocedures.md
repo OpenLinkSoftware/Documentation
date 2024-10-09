@@ -1,6 +1,6 @@
-<div id="ch-sqlprocedures" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -35,7 +35,7 @@ language and ends with a reference section.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -240,9 +240,9 @@ and Parallelization](vexqrparlconfp.html)</span>
 
 </div>
 
-<div id="generalprinciples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -301,7 +301,7 @@ except that a stored procedure is typically much faster.
 
 The elements of the procedure are:
 
-<div class="itemizedlist">
+<div>
 
 - **Procedure Declaration. ** This is a create procedure statement that
   names the procedure and its arguments.

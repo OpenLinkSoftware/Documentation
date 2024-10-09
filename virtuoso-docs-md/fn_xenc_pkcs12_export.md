@@ -1,10 +1,10 @@
-<div id="fn_xenc_pkcs12_export" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ of an X.509 certificate and an associated Private Key.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_pkcs12_export" class="funcsynopsis">
+<div>
 
 |                                 |                                     |
 |---------------------------------|-------------------------------------|
@@ -28,7 +28,7 @@ of an X.509 certificate and an associated Private Key.
 |                                 | in `export_chain ` integer := 0 ,   |
 |                                 | in `additional_certs ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ of an X.509 certificate and an associated Private Key.
 
 </div>
 
-<div id="desc_xenc_pkcs12_export" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ associated Private Key.
 
 </div>
 
-<div id="params_xenc_pkcs12_export" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120945" class="refsect2">
+<div>
 
 ### key_name
 
@@ -60,7 +60,7 @@ Name that identifies private key associated with X.509 certificate.
 
 </div>
 
-<div id="id120948" class="refsect2">
+<div>
 
 ### name
 
@@ -68,7 +68,7 @@ Name to used to identify each pkcs#12 object bundle.
 
 </div>
 
-<div id="id120951" class="refsect2">
+<div>
 
 ### pass
 
@@ -76,7 +76,7 @@ A password or pass phrase used to encrypt the pkcs#12 file
 
 </div>
 
-<div id="id120954" class="refsect2">
+<div>
 
 ### export_chain
 
@@ -84,7 +84,7 @@ A password or pass phrase used to encrypt the pkcs#12 file
 
 </div>
 
-<div id="id120957" class="refsect2">
+<div>
 
 ### additional_certs
 
@@ -96,15 +96,15 @@ certificate
 
 </div>
 
-<div id="examples_xenc_pkcs12_export" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_pkcs12_export" class="example">
+<div>
 
 **Example 24.480. Persisting a key & certificate**
 
-<div class="example-contents">
+<div>
 
 The example below persists a key named 'id_rsa' and certificate created
 for it into user's key space. Thus after server restart the key will be
@@ -122,7 +122,7 @@ USER_KEY_STORE (user, 'id_rsa', 'X.509', 2, '', xenc_pkcs12_export ('id_rsa', 'C
 
 </div>
 
-<div id="seealso_xenc_pkcs12_export" class="refsect1">
+<div>
 
 ## See Also
 

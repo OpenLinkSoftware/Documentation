@@ -1,10 +1,10 @@
-<div id="fn_postgis_proj_version" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ a string, for compatibility with PostGIS.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_postgis_proj_version" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | ` `**`postgis_proj_version`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ a string, for compatibility with PostGIS.
 
 </div>
 
-<div id="desc_postgis_proj_version" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ string, for compatibility with PostGIS.
 
 </div>
 
-<div id="ret_postgis_proj_version" class="refsect1">
+<div>
 
 ## Return Types
 

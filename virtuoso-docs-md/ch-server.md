@@ -1,6 +1,6 @@
-<div id="ch-server" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -141,9 +141,9 @@ Programming](faultfaulttolerpragram.html)</span>
 
 </div>
 
-<div id="databaseadmsrv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -155,7 +155,7 @@ Programming](faultfaulttolerpragram.html)</span>
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -173,9 +173,9 @@ interface.
 
 </div>
 
-<div id="dbadm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -199,9 +199,9 @@ title="2.1.3. Operating System Support">Operating System Support</a> and
 <a href="ch-installation.html#limitsandparameters" class="link"
 title="2.1.4. Limits">Limits</a> .
 
-<div id="srvadmsrvinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -233,9 +233,9 @@ not depend on these.
 
 </div>
 
-<div id="srvextinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -293,9 +293,9 @@ read from the HTTP Server section of the virtuoso.ini file.
 
 </div>
 
-<div id="srvadmlicensing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -321,9 +321,9 @@ to email a new license file for you evaluation.
 
 </div>
 
-<div id="srvadmlogging" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -357,9 +357,9 @@ following section.
 
 </div>
 
-<div id="configsrvstupfiles" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -373,9 +373,9 @@ following section.
 
 </div>
 
-<div id="virtini" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -393,7 +393,7 @@ The virtuoso.ini file is read from the directory that is current at
 server startup. This file contains an entry for all user settable
 options in the server. It is divided into the following sections:
 
-<div class="itemizedlist">
+<div>
 
 - \[Database\] Location of database files
 
@@ -440,9 +440,9 @@ options in the server. It is divided into the following sections:
 
 Below are the descriptions for each parameter
 
-<div id="ini_database" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -456,9 +456,9 @@ Below are the descriptions for each parameter
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_database_databasefile">
+- <div>
 
   **DatabaseFile=virtuoso.db. ** For a single file database, this is the
   relative path of the file in the format appropriate to the platform.
@@ -467,7 +467,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_transactionfile">
+- <div>
 
   **TransactionFile=virtuoso.trx. ** This is the transaction log file.
   If this parameter is omitted, which should never be the case in
@@ -481,7 +481,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_errorlogfile">
+- <div>
 
   **ErrorLogFile=virtuoso.log. ** This file logs database error
   messages, e.g. 'out of disk'. By viewing this the dba can trace
@@ -490,14 +490,14 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_errorloglevel">
+- <div>
 
   **ErrorLogLevel=7. ** This controls what events get logged into the
   database error log. This should always be 7.
 
   </div>
 
-- <div id="ini_database_lockfile">
+- <div>
 
   **LockFile=virtuoso.lck. ** This optional parameter can be used to
   manually specify the location of the Virtuoso lock (.lck) file. This
@@ -512,7 +512,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_fileextend">
+- <div>
 
   **FileExtend=100. ** This is the size that the database file
   automatically grows (in 8k pages) when the current file is not large
@@ -521,7 +521,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_striping">
+- <div>
 
   **Striping=0. ** A non-zero value will enable the settings in
   \[Striping\] to take effect. If this is the case the DatabaseFile
@@ -529,7 +529,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_logsegments">
+- <div>
 
   **LogSegments. ** If this is non-zero log segmentation is enabled.
   This is only used for crash dumps where several files may be needed to
@@ -538,7 +538,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_log">
+- <div>
 
   **Log1=/tmp/log1.trx 100M. ** The number in Log\<n\> is the ordinal
   number of the log, starting at 1. The entry consists of the file name
@@ -552,7 +552,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_crashdump">
+- <div>
 
   **crashdump_start_dp, crashdump_end_dp. ** These options make it
   possible to produce a crash dump of a specified range of disk pages.
@@ -566,7 +566,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_tempstorage">
+- <div>
 
   **TempStorage = \<TempDatabase_Name\>. ** The name of a section in the
   INI file containing temporary database details. If this parameter is
@@ -575,7 +575,7 @@ Below are the descriptions for each parameter
 
   </div>
 
-- <div id="ini_database_syslog">
+- <div>
 
   **Syslog = 1/0 (default 0). ** Virtuoso can writes log worthy messages
   to the system log (Unix based operating systems including Linux) or
@@ -595,9 +595,9 @@ Below are the descriptions for each parameter
 
 </div>
 
-<div id="ini_tempdatabase" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -615,23 +615,23 @@ This section name must match the TempStorage parameter in the Database
 section of the Virtuoso INI file to be of any use. Otherwise this
 section will be ignored.
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_tempdatabase_databasefile">
+- <div>
 
   **DatabaseFile = \<database file name\>.tdb. ** Name of temporary
   database file.
 
   </div>
 
-- <div id="ini_tempdatabase_transactionfile">
+- <div>
 
   **TransactionFile = \<transaction file name\>.ttr. ** Name of
   temporary transaction file.
 
   </div>
 
-- <div id="ini_tempdatabase_fileextend">
+- <div>
 
   **FileExtend = NNN. ** Increment amount by which the database file
   will dynamically grow. This setting is identical in use and purpose to
@@ -643,9 +643,9 @@ section will be ignored.
 
 </div>
 
-<div id="ini_parameters" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -659,16 +659,16 @@ section will be ignored.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_parameters_singlecpu">
+- <div>
 
   **SingleCPU=0. ** This is a Win32 specific option that forces Virtuoso
   to only run on one CPU in a multiprocessor environment.
 
   </div>
 
-- <div id="ini_parameters_serverport">
+- <div>
 
   **ServerPort=\[\<IP Address\>\]:\<port\>. ** This is the IP Address
   and port number where the server will start listening. You do not need
@@ -677,7 +677,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_serverthreads">
+- <div>
 
   **ServerThreads=10. ** This is the maximum number of threads used in
   the server. This should be close to the number of concurrent
@@ -687,49 +687,49 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_serverthreadsize">
+- <div>
 
   **ServerThreadSize=50000. ** Stack size of thread used for reading
   client messages and accepting connections.(default : 50 000 bytes)
 
   </div>
 
-- <div id="ini_parameters_mainthreadsize">
+- <div>
 
   **MainThreadSize=100000. ** Stack size of the main thread (default :
   100 000 bytes)
 
   </div>
 
-- <div id="ini_parameters_threadcleanupinterval">
+- <div>
 
   **ThreadCleanupInterval. ** The interval in minutes (default : 0)
   after which threads in the thread pool should be released.
 
   </div>
 
-- <div id="ini_parameters_threadthreshold">
+- <div>
 
   **ThreadThreshold. ** The maximum number of threads (default : 10) to
   leave in the thread queue after thread clean-up interval has expired.
 
   </div>
 
-- <div id="ini_parameters_schedulerinterval">
+- <div>
 
   **SchedulerInterval. ** Defines the scheduler wake-up interval ( in
   minutes). By default is 0 i.e. the scheduler is disabled.
 
   </div>
 
-- <div id="ini_parameters_resourcecleanupinterval">
+- <div>
 
   **ResourcesCleanupInterval. ** The interval in minutes (default : 0)
   after which allocated resources will be flushed..
 
   </div>
 
-- <div id="ini_parameters_futurethreadsize">
+- <div>
 
   **FutureThreadSize=100000. ** Stack size of worker threads. This is
   the stack size for serving any client SQL statements or HTTP requests.
@@ -739,7 +739,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_tempallocationpct">
+- <div>
 
   **TempAllocationPct. ** A Percentage that may be greater than 100%.
   This gives a percentage of the main .db file to which the temp db file
@@ -751,7 +751,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_odirect">
+- <div>
 
   **O_DIRECT. ** If this is non-zero, the database file(s) will be
   opened with the O_DIRECT option on platforms where this is supported.
@@ -767,7 +767,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_checkpointinterval">
+- <div>
 
   **CheckpointInterval=60. ** This is the interval in minutes at which
   Virtuoso will automatically make a database checkpoint. The automatic
@@ -787,7 +787,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_checkpointsyncmode">
+- <div>
 
   **CheckpointSyncMode=2. ** This controls how the file system is
   synchronized after a checkpoint. Once the checkpoint has issued all
@@ -803,7 +803,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_pagemapcheck">
+- <div>
 
   **PageMapCheck=0. ** This controls the check of page maps:
 
@@ -813,7 +813,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_numberofbuffers">
+- <div>
 
   **NumberOfBuffers=2000. ** This controls the amount of RAM used by
   Virtuoso to cache database files. This has a critical performance
@@ -827,7 +827,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_maxcheckpointremap">
+- <div>
 
   **MaxCheckpointRemap=2000. ** Specifies how many pages Virtuoso is
   allowed to remap. Remapping means that pages can consume the space of
@@ -839,18 +839,18 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_prefixresultnames">
+- <div>
 
   **PrefixResultNames=0. ** This setting should always be 0.
 
   </div>
 
-- <div id="ini_parameters_casemode">
+- <div>
 
   **CaseMode=1. ** This controls the case sensitivity of the Virtuoso
   SQL interpreter. The following values are supported:
 
-  <div class="itemizedlist">
+  <div>
 
   - 0 - SQL is case sensitive and identifiers are stored in the case
     they are entered in. This is similar to the Progress or Informix
@@ -868,7 +868,7 @@ section will be ignored.
 
   </div>
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                                                                 |
   |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -879,13 +879,13 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_minautocheckpointsize">
+- <div>
 
   **MinAutoCheckpointSize=4000000. ** See CheckpointInterval.
 
   </div>
 
-- <div id="ini_parameters_autocheckpointlogsize">
+- <div>
 
   **AutoCheckpointLogSize. ** This is the size of transaction log in
   bytes after which an automatic checkpoint is initiated. If this is
@@ -897,7 +897,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_checkpointaudittrail">
+- <div>
 
   **CheckpointAuditTrail=1. ** If this is non-zero each checkpoint will
   start a new log and leave the old transaction log untouched. A 0 value
@@ -919,7 +919,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_allowoscalls">
+- <div>
 
   **AllowOSCalls=0. ** If non-zero the system SQL function is enabled.
   This will allow a dba group user to run shell commands through SQL.
@@ -928,14 +928,14 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_maxstaticcursorrows">
+- <div>
 
   **MaxStaticCursorRows=5000. ** This is the maximum number of rows
   returned by a static cursor. Default = 5000
 
   </div>
 
-- <div id="ini_parameters_freetextbatchsize">
+- <div>
 
   **FreeTextBatchSize=10000000. ** This is the amount of text data
   processed in one batch of the free-text index when doing a batch
@@ -943,7 +943,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_mullunspecifiedparams">
+- <div>
 
   **NullUnspecifiedParams. ** When set to 1, if an application prepares
   a statement with insufficient number of input parameters, the
@@ -951,7 +951,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_collation">
+- <div>
 
   **Collation. ** Defines a sorting order according to SYS_COLLATIONS.
   The name supplied to this parameter must be in
@@ -960,7 +960,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_dirsallowed">
+- <div>
 
   **DirsAllowed=\<path\> \[, \<path\>\]. ** \<path\> :=
   \<absolute_path\> or \<relative_path\> comma-delimited list of OS
@@ -987,7 +987,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_dirsdenied">
+- <div>
 
   **DirsDenied=\<path\> \[, \<path\>\]. ** \<path\> := \<absolute_path\>
   or \<relative_path\> OS directories denied for file operations. See
@@ -997,7 +997,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_vadinstalldir">
+- <div>
 
   **VADInstallDir=\<path\>. ** \<path\> := \<absolute_path\> or
   \<relative_path\> OS directory containig VADs files. When set, enables
@@ -1006,28 +1006,28 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_sslserverport">
+- <div>
 
   **SSLServerPort. ** Specifies the port on which the server listens for
   incoming SSL CLI requests.
 
   </div>
 
-- <div id="ini_parameters_sslcertificate">
+- <div>
 
   **SSLCertificate. ** The SSL certificate to use (same meaning as the
   SSLCertificate in HTTPServer section)
 
   </div>
 
-- <div id="ini_parameters_sslprivatekey">
+- <div>
 
   **SSLPrivateKey. ** The server's private key (same meaning as the
   SSLCertificate in HTTPServer section)
 
   </div>
 
-- <div id="ini_parameters_maxoptimizelayouts">
+- <div>
 
   **MaxOptimizeLayouts = 1000. ** This parameter governs the maximum
   number of partial or full join orders that the Virtuoso SQL Optimized
@@ -1038,7 +1038,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_stopcompilerwhenxoverruntime">
+- <div>
 
   **StopCompilerWhenXOverRunTime = 0. ** The default value is 0. If
   non-zero, this specifies that the SQL compiler should stop considering
@@ -1052,7 +1052,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_traceon">
+- <div>
 
   **TraceOn = option1 \[, option2 \[, ..\]\]. ** This parameter accepts
   a comma-delimited list of tracing options to activate by default.
@@ -1074,7 +1074,7 @@ section will be ignored.
   | exec            |
   | soap            |
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                                                                                                     |
   |:--------------------------:|:------------------------------------------------------------------------------------------------------------------------------------|
@@ -1085,11 +1085,11 @@ section will be ignored.
 
   </div>
 
-  <div id="ex_traceoniniopt" class="example">
+  <div>
 
   **Example 6.1. Using the TraceOn ini file option**
 
-  <div class="example-contents">
+  <div>
 
   ``` programlisting
   [Parameters]
@@ -1107,12 +1107,12 @@ section will be ignored.
 
     
 
-  <div id="ex_threadcleanupinterval" class="example">
+  <div>
 
   **Example 6.2. Using the ThreadCleanupInterval and
   ResourcesCleanupInterval ini file option**
 
-  <div class="example-contents">
+  <div>
 
   ``` programlisting
   [Parameters]
@@ -1139,7 +1139,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_allowpasswordencryption">
+- <div>
 
   **AllowPasswordEncryption = 1/0. ** Determines whether Virtuoso
   encryption should be accepted from client connections. The default
@@ -1148,7 +1148,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_javaclasspath">
+- <div>
 
   **JavaClasspath. ** This parameter is applied to the environment prior
   to the server's startup. It is valid only for binaries hosted in the
@@ -1166,7 +1166,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_javavmoption">
+- <div>
 
   **JavaVMOption1..N = \<opts\>. ** These can be used for setting Java
   options for the Java runtime hosted in Virtuoso. These options work as
@@ -1184,7 +1184,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_pldebug">
+- <div>
 
   **PLDebug = 0. ** The PLDebug switch controls the type of debugging
   enabled:
@@ -1197,13 +1197,13 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_testcoverage">
+- <div>
 
   **TestCoverage = cov.xml. **
 
   </div>
 
-- <div id="ini_parameters_callstackonexception">
+- <div>
 
   **CallstackOnException = 0. ** Controls whether Virtuoso will report
   call stack on errors.
@@ -1217,7 +1217,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_compileproceduresonstartup">
+- <div>
 
   **CompileProceduresOnStartup = 1. ** This controls whether Virtuoso
   will recompile all stored procedures listed in SYS_PROCEDURES and
@@ -1233,7 +1233,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_fdsperfile">
+- <div>
 
   **FDsPerFile = 1. ** Controls the number of file descriptors per file
   to be obtained from the OS. The default and minimum value is 1. This
@@ -1245,7 +1245,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_recursivefreetextusage">
+- <div>
 
   **RecursiveFreeTextUsage = 1/0 default 1. ** This option controls the
   behavior of free-text triggers in super-tables. If this option is set
@@ -1255,7 +1255,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_recursivetriggercalls">
+- <div>
 
   **RecursiveTriggerCalls = 1/0 default 1. ** This option controls the
   behavior of super-table triggers. When this option is set to 1 then
@@ -1266,7 +1266,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_maxsortedtoprows">
+- <div>
 
   **MaxSortedTopRows = 10000. ** The TOP select statement clause caches
   in memory the rows pertinent to the result. The number of rows allowed
@@ -1289,7 +1289,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_disableunixsocket">
+- <div>
 
   **DisableUnixSocket = 0/1 default 0. ** This parameter is only
   applicable to Unix servers. Virtuoso clients on the `localhost` of the
@@ -1306,7 +1306,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_transactionafterimagelimit">
+- <div>
 
   **TransactionAfterImageLimit = N bytes default 50000000. ** When the
   roll-forward log entry of a transaction exceeds this size, the
@@ -1318,7 +1318,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_tempsesdir">
+- <div>
 
   **TempSesDir. ** Directory for storing temporary data for large object
   handled in replication and HTTP server. Defaults to server home
@@ -1326,14 +1326,14 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_dbevenable">
+- <div>
 
   **DbevEnable = 0/1 default 1. ** Enable or disable Database Event
   Hooks .
 
   </div>
 
-- <div id="ini_parameters_runas">
+- <div>
 
   **RunAs. ** Specifies the OS user name to which the server will switch
   after opening the listen ports. Has an effect only on the operating
@@ -1341,7 +1341,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_maxmempoolsize">
+- <div>
 
   **MaxMemPoolSize = 200000000. ** This parameter specifies the limit of
   the memory to be used for compiling a SQL statement. If the query
@@ -1352,7 +1352,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_defaultisolation">
+- <div>
 
   **DefaultIsolation. ** This specifies the default transaction
   isolation. This isolation is used unless overridden by a client
@@ -1364,7 +1364,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_parameters_useaio">
+- <div>
 
   **UseAIO. ** This specifies whether to use asynchronous file I/O on
   supporting Unix systems. A value of 0 means not using it. A value of 1
@@ -1375,7 +1375,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_tempdbsize">
+- <div>
 
   **TempDBSize. ** Controls the acceptable size of the temp database
   file. If on startup it's size (in MB) is greater than TempDBSize the
@@ -1386,12 +1386,12 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_litemode">
+- <div>
 
   **LiteMode = 0/1 (default 0). ** Runs server in lite mode. When Lite
   mode is on:
 
-  <div class="itemizedlist">
+  <div>
 
   - the web services are not initialized i.e. no web server, dav, soap,
     pop3 etc.
@@ -1417,14 +1417,14 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_rdffreetextrulessize">
+- <div>
 
   **RdfFreeTextRulesSize = 10 or more. ** The size of hash to control
   rdf free text index
 
   </div>
 
-- <div id="ini_indextreemaps">
+- <div>
 
   **IndexTreeMaps = 2 -1024 (power of 2). ** Size of index tree maps,
   larger is better for speed but consume memory, in lite is 2 in
@@ -1432,7 +1432,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_disabletcpsocket">
+- <div>
 
   **DisableTcpSocket = 1/0. ** Default = 0. If set to 1, disables
   database listener on TCP port; unix socket must be used for data
@@ -1442,7 +1442,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_extentreadthreshold">
+- <div>
 
   **ExtentReadThreshold. ** Controls speculative read of disk pages. If
   pages are read in close succession from an extent of 256 consecutive
@@ -1466,7 +1466,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_extentreadwindow">
+- <div>
 
   **ExtentReadWindow. ** Controls speculative read of disk pages. If
   pages are read in close succession from an extent of 256 consecutive
@@ -1481,7 +1481,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_extentreadstartupthreshold">
+- <div>
 
   **ExtentReadStartupThreshold. ** Controls speculative read of disk
   pages. If pages are read in close succession from an extent of 256
@@ -1496,7 +1496,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_extentreadstartupwindow">
+- <div>
 
   **ExtentReadStartupWindow. ** Controls speculative read of disk pages.
   If pages are read in close succession from an extent of 256
@@ -1511,7 +1511,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_columnstore">
+- <div>
 
   **ColumnStore. ** If 1, all create table and create index statements
   will create column-store structures by default.
@@ -1520,14 +1520,14 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_asyncqueuemaxthreads">
+- <div>
 
   **AsyncQueueMaxThreads. ** Sets the number of threads in a pool that
   is used for getting extra threads for running queries and for
   aq_request. Each running statement has at least one thread that is not
   allocated from this pool plus zero or more threads from this pool.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                             |
   |:--------------------------:|:------------------------------------------------------------|
@@ -1553,14 +1553,14 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_threadsperquery">
+- <div>
 
   **ThreadsPerQuery. ** This is maximum number of threads that can be
   claimed from the thread pool by a single query. A value of one means
   that no query parallelization will take place, and all queries will
   run single threaded.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                             |
   |:--------------------------:|:------------------------------------------------------------|
@@ -1582,7 +1582,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_vectorsize">
+- <div>
 
   **VectorSize. ** This the number of simultaneous sets of query
   variable bindings processed at one time. The default is 10,000, which
@@ -1596,7 +1596,7 @@ section will be ignored.
   OPTION (LOOP, ORDER)
   ```
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                             |
   |:--------------------------:|:------------------------------------------------------------|
@@ -1619,7 +1619,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_adjustvectorsize">
+- <div>
 
   **AdjustVectorSize. ** Using a larger vector size when evaluating
   large queries with indexed random-access can yield up to a 3x speed-up
@@ -1634,7 +1634,7 @@ section will be ignored.
   consecutive keys should be found on the same page, thus eliminating
   much of the index lookup cost.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                             |
   |:--------------------------:|:------------------------------------------------------------|
@@ -1649,7 +1649,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_maxquerymem">
+- <div>
 
   **MaxQueryMem. ** This controls the maximum amount of memory that can
   be used across the server process for large vectors, i.e. if the
@@ -1658,7 +1658,7 @@ section will be ignored.
   tc_no_mem_for_longer_batch counts how many times this situation is
   detected. A size letter of G or M follows the value.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                             |
   |:--------------------------:|:------------------------------------------------------------|
@@ -1673,7 +1673,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_hashjoinspace">
+- <div>
 
   **HashJoinSpace. ** This controls the maximum amount of memory that
   can be used across the server process for hash join hash tables. This
@@ -1684,7 +1684,7 @@ section will be ignored.
   partitioned hash join will be used, making as many passes over the
   data as needed so that the hash table will fit within the set limits.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                             |
   |:--------------------------:|:------------------------------------------------------------|
@@ -1699,13 +1699,13 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_maxvectorsize">
+- <div>
 
   **MaxVectorSize. ** When AdjustVectorSize is on, this setting gives
   the maximum vector size. The default is 1,000,000 and the largest
   allowed value is about 3,500,000.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                             |
   |:--------------------------:|:------------------------------------------------------------|
@@ -1720,7 +1720,7 @@ section will be ignored.
 
   </div>
 
-- <div id="ini_timezonelessdatetimes">
+- <div>
 
   **TimezonelessDatetimes. ** Enables Timezoneless Support. Different
   applications may require different behavior when input data contain
@@ -1734,7 +1734,7 @@ section will be ignored.
   effect and virtuoso.log will contain a warning about mismatch between
   virtuoso.ini and the database file.
 
-  <div class="itemizedlist">
+  <div>
 
   - TimezonelessDatetimes=0 -- Never use timezoneless, as it was in old
     databases. Always set local timezone on parsing strings if no
@@ -1796,9 +1796,9 @@ third read inside one second.
 
 </div>
 
-<div id="ini_httpserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1815,9 +1815,9 @@ third read inside one second.
 Settings in this section control the web server component of the
 Virtuoso Server.
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_httpserver_serverport">
+- <div>
 
   **ServerPort. ** This specifies the initial HTTP listen port for the
   HTTP server. Can be specified also as ipaddress:port. Once Virtuoso is
@@ -1826,7 +1826,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_httpthreadsize">
+- <div>
 
   **HTTPThreadSize = 120000. ** The stack size of the HTTP thread used
   for reading/processing HTTP client requests and accepting connections.
@@ -1836,7 +1836,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_serverthreads">
+- <div>
 
   **ServerThreads. ** This specifies the number of concurrently serviced
   HTTP requests. Its alias is
@@ -1853,7 +1853,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_httpthreadsize_01">
+- <div>
 
   **HTTPThreadSize = 120000. ** The stack size of HTTP thread used for
   reading/processing HTTP client requests and accepting connections. The
@@ -1862,7 +1862,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_serverroot">
+- <div>
 
   **ServerRoot = ../vsp. ** This is the file system path of the root
   directory of files served by the Virtuoso web server. The index.html
@@ -1871,7 +1871,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_serveridstring">
+- <div>
 
   **ServerIdString = Virtuoso. ** String passed as Server: header to
   HTTP client. This string is not required, in its absence the above
@@ -1879,7 +1879,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_clientidstring">
+- <div>
 
   **ClientIdString = Mozilla/4.0 (compatible; Virtuoso). ** String
   passed as User-Agent: header to server by HTTP client. This string is
@@ -1888,7 +1888,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_charset">
+- <div>
 
   **Charset = \[CHARSET-NAME\]. ** Allows you to set the default server
   character set. If no default is specified then ISO-8859-1 will be used
@@ -1896,7 +1896,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_enabledgzipcontent">
+- <div>
 
   **EnabledGzipContent = 0. ** This sets the default behavior of HTTP
   transmission. If set to 1 The Virtuoso HTTP server will send GZipped
@@ -1908,7 +1908,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_maxkeepalives">
+- <div>
 
   **MaxKeepAlives = 10. ** Connections by HTTP 1.1 clients can remain
   open after the initial response has been sent. This parameters sets a
@@ -1921,20 +1921,20 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_keepalivetimeout">
+- <div>
 
   **KeepAliveTimeout = 10. ** This is a timeout in seconds before
   Virtuoso closes an idle HTTP 1.1 connection.
 
   </div>
 
-- <div id="ini_httpserver_httpproxyenabled">
+- <div>
 
   **HTTPProxyEnabled = 0. ** Setting this to 1 activates Virtuoso proxy
   service capabilities. The default value of 0 deactivates the proxy
   service.
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                      |
   |:----------------------------:|:-----------------------------------------------------------------------------------------------------|
@@ -1945,21 +1945,21 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_httpproxyserver">
+- <div>
 
   **HTTPProxyServer = proxylocal:3128. ** HTTP proxy server name and
   port
 
   </div>
 
-- <div id="ini_httpserver_httpproxyexceptions">
+- <div>
 
   **HTTPProxyExceptions = localhost:8890, 127.0.0.1:8890. ** HTTP proxy
   exceptions name and port.
 
   </div>
 
-- <div id="ini_httpserver_httplogfile">
+- <div>
 
   **HTTPLogFile = log.out. ** If specified, Virtuoso will produce an
   HTTP server log file with the date appended to the name given in the
@@ -1988,7 +1988,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_httplogformat">
+- <div>
 
   **HTTPLogFormat = format string like apache mod_log. **
   "HTTPLogFormat" INI file param works in conjunction with the
@@ -2016,7 +2016,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_maccachedproxyconnections">
+- <div>
 
   **MaxCachedProxyConnections = 10. ** When Virtuoso is acting as a
   proxy or HTTP client, as is the case with the http_get or the SOAP
@@ -2025,7 +2025,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_proxyconnectioncachetimeout">
+- <div>
 
   **ProxyConnectionCacheTimeout = 15. ** This is a timeout in seconds
   for dropping idle connections to other HTTP servers. These result from
@@ -2033,7 +2033,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_davroot">
+- <div>
 
   **DavRoot = DAV. ** This specifies the root path of DAV resources. If
   DAV specific HTTP methods are used on Virtuoso, these should only
@@ -2044,7 +2044,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_davquotaenabled">
+- <div>
 
   **DAVQuotaEnabled = 1/0. ** The Virtuoso administrator can enforce a
   quota on all DAV accounts, apart from the "dav" administration user,
@@ -2058,7 +2058,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_davchunkedquota">
+- <div>
 
   **DAVChunkedQuota = 1000000. ** Virtuoso send resources to from WebDAV
   to the requesting client in chunked encoding to save memory if the
@@ -2068,7 +2068,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_sslport">
+- <div>
 
   **SSLPort=4433. ** this is the port on which SSL HTTPS connections
   will be accepted. Can be specified also as ipaddress:port. If
@@ -2076,7 +2076,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_sslcertificate">
+- <div>
 
   **SSLCertificate=./virtuoso_cert.pem. ** the option must point to the
   file with the server certificate in PEM format.
@@ -2086,7 +2086,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_sslprivatekey">
+- <div>
 
   **SSLPrivateKey=./virtuoso_key.pem. ** points to the file containing
   the RSA private key in PEM format.
@@ -2101,7 +2101,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_x509clientverify">
+- <div>
 
   **X509ClientVerify=0. ** Whether the server will require X509
   certificates from the browsers.
@@ -2113,7 +2113,7 @@ Virtuoso Server.
   | <span class="emphasis">*X509ClientVerify = 2*</span> - optionally ask for trusted certificates, if trusted certificate is presented it will be verified |
   | <span class="emphasis">*X509ClientVerify = 3*</span> - optionally accept any certificate including self-signed certificates                             |
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                                  |
   |:--------------------------:|:-----------------------------------------------------------------|
@@ -2125,7 +2125,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_x509clientverifydepth">
+- <div>
 
   **X509ClientVerifyDepth=1. ** Specifies how deep the client
   certificate verification process will traverse the Issuer chain before
@@ -2135,7 +2135,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_x509clientverifycafile">
+- <div>
 
   **X509ClientVerifyCAFile=./calist.pem. ** a PEM file of all the X509
   certificates of the Certification Authorities (CA) which the server
@@ -2150,7 +2150,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_pop3port">
+- <div>
 
   **POP3Port=1234. ** Defines the TCP port number on which the Virtuoso
   POP3 server will listen. The POP3 server will be disabled if this
@@ -2158,7 +2158,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_newsserverport">
+- <div>
 
   **NewsServerPort=1235. ** Defines the TCP port number on which the
   Virtuoso NNTP server will listen. The NNTP server will be disabled if
@@ -2166,7 +2166,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_ftpserverport">
+- <div>
 
   **FTPServerPort. ** The Virtuoso FTP server can be enabled by
   supplying this parameter with a value. This value will then be the
@@ -2174,7 +2174,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_ftpserverminfreeport">
+- <div>
 
   **FTPServerMinFreePort = 20000. ** The Virtuoso FTP client and server
   use FTPServerMinFreePort and FTPServerMaxFreePort parameters as lower
@@ -2183,7 +2183,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_ftpservermaxfreeport">
+- <div>
 
   **FTPServerMaxFreePort = 30000. ** The Virtuoso FTP client and server
   use FTPServerMinFreePort and FTPServerMacFreePort parameters as lower
@@ -2192,7 +2192,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_ftpserverlogfile">
+- <div>
 
   **FTPServerLogFile = ftpserver. ** If specified Virtuoso will produce
   an FTP server log file with the date appended to the name given in the
@@ -2222,7 +2222,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_ftpserveranonymouslogin">
+- <div>
 
   **FTPServerAnonymousLogin = 0. ** Allows the FTP server to be
   accessible via the "anonymous" user login. The anonymous user is not a
@@ -2231,7 +2231,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_defaultmailserver">
+- <div>
 
   **DefaultMailServer=localhost:25. ** Default SMTP server name and
   port, this is used when the first parameter of the smtp_send function
@@ -2239,14 +2239,14 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_tempaspxdir">
+- <div>
 
   **TempASPXDir. ** Allows you to choose what file system directory to
   be used for temporary storage of ASPX files hosted in DAV.
 
   </div>
 
-- <div id="ini_httpserver_persistenthostingmodules">
+- <div>
 
   **PersistentHostingModules = \[1/\]0. ** When set to "1" prevents
   Virtuoso from removing the plugin interpreters from the HTTP threads
@@ -2254,7 +2254,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_httpsessionsize">
+- <div>
 
   **HttpSessionSize = size in bytes, default 10000000. ** The size
   threshold for large objects received by HTTP server. When this limit
@@ -2263,7 +2263,7 @@ Virtuoso Server.
 
   </div>
 
-- <div id="ini_httpserver_maintenancepage">
+- <div>
 
   **MaintenancePage = file_name. ** The name of a HTML page or other
   static content to be returned to the user agents when server is
@@ -2276,9 +2276,9 @@ Virtuoso Server.
 
 </div>
 
-<div id="ini_flags" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2292,9 +2292,9 @@ Virtuoso Server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_uriqa_enablejoinsonly">
+- <div>
 
   **enable_joins_only = 0. ** Setting enable_joins_only will cause the
   optimizer to only consider next plan candidates that are connected by
@@ -2307,9 +2307,9 @@ Virtuoso Server.
 
 </div>
 
-<div id="ini_uriqa" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2332,9 +2332,9 @@ title="19.2.3. URIQA Section in Virtuoso Configuration File">URIQA
 configuration parameters</a> . This section should stay commented out as
 long as URIQA is not in use.
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_uriqa_defaulthost">
+- <div>
 
   **DefaultHost = canonical name of the server, used by default for
   metadata retrieval, no default value. ** The server name, including
@@ -2343,7 +2343,7 @@ long as URIQA is not in use.
 
   </div>
 
-- <div id="ini_uriqa_localhostnames">
+- <div>
 
   **LocalHostNames = comma-delimited list of names of the server, that
   can be used for retrieval of metadata, no default value. ** List of
@@ -2353,7 +2353,7 @@ long as URIQA is not in use.
 
   </div>
 
-- <div id="ini_uriqa_localhostmasks">
+- <div>
 
   **LocalHostMasks = comma-delimited list of name masks of the server,
   no default value. ** List of various allowed spellings of the server
@@ -2362,7 +2362,7 @@ long as URIQA is not in use.
 
   </div>
 
-- <div id="ini_uriqa_fingerprint">
+- <div>
 
   **Fingerprint = unique fingerprint string of the server or group of
   identical servers, no default value. ** Do not use this without an
@@ -2373,7 +2373,7 @@ long as URIQA is not in use.
 
   </div>
 
-- <div id="ini_uriqa_dynamiclocal">
+- <div>
 
   **DynamicLocal = 1/0 default 0, allow dynamic hostname translation in
   the IRIs. ** If DynamicLocal is on and the host part of the IRI
@@ -2387,9 +2387,9 @@ long as URIQA is not in use.
 
 </div>
 
-<div id="ini_sparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2408,9 +2408,9 @@ web service service. This section should stay commented out as long as
 SPARQL is not in use. Section RDF Data Access and Data Management
 contains detailed description of this functionality.
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_sparql_externalquerysource">
+- <div>
 
   **ExternalQuerySource = 1 or 0 . ** This controls processing of the
   "query-uri" parameter of the SPARQL query protocol webservice, means
@@ -2418,7 +2418,7 @@ contains detailed description of this functionality.
 
   </div>
 
-- <div id="ini_minexpiration">
+- <div>
 
   **MinExpiration = 86400 . ** Sponger caching parameter in seconds. It
   will cause sponger to use this value as minimal expiration of the
@@ -2427,21 +2427,21 @@ contains detailed description of this functionality.
 
   </div>
 
-- <div id="ini_maxcacheexpiration">
+- <div>
 
   **MaxCacheExpiration = 1 . ** Cache Expiration time in seconds that
   overrides Sponger's default cache invalidation.
 
   </div>
 
-- <div id="ini_maxdatasourcesize">
+- <div>
 
   **MaxDataSourceSize = 20971520 . ** Controls the max size that can be
   sponged. Default is 20 MB.
 
   </div>
 
-- <div id="ini_sparql_externalxsltsource">
+- <div>
 
   **ExternalXsltSource = 1 or 0 . ** This controls processing of the
   "xslt-uri" parameter of the SPARQL query protocol webservice, means
@@ -2449,7 +2449,7 @@ contains detailed description of this functionality.
 
   </div>
 
-- <div id="ini_sparql_resultsetmaxrows">
+- <div>
 
   **ResultSetMaxRows = number . ** This setting is used to limit the
   number of the rows in the result. The effective limit will be the
@@ -2461,14 +2461,14 @@ contains detailed description of this functionality.
 
   </div>
 
-- <div id="ini_sparql_defaultgraph">
+- <div>
 
   **DefaultGraph = IRI . ** IRI of the default graph to be used if no
   "default-graph-uri" parameter is specified.
 
   </div>
 
-- <div id="ini_sparql_maxquerycostestimationtime">
+- <div>
 
   **MaxQueryCostEstimationTime = seconds . ** This setting is used to
   limit the estimate time cost of the query to certain number of
@@ -2476,7 +2476,7 @@ contains detailed description of this functionality.
 
   </div>
 
-- <div id="ini_sparql_maxqueryexecutiontime">
+- <div>
 
   **MaxQueryExecutionTime = seconds . ** This setting is used to set the
   transaction execution timeout to certain limit in number of seconds,
@@ -2484,34 +2484,34 @@ contains detailed description of this functionality.
 
   </div>
 
-- <div id="ini_sparql_immutablegraphs">
+- <div>
 
   **ImmutableGraphs = URI . ** IRI of graphs over which the sponger not
   to be able able to write.
 
   </div>
 
-- <div id="ini_sparql_pingservice">
+- <div>
 
   **PingService = URI . ** IRI of notification service to which the
   sponger results will be send.
 
   </div>
 
-- <div id="ini_sparql_defaultquery">
+- <div>
 
   **DefaultQuery = SPARQL Query . ** Default SPARQL Query.
 
   </div>
 
-- <div id="ini_sparql_deferinferencerulesinit">
+- <div>
 
   **DeferInferenceRulesInit = 1 . ** Defer Loading of inference rules at
   start up.
 
   </div>
 
-- <div id="ini_sparql_shortenlonguris">
+- <div>
 
   **ShortenLongURIs = 1 . ** Shorten extremely long URIs in datasets
   when loading with the RDF Bulk Loader. Default is 0.
@@ -2528,7 +2528,7 @@ contains detailed description of this functionality.
 
   </div>
 
-- <div id="ini_sparql_maxmeminuse">
+- <div>
 
   **MaxMemInUse = 0 . ** Maximum amount of memory that is allowed for
   temporary storing parts of a SPARQL query result. Default is zero for
@@ -2549,9 +2549,9 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
 </div>
 
-<div id="ini_i18n" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2565,15 +2565,15 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_i18n_xanynormalization">
+- <div>
 
   **XAnyNormalization = 1/2/3/0. ** 0: default value. It means not to
   normalize anything, so, for example, "José" and "Jose" are two
   distinct words.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                                                                        |
   |:--------------------------:|:-------------------------------------------------------------------------------------------------------|
@@ -2608,7 +2608,7 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
   </div>
 
-- <div id="ini_i18n_widefilenames">
+- <div>
 
   **WideFileNames = 1/0. ** Default is 0. When 1 then file access and
   directory listing functions may use wide strings as file names. If a
@@ -2620,7 +2620,7 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
   </div>
 
-- <div id="ini_i18n_volumeencoding">
+- <div>
 
   **VolumeEncoding. ** Encoding identifier. If set, file names are
   translated from wide strings and default server encoding to the
@@ -2632,7 +2632,7 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
   </div>
 
-- <div id="ini_i18n_volumeemergencyencoding">
+- <div>
 
   **VolumeEmergencyEncoding. ** Encoding identifier. If set, this
   encoding is used when the use of VolumeEncoding causes encoding
@@ -2643,7 +2643,7 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
   </div>
 
-- <div id="ini_i18n_volumeemergencyencodingdirs">
+- <div>
 
   **VolumeEmergencyEncodingDirs. ** List of directories in same syntax
   as DirsAllowed, default is empty. If set, all file names in the listed
@@ -2658,9 +2658,9 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
 </div>
 
-<div id="ini_replication" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2677,16 +2677,16 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 The replication section sets the transactional replication parameters
 for the server.
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_replication_serverenable">
+- <div>
 
   **ServerEnable=0/1. ** A boolean parameter controlling whether a
   Virtuoso can or cannot act as a transactional replication publisher.
 
   </div>
 
-- <div id="ini_replication_servername">
+- <div>
 
   **ServerName = log1. ** This identifies the server instance. The
   entries in SYS_REPL_ACCOUNTS where SERVER equals this name are
@@ -2695,7 +2695,7 @@ for the server.
 
   </div>
 
-- <div id="ini_replication_queuemax">
+- <div>
 
   **QueueMax = 50000. ** This controls how much synchronized
   transactional subscribers may fall behind before being disconnected.
@@ -2711,9 +2711,9 @@ for the server.
 
 </div>
 
-<div id="ini_mono" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2727,9 +2727,9 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_mono_mono_root">
+- <div>
 
   **MONO_ROOT. ** A path to the directory where the Mono system
   assemblies are located. Usually it is a compile time setting, but the
@@ -2738,7 +2738,7 @@ for the server.
 
   </div>
 
-- <div id="ini_mono_mono_path">
+- <div>
 
   **MONO_PATH. ** A colon separated list of directories where the
   assemblies are located to be found by Assembly.Load (equivalent to
@@ -2747,7 +2747,7 @@ for the server.
 
   </div>
 
-- <div id="ini_mono_mono_cfg_dir">
+- <div>
 
   **MONO_CFG_DIR. ** A path where the 'machine.config' file is to be
   found while running the ASPX code in Mono. This ini setting overrides
@@ -2756,14 +2756,14 @@ for the server.
 
   </div>
 
-- <div id="ini_mono_virtclr.dll">
+- <div>
 
   **virtclr.dll. ** A fully qualified path and filename of the
   virtclr.dll virtuoso helper assembly.
 
   </div>
 
-- <div id="ini_mono_mono_trace">
+- <div>
 
   **MONO_TRACE = Off. ** Mono debug tracing can be enabled by setting
   this parameter to On. When tracing is On, Mono debug output with be
@@ -2775,9 +2775,9 @@ for the server.
 
 </div>
 
-<div id="ini_client" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2791,9 +2791,9 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_client_sql_query_timeout">
+- <div>
 
   **SQL_QUERY_TIMEOUT=0. ** This sets the initial value of the
   SQL_QUERY_TIMEOUT statement option in connected clients. The ODBC
@@ -2804,7 +2804,7 @@ for the server.
 
   </div>
 
-- <div id="ini_client_sql_txn_timeout">
+- <div>
 
   **SQL_TXN_TIMEOUT=0. ** This is an ODBC extension option allowing
   setting a maximum duration for a transaction. 0 means that there is no
@@ -2812,7 +2812,7 @@ for the server.
 
   </div>
 
-- <div id="ini_client_sql_prefetch_rows">
+- <div>
 
   **SQL_PREFETCH_ROWS=100. ** For a forward only cursor, this option
   sets the number of rows prefetched at the execute and on subsequent
@@ -2825,7 +2825,7 @@ for the server.
 
   </div>
 
-- <div id="ini_client_sql_prefetch_bytes">
+- <div>
 
   **SQL_PREFETCH_BYTES=16000. ** This option specifies the maximum
   number of bytes the server will send as prefetched rows on a forward
@@ -2835,7 +2835,7 @@ for the server.
 
   </div>
 
-- <div id="ini_client_sql_no_char_c_escape">
+- <div>
 
   **SQL_NO_CHAR_C_ESCAPE=0. ** This options is 0 by default and can be
   either 1 or 0. This option controls Virtuoso's interpretation of the
@@ -2844,7 +2844,7 @@ for the server.
 
   </div>
 
-- <div id="ini_client_sql_utf8_execs">
+- <div>
 
   **SQL_UTF8_EXECS = 0. ** Setting SQL_UTF8_EXECS = 1 enables UTF-8
   identifier storage and retrieval, whereas setting SQL_UTF8_EXECS = 0
@@ -2855,7 +2855,7 @@ for the server.
 
   </div>
 
-- <div id="ini_client_sql_binary_timestamp">
+- <div>
 
   **SQL_BINARY_TIMESTAMP = 1. ** When SQL_BINARY_TIMESTAMP is set to 1
   Virtuoso will describe all TIMESTAMP columns as SQL_BINARY. If it is
@@ -2864,7 +2864,7 @@ for the server.
 
   </div>
 
-- <div id="ini_client_sql_no_system_tables">
+- <div>
 
   **SQL_NO_SYSTEM_TABLES = 0. ** This setting can be used to prevent
   SQLTables from returning system tables. The default value of this
@@ -2879,9 +2879,9 @@ for the server.
 
 </div>
 
-<div id="ini_autorepair" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2895,9 +2895,9 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_autorepair_badparentlinks">
+- <div>
 
   **BadParentLinks=0. ** As a result of an internal error in the
   database the physical integrity of references may be lost. Enabling
@@ -2911,9 +2911,9 @@ for the server.
 
 </div>
 
-<div id="ini_vdb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2927,9 +2927,9 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_vdb_arrayoptimization">
+- <div>
 
   **ArrayOptimization=0/1. ** Boolean parameter which allows the
   Virtuoso VDB to use Array parameters if the remote data source
@@ -2937,7 +2937,7 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_usemts">
+- <div>
 
   **UseMTS = 0. ** This parameter turns on/off MTS support in Virtuoso.
   It is applicable to windows multithreaded version of the Virtuoso
@@ -2945,21 +2945,21 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_numarrayparameters">
+- <div>
 
   **NumArrayParameters. ** Specifies a size of the parameter batch used
   by the VDB (default = 10)
 
   </div>
 
-- <div id="ini_vdb_vdbdisconnecttimeout">
+- <div>
 
   **VDBDisconnectTimeout. ** The time (in seconds) after which a VDB
   connection is considered timed-out and closed. Default : 1000
 
   </div>
 
-- <div id="ini_vdb_vdboraclecatalogfix">
+- <div>
 
   **VDBOracleCatalogFix=0/1. ** This setting can be enabled to improve
   compatibility with the MS Oracle Driver which has problems with mixed
@@ -2973,7 +2973,7 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_attachinautocommit">
+- <div>
 
   **AttachInAutoCommit. ** An boolean parameter controlling whether the
   VDB Catalog functions called while attaching a table will be called in
@@ -2981,13 +2981,13 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_numarrayparameters_01">
+- <div>
 
   **NumArrayParameters=10. **
 
   </div>
 
-- <div id="ini_vdb_reconnectonfailure">
+- <div>
 
   **ReconnectOnFailure=0 \[1\|0\]. ** The default setting of 0 instructs
   the VDB layer to return underlying DB errors to the client rather than
@@ -2996,7 +2996,7 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_keepconnectiononfixedthread">
+- <div>
 
   **KeepConnectionOnFixedThread=1 \[0\|1\|2\|4\|8\]. ** The default
   option is 1, this forces the VDB to map a single thread to each ODBC
@@ -3039,14 +3039,14 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_prpcbursttimeoutmsecs">
+- <div>
 
   **PrpcBurstTimeoutMsecs=100 (milliseconds). ** RPC burst mode timeout
   in milliseconds. (see above)
 
   </div>
 
-- <div id="ini_vdb_serializeconnect">
+- <div>
 
   **SerializeConnect=0 \[1\|0\]. ** When enabled causes Virtuoso to wrap
   SQLAllocConnect/SQLConnect calls sequence in a mutex, thus preventing
@@ -3057,7 +3057,7 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_skipdmlprimarykey">
+- <div>
 
   **SkipDMLPrimaryKey=0 \[1\|0\]. ** This setting controls SQL
   compilation (not execution) for conditions where rows in a local table
@@ -3071,7 +3071,7 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_remotepknotunique">
+- <div>
 
   **RemotePKNotUnique=0 \[1\|0\]. ** This option controls the SQL
   compiler ability to do some optimizations when it knows it will
@@ -3085,7 +3085,7 @@ for the server.
 
   </div>
 
-- <div id="ini_vdb_useglobalpool">
+- <div>
 
   **UseGlobalPool=0 \[1\|0\]. ** This option controls the aggregation
   point of the VDB connection pools. When it is off (=0, the default)
@@ -3108,9 +3108,9 @@ for the server.
 
 </div>
 
-<div id="ini_ucms" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3124,9 +3124,9 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_ucms_ucmpath">
+- <div>
 
   **UcmPath. ** String parameter which specifies the path where UCM
   files are located. If this parameter is not specified, UCM files
@@ -3134,7 +3134,7 @@ for the server.
 
   </div>
 
-- <div id="ini_ucms_ucm">
+- <div>
 
   **Ucm1, Ucm2,... Ucm99. ** Every UcmN parameter specifies one UCM file
   to load. The value of UcmN is a pair of comma delimited strings. The
@@ -3156,9 +3156,9 @@ for the server.
 
 </div>
 
-<div id="ini_zeroconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3172,9 +3172,9 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_zeroconfig_servername">
+- <div>
 
   **ServerName. ** Name used to advertise the Virtuoso ODBC service
   details in ZeroConfig. This is the name that will be shown to clients
@@ -3182,7 +3182,7 @@ for the server.
 
   </div>
 
-- <div id="ini_zeroconfig_serverdsn">
+- <div>
 
   **ServerDSN. ** An ODBC style connect string to preset the values of
   the parameters when the ODBC service offered by this server is
@@ -3190,14 +3190,14 @@ for the server.
 
   </div>
 
-- <div id="ini_zeroconfig_sslservername">
+- <div>
 
   **SSLServerName. ** Name used to advertise the Virtuoso ODBC SSL
   encrypted service details in ZeroConfig.
 
   </div>
 
-- <div id="ini_zeroconfig_sslserverdsn">
+- <div>
 
   **SSLServerDSN. ** An ODBC style connect string to preset the values
   of the parameters when the ODBC SSL encrypted service offered by this
@@ -3207,7 +3207,7 @@ for the server.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                  |
 |:--------------------------:|:-----------------------------------------------------------------|
@@ -3220,9 +3220,9 @@ for the server.
 
 </div>
 
-<div id="ini_plugins" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3236,16 +3236,16 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_plugins_loadpath">
+- <div>
 
   **LoadPath = /home/virtuoso/hosting. ** The directory containing
   shared objects/libraries for use as Virtuoso VSEI plugins.
 
   </div>
 
-- <div id="ini_plugins_load">
+- <div>
 
   **Load\<number\> = \<module type\>, \<module name\>. ** `<number>` is
   the module load number, required and starting with 1. `<module type>`
@@ -3269,7 +3269,7 @@ for the server.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |              |
 |:--------------------------:|:-------------|
@@ -3280,9 +3280,9 @@ for the server.
 
 </div>
 
-<div id="ini_striping" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3296,9 +3296,9 @@ for the server.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
-- <div id="ini_striping_segment">
+- <div>
 
   **Segment\<number\> = \<size\>, \<stripe file name\> \[, \<stripe file
   name\> .. \]. ** \<number\> must be ordered from 1 upwards; The
@@ -3343,7 +3343,7 @@ divided equally across all stripes comprising the segment. Its
 specification can be in gigabytes (g), megabytes (m), kilobytes (k) or
 in database blocks (b) the default.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                       |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -3366,7 +3366,7 @@ join temporary spaces or such are expected. This is enabled by the
 Striping setting in the Temp Database section of the ini file. The
 stripes will be declared in the TempStriping section.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                |
 |:--------------------------:|:-------------------------------------------------------------------------------|
@@ -3380,9 +3380,9 @@ stripes will be declared in the TempStriping section.
 
 </div>
 
-<div id="sampleinifile" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3502,9 +3502,9 @@ Segment2    = 100M, db-seg2-1.db
 
 </div>
 
-<div id="confvectexec" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3529,7 +3529,7 @@ These are discussed in the SQL reference section on vectoring.
 
 Vectored execution is controlled by the following virtuoso.ini settings:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*VectorSize = 10000*</span>
 
@@ -3607,9 +3607,9 @@ class="function">__dbf_set()</code></a> function.
 
 </div>
 
-<div id="indexdefragm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3620,6 +3620,16 @@ class="function">__dbf_set()</code></a> function.
 </div>
 
 </div>
+
+</div>
+
+<div>
+
+|                              |                                                                                                                                                                                                                                                                    |
+|:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![\[Note\]](images/note.png) | Note                                                                                                                                                                                                                                                               |
+|                              | This section only applies to storage of indexes, not data. Index storage optimization happens automatically in Virtuoso v6 and greater. Users wishing to compact the whole database file itself should perform a <a href="ch-server.html#vdbrecovery" class="link" 
+                                title="Database Recovery">backup-dump/restore-crash-dump</a> cycle instead.                                                                                                                                                                                         |
 
 </div>
 
@@ -3703,9 +3713,9 @@ Virtuoso has an autocompact feature.
 
 </div>
 
-<div id="commandline" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3719,9 +3729,9 @@ Virtuoso has an autocompact feature.
 
 </div>
 
-<div id="ch-server_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3898,7 +3908,7 @@ options that would be associated with the new service entry. If you were
 using an alternative configuration file this must be specified using
 <span class="emphasis">*+configfile*</span> switch.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                          |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -3911,9 +3921,9 @@ using an alternative configuration file this must be specified using
 
 </div>
 
-<div id="rendezvous" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3966,9 +3976,9 @@ configuration. This is used when existing DSN using a ZeroConfig name is
 used to connect, it will map name with IP address and port before making
 a connection.
 
-<div id="rendezvousserverside" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4000,7 +4010,7 @@ The ServerName and SSLServerName are human readable strings chosen by
 the administrator to provide clients with a suitable description of the
 service being provided.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                        |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -4021,9 +4031,9 @@ all available network interfaces.
 
 </div>
 
-<div id="rendezvous_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4057,9 +4067,9 @@ use.
 
 </div>
 
-<div id="dbstat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4084,9 +4094,9 @@ The database status report is divided into 6 sections:
 | Replication |
 | Index Usage |
 
-<div id="ch-server_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4107,9 +4117,9 @@ running on any thread.
 
 </div>
 
-<div id="database" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4177,7 +4187,7 @@ checkpoint space instead of one, the mapped back count is the number of
 pages that will return to their original place in checkpoint space at
 the next checkpoint. Understanding these is not necessary.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|
@@ -4188,9 +4198,9 @@ the next checkpoint. Understanding these is not necessary.
 
 </div>
 
-<div id="locks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4224,9 +4234,9 @@ client. A log or replication replay transaction is here named
 
 </div>
 
-<div id="clients" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4248,9 +4258,9 @@ following the status. IE means exclusive and IS shared lock.
 
 </div>
 
-<div id="replication" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4276,7 +4286,7 @@ progress, IN SYNC if the account is up to date or REMOTE DISCONNECTED if
 there was a connection to a remote party which subsequently
 disconnected.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                |
 |:--------------------------:|:---------------------------------------------------------------|
@@ -4288,9 +4298,9 @@ disconnected.
 
 </div>
 
-<div id="indexusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4338,9 +4348,9 @@ Will print out the report.
 
 </div>
 
-<div id="oemrelabeling" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4382,9 +4392,9 @@ making changes to the registry.
 
 </div>
 
-<div id="dbsrcsecurity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4398,9 +4408,9 @@ making changes to the registry.
 
 </div>
 
-<div id="srvadmencryption" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4419,9 +4429,9 @@ SSL. The server listens on a separate port for SSL CLI connections and
 handles them just as the normal CLI connections, vut now providing
 transport level security.
 
-<div id="srvsidesupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4456,9 +4466,9 @@ non-SSL port the server rejects the connection.
 
 </div>
 
-<div id="clisidesupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4511,9 +4521,9 @@ configure encryption.
 
 </div>
 
-<div id="x509certsupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4565,7 +4575,7 @@ certificate chains in order to be used for ODBC X509 validation. The
 client certificate from the PKCS#12 file will not take place in the
 server certificate validation process.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                     |
 |:--------------------------:|:----------------------------------------------------|
@@ -4580,9 +4590,9 @@ server certificate validation process.
 
 </div>
 
-<div id="acl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4608,7 +4618,7 @@ DirsDenied = <path> [, <path>]
 <path> := <absolute_path> or <relative_path>
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                       |
 |:----------------------------:|:----------------------------------------------------------------------|
@@ -4635,7 +4645,7 @@ SQL> select cfg_item_value (virtuoso_ini_path (), 'Parameters',
 'DirsAllowed');
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                         |
 |:--------------------------:|:------------------------------------------------------------------------|
@@ -4671,7 +4681,7 @@ The following functions are restricted by file Access Control Lists
  title="string_to_file">string_to_file</a>                |
 | cfg_write                                               |
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------|
@@ -4686,9 +4696,9 @@ The following functions are restricted by file Access Control Lists
 
 </div>
 
-<div id="vdbconcepts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4702,9 +4712,9 @@ The following functions are restricted by file Access Control Lists
 
 </div>
 
-<div id="linkrmttableauto" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4732,9 +4742,9 @@ title="Manually Setting Up A Remote Data Source">Manually Setting Up A
 Remote Data Source</a> which is useful for connections to less-capable
 ODBC data-sources.
 
-<div id="attach" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4754,7 +4764,7 @@ ATTACH TABLE <table> [PRIMARY KEY '(' <column> [, ...] ')']
   [ON SELECT] [REMOTE AS <literal_table_name>]
 ```
 
-<div class="variablelist">
+<div>
 
 <span class="term">table</span>  
 Adequately qualified table name of the form: identifier \|
@@ -4812,9 +4822,9 @@ qualification correctly.
 
 </div>
 
-<div id="attachview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4837,7 +4847,7 @@ This is done with the PRIMARY KEY option to ATTACH TABLE as follows:
 attach table T1_VIEW primary key (ROW_NO) from 'somedsn';
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                  |
 |:----------------------------:|:-----------------------------------------------------------------|
@@ -4848,9 +4858,9 @@ attach table T1_VIEW primary key (ROW_NO) from 'somedsn';
 
 </div>
 
-<div id="linkrmttableautoexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4864,7 +4874,7 @@ attach table T1_VIEW primary key (ROW_NO) from 'somedsn';
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="vdbenginemclink.html" class="link"
   title="8.2.3. Linking Oracle tables into OpenLink Virtuoso">Oracle</a>
@@ -4911,9 +4921,9 @@ attach table T1_VIEW primary key (ROW_NO) from 'somedsn';
 
 </div>
 
-<div id="linkrmtprocauto" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4927,9 +4937,9 @@ attach table T1_VIEW primary key (ROW_NO) from 'somedsn';
 
 </div>
 
-<div id="attachproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4949,7 +4959,7 @@ ATTACH (PROCEDURE|FUNCTION) <proc_name> ([<parameter1>[,<parameter2>[...]]])
     
 ```
 
-<div class="variablelist">
+<div>
 
 <span class="term">dsn</span>  
 scalar_exp
@@ -5007,11 +5017,11 @@ exact name as it is on the remote dsn, case unmodified.
 If a dsn is not previously defined with vd_remote_data_source or ATTACH
 TABLE, the ATTACH PROCEDURE will fail.
 
-<div id="vdocs-trans-01" class="example">
+<div>
 
 **Example 6.3. Example:**
 
-<div class="example-contents">
+<div>
 
 On remote Virtuoso (DSN name : remote_virt):
 
@@ -5051,9 +5061,9 @@ MIXED CASE
 
 </div>
 
-<div id="id1321" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5067,7 +5077,7 @@ MIXED CASE
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                  |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -5081,9 +5091,9 @@ MIXED CASE
 
 </div>
 
-<div id="typemapping" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5113,11 +5123,11 @@ and the equivalent entries are created in Virtuoso. Since the types
 present on different DBMS's vary, the following logic is used to map
 ODBC types to Virtuoso types.
 
-<div id="id12054" class="decimalstyle">
+<div>
 
 **Table 6.1. Attach Table Type Mappings**
 
-<div class="decimalstyle-contents">
+<div>
 
 <table data-summary="Attach Table Type Mappings" data-border="1">
 <thead>
@@ -5236,7 +5246,7 @@ data-charoff="50">SQL_TIMESTAMP</td>
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                         |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------|
@@ -5247,9 +5257,9 @@ data-charoff="50">SQL_TIMESTAMP</td>
 
 </div>
 
-<div id="transmodel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5292,9 +5302,9 @@ Transaction &amp; Two Phase Commit</a> section for more information.
 
 </div>
 
-<div id="vdb_sqlfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5344,9 +5354,9 @@ different instances can have different user defined functions defined.
 
 </div>
 
-<div id="vdb_sqloptstatistics" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5416,9 +5426,9 @@ type of DBMS. Please contact support for instructions on this.
 
 </div>
 
-<div id="vdb_distrqueryoptm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5501,9 +5511,9 @@ located on r1.
 
 </div>
 
-<div id="vdb_arrayparameters" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5550,9 +5560,9 @@ This may however not work with some drivers even if DML
 
 </div>
 
-<div id="timestamp_autoincrement" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5591,9 +5601,9 @@ datetime.
 
 </div>
 
-<div id="vdbstoredprocs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5610,7 +5620,7 @@ datetime.
 These procedures allow you to manually manage remote data sources and
 their tables.
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_vd_remote_data_source.html" class="link"
   title="vd_remote_data_source">vd_remote_data_source()</a>
@@ -5656,7 +5666,7 @@ especially useful in Virtuoso PL later on if you are not able to know
 everything about the remote tables ahead of time for the ATTACH TABLE
 statement
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_sql_data_sources.html" class="link"
   title="sql_data_sources">sql_data_sources()</a>
@@ -5677,9 +5687,9 @@ statement
 
 </div>
 
-<div id="mansetrds" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5703,11 +5713,11 @@ This has no connection to the table's qualifier.
 Assume a remote ODBC data source named test containing a table xyz
 declared as follows:
 
-<div id="vdocs-trans-01_01" class="example">
+<div>
 
 **Example 6.4. Example:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
    CREATE TABLE XYZ (
@@ -5754,9 +5764,9 @@ passed through.
 
 </div>
 
-<div id="bugslimits" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5770,7 +5780,7 @@ passed through.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Never attempt to attach a local table as a remote. The server will
   hang if it tries to make a remote commit on itself.
@@ -5811,9 +5821,9 @@ columns are SQL_DESC_SEARCHABLE.
 
 </div>
 
-<div id="usermodel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5840,7 +5850,7 @@ There is a set of functions for administering the users and groups
 (roles) of a Virtuoso database. All the user administration functions
 are restricted to members of the dba group only.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                          |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -5875,9 +5885,9 @@ request, the applicable virtual directory specifies on behalf of which
 SQL account the SQL is executed. A role cannot be the owner of
 procedures, views or other executable SQL entities.
 
-<div id="vumsecobjects" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5933,9 +5943,9 @@ Appendix
 
 </div>
 
-<div id="vumuseroptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -5949,7 +5959,7 @@ Appendix
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - **PASSWORD_MODE. ** Function for checking a given password on SQL or
   DAV login. See below.
@@ -6004,9 +6014,9 @@ far.
 
 </div>
 
-<div id="vumloginexthook" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6029,7 +6039,7 @@ database. Or, this can be used to perform some pre-login actions. It is
 similar to the DBEV_LOGIN, but it does not change any account validation
 rule, it is purely for pre-processing.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                   |
 |:--------------------------:|:----------------------------------|
@@ -6038,9 +6048,9 @@ rule, it is purely for pre-processing.
 
 </div>
 
-<div id="vumplhooksxmpls" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6054,11 +6064,11 @@ rule, it is purely for pre-processing.
 
 </div>
 
-<div id="vumqryldap" class="example">
+<div>
 
 **Example 6.5. Querying an LDAP Server**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure DB.DBA.LDAP_SEARCH (inout user_name varchar, in digest varchar)
@@ -6107,11 +6117,11 @@ user_create ('test_ldap', 'secret', vector ('PASSWORD_MODE', 'DB.DBA.LDAP_SEARCH
 
   
 
-<div id="vumuserfindhook" class="example">
+<div>
 
 **Example 6.6. USER_FIND PL Hook Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create table
@@ -6147,9 +6157,9 @@ DB.DBA.USER_FIND (in name varchar)
 
 </div>
 
-<div id="vumrolesemantics" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6175,7 +6185,7 @@ granted to it. The role grant graph has an explicit edge for each role
 membership, direct or otherwise. The GI_DIRECT flag is true if the grant
 is direct. Only direct role grants can be revoked.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                |
 |:--------------------------:|:---------------------------------------------------------------------------------------------------------------|
@@ -6195,11 +6205,11 @@ CREATE ROLE <NAME>
 The \<NAME\> is a name of role to be created. It must be unique in space
 of all security objects.
 
-<div id="vumcreaterole" class="example">
+<div>
 
 **Example 6.7. Creating a security role**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> create role admins;
@@ -6218,11 +6228,11 @@ schema.
 DROP ROLE <NAME>
 ```
 
-<div id="vumrmrole" class="example">
+<div>
 
 **Example 6.8. Removing a security role**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> drop role admins;
@@ -6251,11 +6261,11 @@ Roles can be revoked using:
 REVOKE <ROLE> [, <ROLE>] FROM <USER>;
 ```
 
-<div id="vumgranting" class="example">
+<div>
 
 **Example 6.9. Granting & revoking security roles**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> grant admins, users to demo;
@@ -6289,9 +6299,9 @@ together and are needed for multiple users.
 
 </div>
 
-<div id="vaddistr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6325,9 +6335,9 @@ Virtuoso and VAD provide the following abilities:
 | Check preconditions for un-installation of a package.                                                                                   |
 | Uninstall a VAD package.                                                                                                                |
 
-<div id="vadsummary" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6378,9 +6388,9 @@ rest of this chapter.
 
 </div>
 
-<div id="vadpackcomposition" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6404,11 +6414,11 @@ execute at install and uninstall time and all conditions to be checked
 to ensure correct installation. The VAD Sticker consists of the
 following:
 
-<div class="itemizedlist">
+<div>
 
 - VAD package meta data
 
-  <div class="itemizedlist">
+  <div>
 
   - Names of package, developer, copyright holder etc.
 
@@ -6434,7 +6444,7 @@ following:
 
 - Locations of SQL files containing main and installation code:
 
-  <div class="itemizedlist">
+  <div>
 
   - Pre-install code, used to check application-specific installation
     preconditions.
@@ -6456,7 +6466,7 @@ following:
 
 - Locations of Resources:
 
-  <div class="itemizedlist">
+  <div>
 
   - Documentation files.
 
@@ -6473,9 +6483,9 @@ following:
 
 </div>
 
-<div id="vadpackversion" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6514,9 +6524,9 @@ between them.
 
 </div>
 
-<div id="vadprocessres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6542,9 +6552,9 @@ be defined before being referenced.
 
 </div>
 
-<div id="vadunsupportfeat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6608,9 +6618,9 @@ this event.
 
 </div>
 
-<div id="vadsecurity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6642,9 +6652,9 @@ sufficient to detect unwanted modification.
 
 </div>
 
-<div id="vadbuildingvadpacks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6682,9 +6692,9 @@ By convention, VAD package files have the extension '.vad'.
 
 </div>
 
-<div id="vadutils" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6702,7 +6712,7 @@ An optional VAD package named VADutils provides various tools for
 capturing changes made in the database after some point in time. The
 result of a capture consists of:
 
-<div class="itemizedlist">
+<div>
 
 - Database object additions whose names match given patterns (e.g. all
   tables and procedures within a particular catalog/qualifier).
@@ -6715,7 +6725,7 @@ result of a capture consists of:
 
 The capture results may be useful for the following purposes:
 
-<div class="itemizedlist">
+<div>
 
 - Archival of changes for replaying later.
 
@@ -6737,9 +6747,9 @@ customizations can be reapplied over the updated base package.
 
 </div>
 
-<div id="vadadminrspnslts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6788,12 +6798,12 @@ If *`package_uri`* is DAV path, *`is_dav=1`* , else *`is_dav=0`* .
 
 The administrator performs the following operations when installing:
 
-<div class="itemizedlist">
+<div>
 
 - Invoke the install procedure from the web user interface or
   interactive SQL. This will perform the following:
 
-  <div class="itemizedlist">
+  <div>
 
   - Install documentation files.
 
@@ -6835,7 +6845,7 @@ class="function">DB.DBA.VAD_INSTALL()</code></a> function is usually a
 sum of messages from pre- and post-installation procedures of the
 package. It should normally contain at least the following:
 
-<div class="itemizedlist">
+<div>
 
 - any errors and/or warnings encountered.
 
@@ -6876,12 +6886,12 @@ class="function">DB.DBA.VAD_UNINSTALL</code></a> .
 The administrator will perform the following operations for the
 uninstallation process:
 
-<div class="itemizedlist">
+<div>
 
 - Invoke the uninstall procedure from the web user interface or
   interactive SQL. This will initiate the following:
 
-  <div class="itemizedlist">
+  <div>
 
   - Check that no other packages are using the package to be
     uninstalled.
@@ -6947,9 +6957,9 @@ containg the vads files.
 
 </div>
 
-<div id="vadpackageoverlap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -6966,7 +6976,7 @@ containg the vads files.
 Each package contains full definitions of all tables and indices. Upon
 installing the following outcomes can occur:
 
-<div class="itemizedlist">
+<div>
 
 - If a table already exists with the same primary key as the new
   definition, additional columns are added to the table. If the primary
@@ -7000,9 +7010,9 @@ created ad-hoc from interactive SQL do not have any owner package.
 
 </div>
 
-<div id="vadsticker" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7021,9 +7031,9 @@ contained, or to be contained, within a VAD package. Like any XML
 documents, the target VAD package sticker can be sourced from more than
 one source file, which can aid maintenance and development.
 
-<div id="vadstickerdtd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7150,7 +7160,7 @@ group:
 </require>
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                   |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -7261,11 +7271,11 @@ and target URI.
 | dav_grp - DAV group for file (used if type="dav", ignored if "filesystem");        |
 | dav_perm - DAV permissions for file (used if type="dav", ignored if "filesystem"). |
 
-<div id="ex_vadstickfile" class="example">
+<div>
 
 **Example 6.10. VAD installable file descriptions**
 
-<div class="example-contents">
+<div>
 
 To install files into DAV:
 
@@ -7312,11 +7322,11 @@ errors, it is recommended to keep comments to the data outside the
 record element: being in the wrong place inside, they may be stored in
 the registry instead of actually needed data.
 
-<div id="ex_vadstickers" class="example">
+<div>
 
 **Example 6.11. Sample Stickers**
 
-<div class="example-contents">
+<div>
 
 A package that contains only some commonly useful ("exported")
 functions, one table for internal purposes, a small sample VSP
@@ -7422,9 +7432,9 @@ from 1.00 to 2.17, inclusive -->
 
 </div>
 
-<div id="backup_recovery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7470,9 +7480,9 @@ state in effect since the last checkpoint preceding the backup. Any
 transaction log files made after the point of backup can be replayed to
 bring the state up to the last recorded transaction.
 
-<div id="backup_audit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7522,9 +7532,9 @@ vital that these files are replayed in the correct order.
 
 </div>
 
-<div id="onlinebackups" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7538,9 +7548,9 @@ vital that these files are replayed in the correct order.
 
 </div>
 
-<div id="usingbackuponline" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7590,11 +7600,11 @@ CheckpointAuditTrail ini parameter set to 1.
 A database checkpoint cannot be performed while an online backup is in
 progress.
 
-<div id="ex_anonlinebackup" class="example">
+<div>
 
 **Example 6.12. Performing an Online Backup**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> backup_context_clear ();
@@ -7623,9 +7633,9 @@ details.
 
 </div>
 
-<div id="rstrfrmbckuponline" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7668,7 +7678,7 @@ stop and report an error, which is written to the Virtuoso log file.
 At times the backup or restoration commands may return errors. Use the
 following list to help diagnose and resolve them:
 
-<div class="itemizedlist">
+<div>
 
 - **Timestamp \[%lx\] is wrong in file %s. ** The unique identifier in
   header of the file differs from the identifier of the first file. It
@@ -7698,11 +7708,11 @@ following list to help diagnose and resolve them:
 
 </div>
 
-<div id="ex_anonlinebackuprestore" class="example">
+<div>
 
 **Example 6.13. Restoring an Online Backup**
 
-<div class="example-contents">
+<div>
 
 Following the online backup example above:
 
@@ -7735,9 +7745,9 @@ virtuoso-odbc-t.exe -c <db-ini-file> +restore-backup virt-inc_dump_#
 
 </div>
 
-<div id="otherbackupmethods" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7758,9 +7768,9 @@ re-enabled. The files should be compressed to make efficient use of
 space, and should be copied to a disk separate from the location of the
 database, and preferably to an external backup medium such as tape.
 
-<div id="manualbackup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7808,9 +7818,9 @@ ascertained from the virtuoso.log event log file.
 
 </div>
 
-<div id="offlinebackups" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7838,9 +7848,9 @@ the last logged transaction.
 
 </div>
 
-<div id="vdbrecovery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7854,9 +7864,9 @@ the last logged transaction.
 
 </div>
 
-<div id="dbrebuild" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -7876,7 +7886,7 @@ empty database with that log.
 
 The general steps to rebuild a database are as follows:
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                                        |                                                                                                           |
 |:--------------------------------------:|:----------------------------------------------------------------------------------------------------------|
@@ -7885,7 +7895,7 @@ The general steps to rebuild a database are as follows:
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Shut down the running server, making a checkpoint. This is done with
   the SHUTDOWN command from interactive SQL.
@@ -7909,7 +7919,7 @@ The general steps to rebuild a database are as follows:
   Important: When restore on v6 you also must give it +log6 flag i.e.:
   +restore-crash-dump +log6 .
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                                     |
   |:--------------------------:|:--------------------------------------------------------------------|
@@ -7942,9 +7952,9 @@ worry about this.
 
 </div>
 
-<div id="diagnosingrepairing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8026,7 +8036,7 @@ Done.
 SQL> checkpoint;
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                  |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -8037,9 +8047,9 @@ SQL> checkpoint;
 
 </div>
 
-<div id="xcrashrecovery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8087,7 +8097,7 @@ there may be left from the database file.
 
 The recovery sequence is as follows:
 
-<div class="orderedlist">
+<div>
 
 1.  Do a crash dump of the schema tables (using the
     '`+crash-dump +mode oa +dumpkeys schema` ' virtuoso command line
@@ -8179,9 +8189,9 @@ virtuoso-iodbc-t -R -f
 
 </div>
 
-<div id="xversionrecovery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8212,9 +8222,9 @@ replay the remaining recovery logs with the replay function.
 
 </div>
 
-<div id="procindexrecov" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8238,7 +8248,7 @@ Note: Only effective with Virtuoso 6.0 and later.
 
 Basic steps:
 
-<div class="orderedlist">
+<div>
 
 1.  Create a function for dumping the key:
 
@@ -8303,9 +8313,9 @@ added the corresponding calls to the backup_index() function.
 
 </div>
 
-<div id="perfdiag" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8325,7 +8335,7 @@ Virtuoso server.
 If something does not work fast, this is mostly for the following
 reasons:
 
-<div class="itemizedlist">
+<div>
 
 - Not enough memory
 
@@ -8342,9 +8352,9 @@ Determining which is the case is simple. The result set returned by
 status ('') has most of the information. Do this twice with some 10
 seconds between the samples and see the second result set.
 
-<div id="perfdiagmemory" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8397,9 +8407,9 @@ scans. More on this in the query plans section below.
 
 </div>
 
-<div id="perfdiagswapping" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8447,9 +8457,9 @@ data, threads, connections and the like.
 
 </div>
 
-<div id="perfdiaglocking" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8522,9 +8532,9 @@ less time.
 
 </div>
 
-<div id="perfdiagqueryplans" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8605,7 +8615,7 @@ If your query has full table scans, consider adding an index.
 If the index choice is not the right one, consider the following
 possibilities:
 
-<div class="itemizedlist">
+<div>
 
 - Run statistics. This is not always necessary because the database
   takes dynamic samples but it can help in cases.
@@ -8704,9 +8714,9 @@ than a loop join.
 
 </div>
 
-<div id="perfdiagcheckpointduration" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8743,7 +8753,7 @@ read committed for anything long.
 A checkpoint's atomic time can be prohibitively long under the following
 circumstances:
 
-<div class="itemizedlist">
+<div>
 
 - There are transactions with a lot of locks and uncommitted state at
   the time of the checkpoint. Specially a transaction which has updated
@@ -8765,9 +8775,9 @@ circumstances:
 
 </div>
 
-<div id="ptune" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8781,9 +8791,9 @@ circumstances:
 
 </div>
 
-<div id="io" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8797,9 +8807,9 @@ circumstances:
 
 </div>
 
-<div id="diskio" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8846,9 +8856,9 @@ specific configuring besides that of the stripes themselves.
 
 </div>
 
-<div id="ioqs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8908,9 +8918,9 @@ sequentially will be on the same queue.
 
 </div>
 
-<div id="schemas" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8924,9 +8934,9 @@ sequentially will be on the same queue.
 
 </div>
 
-<div id="dataorg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8945,9 +8955,9 @@ maximum efficiency.
 
 </div>
 
-<div id="indexusage_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -8981,9 +8991,9 @@ short key can have more entries per page.
 
 </div>
 
-<div id="spaceconsump" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9001,11 +9011,11 @@ Each column takes the space 'naturally' required by its value. No field
 lengths are preallocated. Space consumption for columns is the
 following:
 
-<div id="id13080" class="decimalstyle">
+<div>
 
 **Table 6.2. Data type Space Consumption**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Data              | Bytes                                                                                 |
 |:------------------|---------------------------------------------------------------------------------------|
@@ -9039,9 +9049,9 @@ In light of these points primary keys should generally be short.
 
 </div>
 
-<div id="pagealloc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9063,9 +9073,9 @@ different splitting point for a history of rising inserts.
 
 </div>
 
-<div id="efficientsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9191,7 +9201,7 @@ It cannot be overemphasized that if an application does any sort of
 repetitive processing then this should be done with prepared statements
 and parameters, for both reasons of performance and profilability.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                               |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -9202,9 +9212,9 @@ and parameters, for both reasons of performance and profilability.
 
 </div>
 
-<div id="readingqueryprofile" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9267,7 +9277,7 @@ of Output divided by the number of rows of input.
 
 The principal operators in a plan are:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Cluster outer seq start*</span>
 
@@ -9431,9 +9441,9 @@ s# 164 Select (<V $43 count i>)
 
 </div>
 
-<div id="tunvectoredexecandhashjoins" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9512,7 +9522,7 @@ HashJoinSpace              = 30G
 
 To analyze the performance of a query workload:
 
-<div class="orderedlist">
+<div>
 
 1.  Turn on query logging in sys_query_log. This view contains most
     metrics and the full text of the query plan with the per operator
@@ -9550,7 +9560,7 @@ To analyze the performance of a query workload:
 
     The relevant counters are:
 
-    <div class="itemizedlist">
+    <div>
 
     - <span class="emphasis">*tc_qp_thread*</span> -- How many threads
       were started for query parallelization. This is not the number of
@@ -9597,9 +9607,9 @@ To analyze the performance of a query workload:
 
 </div>
 
-<div id="ptunehighcardin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9623,9 +9633,9 @@ space in memory.
 
 </div>
 
-<div id="ptuneprtgroupby" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9664,9 +9674,9 @@ before it, so the stage operator will be before this.
 
 </div>
 
-<div id="ptuneorderedgroupby" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9702,9 +9712,9 @@ very biased value distribution e.g. the P in the RDF PSOG.
 
 </div>
 
-<div id="ptunememorygroupby" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9725,9 +9735,9 @@ onwards, the memory is 8 bytes less per entry.
 
 </div>
 
-<div id="ptuneslowgroupby" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9774,9 +9784,9 @@ and vector sizes will no longer be adjusted upward.
 
 </div>
 
-<div id="tunparamsmworkload" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9857,13 +9867,13 @@ memory utilization may have to be tuned.
 For analyzing the behavior of a workload as concerns memory, do the
 following:
 
-<div class="itemizedlist">
+<div>
 
 - Run the workload once for warmup.
 
 - Clear the following counters:
 
-  <div class="itemizedlist">
+  <div>
 
   - `mp_max_large_in_use ` -- Highest to date amount of concurrently
     used memory
@@ -9890,9 +9900,9 @@ following:
 
 </div>
 
-<div id="tunparamsmworkloadex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -9906,7 +9916,7 @@ following:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Clear the counters.
 
@@ -9921,7 +9931,7 @@ following:
     the memory consuming techniques the peak memory in the second case
     will be lower. How much lower is entirely workload dependent.
 
-    <div class="itemizedlist">
+    <div>
 
     - <span class="emphasis">*Note*</span> : One may additionally try
       the workload on a single thread with `hash_join_enable` set to 0
@@ -9948,7 +9958,7 @@ following:
     performance was mostly accounted for by `mmap` , see the
     `mp_mmap_clocks` counter.
 
-    <div class="itemizedlist">
+    <div>
 
     - If more concurrent queries are than CPU cores are expected, there
       is little point in intra-query parallelism, controlled by
@@ -9975,7 +9985,7 @@ following:
 
 7.  Notes:
 
-    <div class="itemizedlist">
+    <div>
 
     - The results from above may not happen with a single user but
       happen all the time with multiple users. The monitor will print a
@@ -9994,9 +10004,9 @@ following:
 
 </div>
 
-<div id="querylogging" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10068,7 +10078,7 @@ frequency.
 
 The columns of SYS_QUERY_LOG are as follows:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*ql_id*</span>
 
@@ -10191,7 +10201,7 @@ The below columns correspond directly to the fields returned by
 db_activity (). These are summed over all the threads in all the hosts
 that have done something on behalf of the logged query.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*ql_rnd_rows*</span>
 
@@ -10224,7 +10234,7 @@ For column-wise indices, all the three above counters can be non-zero
 since these consist of multi-row segments each under a row on a row-wise
 leaf page. For a row-wise index the same seg counter is always 0.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*ql_thread_clocks*</span>
 
@@ -10326,9 +10336,9 @@ leaf page. For a row-wise index the same seg counter is always 0.
 
 </div>
 
-<div id="meters_sysviews" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10342,9 +10352,9 @@ leaf page. For a row-wise index the same seg counter is always 0.
 
 </div>
 
-<div id="kdlstat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10401,9 +10411,9 @@ question.
 
 </div>
 
-<div id="keystats" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10417,7 +10427,7 @@ question.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - KEY_TABLE The fully qualified table name, e.g. DB.DBA.SYS_PROCEDURES
 
@@ -10444,9 +10454,9 @@ question.
 
 </div>
 
-<div id="lstats" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10460,7 +10470,7 @@ question.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - KEY_TABLE The fully qualified table name, e.g. DB.DBA.SYS_PROCEDURES
 
@@ -10494,9 +10504,9 @@ question.
 
 </div>
 
-<div id="dstats" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10510,7 +10520,7 @@ question.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - KEY_TABLE The fully qualified table name, e.g. DB.DBA.SYS_PROCEDURES
 
@@ -10529,11 +10539,11 @@ question.
 
 </div>
 
-<div id="id13643" class="example">
+<div>
 
 **Example 6.14. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select index_name, locks, waits, wait_pct, deadlocks
@@ -10561,9 +10571,9 @@ accesses so far, most randomly accessed first.
 
 </div>
 
-<div id="statusfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10587,9 +10597,9 @@ title="Server Status Monitoring">Administrator's Guide</a> .
 
 </div>
 
-<div id="statusfunc_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10648,9 +10658,9 @@ still on large database files that may take some time.
 
 </div>
 
-<div id="transaction_isolation_levels" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10667,7 +10677,7 @@ still on large database files that may take some time.
 Bad design and implementation of transactions affects applications in
 the following ways:
 
-<div class="itemizedlist">
+<div>
 
 - Performance is lost by having to needlessly retry transactions that
   are aborted by deadlock.
@@ -10682,7 +10692,7 @@ the following ways:
 
 The following rules should be observed when writing transactions:
 
-<div class="itemizedlist">
+<div>
 
 - Do not lock needlessly. For example, any report transaction that reads
   the data once can always be done as read committed instead of
@@ -10735,9 +10745,9 @@ The following rules should be observed when writing transactions:
 
 </div>
 
-<div id="ptuneprogvirtpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10783,9 +10793,9 @@ the set isolation statement returns.
 
 </div>
 
-<div id="ptunetransparallel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10832,9 +10842,9 @@ page. Again, large, scattered row store deletes may justify use of
 
 </div>
 
-<div id="ptunesampledeadlockhandler" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10882,9 +10892,9 @@ select s_quantity from stock where s_i_id = 111 for update;
 
 </div>
 
-<div id="ptuneodbciso" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10900,7 +10910,7 @@ select s_quantity from stock where s_i_id = 111 for update;
 
 For the Virtuoso ODBC driver the isolation is set by :
 
-<div class="itemizedlist">
+<div>
 
 - connection option (in either <a
   href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/odbcsqlsetconnectattr.asp"
@@ -10946,9 +10956,9 @@ For the Virtuoso ODBC driver the isolation is set by :
 
 </div>
 
-<div id="ptunejdbciso" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -10978,9 +10988,9 @@ class="ulink" target="_top">Java Docs</a>
 
 </div>
 
-<div id="ptunedotnetiso" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11011,9 +11021,9 @@ class="ulink" target="_top">here</a>
 
 </div>
 
-<div id="ptunemetricsdiag" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11033,7 +11043,7 @@ The first metric to check is the output of status ('');
 
 The paragraph titled transaction status contains the following:
 
-<div class="itemizedlist">
+<div>
 
 - Count of deadlocks since server startup. There is a total number of
   deadlocks and the number of 2r1w deadlocks. The latter is a special
@@ -11071,7 +11081,7 @@ The system view db.dba.sys_l_stat is used for locating bottlenecks.
 
 The columns are:
 
-<div class="itemizedlist">
+<div>
 
 - index - The index being locked. Note that when reading on non-primary
   key, the lock is set on the index first, only then on the pk, that is
@@ -11133,9 +11143,9 @@ select top 5 *
 to get a quick view of where time is spent. You can also sort by waits
 desc or locks desc.
 
-<div id="ptunemetricdiagsqlissues" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11165,9 +11175,9 @@ option or option SQL clauses.
 
 </div>
 
-<div id="ptunemetricdiagdynmicsobs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11196,9 +11206,9 @@ useful.
 
 </div>
 
-<div id="ptunemetricdiagsqdebug" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11252,9 +11262,9 @@ locking issues are timing sensitive.
 
 </div>
 
-<div id="clientlevelresourceaccounting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -11277,7 +11287,7 @@ accumulated operation counts and to optionally reset these.
 The db_activity built-in function has one optional argument. The
 possible values are:
 
-<div class="itemizedlist">
+<div>
 
 - 0 - (default) - Return human readable string and reset the counts.
 
@@ -11313,7 +11323,7 @@ numbers representing these plus some more metrics.
 
 Index - Meaning
 
-<div class="itemizedlist">
+<div>
 
 - 0 - Random lookups
 

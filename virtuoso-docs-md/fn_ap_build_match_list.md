@@ -1,10 +1,10 @@
-<div id="fn_ap_build_match_list" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ the specified sets in the text.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ap_build_match_list" class="funcsynopsis">
+<div>
 
 |                                  |                                           |
 |----------------------------------|-------------------------------------------|
@@ -27,7 +27,7 @@ the specified sets in the text.
 |                                  | in `source_text_is_html ` integer ,       |
 |                                  | in `report_flags ` integer `)`;           |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ the specified sets in the text.
 
 </div>
 
-<div id="desc_ap_build_match_list" class="refsect1">
+<div>
 
 ## Description
 
@@ -64,11 +64,11 @@ title="9.33.2. Phrase Set Configuration API">here</a> .
 
 </div>
 
-<div id="params_ap_build_match_list" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103136" class="refsect2">
+<div>
 
 ### phrase_set_ids
 
@@ -78,7 +78,7 @@ value of lang_name argument then the phrase set is silently ignored.
 
 </div>
 
-<div id="id103139" class="refsect2">
+<div>
 
 ### source_UTF8_text
 
@@ -86,7 +86,7 @@ a plain text or an HTML
 
 </div>
 
-<div id="id103142" class="refsect2">
+<div>
 
 ### lang_name
 
@@ -94,7 +94,7 @@ language name
 
 </div>
 
-<div id="id103145" class="refsect2">
+<div>
 
 ### source_text_is_html
 
@@ -102,7 +102,7 @@ language name
 
 </div>
 
-<div id="id103148" class="refsect2">
+<div>
 
 ### report_flags
 
@@ -112,15 +112,15 @@ Report flag
 
 </div>
 
-<div id="examples_ap_build_match_list" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ap_build_match_list" class="example">
+<div>
 
 **Example 24.294. Simple Use**
 
-<div class="example-contents">
+<div>
 
 Usage example can be found
 <a href="sqlreffastphraseexample.html" class="link"
@@ -134,7 +134,7 @@ title="9.33.4. Example">here</a> .
 
 </div>
 
-<div id="seealso_ap_build_match_list" class="refsect1">
+<div>
 
 ## See Also
 

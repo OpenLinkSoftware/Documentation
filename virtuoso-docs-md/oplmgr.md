@@ -1,6 +1,6 @@
-<div id="oplmgr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="oplmngrlf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@
 
 </div>
 
-<div id="oplmngrlfla" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -46,9 +46,9 @@
 
 </div>
 
-<div id="oplmngrlfla_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -62,7 +62,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch `Terminal.app (/Applications/Utilities/)`
 
@@ -86,9 +86,9 @@
 
 </div>
 
-<div id="oplmngrlfla_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -102,7 +102,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the
 
@@ -157,9 +157,9 @@
 
 </div>
 
-<div id="oplmngrlfla_03" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -173,7 +173,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Open a Unix terminal.
 
@@ -183,7 +183,7 @@
     environment variables. (Note that they do, and must, begin with
     dot-space-dot-slash.)
 
-    <div class="itemizedlist">
+    <div>
 
     - `. ./virtuoso-enterprise.sh ` - bash, bsh, ksh, and related shells
 
@@ -206,7 +206,7 @@
     the path to the directory that contains your Virtuoso license file,
     e.g
 
-    <div class="itemizedlist">
+    <div>
 
     - `export OPL_LICENSE_DIR="/opt/virtuoso/bin/" `
 
@@ -220,9 +220,9 @@
 
 </div>
 
-<div id="oplmngrlflb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -259,19 +259,19 @@ The following instructions will allow you to access your
 title="Retrieve OpenLink Licenses from Your ODS Briefcase">ODS
 Briefcase</a> via the OpenLink Web site.
 
-<div class="orderedlist">
+<div>
 
 1.  Click the Login link that appears on the OpenLink Web page.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1" class="figure">
+    <div>
 
     **Figure 2.67. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODSA.png)
 
@@ -288,15 +288,15 @@ Briefcase</a> via the OpenLink Web site.
 2.  Click the "Login Here" button that appears in the Registered Users
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1_01" class="figure">
+    <div>
 
     **Figure 2.68. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODSB.png)
 
@@ -312,15 +312,15 @@ Briefcase</a> via the OpenLink Web site.
 
 3.  Click the "Check my profile" link that appears in the Welcome box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1_02" class="figure">
+    <div>
 
     **Figure 2.69. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODSC.png)
 
@@ -337,15 +337,15 @@ Briefcase</a> via the OpenLink Web site.
 4.  Click the ODS Service URL that appears in the lower right hand
     corner of the My Details dialog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1_03" class="figure">
+    <div>
 
     **Figure 2.70. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODS3.png)
 
@@ -361,15 +361,15 @@ Briefcase</a> via the OpenLink Web site.
 
 5.  Allow the My OpenLink Web page to load in a Web browser.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1_04" class="figure">
+    <div>
 
     **Figure 2.71. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODS4.png)
 
@@ -385,15 +385,15 @@ Briefcase</a> via the OpenLink Web site.
 
 6.  Login to your OpenLink Data Space using your OpenLink login.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1_05" class="figure">
+    <div>
 
     **Figure 2.72. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODS5.png)
 
@@ -410,15 +410,15 @@ Briefcase</a> via the OpenLink Web site.
 7.  Click the Briefcase link that appears in the ODS menu bar at the top
     of the page.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1_06" class="figure">
+    <div>
 
     **Figure 2.73. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODS6.png)
 
@@ -435,15 +435,15 @@ Briefcase</a> via the OpenLink Web site.
 8.  Your license will appear as a Resource Item under the Briefcase
     Summary.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav1_07" class="figure">
+    <div>
 
     **Figure 2.74. ODS Briefcase**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODS Briefcase](images/ui/ODS7.png)
 
@@ -466,9 +466,9 @@ username and password if prompted for a DAV login.
 
 </div>
 
-<div id="oplmngrlflp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -486,9 +486,9 @@ Users may choose to preserve the existing license file when applying a
 new license file. This facilitates a rollback to the original file, if
 the replacement file is problematic.
 
-<div id="oplmngrlflp_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -502,7 +502,7 @@ the replacement file is problematic.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Use StuffIt or a similar utility to store the file in a compressed
   archive.
@@ -513,9 +513,9 @@ the replacement file is problematic.
 
 </div>
 
-<div id="oplmngrlflp_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -534,9 +534,9 @@ archive.
 
 </div>
 
-<div id="oplmngrlflp_03" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -557,9 +557,9 @@ Use tar or gzip to copy your license file into an archive. For example:
 
 </div>
 
-<div id="oplmngrlflr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -576,9 +576,9 @@ Use tar or gzip to copy your license file into an archive. For example:
 Users may choose to remove expired or deprecated license files
 altogether to ensure the uptake of a new license file.
 
-<div id="oplmngrlflr_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -592,7 +592,7 @@ altogether to ensure the uptake of a new license file.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Shutdown your OpenLink License Manager
 
@@ -611,9 +611,9 @@ altogether to ensure the uptake of a new license file.
 
 </div>
 
-<div id="oplmngrlflr_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -627,7 +627,7 @@ altogether to ensure the uptake of a new license file.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the
 
@@ -675,9 +675,9 @@ altogether to ensure the uptake of a new license file.
 
 </div>
 
-<div id="oplmngrlflr_03" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -691,7 +691,7 @@ altogether to ensure the uptake of a new license file.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Login to the Unix or Linux operating system.
 

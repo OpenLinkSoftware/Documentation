@@ -1,6 +1,6 @@
-<div id="faultfaulttolerpragram" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,7 +23,7 @@ and must be treated separately.
 In using a daq or dpipe, one can specify whether the function is to be
 partitioned like:
 
-<div class="orderedlist">
+<div>
 
 1.  Read committed read - low bits not used for partition can be used
     for intra partition balancing, as described in the schema
@@ -46,7 +46,7 @@ number is called in mode 4.
 For a daq_call call, these options are specified in the 5th argument,
 flags.
 
-<div class="itemizedlist">
+<div>
 
 - 0 - read committed
 
@@ -61,7 +61,7 @@ flags.
 For dpipes, this is stated in the dpipe_define call's flags argument.
 The values to be or'ed over the flags are:
 
-<div class="itemizedlist">
+<div>
 
 - 0 - read committed
 

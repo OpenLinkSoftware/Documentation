@@ -1,6 +1,6 @@
-<div id="rubyhosting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -73,7 +73,7 @@ PersistentHostingModules = 1/0 default 0
 Setting `PersistentHostingModules` to "1" prevents Virtuoso from
 removing the interpreters from the HTTP threads after each request.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------|
@@ -83,11 +83,11 @@ removing the interpreters from the HTTP threads after each request.
 
 </div>
 
-<div id="ex_hostingsharedobjectspy_01" class="example">
+<div>
 
 **Example 14.69. Using the Ruby Plugin**
 
-<div class="example-contents">
+<div>
 
 Executing Ruby code directly:
 

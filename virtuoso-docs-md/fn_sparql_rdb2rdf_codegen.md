@@ -1,10 +1,10 @@
-<div id="fn_sparql_rdb2rdf_codegen" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ and an operation specified by an opcode
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_rdb2rdf_codegen" class="funcsynopsis">
+<div>
 
 |                                            |                            |
 |--------------------------------------------|----------------------------|
 | ` `**`DB.DBA.SPARQL_RDB2RDF_CODEGEN`**` (` | in `table_name ` varchar , |
 |                                            | in `opcode ` integer `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ and an operation specified by an opcode
 
 </div>
 
-<div id="desc_sparql_rdb2rdf_codegen" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ specified by an opcode.
 
 </div>
 
-<div id="params_sparql_rdb2rdf_codegen" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102441" class="refsect2">
+<div>
 
 ### table_name
 
@@ -55,13 +55,13 @@ The name of the table.
 
 </div>
 
-<div id="id102444" class="refsect2">
+<div>
 
 ### opcode
 
 Currently supported opcodes are:
 
-<div class="itemizedlist">
+<div>
 
 - 0: debugging dump of internal state of code generator, it can be
   requested by the help-desk.
@@ -83,7 +83,7 @@ Currently supported opcodes are:
 
 </div>
 
-<div id="ret_sparql_rdb2rdf_codegen" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -91,7 +91,7 @@ string session or vector
 
 </div>
 
-<div id="seealso_sparql_rdb2rdf_codegen" class="refsect1">
+<div>
 
 ## See Also
 

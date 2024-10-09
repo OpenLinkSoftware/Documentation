@@ -1,6 +1,6 @@
-<div id="wsaclusing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,11 +23,11 @@ title="http_client_ip"><code
 class="function">http_client_ip()</code></a> function can be used to
 determine the IP address or DNS name of a client machine.
 
-<div id="ex_wsaclwithapps" class="example">
+<div>
 
 **Example 14.4. Using ACL's with Application Logic**
 
-<div class="example-contents">
+<div>
 
 To restrict a 'foo.bar' (network 333.333.333.0) from accessing a SOAP
 service one could use the following:

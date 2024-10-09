@@ -1,6 +1,6 @@
-<div id="vexqrparl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,7 +24,7 @@ the query will, with vectored execution, execute every consecutive
 every stage of a query's evaluation is performed on a large number of
 intermediate result rows at a time, two benefits are obtained:
 
-<div class="orderedlist">
+<div>
 
 1.  The interpretation overhead disappears and
 
@@ -62,9 +62,9 @@ be exploited when accessing nearby rows. The chance of hitting nearby
 rows also increases when the size of the intermediate result batch
 increases.
 
-<div id="vexqrparlautoqp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

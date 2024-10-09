@@ -1,6 +1,6 @@
-<div id="delsptriple" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 Suppose the following situation:
 
-<div class="itemizedlist">
+<div>
 
 - There is a specific triple somewhere in a massive dataset in a
   Virtuoso DBMS.

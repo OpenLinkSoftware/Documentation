@@ -1,10 +1,10 @@
-<div id="fn_plink_set_option" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ BPEL.BPEL.plink_set_option — set value of a partner link option
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_plink_set_option_01" class="funcsynopsis">
+<div>
 
 |                                         |                        |
 |-----------------------------------------|------------------------|
@@ -25,7 +25,7 @@ BPEL.BPEL.plink_set_option — set value of a partner link option
 |                                         | in `opt ` varchar ,    |
 |                                         | in `val ` any `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,11 +35,11 @@ BPEL.BPEL.plink_set_option — set value of a partner link option
 
 </div>
 
-<div id="params_get_var_05" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130411" class="refsect2">
+<div>
 
 ### script
 
@@ -48,7 +48,7 @@ belongs to
 
 </div>
 
-<div id="id130415" class="refsect2">
+<div>
 
 ### plink
 
@@ -56,7 +56,7 @@ belongs to
 
 </div>
 
-<div id="id130419" class="refsect2">
+<div>
 
 ### opt
 
@@ -64,7 +64,7 @@ belongs to
 
 </div>
 
-<div id="id130423" class="refsect2">
+<div>
 
 ### val
 
@@ -74,7 +74,7 @@ belongs to
 
 </div>
 
-<div id="ret_plink_set_option_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,7 +82,7 @@ The function has no return value
 
 </div>
 
-<div id="desc_plink_set_option_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -91,7 +91,7 @@ the specified partner link. The options are used to configure
 WS-Security, WS-Addressing and WS-Reliable Messaging protocols for
 sending and receiving messages to the given partner.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*wsa* </span> the version of namespace value
   for WS-Addressing protocol.
@@ -137,15 +137,15 @@ sending and receiving messages to the given partner.
 
 </div>
 
-<div id="examples_plink_set_option_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_plink_set_option_01" class="example">
+<div>
 
 **Example 24.651. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> BPEL.BPEL.plink_set_option  ('WSSecho', 'service', 'wss-in-encrypt', 'Mandatory');

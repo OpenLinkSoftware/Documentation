@@ -1,6 +1,6 @@
-<div id="installnetriavdcrser" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ so was created read only. In this example we need to be able to update
 the data so we need to remove the read only Domain Service Class and
 create a new on.
 
-<div class="orderedlist">
+<div>
 
 1.  In the
 
@@ -49,15 +49,15 @@ create a new on.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="riad1" class="figure">
+    <div>
 
     **Figure 2.181. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/riad1.png)
 
@@ -82,7 +82,7 @@ will add a pager so only 5 records are displayed at a time.
 
 <span class="emphasis">*Step 2 - Add a DataPager*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Add two new namespaces to MainPage.xaml
 
@@ -138,15 +138,15 @@ will add a pager so only 5 records are displayed at a time.
 7.  Build and run the application. The data should be displayed 5 rows
     at a time.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="riad2" class="figure">
+    <div>
 
     **Figure 2.182. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/riad2.png)
 
@@ -166,7 +166,7 @@ We now need to add a DataForm to display the details.
 
 <span class="emphasis">*Step 3 - Add a DataForm*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Add the following namespace to MainPage.xaml
 
@@ -238,15 +238,15 @@ We now need to add a DataForm to display the details.
 4.  Build and run the application. As each employee is selected the data
     form fill with their details
 
-    <div class="figure-float">
+    <div>
 
-    <div id="riad3" class="figure">
+    <div>
 
     **Figure 2.183. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/riad3.png)
 

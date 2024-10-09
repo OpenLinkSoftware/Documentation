@@ -1,10 +1,10 @@
-<div id="fn_exec_close" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ exec_close — Closes cursor created by exec()
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exec_close" class="funcsynopsis">
+<div>
 
 |                         |                               |
 |-------------------------|-------------------------------|
 | ` `**`exec_close`**` (` | in `cursor_handle ` long `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ exec_close — Closes cursor created by exec()
 
 </div>
 
-<div id="desc_exec_rclose" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Closes the cursor opened by the exec() function.
 
 </div>
 
-<div id="params_exec_rclose" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87910" class="refsect2">
+<div>
 
 ### cursor_handle
 
@@ -54,7 +54,7 @@ The cursor handle used.
 
 </div>
 
-<div id="seealso_exec_close" class="refsect1">
+<div>
 
 ## See Also
 

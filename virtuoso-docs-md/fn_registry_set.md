@@ -1,10 +1,10 @@
-<div id="fn_registry_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ registry_set — Associates a value to the name in the Database registry
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_registry_set" class="funcsynopsis">
+<div>
 
 |                           |                          |
 |---------------------------|--------------------------|
@@ -24,7 +24,7 @@ registry_set — Associates a value to the name in the Database registry
 |                           | in `value ` varchar ,    |
 |                           | in `force ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ registry_set — Associates a value to the name in the Database registry
 
 </div>
 
-<div id="desc_registry_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ will probably never use this feature.
 
 </div>
 
-<div id="params_registry_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104714" class="refsect2">
+<div>
 
 ### name
 
@@ -65,7 +65,7 @@ will probably never use this feature.
 
 </div>
 
-<div id="id104718" class="refsect2">
+<div>
 
 ### value
 
@@ -75,7 +75,7 @@ serialized (see serialize and deserialize functions).
 
 </div>
 
-<div id="id104723" class="refsect2">
+<div>
 
 ### force
 
@@ -88,7 +88,7 @@ silently return 0 if failed.
 
 </div>
 
-<div id="ret_registry_set" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -97,15 +97,15 @@ cannot be changed.
 
 </div>
 
-<div id="errors_registry_set" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id104731" class="table">
+<div>
 
-**Table 24.74. Errors signalled by registry_set**
+**Table 24.73. Errors signalled by registry_set**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                               | Description |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -121,15 +121,15 @@ cannot be changed.
 
 </div>
 
-<div id="id104765" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_registry_set" class="example">
+<div>
 
 **Example 24.315. Setting and Retrieving Registry Setting**
 
-<div class="example-contents">
+<div>
 
 From SQL
 
@@ -159,7 +159,7 @@ some arb data
 
 </div>
 
-<div id="seealso_registry_set" class="refsect1">
+<div>
 
 ## See Also
 

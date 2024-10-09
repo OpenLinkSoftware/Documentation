@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodsload" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,7 +28,7 @@ SPARQL LOAD <ResourceURL>
 
 Examples:
 
-<div class="orderedlist">
+<div>
 
 1.  Load from ISQL:
 
@@ -70,7 +70,7 @@ Examples:
 
 2.  Load from .rq file:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Create DAV collection which is visible to public, for ex:
         http://example.com/DAV/tmp

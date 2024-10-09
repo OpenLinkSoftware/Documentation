@@ -1,10 +1,10 @@
-<div id="fn_registry_get_all" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ registry_get_all — Returns a vector of all registry settings
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_registry_get_all" class="funcsynopsis">
+<div>
 
 |                                     |      |
 |-------------------------------------|------|
 | `vector `**`registry_get_all`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ registry_get_all — Returns a vector of all registry settings
 
 </div>
 
-<div id="desc_registry_get_all" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,7 +48,7 @@ change the actual registry, use `registry_set` .
 
 </div>
 
-<div id="ret_registry_get_all" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -56,7 +56,7 @@ The function returns a vector of even length.
 
 </div>
 
-<div id="seealso_registry_get_all" class="refsect1">
+<div>
 
 ## See Also
 

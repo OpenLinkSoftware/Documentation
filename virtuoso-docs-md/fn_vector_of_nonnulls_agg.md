@@ -1,10 +1,10 @@
-<div id="fn_vector_of_nonnulls_agg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ ingoring NULL arguments.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vector_of_nonnulls_agg" class="funcsynopsis">
+<div>
 
 |                                                  |                              |
 |--------------------------------------------------|------------------------------|
 | `vector `**`DB.DBA.VECTOR_OF_NONNULLS_AGG`**` (` | `value_expression ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ ingoring NULL arguments.
 
 </div>
 
-<div id="desc_vector_of_nonnulls_agg" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ values to the aggregate.
 
 </div>
 
-<div id="params_vector_of_nonnulls_agg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id79628" class="refsect2">
+<div>
 
 ### value_expression
 
@@ -62,7 +62,7 @@ Value of item for aggregation.
 
 </div>
 
-<div id="ret_vector_of_nonnulls_agg" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -70,15 +70,15 @@ Any
 
 </div>
 
-<div id="examples_vector_of_nonnulls_agg" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vector_of_nonnulls_agg_1" class="example">
+<div>
 
 **Example 24.2. Simple Use**
 
-<div class="example-contents">
+<div>
 
 As the order of items in the vector repeats the order of passing
 individual values to the aggregate, it is possible to write, for
@@ -107,7 +107,7 @@ and get vector of Y-s that are ordered by matching values of X-es.
 
 </div>
 
-<div id="seealso_vector_of_nonnulls_agg" class="refsect1">
+<div>
 
 ## See Also
 

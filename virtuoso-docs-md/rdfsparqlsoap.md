@@ -1,6 +1,6 @@
-<div id="rdfsparqlsoap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 This section presents a sample scenario on how to execute a SPARQL query
 as a SOAP request to the Virtuoso SPARQL Endpoint.
 
-<div class="orderedlist">
+<div>
 
 1.  Assume the following sample SOAP request containing simple SPARQL
     query:

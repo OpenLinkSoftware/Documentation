@@ -1,10 +1,10 @@
-<div id="fn_ends_with" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ ends_with — Checks whether string X ends with Y
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ends_with" class="funcsynopsis">
+<div>
 
 |                        |                       |
 |------------------------|-----------------------|
 | ` `**`ends_with`**` (` | in `str ` string ,    |
 |                        | in `sub ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ ends_with — Checks whether string X ends with Y
 
 </div>
 
-<div id="desc_ends_with" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ of Y in other places. Returns 1 or 0.
 
 </div>
 
-<div id="params_ends_with" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113250" class="refsect2">
+<div>
 
 ### str
 
@@ -54,7 +54,7 @@ String to search from.
 
 </div>
 
-<div id="id113253" class="refsect2">
+<div>
 
 ### sub
 
@@ -64,7 +64,7 @@ Substring to search for.
 
 </div>
 
-<div id="ret_ends_with" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ Substring to search for.
 
 </div>
 
-<div id="examples_ends_with" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ends_with" class="example">
+<div>
 
 **Example 24.417. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select ends_with('AbracadabrA','rA');
@@ -101,7 +101,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_ends_with" class="refsect1">
+<div>
 
 ## See Also
 

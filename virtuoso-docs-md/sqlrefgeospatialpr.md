@@ -1,6 +1,6 @@
-<div id="sqlrefgeospatialpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ isgeometry (in x any)
 
 Returns 1 if the argument is a geometry.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                    |
 |:--------------------------:|:-------------------------------------------------------------------|

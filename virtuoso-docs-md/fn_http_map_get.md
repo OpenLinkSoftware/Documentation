@@ -1,10 +1,10 @@
-<div id="fn_http_map_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_map_get — get values from HTTP virtual host path mapping table
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_map_get" class="funcsynopsis">
+<div>
 
 |                           |                                 |
 |---------------------------|---------------------------------|
 | ` `**`http_map_get`**` (` | in `element_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_map_get — get values from HTTP virtual host path mapping table
 
 </div>
 
-<div id="desc_http_map_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ an error will be signalled.
 
 </div>
 
-<div id="params_http_map_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93074" class="refsect2">
+<div>
 
 ### element_name
 
@@ -61,17 +61,17 @@ The possible values for element_name are: 'vsp_uid', 'soap_uid',
 
 </div>
 
-<div id="ret_http_map_get" class="refsect1">
+<div>
 
 ## Return Types
 
 Value returned depends of *`element_name `* :
 
-<div id="id93081" class="table">
+<div>
 
-**Table 24.42. Values returned by http_map_get**
+**Table 24.41. Values returned by http_map_get**
 
-<div class="table-contents">
+<div>
 
 | element_name     | Datatype                           | Return value                                                       |
 |------------------|------------------------------------|--------------------------------------------------------------------|
@@ -94,15 +94,15 @@ Value returned depends of *`element_name `* :
 
 </div>
 
-<div id="examples_http_map_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_map_get" class="example">
+<div>
 
 **Example 24.170. Retrieving Mapping Details**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 <?vsp
@@ -118,11 +118,11 @@ http (sprintf ('<p>The default page for this path is: %s </p>', def_page));
 
   
 
-<div id="ex_http_map_get_2" class="example">
+<div>
 
 **Example 24.171. Warn users if non-SSL connection**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 <HTML>

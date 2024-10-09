@@ -1,6 +1,6 @@
-<div id="metadata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="schemas_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,11 +32,11 @@
 
 VIRTOLEDB supports schema rowsets listed in the following table.
 
-<div id="id22032" class="table">
+<div>
 
 **Table 7.19. Supported Schema Rowsets**
 
-<div class="table-contents">
+<div>
 
 | Schema Rowset                 | Supported Restrictions                                                                                   |
 |-------------------------------|----------------------------------------------------------------------------------------------------------|
@@ -61,9 +61,9 @@ VIRTOLEDB supports schema rowsets listed in the following table.
 
 </div>
 
-<div id="columns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,7 +79,7 @@ VIRTOLEDB supports schema rowsets listed in the following table.
 
 VIRTOLEDB supports the following columns in the columns rowset.
 
-<div class="itemizedlist">
+<div>
 
 - DBCOLUMN_IDNAME
 

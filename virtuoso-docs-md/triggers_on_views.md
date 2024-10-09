@@ -1,6 +1,6 @@
-<div id="triggers_on_views" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,11 +20,11 @@ is only one condition: The first trigger for a given type of event
 trigger is defined then any type of triggers (AFTER/BEFORE) can be
 added.
 
-<div id="ex_createtriggeronview" class="example">
+<div>
 
 **Example 11.10. Creating a trigger on view**
 
-<div class="example-contents">
+<div>
 
 We will make two tables and an union view for them. Then we will create
 a trigger which inserts a new record in one of the tables according to

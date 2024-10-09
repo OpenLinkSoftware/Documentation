@@ -1,10 +1,10 @@
-<div id="fn_set_user_id" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ set_user_id — sets the current user for execution
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_set_user_id" class="funcsynopsis">
+<div>
 
 |                                 |                             |
 |---------------------------------|-----------------------------|
@@ -24,7 +24,7 @@ set_user_id — sets the current user for execution
 |                                 | in `mode ` integer ,        |
 |                                 | in `password ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ set_user_id — sets the current user for execution
 
 </div>
 
-<div id="desc_set_user_id" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ set_user_id. This function is analogous to the UNIX 'su' command.
 
 </div>
 
-<div id="params_set_user_id" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109794" class="refsect2">
+<div>
 
 ### user_name
 
@@ -65,7 +65,7 @@ the name of SQL user account to be used as effective user and group.
 
 </div>
 
-<div id="id109797" class="refsect2">
+<div>
 
 ### mode
 
@@ -74,7 +74,7 @@ effect only while within current stored procedure context.
 
 </div>
 
-<div id="id109800" class="refsect2">
+<div>
 
 ### password
 
@@ -85,7 +85,7 @@ privileges. Password of the user *`user_name`* .
 
 </div>
 
-<div id="ret_set_user_id" class="refsect1">
+<div>
 
 ## Return Types
 

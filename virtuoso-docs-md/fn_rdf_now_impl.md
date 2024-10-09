@@ -1,10 +1,10 @@
-<div id="fn_rdf_now_impl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ rdf_now_impl — returns the current transaction timestamp
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_now_impl" class="funcsynopsis">
+<div>
 
 |                           |      |
 |---------------------------|------|
 | ` `**`rdf_now_impl`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ rdf_now_impl — returns the current transaction timestamp
 
 </div>
 
-<div id="desc_rdf_now_impl" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ last server start); otherwise it is timezoneless.
 
 </div>
 
-<div id="params_rdf_now_impl" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83546" class="refsect2">
+<div>
 
 ### 
 
@@ -63,15 +63,15 @@ None
 
 </div>
 
-<div id="examples_rdf_now_impl" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_now_impl" class="example">
+<div>
 
 **Example 24.61. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get a timestamp in human-readable form:
 
@@ -90,7 +90,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_rdf_now_impl" class="refsect1">
+<div>
 
 ## See Also
 

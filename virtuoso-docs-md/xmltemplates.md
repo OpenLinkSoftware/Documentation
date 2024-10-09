@@ -1,6 +1,6 @@
-<div id="xmltemplates" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,15 +65,15 @@ another HTTP server being referenced by a URL parameter. Specifying a
 template as a URL parameter naturally introduces a new potential
 security risk associated with the template owners web server.
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplatediagram" class="figure">
+<div>
 
 **Figure 15.1. Conceptual View of XML Templates**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Conceptual View of XML Templates](images/xmltemplatediagram.jpg)
 
@@ -96,7 +96,7 @@ function the parameters are specified in a vector as an input parameter.
 When XML templates are executed via HTTP the parameters are contained in
 the URL.
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                                        |                                                                                                                                                                                          |
 |:--------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -111,7 +111,7 @@ If an error occurs as a result of executing a SQL query or updategram,
 the comment will be included in the result detailing the error. The
 subsequent queries and updategrams will still be executed.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -141,9 +141,9 @@ class="function">xml_template()</code></a></p></td>
 
 </div>
 
-<div id="xmltemplatesyntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -185,7 +185,7 @@ be specified as either a relative or absolute URL.
 The following elements can be defined in the "sql" namespace for an XML
 Template:
 
-<div class="itemizedlist">
+<div>
 
 - The
 
@@ -252,7 +252,7 @@ default files in DAV do not have execute privileges.
 Explicitly specifying "contenttype=text/html" as a URL parameter will
 instruct the Virtuoso HTTP server to return the HTML output.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also">
 <colgroup>

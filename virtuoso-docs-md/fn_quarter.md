@@ -1,10 +1,10 @@
-<div id="fn_quarter" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ quarter — get number of quarter of year from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_quarter_01" class="funcsynopsis">
+<div>
 
 |                      |                        |
 |----------------------|------------------------|
 | ` `**`quarter`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ quarter — get number of quarter of year from a datetime
 
 </div>
 
-<div id="desc_quarter" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ quarter of year of the datetime.
 
 </div>
 
-<div id="params_quarter" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99773" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_quarter" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -65,15 +65,15 @@ of year.
 
 </div>
 
-<div id="examples_quarter" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_quarter" class="example">
+<div>
 
 **Example 24.249. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current quarter of year.
 
@@ -94,7 +94,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_10" class="refsect1">
+<div>
 
 ## See Also
 

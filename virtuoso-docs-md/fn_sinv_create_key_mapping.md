@@ -1,10 +1,10 @@
-<div id="fn_sinv_create_key_mapping" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sinv_create_key_mapping — Creates a key mapping function & table.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sinv_create_key_mapping" class="funcsynopsis">
+<div>
 
 |                                      |                                  |
 |--------------------------------------|----------------------------------|
@@ -24,7 +24,7 @@ sinv_create_key_mapping — Creates a key mapping function & table.
 |                                      | in `part_defs ` any ,            |
 |                                      | in `do_drops ` integer := 1 `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ sinv_create_key_mapping — Creates a key mapping function & table.
 
 </div>
 
-<div id="desc_sinv_create_key_mapping" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ title="9.29. SQL Inverse Functions">SQL Inverse Functions</a> )
 
 </div>
 
-<div id="params_sinv_create_key_mapping" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109905" class="refsect2">
+<div>
 
 ### map_name
 
@@ -58,7 +58,7 @@ of the lookup table (like MAP\_ \<map_name\>)
 
 </div>
 
-<div id="id109908" class="refsect2">
+<div>
 
 ### part_defs
 
@@ -69,7 +69,7 @@ part) like : \<map_name\>\_ \<part_name\>
 
 </div>
 
-<div id="id109911" class="refsect2">
+<div>
 
 ### do_drops
 
@@ -88,7 +88,7 @@ existing objects:
 
 </div>
 
-<div id="seealso_sinv_create_key_mapping" class="refsect1">
+<div>
 
 ## See Also
 

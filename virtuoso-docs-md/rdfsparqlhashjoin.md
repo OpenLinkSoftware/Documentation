@@ -1,6 +1,6 @@
-<div id="rdfsparqlhashjoin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,7 +28,7 @@ To check the flag, do:
 sys_stat ('hash_join_enable');
 ```
 
-<div class="itemizedlist">
+<div>
 
 - 0 - means that hash joins are never made
 
@@ -309,7 +309,7 @@ segment as the previous, against only 85%.
 
 These numbers are in the summary at the bottom of each profile:
 
-<div class="itemizedlist">
+<div>
 
 - rnd -- means index access
 
@@ -340,7 +340,7 @@ Given the long-running queries of any workload, you can perform this
 same comparison to determine if HASH JOIN is useful in the case at hand.
 Looking at the real time and CPU% is usually enough.
 
-<div class="itemizedlist">
+<div>
 
 - Using the sql:select-option pragma: One can specify the HASH JOIN is
   not to be used.

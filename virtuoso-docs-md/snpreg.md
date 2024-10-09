@@ -1,6 +1,6 @@
-<div id="snpreg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*snp_repl_tolerance_offset*</span>
     (default 15) In incremental and bi-directional snapshot time stamp

@@ -1,10 +1,10 @@
-<div id="vc_button" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ button — Scriptable button.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_button" class="funcsynopsis">
+<div>
 
 |                        |                                     |
 |------------------------|-------------------------------------|
@@ -49,7 +49,7 @@ button — Scriptable button.
 |                        | `debug-srcline` (optional) ,        |
 |                        | `debug-log` (optional) `)`;         |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -59,7 +59,7 @@ button — Scriptable button.
 
 </div>
 
-<div id="vc_desc_button" class="refsect1">
+<div>
 
 ## Description
 
@@ -71,7 +71,7 @@ windows or for setting values in other windows.
 
 </div>
 
-<div id="vc_attrs_button" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -134,11 +134,11 @@ passed upon POST request.
 
 **action. ** This specifies the button subclass to use.
 
-<div id="id39067" class="table">
+<div>
 
 **Table 14.1. Allowed values of the 'action' attribute**
 
-<div class="table-contents">
+<div>
 
 |        |                                                                                                                                                                                                                                                                                                                                                 |
 |--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -161,11 +161,11 @@ of the button.
 
 **style. ** A style of button, affects appearance.
 
-<div id="id39102" class="table">
+<div>
 
 **Table 14.2. Allowed values of the 'style' attribute**
 
-<div class="table-contents">
+<div>
 
 |        |                                                                                                                                                |
 |--------|------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -230,7 +230,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_button" class="refsect1">
+<div>
 
 ## Declaration of type vspx_button
 
@@ -256,15 +256,15 @@ constructor method vspx_button (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_button" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_button__0" class="example">
+<div>
 
 **Example 14.16.  Buton shown as an image**
 
-<div class="example-contents">
+<div>
 
 The button of the form will be shown as a picture plus.gif. Attributes
 whose names start with 'xhtml\_' are placed into the resulting HTML with
@@ -292,11 +292,11 @@ no changes.
 
   
 
-<div id="vc_ex_button__1" class="example">
+<div>
 
 **Example 14.17.  Simple 'Add-Number' example**
 
-<div class="example-contents">
+<div>
 
 The form accepts two numbers and calculates their sum.
 
@@ -328,11 +328,11 @@ The form accepts two numbers and calculates their sum.
 
   
 
-<div id="vc_ex_button__2" class="example">
+<div>
 
 **Example 14.18.  Simple 'Browse File' dialog**
 
-<div class="example-contents">
+<div>
 
 The form allows to select a file from server's file system \<html\>
 \<body\>
@@ -364,11 +364,11 @@ The form allows to select a file from server's file system \<html\>
 
   
 
-<div id="vc_ex_button__3" class="example">
+<div>
 
 **Example 14.19.  Simple browse button example**
 
-<div class="example-contents">
+<div>
 
 The form allows to select a two values from a different page \<html\>
 \<body\>
@@ -396,11 +396,11 @@ The form allows to select a two values from a different page \<html\>
 
   
 
-<div id="vc_ex_button__4" class="example">
+<div>
 
 **Example 14.20.  Simple select button example**
 
-<div class="example-contents">
+<div>
 
 The form returns back to caller form two walues from a text box and
 select list \<html\> \<body\>
@@ -430,7 +430,7 @@ select list \<html\> \<body\>
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0"
 data-summary="Tip: See Also: Reference Material in the Tutorial:">

@@ -1,10 +1,10 @@
-<div id="fn_split_and_decode" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ split_and_decode — converts escaped var=val pairs to a vector of strings
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_split_and_decode" class="funcsynopsis">
+<div>
 
 |                                               |                           |
 |-----------------------------------------------|---------------------------|
@@ -24,7 +24,7 @@ split_and_decode — converts escaped var=val pairs to a vector of strings
 |                                               | in `case_mode ` integer , |
 |                                               | in `str ` varchar `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ split_and_decode — converts escaped var=val pairs to a vector of strings
 
 </div>
 
-<div id="desc_23" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ is a string of less than three characters, then does only the decoding
 
 </div>
 
-<div id="params_06" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id111048" class="refsect2">
+<div>
 
 ### coded_str
 
@@ -57,7 +57,7 @@ Input string to be converted.
 
 </div>
 
-<div id="id111051" class="refsect2">
+<div>
 
 ### case_mode
 
@@ -75,7 +75,7 @@ characters of elements to the allocated string elements.
 
 </div>
 
-<div id="id111055" class="refsect2">
+<div>
 
 ### str
 
@@ -86,15 +86,15 @@ function will only decode without splitting and will return a string.
 
 </div>
 
-<div id="examples_03_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_split_and_decode" class="example">
+<div>
 
 **Example 24.387. Using split_and_decode**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
    split_and_decode("Tulipas=Taloon+kumi=kala&Joka=haisi

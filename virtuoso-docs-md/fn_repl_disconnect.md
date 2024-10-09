@@ -1,10 +1,10 @@
-<div id="fn_repl_disconnect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ repl_disconnect — terminates communication with a replication publisher
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_disconnect" class="funcsynopsis">
+<div>
 
 |                              |                              |
 |------------------------------|------------------------------|
 | ` `**`repl_disconnect`**` (` | in `publisher ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ repl_disconnect — terminates communication with a replication publisher
 
 </div>
 
-<div id="desc_repl_disconnect" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ subscription by subscription basis by calling repl_sync for each.
 
 </div>
 
-<div id="params_repl_disconnect" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105014" class="refsect2">
+<div>
 
 ### publisher
 
@@ -57,15 +57,15 @@ Publisher's name.
 
 </div>
 
-<div id="examples_repl_disconnect" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_disconnect_1" class="example">
+<div>
 
 **Example 24.319. Disconnecting from publisher server 'demo-srv'.**
 
-<div class="example-contents">
+<div>
 
 This is to disconnect from the publisher server 'demo-srv', the all
 subscriptions to this server will be disconnected.
@@ -82,7 +82,7 @@ SQL> repl_disconnect ('demo-srv');
 
 </div>
 
-<div id="seealso_repl_disconnect" class="refsect1">
+<div>
 
 ## See Also
 

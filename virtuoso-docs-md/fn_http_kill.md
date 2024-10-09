@@ -1,10 +1,10 @@
-<div id="fn_http_kill" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_kill — Kill VSP process whose details match parameter inputs
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_kill" class="funcsynopsis">
+<div>
 
 |                        |                                       |
 |------------------------|---------------------------------------|
@@ -24,7 +24,7 @@ http_kill — Kill VSP process whose details match parameter inputs
 |                        | in `URL ` varchar ,                   |
 |                        | in `process_request_id ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ http_kill — Kill VSP process whose details match parameter inputs
 
 </div>
 
-<div id="desc_http_kill" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ only that pending HTTP request.
 
 </div>
 
-<div id="params_http_kill" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92801" class="refsect2">
+<div>
 
 ### client_IP_address
 
@@ -60,7 +60,7 @@ Client's IP as per the output of `http_pending_req() `
 
 </div>
 
-<div id="id92805" class="refsect2">
+<div>
 
 ### URL
 
@@ -68,7 +68,7 @@ Process' URL as per the output of `http_pending_req() `
 
 </div>
 
-<div id="id92809" class="refsect2">
+<div>
 
 ### process_request_id
 
@@ -78,15 +78,15 @@ The task ID of the request.
 
 </div>
 
-<div id="errors_http_kill" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id92814" class="table">
+<div>
 
-**Table 24.41. Errors signalled by `http_kill `**
+**Table 24.40. Errors signalled by `http_kill `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                             | Description |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------|-------------|
@@ -103,15 +103,15 @@ The task ID of the request.
 
 </div>
 
-<div id="examples_http_kill" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_kill" class="example">
+<div>
 
 **Example 24.166. Retrieving a list of VSP processes**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare ps any;
@@ -134,7 +134,7 @@ after this and calling http_pending_req() again we get (('127.0.0.1',
 
 </div>
 
-<div id="seealso_http_kill" class="refsect1">
+<div>
 
 ## See Also
 

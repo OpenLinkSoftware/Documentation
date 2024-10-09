@@ -1,6 +1,6 @@
-<div id="vfoafsslff" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,17 +14,17 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
-1.  <div class="figure-float">
+1.  <div>
 
-    <div id="foafssl1" class="figure">
+    <div>
 
     **Figure 17.1. Setting Up Firefox**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting Up Firefox](images/ui/foafssl1.png)
 
@@ -44,15 +44,15 @@
 
 3.  Click OK, and confirm the exception.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl2" class="figure">
+    <div>
 
     **Figure 17.2. Setting Up Firefox**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting Up Firefox](images/ui/foafssl2.png)
 

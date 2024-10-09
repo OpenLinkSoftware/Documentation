@@ -1,10 +1,10 @@
-<div id="fn_repl_new_log" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ repl_new_log — create new publication log
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_new_log" class="funcsynopsis">
+<div>
 
 |                           |                             |
 |---------------------------|-----------------------------|
 | ` `**`repl_new_log`**` (` | in `publication ` varchar , |
 |                           | in `file ` varchar `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ repl_new_log — create new publication log
 
 </div>
 
-<div id="desc_repl_new_log" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ the file name.
 
 </div>
 
-<div id="params_repl_new_log" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105310" class="refsect2">
+<div>
 
 ### publication
 
@@ -56,7 +56,7 @@ publication account name.
 
 </div>
 
-<div id="id105313" class="refsect2">
+<div>
 
 ### file
 
@@ -67,15 +67,15 @@ exceed 1Mb limit a new file suffixed with timestamp will be opened.
 
 </div>
 
-<div id="examples_repl_new_log" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_new_log_1" class="example">
+<div>
 
 **Example 24.322. Opening a new replication log**
 
-<div class="example-contents">
+<div>
 
 This command can be issued on the publisher server to swith replication
 logging to the new file 'new_log_file_name.log'. In practice we make a
@@ -96,7 +96,7 @@ SQL> repl_new_log ('demo-publication', 'new_log_file_name.log');
 
 </div>
 
-<div id="seealso_repl_new_log" class="refsect1">
+<div>
 
 ## See Also
 

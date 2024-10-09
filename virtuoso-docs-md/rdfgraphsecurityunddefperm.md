@@ -1,6 +1,6 @@
-<div id="rdfgraphsecurityunddefperm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,7 +40,7 @@ potential security hole in SPARQL, so this is strictly prohibited.
 Four sorts of access are specified by four bits of an integer
 "permission bit-mask", plain old UNIX style:
 
-<div class="itemizedlist">
+<div>
 
 - Bit 1 permits read access.
 
@@ -63,7 +63,7 @@ to mix secure and public graphs in one graph group.
 When a SPARQL query should check whether a given user have permission to
 access a given graph then the order of checks is as follows:
 
-<div class="orderedlist">
+<div>
 
 1.  permissions of the user on the specific graph;
 

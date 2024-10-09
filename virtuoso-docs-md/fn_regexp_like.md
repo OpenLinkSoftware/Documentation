@@ -1,10 +1,10 @@
-<div id="fn_regexp_like" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ regexp_like — Allows a like comparison using regular-expression.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regexp_like" class="funcsynopsis">
+<div>
 
 |                                 |                                    |
 |---------------------------------|------------------------------------|
@@ -24,7 +24,7 @@ regexp_like — Allows a like comparison using regular-expression.
 |                                 | in `pattern ` any ,                |
 |                                 | in `match_parameter ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ regexp_like — Allows a like comparison using regular-expression.
 
 </div>
 
-<div id="desc_regexp_like" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ formatting, and providing control over case-sensitivity.
 
 </div>
 
-<div id="params_regexp_like" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104472" class="refsect2">
+<div>
 
 ### source_string
 
@@ -58,7 +58,7 @@ Source string
 
 </div>
 
-<div id="id104475" class="refsect2">
+<div>
 
 ### pattern
 
@@ -79,7 +79,7 @@ supported:
 
 </div>
 
-<div id="id104488" class="refsect2">
+<div>
 
 ### match_parameter
 
@@ -89,15 +89,15 @@ This is null by default.
 
 </div>
 
-<div id="examples_regexp_like_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_regexp_like" class="example">
+<div>
 
 **Example 24.312. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The following SQL query's WHERE clause shows the REGEXP_LIKE operator,
 which searches the ZIP column for a pattern that satisfies the regular
@@ -126,7 +126,7 @@ PostalCode
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Compatibility:">
 <colgroup>
@@ -143,7 +143,7 @@ width="25"><img src="images/note.png" alt="[Note]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The regular
 expressions supported here follow version 7.9 of the Perl Compatible
 Regular Expression (PCRE) syntax.</p>
-<div class="orderedlist">
+<div>
 <ol type="1">
 <li><p><a
 href="https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions"
@@ -160,7 +160,7 @@ target="_top">PCRE.org</a></p></li>
 
 </div>
 
-<div id="seealso_regexp_like" class="refsect1">
+<div>
 
 ## See Also
 

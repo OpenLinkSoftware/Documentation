@@ -1,6 +1,6 @@
-<div id="oledbsessions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="oledbsession-properties" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,11 +33,11 @@
 VIRTOLEDB supports the following properties in the session property
 group.
 
-<div id="id22685" class="table">
+<div>
 
 **Table 7.25. Supported Session Properties**
 
-<div class="table-contents">
+<div>
 
 | Property                        | R/W        | Default                     | Notes                                |
 |---------------------------------|------------|-----------------------------|--------------------------------------|

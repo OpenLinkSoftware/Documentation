@@ -1,10 +1,10 @@
-<div id="fn_dav_api_add" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ updating, deleting of DAV collections or resources
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dav_col_create" class="funcsynopsis">
+<div>
 
 |                                    |                             |
 |------------------------------------|-----------------------------|
@@ -28,7 +28,7 @@ updating, deleting of DAV collections or resources
 |                                    | in `auth_uname ` varchar ,  |
 |                                    | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ updating, deleting of DAV collections or resources
 
 </div>
 
-<div id="fsyn_dav_res_upload" class="funcsynopsis">
+<div>
 
 |                                    |                             |
 |------------------------------------|-----------------------------|
@@ -49,7 +49,7 @@ updating, deleting of DAV collections or resources
 |                                    | in `auth_uname ` varchar ,  |
 |                                    | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -57,7 +57,7 @@ updating, deleting of DAV collections or resources
 
 </div>
 
-<div id="fsyn_dav_delete" class="funcsynopsis">
+<div>
 
 |                                |                             |
 |--------------------------------|-----------------------------|
@@ -66,7 +66,7 @@ updating, deleting of DAV collections or resources
 |                                | in `auth_uname ` varchar ,  |
 |                                | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -76,7 +76,7 @@ updating, deleting of DAV collections or resources
 
 </div>
 
-<div id="desc_dav_col_create" class="refsect1">
+<div>
 
 ## Description
 
@@ -93,11 +93,11 @@ success.
 
 </div>
 
-<div id="params_dav_api_add" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84438" class="refsect2">
+<div>
 
 ### path
 
@@ -105,7 +105,7 @@ Collection (directory) path and name of destination of upload.
 
 </div>
 
-<div id="id84441" class="refsect2">
+<div>
 
 ### content
 
@@ -113,7 +113,7 @@ The resource data to upload.
 
 </div>
 
-<div id="id84444" class="refsect2">
+<div>
 
 ### type
 
@@ -121,7 +121,7 @@ Mime type of the uploaded resource. Defaults to '' if not supplied.
 
 </div>
 
-<div id="id84447" class="refsect2">
+<div>
 
 ### permissions
 
@@ -130,7 +130,7 @@ Access permission string of Dav collection or resource. Defaults to
 
 </div>
 
-<div id="id84450" class="refsect2">
+<div>
 
 ### silent
 
@@ -139,7 +139,7 @@ are returned.
 
 </div>
 
-<div id="id84453" class="refsect2">
+<div>
 
 ### uname
 
@@ -147,7 +147,7 @@ Owner user name. Default is 'dav'.
 
 </div>
 
-<div id="id84456" class="refsect2">
+<div>
 
 ### group name
 
@@ -155,7 +155,7 @@ Owner group name. Default is 'dav'.
 
 </div>
 
-<div id="id84459" class="refsect2">
+<div>
 
 ### auth_uname
 
@@ -164,7 +164,7 @@ is null.
 
 </div>
 
-<div id="id84462" class="refsect2">
+<div>
 
 ### auth_pwd
 
@@ -174,15 +174,15 @@ Administrator password. Default is null.
 
 </div>
 
-<div id="errors_dav_api_add" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id84467" class="table">
+<div>
 
-**Table 24.18. Errors signalled by DAV\_\* functions**
+**Table 24.17. Errors signalled by DAV\_\* functions**
 
-<div class="table-contents">
+<div>
 
 | Error Code                           | Description                                                                                                              |
 |--------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
@@ -215,15 +215,15 @@ Administrator password. Default is null.
 
 </div>
 
-<div id="examples_dav_api_add" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dav_api_add_1" class="example">
+<div>
 
 **Example 24.76. Creating a resource and collection**
 
-<div class="example-contents">
+<div>
 
 The following example shows collection creation, resource upload and
 removal. This sequence of commands would leave a resource A.txt in
@@ -245,7 +245,7 @@ SQL> select DB.DBA.DAV_DELETE ('/DAV/user/A/B.txt', 0, 'dav', 'dav');
 
 </div>
 
-<div id="seealso_dav_api_add" class="refsect1">
+<div>
 
 ## See Also
 

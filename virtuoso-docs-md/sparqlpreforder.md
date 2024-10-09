@@ -1,6 +1,6 @@
-<div id="sparqlpreforder" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 The way to prefer one label to the other can be done as follows:
 
-<div class="itemizedlist">
+<div>
 
 - Have a procedure which returns preference order:
 

@@ -1,10 +1,10 @@
-<div id="fn_trace_off" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ trace_off — Disable extra logging for Virtuoso server
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_trace_off" class="funcsynopsis">
+<div>
 
 |                               |                              |
 |-------------------------------|------------------------------|
 | `integer `**`trace_off`**` (` | in `parameter ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ trace_off — Disable extra logging for Virtuoso server
 
 </div>
 
-<div id="id113873" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ function.
 
 </div>
 
-<div id="ret_trace_off" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -52,15 +52,15 @@ Upon success zero will be returned, otherwise an error is.
 
 </div>
 
-<div id="errors_trace_off" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id113882" class="table">
+<div>
 
-**Table 24.83. Errors signalled by `trace_off `**
+**Table 24.82. Errors signalled by `trace_off `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                             |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------|
@@ -74,15 +74,15 @@ Upon success zero will be returned, otherwise an error is.
 
 </div>
 
-<div id="examples_trace_off" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_trace_off" class="example">
+<div>
 
 **Example 24.421. Simple example**
 
-<div class="example-contents">
+<div>
 
 To show users logs to the server and failed user logs
 
@@ -101,7 +101,7 @@ To show users logs to the server and failed user logs
 
 </div>
 
-<div id="seealso_trace_off" class="refsect1">
+<div>
 
 ## See Also
 

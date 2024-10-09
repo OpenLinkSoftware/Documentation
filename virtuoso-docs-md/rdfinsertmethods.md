@@ -1,6 +1,6 @@
-<div id="rdfinsertmethods" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfinsertmethodsapifunct" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,12 +30,12 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="rdfapi.html#rdfapidataimportttlp" class="link"
   title="Using TTLP">Using the DB.DBA.TTLP() function</a>
 
-  <div class="itemizedlist">
+  <div>
 
   - Note: use this function for loading Turtle
 
@@ -44,7 +44,7 @@
 - <a href="rdfapi.html#rdfapidataimportttlpmt" class="link"
   title="Using TTLP_MT">Using the DB.DBA.TTLP_MT() function</a>
 
-  <div class="itemizedlist">
+  <div>
 
   - Note: use this function for loading triples from file on multiple
     threads
@@ -55,7 +55,7 @@
   title="Using RDF_LOAD_RDFXML_MT">Using the DB.DBA.RDF_LOAD_RDFXML_MT()
   function</a>
 
-  <div class="itemizedlist">
+  <div>
 
   - Note: Use this function for loading large resources when
     transactional integrity is not important (loading of a single
@@ -66,7 +66,7 @@
 - <a href="rdfapi.html#rdfapidataimportttlphash" class="link"
   title="Using RDF_TTL2HASH">Using the DB.DBA.RDF_TTL2HASH() function</a>
 
-  <div class="itemizedlist">
+  <div>
 
   - Note: use this function to get dictionary of triples in 'long
     valmode'.
@@ -77,7 +77,7 @@
   title="Using RDF_LOAD_RDFXML">Using the DB.DBA.RDF_LOAD_RDFXML()
   function</a>
 
-  <div class="itemizedlist">
+  <div>
 
   - For loading RDF/XML, the best way is to split the data to be loaded
     into multiple streams and load these in parallel using this

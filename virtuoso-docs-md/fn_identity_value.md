@@ -1,10 +1,10 @@
-<div id="fn_identity_value" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ identity_value — returns the last assigned identity column value
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_identity_value" class="funcsynopsis">
+<div>
 
 |                                    |      |
 |------------------------------------|------|
 | `integer `**`identity_value`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ identity_value — returns the last assigned identity column value
 
 </div>
 
-<div id="desc_identity_value" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,7 +53,7 @@ case the value is of type SQLINTEGER.
 
 </div>
 
-<div id="ret_identity_value" class="refsect1">
+<div>
 
 ## Return Types
 

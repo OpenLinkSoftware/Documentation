@@ -1,10 +1,10 @@
-<div id="fn_st_intersects" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ st_intersects — Returns intersects between two geometries.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_intersects" class="funcsynopsis">
+<div>
 
 |                            |                                  |
 |----------------------------|----------------------------------|
@@ -24,7 +24,7 @@ st_intersects — Returns intersects between two geometries.
 |                            | in `g2 ` any ,                   |
 |                            | in `prec ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ st_intersects — Returns intersects between two geometries.
 
 </div>
 
-<div id="desc_st_intersects" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ true if there is at least one point in common.
 
 </div>
 
-<div id="params_st_intersects" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91174" class="refsect2">
+<div>
 
 ### g1
 
@@ -57,7 +57,7 @@ The first geometry.
 
 </div>
 
-<div id="id91177" class="refsect2">
+<div>
 
 ### g2
 
@@ -65,7 +65,7 @@ The second geometry.
 
 </div>
 
-<div id="id91180" class="refsect2">
+<div>
 
 ### prec
 
@@ -76,7 +76,7 @@ the srid. Default is 0.
 
 </div>
 
-<div id="ret_st_intersects" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,15 +84,15 @@ Returns int.
 
 </div>
 
-<div id="examples_st_intersects" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_intersects" class="example">
+<div>
 
 **Example 24.144. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SELECT st_intersects (st_point (0, 51), st_point (0, 52), 100);
@@ -137,7 +137,7 @@ No. of rows in result: 10
 
 </div>
 
-<div id="seealso_st_intersects" class="refsect1">
+<div>
 
 ## See Also
 

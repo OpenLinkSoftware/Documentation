@@ -1,10 +1,10 @@
-<div id="fn_sql_primary_keys" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_primary_keys" class="funcsynopsis">
+<div>
 
 |                                     |                               |
 |-------------------------------------|-------------------------------|
@@ -26,7 +26,7 @@ DSN
 |                                     | in `owner ` varchar ,         |
 |                                     | in `table_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ DSN
 
 </div>
 
-<div id="desc_sql_primary_keys" class="refsect1">
+<div>
 
 ## Description
 
@@ -64,11 +64,11 @@ each column.
 
 </div>
 
-<div id="params_sql_primary_keys" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id111412" class="refsect2">
+<div>
 
 ### dsn
 
@@ -76,7 +76,7 @@ The data source name <span class="type">string </span>
 
 </div>
 
-<div id="id111416" class="refsect2">
+<div>
 
 ### qualifier
 
@@ -85,7 +85,7 @@ in 'De%'.
 
 </div>
 
-<div id="id111420" class="refsect2">
+<div>
 
 ### owner
 
@@ -94,7 +94,7 @@ characters in 'Dem%'.
 
 </div>
 
-<div id="id111424" class="refsect2">
+<div>
 
 ### table_name
 
@@ -105,7 +105,7 @@ characters in 'Cust%'.
 
 </div>
 
-<div id="ret_sql_primary_keys" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -116,15 +116,15 @@ represented as an array with one element for each column.
 
 </div>
 
-<div id="examples_sql_primary_keys" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sql_primary_keys" class="example">
+<div>
 
 **Example 24.395. Simple Example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 dbg_obj_print (sql_primary_keys ('Local Virtuoso', 'Demo', NULL, 'Orders'));
@@ -142,7 +142,7 @@ dbg_obj_print (sql_primary_keys ('Local Virtuoso', 'Demo', NULL, 'Orders'));
 
 </div>
 
-<div id="seealso_sql_primary_keys" class="refsect1">
+<div>
 
 ## See Also
 

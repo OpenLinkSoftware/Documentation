@@ -1,10 +1,10 @@
-<div id="fn_sql_remove_dsn_from_ini" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ sql_remove_dsn_from_ini — removes a DSN from the ODBC registry
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_remove_dsn_from_ini" class="funcsynopsis">
+<div>
 
 |                                            |                             |
 |--------------------------------------------|-----------------------------|
 | `vector `**`sql_remove_dsn_from_ini`**` (` | in `dsn ` varchar ,         |
 |                                            | in `dsn_type ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ sql_remove_dsn_from_ini — removes a DSN from the ODBC registry
 
 </div>
 
-<div id="desc_remove_dsn_from_ini" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ data sources.
 
 </div>
 
-<div id="params_sql_remove_dsn_from_ini" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -51,7 +51,7 @@ As defined in ODBC Installer API for the corresponding catalog call.
 
 </div>
 
-<div id="ret_sql_remove_dsn_from_ini" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -59,7 +59,7 @@ None.
 
 </div>
 
-<div id="seealso_sql_remove_dsn_from_ini" class="refsect1">
+<div>
 
 ## See Also
 

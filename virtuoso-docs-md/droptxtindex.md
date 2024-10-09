@@ -1,6 +1,6 @@
-<div id="droptxtindex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,11 +19,11 @@ This will drop all triggers, procedures and auxiliary tables. The words
 table is in the qualifier and owner of the indexed table and is named
 \<table\>\_\<column\>\_WORDS.
 
-<div id="id67035" class="example">
+<div>
 
 **Example 20.6. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 drop table DB.DBA.XML_TEXT_XT_TEXT_WORDS;

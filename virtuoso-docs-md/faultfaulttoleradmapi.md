@@ -1,6 +1,6 @@
-<div id="faultfaulttoleradmapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -106,7 +106,7 @@ set.
 
 The op specifies the setting. It is one of:
 
-<div class="itemizedlist">
+<div>
 
 - cl_master_list - succession of master hosts as an array of host
   numbers. Read only.
@@ -131,7 +131,7 @@ The op specifies the setting. It is one of:
 
 The status of a host is one of:
 
-<div class="itemizedlist">
+<div>
 
 - 0 - online
 
@@ -145,9 +145,9 @@ The status of a host is one of:
 
 </div>
 
-<div id="faultfaulttoleradmapiutility" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -287,7 +287,7 @@ be brought back online with this command. The host is identified by its
 number in the cl.cfg file. This command automates the following
 operations:
 
-<div class="itemizedlist">
+<div>
 
 - Make a log checkpoint on the online replica of the host being rebuilt.
   This allows the database files to be copied to serve as a basis of the
@@ -314,9 +314,9 @@ clctl enable <host>
 
 Enable a node of the cluster.
 
-<div id="faultfaulttoleradmapiutilityconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

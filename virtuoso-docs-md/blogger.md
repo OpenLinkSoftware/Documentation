@@ -1,6 +1,6 @@
-<div id="blogger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -52,7 +52,7 @@ In addition to the blogger APIs Virtuoso supports:
 | <span class="emphasis">*Pingback and Trackback API*</span> - to allow bloggers to notify each other.                                         |
 | <span class="emphasis">*Subscription Harmonizer*</span> - to allow bloggers to keep their subscriptions in-sync.                             |
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -68,18 +68,18 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 <tr class="even">
 <td style="text-align: left;" data-valign="top"><p>Blogger System Tables
 <a href="http://xmlrpc.free-conversant.com/docs/bloggerAPI"
-class="ulink" target="_top" shape="rect">Blogger API</a></p>
+class="ulink" target="_top">Blogger API</a></p>
 <p><a href="http://www.xmlrpc.com/metaWeblogApi" class="ulink"
-target="_top" shape="rect">MetaWeblog API</a></p></td>
+target="_top">MetaWeblog API</a></p></td>
 </tr>
 </tbody>
 </table>
 
 </div>
 
-<div id="blogvirtblogapp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -129,15 +129,15 @@ text searchable - a simple exploit of the Virtuoso free-text engine.
 Virtuoso can provide the blog client, server or relay for blogs or any
 RSS or XML-feed based channel or information.
 
-<div class="figure-float">
+<div>
 
-<div id="blog001" class="figure">
+<div>
 
 **Figure 14.50. Virtuoso Blogging Conceptual Diagram**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso Blogging Conceptual Diagram](images/VirtuosoBlog.jpg)
 
@@ -151,9 +151,9 @@ RSS or XML-feed based channel or information.
 
 </div>
 
-<div id="blogsyndicateyourblog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -204,9 +204,9 @@ support the exchange of knowledge on the Web.
 
 </div>
 
-<div id="blogchannels" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -315,9 +315,9 @@ follows:
 
 </div>
 
-<div id="blogpersonalblog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -376,11 +376,11 @@ content is generated in real-time per request.
 Blog users may edit the `default.xsl` in order to change the appearance
 of the default page of their Blog.
 
-<div id="ex_defaultbloghome" class="example">
+<div>
 
 **Example 14.52. Default blog home (index.vspx) page**
 
-<div class="example-contents">
+<div>
 
 The following is source of default blog home page. It's built using a
 VSPX and macro expansion. All page components are represented with
@@ -419,8 +419,8 @@ xml:id="navbartop">
 xml:id="pagecontainer" cellspacing="10" cellpadding="0" border="0" width="100%">
         <tr>
           <td class="box">
-         <div class="box">
-                  <div class="roll" style="border: none; border">
+         <div>
+                  <div>
                     <div align="center" style="margin-bottom: 3px;">
                       <b>Personal Details</b>
                     </div>
@@ -435,14 +435,14 @@ xml:id="pagecontainer" cellspacing="10" cellpadding="0" border="0" width="100%">
             </div>
                   </div>
           <vm:if test="login">
-                  <div class="roll" >
+                  <div>
                     <div align="center" style="margin-bottom: 3px;">
                       <b>Configuration</b>
                     </div>
                     <vm:configpages />
                   </div>
           </vm:if>
-                  <div class="roll">
+                  <div>
                   <div align="center" style="margin-bottom: 3px;">
                     <b>Syndicate This Blog</b>
                   </div>
@@ -455,7 +455,7 @@ xml:id="pagecontainer" cellspacing="10" cellpadding="0" border="0" width="100%">
                     <p class="caption">Keyword search:</p>
                     <vm:search/>
                   </div>
-                  <div class="roll">
+                  <div>
                     <div align="center" style="margin-bottom: 3px;">
                       <b>Post Categories</b>
                     </div>
@@ -489,10 +489,10 @@ xml:id="text">
              </div>
           </td>
           <td class="box">
-        <div class="box">
+        <div>
                   <vm:calendar/>
           <vm:if test="blog">
-                  <div class="roll">
+                  <div>
                     <div align="center">
                       <b>Blog Roll</b>
                     </div>
@@ -500,7 +500,7 @@ xml:id="text">
                   </div>
           </vm:if>
           <vm:if test="channels">
-                  <div class="roll">
+                  <div>
                     <div align="center">
                       <b>Channel Roll</b>
                     </div>
@@ -508,7 +508,7 @@ xml:id="text">
                   </div>
           </vm:if>
           <vm:if test="ocs">
-                  <div class="roll">
+                  <div>
                     <div align="center" style="margin-bottom: 3px;">
                       <b>OCS Links</b>
                     </div>
@@ -516,7 +516,7 @@ xml:id="text">
                   </div>
           </vm:if>
           <vm:if test="opml">
-                  <div class="roll">
+                  <div>
                     <div align="center" style="margin-bottom: 3px;">
                       <b>OPML Links</b>
                     </div>
@@ -531,10 +531,10 @@ xml:id="text">
 xml:id="powered">
         <vm:powered-by/>
       </div>
-      <div class="disclaimer">
+      <div>
       <vm:disclaimer/>
         </div>
-      <div class="copy">
+      <div>
         <vm:copyright/>
       </div>
     </vm:body>
@@ -548,11 +548,11 @@ xml:id="powered">
 
   
 
-<div id="ex_bloghome" class="example">
+<div>
 
 **Example 14.53. Blog home (index.vsp) page**
 
-<div class="example-contents">
+<div>
 
 The XML Schema representing the XML data for blog home page is
 represented below. Following this fragment is the `default.xsl` XSL
@@ -760,7 +760,7 @@ xml:id="navbartop_01">
 xml:id="pagecontainer_01" cellspacing="10" cellpadding="0" border="0" width="100%">
           <tr>
             <td class="box">
-              <div class="box">
+              <div>
                 <div align="left" class="roll" style="border: none; border">
                     <div align="center" style="margin-bottom: 3px;">
                       <b>Personal Details</b>
@@ -772,7 +772,7 @@ xml:id="pagecontainer_01" cellspacing="10" cellpadding="0" border="0" width="100
           </a> Contact
           </div>
         </div>
-                <div class="roll">
+                <div>
                   <div align="center" style="margin-bottom: 3px;">
                     <b>Syndicate This Blog</b>
                   </div>
@@ -824,7 +824,7 @@ xml:id="texttd_01">
               <xsl:apply-templates select="/blog/items"/>
             </td>
             <td class="box">
-              <div class="box">
+              <div>
                 <xsl:apply-templates select="/blog/navigation/calendar"/>
                 <xsl:apply-templates select="/blog/navigation/blogroll"/>
                 <xsl:apply-templates select="/blog/navigation/channelroll"/>
@@ -859,7 +859,7 @@ xml:id="text_01">
       <xsl:if test="/blog/@post != ''">
       <div><a name="tb" /><h3>TrackBacks</h3>
 
-<div class="tb-url">TrackBack URL for this entry:
+<div>TrackBack URL for this entry:
 <br/>
 <b>
 <xsl:value-of select="/blog/@trackback-url"/>
@@ -901,7 +901,7 @@ xml:id="text_01">
   No messages found for category  "<xsl:value-of select="/blog/@category-name"/>".
   </xsl:when>
         <xsl:when test="not item and @search = '' and /blog/@cat = ''">
-          <div class="message">
+          <div>
   This is a placeholder for your new weblog.
   There are no posts currently.
   </div>
@@ -913,10 +913,10 @@ xml:id="powered_01">
           <img src="/blog/blogs/images/PoweredByVirtuoso.gif" border="0" alt="powered by" />
         </a>
       </div>
-      <div class="disclaimer">
+      <div>
         <xsl:value-of  select="/blog/disclaimer" disable-output-escaping="yes" />
       </div>
-      <div class="copy">
+      <div>
         <xsl:value-of select="/blog/copy" disable-output-escaping="yes" />
       </div>
     </div>
@@ -924,13 +924,13 @@ xml:id="powered_01">
 
   <xsl:template match="item">
     <a name="{id}"/>
-    <div class="message">
+    <div>
       <xsl:apply-templates select="pubDate"/>
       <xsl:apply-templates select="description"/>
       <xsl:if test="function-available('vb:mt_track_back_discovery')">
     <xsl:value-of select="vb:mt_track_back_discovery (id)" disable-output-escaping="yes" />
       </xsl:if>
-      <div class="comment">
+      <div>
         <a href="#">
       <xsl:attribute name="href">index.vsp?id=<xsl:value-of select="id"/>#comments</xsl:attribute>
     Comments [<xsl:value-of select="comments"/>]
@@ -943,7 +943,7 @@ xml:id="powered_01">
   </xsl:template>
 
   <xsl:template match="post-comments">
-    <div class="message">
+    <div>
       <xsl:apply-templates select="posted"/>
 
 <a>
@@ -954,14 +954,14 @@ xml:id="powered_01">
 <xsl:apply-templates select="name"/>
 </b>
 </a>
-      <div class="desc">
+      <div>
         <xsl:value-of select="vb:tidy_xhtml (comment, '*default*')" disable-output-escaping="yes"/>
       </div>
     </div>
   </xsl:template>
 
   <xsl:template match="trackbacks">
-    <div class="message">
+    <div>
       <xsl:apply-templates select="posted"/>
 
 <a>
@@ -972,7 +972,7 @@ xml:id="powered_01">
 <xsl:apply-templates select="blog-name"/>
 </b>
 </a>
-      <div class="desc">
+      <div>
       <b><xsl:apply-templates select="title"/></b>
         <xsl:value-of select="vb:tidy_xhtml (excerpt, '*default*')" disable-output-escaping="yes"/>
       </div>
@@ -980,7 +980,7 @@ xml:id="powered_01">
   </xsl:template>
 
   <xsl:template match="description">
-    <div class="desc">
+    <div>
       <xsl:choose>
       <xsl:when test="function-available('vb:tidy_xhtml')">
         <xsl:value-of select="vb:tidy_xhtml (., '*default*')" disable-output-escaping="yes"/>
@@ -993,19 +993,19 @@ xml:id="powered_01">
   </xsl:template>
 
   <xsl:template match="pubDate">
-    <div class="pubdate">
+    <div>
       <xsl:value-of select="."/>
     </div>
   </xsl:template>
 
   <xsl:template match="posted">
-    <div class="pubdate">
+    <div>
       <xsl:value-of select="."/>
     </div>
   </xsl:template>
 
   <xsl:template match="blogroll">
-    <div class="roll">
+    <div>
       <div align="center">
         <b>Blog Roll</b>
       </div>
@@ -1014,7 +1014,7 @@ xml:id="powered_01">
   </xsl:template>
 
   <xsl:template match="channelroll">
-    <div class="roll">
+    <div>
       <div align="center">
         <b>Channel Roll</b>
       </div>
@@ -1023,7 +1023,7 @@ xml:id="powered_01">
 </xsl:template>
 
   <xsl:template match="opml">
-    <div class="roll">
+    <div>
       <div align="center" style="margin-bottom: 3px;">
         <b>OPML Links</b>
       </div>
@@ -1042,7 +1042,7 @@ xml:id="powered_01">
   </xsl:template>
 
   <xsl:template match="ocs">
-    <div class="roll">
+    <div>
       <div align="center" style="margin-bottom: 3px;">
         <b>OCS Links</b>
       </div>
@@ -1063,7 +1063,7 @@ xml:id="powered_01">
   <xsl:template match="categories[category]">
 
   <xsl:variable name="dt" select="concat(//calendar/@year, '-', //calendar/@month, '-', //calendar/@day)"/>
-    <div class="roll">
+    <div>
       <div align="center" style="margin-bottom: 3px;">
         <b>Post Categories</b>
       </div>

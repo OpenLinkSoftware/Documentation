@@ -1,10 +1,10 @@
-<div id="fn_curdate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ curdate , curtime , curdatetime — get current date and time
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_curdate" class="funcsynopsis">
+<div>
 
 |                              |      |
 |------------------------------|------|
 | `datetime `**`curdate`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -30,13 +30,13 @@ curdate , curtime , curdatetime — get current date and time
 
 </div>
 
-<div id="fsyn_curdatetime" class="funcsynopsis">
+<div>
 
 |                                  |      |
 |----------------------------------|------|
 | `datetime `**`curdatetime`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -44,13 +44,13 @@ curdate , curtime , curdatetime — get current date and time
 
 </div>
 
-<div id="fsyn_curtime" class="funcsynopsis">
+<div>
 
 |                          |      |
 |--------------------------|------|
 | `time `**`curtime`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -60,7 +60,7 @@ curdate , curtime , curdatetime — get current date and time
 
 </div>
 
-<div id="desc_curdate" class="refsect1">
+<div>
 
 ## Description
 
@@ -70,7 +70,7 @@ data type reported to client differs.
 
 </div>
 
-<div id="params_curdate" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -78,7 +78,7 @@ None.
 
 </div>
 
-<div id="ret_curdate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -89,7 +89,7 @@ In a result set to client, the column types reported are as follows:
 
 </div>
 
-<div id="errors_curdate" class="refsect1">
+<div>
 
 ## Errors
 
@@ -97,15 +97,15 @@ These functions do not signal errors.
 
 </div>
 
-<div id="examples_curdate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_curdate" class="example">
+<div>
 
 **Example 24.57. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current date in different datatypes
 
@@ -126,7 +126,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_curdate" class="refsect1">
+<div>
 
 ## See Also
 

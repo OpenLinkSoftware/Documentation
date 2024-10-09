@@ -1,10 +1,10 @@
-<div id="fn_status" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ status — Returns statistics for a running server as a result set
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_status" class="funcsynopsis">
+<div>
 
 |                     |                           |
 |---------------------|---------------------------|
 | ` `**`status`**` (` | in `option ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ status — Returns statistics for a running server as a result set
 
 </div>
 
-<div id="desc_status" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ startup.
 
 </div>
 
-<div id="params_status" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112091" class="refsect2">
+<div>
 
 ### option
 
@@ -66,7 +66,7 @@ this procedure. Possible options are:
 
 </div>
 
-<div id="ret_status" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ text in the status report.
 
 </div>
 
-<div id="examples_status" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_status" class="example">
+<div>
 
 **Example 24.403. Retrieving Server Status**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> status('rhck');

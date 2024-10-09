@@ -1,6 +1,6 @@
-<div id="rdfsparqlruleinversefunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ be inversely functional. If one or more inverse functional properties
 enabled with define input:inference = "context_name", then the following
 semantics apply:
 
-<div class="orderedlist">
+<div>
 
 1.  If a literal is compared with an IRI, then the literal is
     substituted by all the subject IRI's where this literal occurs as a

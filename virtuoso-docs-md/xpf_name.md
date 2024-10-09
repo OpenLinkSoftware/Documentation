@@ -1,10 +1,10 @@
-<div id="xpf_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ name — Returns the expanded name of the argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_name" class="funcsynopsis">
+<div>
 
 |                         |                      |
 |-------------------------|----------------------|
 | `string `**`name`**` (` | `node_obj ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ name — Returns the expanded name of the argument.
 
 </div>
 
-<div id="xpf_desc_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ node-set of one element.
 
 </div>
 
-<div id="xpf_params_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128257" class="refsect2">
+<div>
 
 ### node_obj
 
@@ -61,7 +61,7 @@ Node whose name is to be returned.
 
 </div>
 
-<div id="xpf_ret_name" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -69,15 +69,15 @@ String
 
 </div>
 
-<div id="xpf_examples_name" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_name" class="example">
+<div>
 
 **Example 24.603. **
 
-<div class="example-contents">
+<div>
 
 Find all elements whose namespace URIs or local names contain "html"
 substring
@@ -94,7 +94,7 @@ substring
 
 </div>
 
-<div id="xpf_seealso_name" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_prof_sample" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ prof_sample — Adds a profiling sample to a profile being accumulated.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_prof_sample" class="funcsynopsis">
+<div>
 
 |                          |                            |
 |--------------------------|----------------------------|
@@ -24,7 +24,7 @@ prof_sample — Adds a profiling sample to a profile being accumulated.
 |                          | in `time_spent ` integer , |
 |                          | in `flag ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ prof_sample — Adds a profiling sample to a profile being accumulated.
 
 </div>
 
-<div id="desc_prof_sample" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ Virtuoso documentation.
 
 </div>
 
-<div id="params_prof_enable_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99724" class="refsect2">
+<div>
 
 ### desc
 
@@ -68,7 +68,7 @@ A <span class="type">VARCHAR </span> . Name of the sampled section.
 
 </div>
 
-<div id="id99728" class="refsect2">
+<div>
 
 ### time_spent
 
@@ -76,7 +76,7 @@ An <span class="type">INTEGER </span> . Time in milliseconds.
 
 </div>
 
-<div id="id99732" class="refsect2">
+<div>
 
 ### flag
 
@@ -88,17 +88,17 @@ statement, 2 - fetch on a statement's resultset, 4 - error.
 
 </div>
 
-<div id="ret_prof_sample" class="refsect1">
+<div>
 
 ## Return Types
 
 None.
 
-<div id="ex_prof_sample" class="example">
+<div>
 
 **Example 24.248. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure do_prof_sample()
@@ -147,7 +147,7 @@ Real 168, client wait 313, avg conc 1.863095 n_execs 6 avg exec  52
 
 </div>
 
-<div id="seealso_prof_enable_01" class="refsect1">
+<div>
 
 ## See Also
 

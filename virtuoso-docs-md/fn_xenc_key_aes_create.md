@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_aes_create" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xenc_key_AES_create — Used to make a symmetric key.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_aes_create" class="funcsynopsis">
+<div>
 
 |                                  |                           |
 |----------------------------------|---------------------------|
@@ -24,7 +24,7 @@ xenc_key_AES_create — Used to make a symmetric key.
 |                                  | in `bits ` int ,          |
 |                                  | in `secret ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ xenc_key_AES_create — Used to make a symmetric key.
 
 </div>
 
-<div id="desc_xenc_key_aes_create" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ Used to make a symmetric session key for AES encryption algorithm.
 
 </div>
 
-<div id="params_xenc_key_aes_create" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120351" class="refsect2">
+<div>
 
 ### name
 
@@ -54,7 +54,7 @@ The name of the key.
 
 </div>
 
-<div id="id120354" class="refsect2">
+<div>
 
 ### bits
 
@@ -63,7 +63,7 @@ Number of bits in generated key. The values supported are 128, 192 and
 
 </div>
 
-<div id="id120357" class="refsect2">
+<div>
 
 ### secret
 
@@ -73,7 +73,7 @@ The shared secret for key generation.
 
 </div>
 
-<div id="ret_xenc_key_aes_create" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -81,15 +81,15 @@ None.
 
 </div>
 
-<div id="examples_xenc_key_aes_create" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_xenc_key_aes_create" class="example">
+<div>
 
 **Example 24.469. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 xenc_key_AES_create ('ses_key', 128, 'mysecret');
@@ -103,7 +103,7 @@ xenc_key_AES_create ('ses_key', 128, 'mysecret');
 
 </div>
 
-<div id="seealso_xenc_key_aes_create" class="refsect1">
+<div>
 
 ## See Also
 

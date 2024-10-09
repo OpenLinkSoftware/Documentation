@@ -1,10 +1,10 @@
-<div id="fn_createxml" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ createXML
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_createxml" class="funcsynopsis">
+<div>
 
 |                               |                           |
 |-------------------------------|---------------------------|
@@ -25,7 +25,7 @@ createXML
 |                               | in `validated ` any ,     |
 |                               | in `wellformed ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ createXML
 
 </div>
 
-<div id="desc_createxml" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ constructor and is provided solely for compatibility.
 
 </div>
 
-<div id="params_createxml" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83220" class="refsect2">
+<div>
 
 ### src
 
@@ -58,7 +58,7 @@ An XML entity or a value that can be converted to an XML entity.
 
 </div>
 
-<div id="id83223" class="refsect2">
+<div>
 
 ### schema_uri
 
@@ -67,7 +67,7 @@ non-schema based.
 
 </div>
 
-<div id="id83226" class="refsect2">
+<div>
 
 ### validated
 
@@ -77,7 +77,7 @@ validations). The default is 0.
 
 </div>
 
-<div id="id83229" class="refsect2">
+<div>
 
 ### wellformed
 
@@ -87,7 +87,7 @@ This parameter is unused and is listed solely for compatibility.
 
 </div>
 
-<div id="ret_createxml" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -95,15 +95,15 @@ The function returns a new instance of XMLType.
 
 </div>
 
-<div id="examples_createxml" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_createxml" class="example">
+<div>
 
 **Example 24.56. Sample example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create table XMLTYPE_TEST (I integer primary key, XMLVAL long xml)
@@ -138,7 +138,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_createxml" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="grant" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -121,7 +121,7 @@ The effective privilege inside a stored procedure is that of the owner
 of the procedure. The privilege to execute a given procedure is granted
 with the EXECUTE clause.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                             |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -134,11 +134,11 @@ A user may grant or revoke privileges on resources of which he/she is
 the owner. A user with effective dba privileges may manipulate any
 privileges.
 
-<div id="id34164" class="example">
+<div>
 
 **Example 9.40. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 grant update ("Salary") on "Employees" to "Manager";
@@ -191,7 +191,7 @@ GRANT/REVOKE EXECUTE on <user_defined_type>
 GRANT/REVOKE UNDER on <user_defined_type>
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                              |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -200,7 +200,7 @@ GRANT/REVOKE UNDER on <user_defined_type>
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                |
 |:--------------------------:|:---------------------------------------------------------------|

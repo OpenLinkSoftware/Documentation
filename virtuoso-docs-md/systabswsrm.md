@@ -1,6 +1,6 @@
-<div id="systabswsrm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="systabswsrmrecvr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,9 +67,9 @@ CREATE TABLE SYS_WSRM_IN_SEQUENCES
 
 </div>
 
-<div id="systabswsrmsndr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

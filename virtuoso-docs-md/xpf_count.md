@@ -1,10 +1,10 @@
-<div id="xpf_count" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ count — Returns the number of values in the sequence.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_count" class="funcsynopsis">
+<div>
 
 |                           |                 |
 |---------------------------|-----------------|
 | `integer `**`count`**` (` | `seq ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ count — Returns the number of values in the sequence.
 
 </div>
 
-<div id="xpf_desc_count" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ context. To count nodes in context node-set, use last().
 
 </div>
 
-<div id="xpf_params_count" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126425" class="refsect2">
+<div>
 
 ### seq
 
@@ -58,7 +58,7 @@ Sequence of values to be counted.
 
 </div>
 
-<div id="xpf_ret_count" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,7 +66,7 @@ Integer
 
 </div>
 
-<div id="xpf_errors_count" class="refsect1">
+<div>
 
 ## Errors
 
@@ -74,15 +74,15 @@ This function never returns any errors
 
 </div>
 
-<div id="xpf_examples_count" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_count" class="example">
+<div>
 
 **Example 24.573. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 count(//*)
@@ -96,7 +96,7 @@ count(//*)
 
 </div>
 
-<div id="xpf_seealso_count" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="fttexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -44,7 +44,7 @@ create text index on article (description)
     with key dtid clustered with (pub_date, author_name);
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                       |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------|
@@ -84,7 +84,7 @@ insert into article (id, drtid, description, pub_date)
         'sample news article', {dt '2001-1-15 12:44'});
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                        |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -136,7 +136,7 @@ and pub_date < {dt '2001-1-5'};
     
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                        |
 |:--------------------------:|:---------------------------------------------------------------------------------------|

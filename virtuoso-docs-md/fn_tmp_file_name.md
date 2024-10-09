@@ -1,10 +1,10 @@
-<div id="fn_tmp_file_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ of the operating system
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_tmp_file_name" class="funcsynopsis">
+<div>
 
 |                                   |                           |
 |-----------------------------------|---------------------------|
 | `varchar `**`tmp_file_name`**` (` | in `prefix ` varchar ,    |
 |                                   | in `suffix ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ of the operating system
 
 </div>
 
-<div id="desc_tmp_file_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ NOT open the file, it only give us a name.
 
 </div>
 
-<div id="params_tmp_file_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113346" class="refsect2">
+<div>
 
 ### prefix
 
@@ -63,7 +63,7 @@ prefix to the file name to be added. MUST be at most five characters.
 
 </div>
 
-<div id="id113349" class="refsect2">
+<div>
 
 ### suffix
 
@@ -73,7 +73,7 @@ extension to the file to be added, the leading dot MUST be omitted.
 
 </div>
 
-<div id="errors_tmp_file_name" class="refsect1">
+<div>
 
 ## Errors
 
@@ -82,15 +82,15 @@ title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
 </div>
 
-<div id="examples_11" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_tmp_file_name" class="example">
+<div>
 
 **Example 24.418. Getting a unique file name**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
       SQL> select tmp_file_name('FOO', 'EXT');

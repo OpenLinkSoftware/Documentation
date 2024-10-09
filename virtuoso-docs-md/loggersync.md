@@ -1,6 +1,6 @@
-<div id="loggersync" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

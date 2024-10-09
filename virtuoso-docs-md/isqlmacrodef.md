@@ -1,6 +1,6 @@
-<div id="isqlmacrodef" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -97,11 +97,11 @@ $NEQ <v1> <v2>
 
 returns 1 if the \<v1\> is not equal to \<v2\>, empty otherwise
 
-<div id="id20563" class="example">
+<div>
 
 **Example 7.3. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 ECHO $IF $EQU 1 2 "True" "False";

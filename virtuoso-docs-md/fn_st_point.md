@@ -1,10 +1,10 @@
-<div id="fn_st_point" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ st_point — Returns a point geometry.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_point" class="funcsynopsis">
+<div>
 
 |                       |                               |
 |-----------------------|-------------------------------|
 | ` `**`st_point`**` (` | in `x ` double precision ,    |
 |                       | in `y ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ st_point — Returns a point geometry.
 
 </div>
 
-<div id="desc_st_point" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Returns a point geometry. The x coordinate corresponds to longitude.
 
 </div>
 
-<div id="params_st_point" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90535" class="refsect2">
+<div>
 
 ### x
 
@@ -53,7 +53,7 @@ X coordinate. Corresponds to longitude.
 
 </div>
 
-<div id="id90538" class="refsect2">
+<div>
 
 ### y
 
@@ -63,7 +63,7 @@ Y coordinate.
 
 </div>
 
-<div id="ret_st_point" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,15 +71,15 @@ Returns a point geometry.
 
 </div>
 
-<div id="examples_st_point" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_point" class="example">
+<div>
 
 **Example 24.136. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>select st_point (0, 52);
@@ -138,7 +138,7 @@ http://dbpedia.org/resource/Nonington                                           
 
 </div>
 
-<div id="seealso_st_point" class="refsect1">
+<div>
 
 ## See Also
 

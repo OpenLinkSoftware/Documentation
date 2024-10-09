@@ -1,10 +1,10 @@
-<div id="me_uddi_find_service" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ criteria
 
 </div>
 
-<div id="syntax_uddi_find_service_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -31,14 +31,14 @@ criteria
 
 </div>
 
-<div id="params_uddi_find_service_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
 The *`name`* , *`categoryBag`* , and *`tModelBag`* arguments are
 mutually exclusive.
 
-<div id="id114950" class="refsect2">
+<div>
 
 ### maxRows
 
@@ -47,7 +47,7 @@ number of results returned.
 
 </div>
 
-<div id="id114953" class="refsect2">
+<div>
 
 ### businessKey
 
@@ -56,7 +56,7 @@ instance.
 
 </div>
 
-<div id="id114958" class="refsect2">
+<div>
 
 ### findQualifiers
 
@@ -65,7 +65,7 @@ default behavior of search functionality.
 
 </div>
 
-<div id="id114962" class="refsect2">
+<div>
 
 ### name
 
@@ -75,7 +75,7 @@ partial name value gets returned.
 
 </div>
 
-<div id="id114967" class="refsect2">
+<div>
 
 ### categoryBag
 
@@ -85,7 +85,7 @@ passed (logical AND).
 
 </div>
 
-<div id="id114972" class="refsect2">
+<div>
 
 ### tModelBag
 
@@ -101,7 +101,7 @@ that contain *`bindingTemplate`* information that matches all of the
 
 </div>
 
-<div id="ret_uddi_find_service_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -127,15 +127,15 @@ returned.
 
 </div>
 
-<div id="errors_uddi_find_service_01" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id115008" class="table">
+<div>
 
-**Table 24.93. Errors signalled by uddi_find_service**
+**Table 24.92. Errors signalled by uddi_find_service**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                         | Description                                                                                                                                                                          |
 |----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -1,10 +1,10 @@
-<div id="fn_amazon_start_instance" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ has previously stopped.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_amazon_start_instance" class="funcsynopsis">
+<div>
 
 |                                           |                                              |
 |-------------------------------------------|----------------------------------------------|
@@ -26,7 +26,7 @@ has previously stopped.
 |                                           | in `secret_key ` varchar ,                   |
 |                                           | in `http_proxy ` varchar (default null) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ has previously stopped.
 
 </div>
 
-<div id="desc_amazon_start_instance" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ Starts an existing AMI that user has previously stopped.
 
 </div>
 
-<div id="params_amazon_start_instance" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97512" class="refsect2">
+<div>
 
 ### aws_access_key
 
@@ -56,7 +56,7 @@ Amazon Access Key ID.
 
 </div>
 
-<div id="id97515" class="refsect2">
+<div>
 
 ### instance_id
 
@@ -64,7 +64,7 @@ Image instance ID (check Amazon list of instances).
 
 </div>
 
-<div id="id97518" class="refsect2">
+<div>
 
 ### secret_key
 
@@ -72,7 +72,7 @@ AWS Security Token.
 
 </div>
 
-<div id="id97521" class="refsect2">
+<div>
 
 ### http_proxy
 
@@ -82,15 +82,15 @@ Proxy server, can be null or empty.
 
 </div>
 
-<div id="examples_amazon_start_instance" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_amazon_start_instance" class="example">
+<div>
 
 **Example 24.229. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure simple_test()
@@ -115,7 +115,7 @@ create procedure simple_test()
 
 </div>
 
-<div id="seealso_amazon_start_instance" class="refsect1">
+<div>
 
 ## See Also
 

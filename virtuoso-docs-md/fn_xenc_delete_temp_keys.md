@@ -1,10 +1,10 @@
-<div id="fn_xenc_delete_temp_keys" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xenc_delete_temp_keys — Remove the temporary keys from user's space
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_delete_temp_keys" class="funcsynopsis">
+<div>
 
 |                                       |      |
 |---------------------------------------|------|
 | `int `**`xenc_delete_temp_keys`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xenc_delete_temp_keys — Remove the temporary keys from user's space
 
 </div>
 
-<div id="desc_xenc_delete_temp_keys" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ some point may not needed anymore, so they can be removed from memory.
 
 </div>
 
-<div id="ret_xenc_delete_temp_keys" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -50,15 +50,15 @@ The function returns number of temp keys removed.
 
 </div>
 
-<div id="examples_xenc_delete_temp_keys" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_delete_temp_keys" class="example">
+<div>
 
 **Example 24.457. Delete temporary keys**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select xenc_delete_temp_keys ();
@@ -77,7 +77,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xenc_delete_temp_keys" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="xsltsupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,9 +16,9 @@
 
 Items marked with (\*) are currently not implemented.
 
-<div id="xpathaxissupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,9 +50,9 @@ Items marked with (\*) are currently not implemented.
 
 </div>
 
-<div id="xpathnodefunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,9 +79,9 @@ Items marked with (\*) are currently not implemented.
 
 </div>
 
-<div id="xpathnodesetfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -105,9 +105,9 @@ Items marked with (\*) are currently not implemented.
 
 </div>
 
-<div id="xpathstringfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -152,9 +152,9 @@ Items marked with (\*) are currently not implemented.
 
 </div>
 
-<div id="xpathboolfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -183,9 +183,9 @@ Items marked with (\*) are currently not implemented.
 
 </div>
 
-<div id="xpathnumberfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -212,9 +212,9 @@ Items marked with (\*) are currently not implemented.
 
 </div>
 
-<div id="xpathnumberfunctions_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -240,9 +240,9 @@ Items marked with (\*) are currently not implemented.
 
 </div>
 
-<div id="xslt_keys" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_sprintf_iri_or_null" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ the arguments except the first is null.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sprintf_iri_or_null" class="funcsynopsis">
+<div>
 
 |                                  |                    |
 |----------------------------------|--------------------|
@@ -26,7 +26,7 @@ the arguments except the first is null.
 |                                  | `... ` ,           |
 |                                  | `arg_x ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ the arguments except the first is null.
 
 </div>
 
-<div id="desc_27" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ The returned string is marked as being IRI string so some applications
 and clients may distinguish between RDF reference string and RDF
 literal.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                              |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -62,15 +62,15 @@ literal.
 
 </div>
 
-<div id="examples_sprintf_iri_or_null" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sprintf_iri_or_null" class="example">
+<div>
 
 **Example 24.391. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create function job_history(

@@ -1,10 +1,10 @@
-<div id="fn_sys_db_stat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ SYS_DB_STAT — gathers common statistical information about the database.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sys_db_stat" class="funcsynopsis">
+<div>
 
 |                          |                               |
 |--------------------------|-------------------------------|
 | ` `**`SYS_DB_STAT`**` (` | in `pcnt ` integer ,          |
 |                          | in `ignore_vdb ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ SYS_DB_STAT — gathers common statistical information about the database.
 
 </div>
 
-<div id="desc_sys_db_stat" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ traversed in the database:
 
 </div>
 
-<div id="params_sys_db_stat" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112818" class="refsect2">
+<div>
 
 ### pcnt
 
@@ -72,7 +72,7 @@ approximately 5 percent of each table.
 
 </div>
 
-<div id="id112821" class="refsect2">
+<div>
 
 ### ignore_vdb
 
@@ -89,7 +89,7 @@ supported. See sys_stat_vdb_mappers table.
 
 </div>
 
-<div id="ret_sys_db_stat" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -97,7 +97,7 @@ None.
 
 </div>
 
-<div id="seealso_sys_db_stat" class="refsect1">
+<div>
 
 ## See Also
 

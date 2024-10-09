@@ -1,6 +1,6 @@
-<div id="qsnntp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,9 +25,9 @@ also acts as an NNTP server, enabling creation of new Internet and
 Intranet News Forums to leverage the global knowledge base into
 eBusiness Intelligence.
 
-<div id="qsnntpservsetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ eBusiness Intelligence.
 
 </div>
 
-<div id="qsnntport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -66,9 +66,9 @@ title="19.5.1. Enabling the NNTP Server">Enable NNTP Server</a> section.
 
 </div>
 
-<div id="qsnntadd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -94,9 +94,9 @@ the Visual Server Administration Interface.
 
 </div>
 
-<div id="qsnntlimit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

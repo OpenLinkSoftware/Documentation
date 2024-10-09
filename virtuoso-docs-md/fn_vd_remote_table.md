@@ -1,10 +1,10 @@
-<div id="fn_vd_remote_table" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ previously declared with vd_remote_data_source
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vd_remote_table" class="funcsynopsis">
+<div>
 
 |                              |                                |
 |------------------------------|--------------------------------|
@@ -25,7 +25,7 @@ previously declared with vd_remote_data_source
 |                              | in `local_name ` varchar ,     |
 |                              | in `remote_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ previously declared with vd_remote_data_source
 
 </div>
 
-<div id="desc_vd_remote_table" class="refsect1">
+<div>
 
 ## Description
 
@@ -54,11 +54,11 @@ declaration was in effect.
 
 </div>
 
-<div id="params_vd_remote_table" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118128" class="refsect2">
+<div>
 
 ### dsn
 
@@ -67,7 +67,7 @@ vd_remote_data_source()
 
 </div>
 
-<div id="id118131" class="refsect2">
+<div>
 
 ### local_name
 
@@ -75,7 +75,7 @@ Fully qualified name of a local table.
 
 </div>
 
-<div id="id118134" class="refsect2">
+<div>
 
 ### remote_name
 
@@ -85,7 +85,7 @@ Fully qualified name of the remote table.
 
 </div>
 
-<div id="seealso_vd_remote_table" class="refsect1">
+<div>
 
 ## See Also
 

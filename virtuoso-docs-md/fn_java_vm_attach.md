@@ -1,10 +1,10 @@
-<div id="fn_java_vm_attach" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ java_vm_attach
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_java_vm_attach" class="funcsynopsis">
+<div>
 
 |                             |                           |
 |-----------------------------|---------------------------|
 | ` `**`java_vm_attach`**` (` | in `classpath ` varchar , |
 |                             | in `vm_options ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,14 +33,14 @@ java_vm_attach
 
 </div>
 
-<div id="desc_java_vm_attach" class="refsect1">
+<div>
 
 ## Description
 
 Ensures that the current working thread is attached to the Java VM. It
 operates as follows:
 
-<div class="itemizedlist">
+<div>
 
 - if the Java VM is not created it creates it.
 
@@ -63,11 +63,11 @@ with JDK 1.2 and later.
 
 </div>
 
-<div id="params_java_vm_attach" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94889" class="refsect2">
+<div>
 
 ### classpath
 
@@ -76,7 +76,7 @@ the server OS environment variable CLASSPATH will be used instead.
 
 </div>
 
-<div id="id94892" class="refsect2">
+<div>
 
 ### vm_options
 
@@ -89,15 +89,15 @@ the description of JNI_CreateJavaVM Invocation API function.
 
 </div>
 
-<div id="examples_java_vm_attach" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_java_vm_attach" class="example">
+<div>
 
 **Example 24.199. Initializing the Java VM**
 
-<div class="example-contents">
+<div>
 
 This example initializes the Java VM by supplying a classpath of:
 `CLASSPATH=/usr/local/virtuoso/classes:/usr/local/jakarta-tomcat-3.3.1/lib/tomcat.jar`
@@ -119,7 +119,7 @@ java_vm_attach ('/usr/local/virtuoso/classes:/usr/local/jakarta-tomcat-3.3.1/lib
 
 </div>
 
-<div id="seealso_java_vm_attach" class="refsect1">
+<div>
 
 ## See Also
 

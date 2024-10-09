@@ -1,10 +1,10 @@
-<div id="xpf_substring_after" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,18 +14,18 @@ first argument string.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_substring_after" class="funcsynopsis">
+<div>
 
 |                                    |                         |
 |------------------------------------|-------------------------|
 | `string `**`substring-after`**` (` | `source_strg ` string , |
 |                                    | `sub_strg ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ first argument string.
 
 </div>
 
-<div id="xpf_desc_substring_after" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ using rules for string() XPATH function.
 
 </div>
 
-<div id="xpf_params_substring_after" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129274" class="refsect2">
+<div>
 
 ### source_strg
 
@@ -59,7 +59,7 @@ String where the search is performed
 
 </div>
 
-<div id="id129277" class="refsect2">
+<div>
 
 ### sub_strg
 
@@ -69,7 +69,7 @@ String to search
 
 </div>
 
-<div id="xpf_ret_substring_after" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -77,15 +77,15 @@ String
 
 </div>
 
-<div id="xpf_examples_substring_after" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_substring_after" class="example">
+<div>
 
 **Example 24.624. **
 
-<div class="example-contents">
+<div>
 
 Extract time and timezone ("23:59:59 GMT" substring) from timestamp
 
@@ -101,7 +101,7 @@ substring-after('1999-12-31 23:59:59 GMT',' ')
 
 </div>
 
-<div id="xpf_seealso_substring_after" class="refsect1">
+<div>
 
 ## See Also
 

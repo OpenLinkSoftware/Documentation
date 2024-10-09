@@ -1,10 +1,10 @@
-<div id="fn_repl_grant" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ REPL_GRANT — grant privileges for subscription to a publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_grant" class="funcsynopsis">
+<div>
 
 |                         |                             |
 |-------------------------|-----------------------------|
 | ` `**`REPL_GRANT`**` (` | in `publication ` varchar , |
 |                         | in `grantee ` varchar `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ REPL_GRANT — grant privileges for subscription to a publication
 
 </div>
 
-<div id="desc_repl_grant" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ for subscription to all available publications.
 
 </div>
 
-<div id="params_repl_grant" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105109" class="refsect2">
+<div>
 
 ### publication
 
@@ -55,7 +55,7 @@ A publication account name.
 
 </div>
 
-<div id="id105112" class="refsect2">
+<div>
 
 ### grantee
 
@@ -65,16 +65,16 @@ A valid DB account name to be granted subscription rights.
 
 </div>
 
-<div id="examples_repl_grant" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_grant_1" class="example">
+<div>
 
 **Example 24.320. Granting access to 'table_publication' for SQL user
 account 'demo'.**
 
-<div class="example-contents">
+<div>
 
 This is to grant permissions for table_publication publication account
 to subscribe with a SQL user account 'demo'.
@@ -91,7 +91,7 @@ SQL> DB.DBA.REPL_GRANT ('table_publication', 'demo');
 
 </div>
 
-<div id="seealso_repl_grant" class="refsect1">
+<div>
 
 ## See Also
 

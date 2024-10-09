@@ -1,10 +1,10 @@
-<div id="fn_xpf_extension_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xpf_extension_remove — discards an XPath extension function
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xpf_extension_remove" class="funcsynopsis">
+<div>
 
 |                                       |                                   |
 |---------------------------------------|-----------------------------------|
 | `void `**`xpf_extension_remove`**` (` | in `fname ` varchar ,             |
 |                                       | in `procedure_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xpf_extension_remove — discards an XPath extension function
 
 </div>
 
-<div id="desc_xpf_extension_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Removes a user-defined XPath function.
 
 </div>
 
-<div id="params_xpf_extension_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124479" class="refsect2">
+<div>
 
 ### fname
 
@@ -53,7 +53,7 @@ The expanded QName of the extension function to be removed
 
 </div>
 
-<div id="id124482" class="refsect2">
+<div>
 
 ### procedure_name
 
@@ -64,7 +64,7 @@ function.
 
 </div>
 
-<div id="ret_xpf_extension_remove" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ None (void).
 
 </div>
 
-<div id="errors_xpf_extension_remove" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id124490" class="table">
+<div>
 
-**Table 24.137. Errors signalled by**
+**Table 24.136. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                | Description                                                         |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
@@ -94,7 +94,7 @@ None (void).
 
 </div>
 
-<div id="seealso_xpf_extension_remove" class="refsect1">
+<div>
 
 ## See Also
 

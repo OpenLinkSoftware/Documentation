@@ -1,6 +1,6 @@
-<div id="twopc_errors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="id35974" class="decimalstyle">
+<div>
 
 **Table 11.1. 2PC & MS DTC error list**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Code  | Description                    | Possible courses                                                                     |
 |:------|--------------------------------|--------------------------------------------------------------------------------------|

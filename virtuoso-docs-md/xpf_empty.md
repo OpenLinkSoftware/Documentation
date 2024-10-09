@@ -1,10 +1,10 @@
-<div id="xpf_empty" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ is any single value or nonempty sequence.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_empty" class="funcsynopsis">
+<div>
 
 |                           |                 |
 |---------------------------|-----------------|
 | `boolean `**`empty`**` (` | `seq ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ is any single value or nonempty sequence.
 
 </div>
 
-<div id="xpf_desc_empty" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ single value or nonempty sequence.
 
 </div>
 
-<div id="xpf_params_empty" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127073" class="refsect2">
+<div>
 
 ### seq
 
@@ -56,7 +56,7 @@ Sequence of values to be checked.
 
 </div>
 
-<div id="xpf_ret_empty" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,7 +64,7 @@ Boolean
 
 </div>
 
-<div id="xpf_errors_empty" class="refsect1">
+<div>
 
 ## Errors
 
@@ -72,15 +72,15 @@ This function never returns any errors
 
 </div>
 
-<div id="xpf_examples_empty" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_empty" class="example">
+<div>
 
 **Example 24.583. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 if(empty(//table),'There are no tables in context node','There is at least one table')
@@ -94,7 +94,7 @@ if(empty(//table),'There are no tables in context node','There is at least one t
 
 </div>
 
-<div id="xpf_seealso_empty" class="refsect1">
+<div>
 
 ## See Also
 

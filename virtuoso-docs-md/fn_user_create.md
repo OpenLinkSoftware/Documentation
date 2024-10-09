@@ -1,10 +1,10 @@
-<div id="fn_user_create" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ USER_CREATE — create a new user account
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_create" class="funcsynopsis">
+<div>
 
 |                          |                           |
 |--------------------------|---------------------------|
@@ -24,7 +24,7 @@ USER_CREATE — create a new user account
 |                          | in `password ` varchar ,  |
 |                          | in `options ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ USER_CREATE — create a new user account
 
 </div>
 
-<div id="desc_user_create" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ and/or DAV, depending n options.
 
 </div>
 
-<div id="params_user_create" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116357" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ The name of the user account as a string.
 
 </div>
 
-<div id="id116360" class="refsect2">
+<div>
 
 ### password
 
@@ -63,7 +63,7 @@ The clear text password for the user account.
 
 </div>
 
-<div id="id116363" class="refsect2">
+<div>
 
 ### options
 
@@ -78,7 +78,7 @@ Administration Section.
 
 </div>
 
-<div id="ret_user_create" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -86,7 +86,7 @@ None
 
 </div>
 
-<div id="seealso_user_create" class="refsect1">
+<div>
 
 ## See Also
 

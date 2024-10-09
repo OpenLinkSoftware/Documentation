@@ -1,10 +1,10 @@
-<div id="fn_st_transform" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ reference system to one specified by dest_srid.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_transform" class="funcsynopsis">
+<div>
 
 |                           |                                      |
 |---------------------------|--------------------------------------|
@@ -26,7 +26,7 @@ reference system to one specified by dest_srid.
 |                           | in `origin_proj4_string ` varchar ,  |
 |                           | in `dest_proj4_string ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ reference system to one specified by dest_srid.
 
 </div>
 
-<div id="desc_st_transform" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ as required by OGC and GeoSPARQL.
 
 </div>
 
-<div id="params_st_transform" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131889" class="refsect2">
+<div>
 
 ### shape
 
@@ -67,7 +67,7 @@ Geometry.
 
 </div>
 
-<div id="id131892" class="refsect2">
+<div>
 
 ### dest_srid
 
@@ -75,7 +75,7 @@ Destination SRID.
 
 </div>
 
-<div id="id131895" class="refsect2">
+<div>
 
 ### origin_proj4_string
 
@@ -83,7 +83,7 @@ String to be used for the projection.
 
 </div>
 
-<div id="id131898" class="refsect2">
+<div>
 
 ### dest_proj4_string
 
@@ -93,7 +93,7 @@ String used for the destination result.
 
 </div>
 
-<div id="ret_st_transform" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -101,15 +101,15 @@ Returns varchar.
 
 </div>
 
-<div id="examples_st_transform" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_transform" class="example">
+<div>
 
 **Example 24.672. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> SELECT * FROM DB.DBA.SYS_V7PROJ4_SRIDS;
@@ -172,7 +172,7 @@ SQL>
 
 </div>
 
-<div id="seealso_st_transform" class="refsect1">
+<div>
 
 ## See Also
 

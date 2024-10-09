@@ -1,10 +1,10 @@
-<div id="fn_user_revoke_role" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ USER_REVOKE_ROLE — Removes a role from an existing security object.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_revoke_role" class="funcsynopsis">
+<div>
 
 |                               |                         |
 |-------------------------------|-------------------------|
 | ` `**`USER_REVOKE_ROLE`**` (` | in `name ` varchar ,    |
 |                               | in `role ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ USER_REVOKE_ROLE — Removes a role from an existing security object.
 
 </div>
 
-<div id="desc_user_revoke_role" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ object. This is equivalent to using the `REVOKE <role> ` statement.
 
 </div>
 
-<div id="params_user_revoke_role" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116616" class="refsect2">
+<div>
 
 ### name
 
@@ -54,7 +54,7 @@ The name of the security object to affect.
 
 </div>
 
-<div id="id116619" class="refsect2">
+<div>
 
 ### role
 
@@ -64,7 +64,7 @@ The name of the role (group) to be removed from the security object.
 
 </div>
 
-<div id="ret_user_revoke_role" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,7 +72,7 @@ None
 
 </div>
 
-<div id="seealso_user_revoke_role" class="refsect1">
+<div>
 
 ## See Also
 

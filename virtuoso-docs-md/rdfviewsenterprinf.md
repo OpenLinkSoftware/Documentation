@@ -1,6 +1,6 @@
-<div id="rdfviewsenterprinf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="vc_data_list" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ data-list — Select list initialized from database table.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_data_list" class="funcsynopsis">
+<div>
 
 |                           |                                      |
 |---------------------------|--------------------------------------|
@@ -56,7 +56,7 @@ data-list — Select list initialized from database table.
 |                           | `debug-srcline` (optional) ,         |
 |                           | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -66,7 +66,7 @@ data-list — Select list initialized from database table.
 
 </div>
 
-<div id="vc_desc_data_list" class="refsect1">
+<div>
 
 ## Description
 
@@ -76,7 +76,7 @@ control will compose apropriate select statement.
 
 </div>
 
-<div id="vc_attrs_data_list" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -324,7 +324,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_data_list" class="refsect1">
+<div>
 
 ## Declaration of type vspx_data_list
 
@@ -335,15 +335,15 @@ constructor method vspx_data_list (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_data_list" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_data_list__0" class="example">
+<div>
 
 **Example 14.25.  Select list based on table source**
 
-<div class="example-contents">
+<div>
 
 This example will render in a form a select list containing the
 customers from Northwind demo database with a option values their
@@ -367,11 +367,11 @@ customer IDs.
 
   
 
-<div id="vc_ex_data_list__1" class="example">
+<div>
 
 **Example 14.26.  Select list based on SQL select statement**
 
-<div class="example-contents">
+<div>
 
 This example will render in a form a select list containing the
 customers from Northwind demo database with a option values their
@@ -395,7 +395,7 @@ customer IDs.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------|

@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodwebdav" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ DAV manually to quad store)
 
 <span class="emphasis">*Example 1: Using ODS Briefcase*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to your ods location, for ex. http://example.com/ods
 
@@ -39,15 +39,15 @@ DAV manually to quad store)
 
 7.  Enter for name for ex. "mytest" and click the "Create" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uc6" class="figure">
+    <div>
 
     **Figure 16.81. Using Briefcase UI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Briefcase UI](images/ui/uc6.png)
 
@@ -66,15 +66,15 @@ DAV manually to quad store)
 
 9.  Enter for name for ex. "mytest" and click the "Create" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uc7" class="figure">
+    <div>
 
     **Figure 16.82. Using Briefcase UI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Briefcase UI](images/ui/uc7.png)
 
@@ -90,7 +90,7 @@ DAV manually to quad store)
 
 10. In the shown form set:
 
-    <div class="itemizedlist">
+    <div>
 
     - Destination: RDF Store
 
@@ -165,7 +165,7 @@ http://www.example/jose/foaf.rdf#juan     http://xmlns.com/foaf/0.1/mbox        
 
 <span class="emphasis">*Example 2: Using Conductor UI*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to Conductor UI, for ex. at http://example.com/conductor
 
@@ -173,15 +173,15 @@ http://www.example/jose/foaf.rdf#juan     http://xmlns.com/foaf/0.1/mbox        
 
 3.  Go to Linked Data -\> Quad Store Upload
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uc1" class="figure">
+    <div>
 
     **Figure 16.83. Quad Store Upload**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Quad Store Upload](images/ui/uc1.png)
 
@@ -198,15 +198,15 @@ http://www.example/jose/foaf.rdf#juan     http://xmlns.com/foaf/0.1/mbox        
 4.  In the shown form click the "Browse" button in order to select a
     file, for ex. the file jose.rdf and set the "RDF IRI\*"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uc2" class="figure">
+    <div>
 
     **Figure 16.84. Quad Store Upload**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Quad Store Upload](images/ui/uc2.png)
 
@@ -222,15 +222,15 @@ http://www.example/jose/foaf.rdf#juan     http://xmlns.com/foaf/0.1/mbox        
 
 5.  Click the "Upload" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uc3" class="figure">
+    <div>
 
     **Figure 16.85. Quad Store Upload**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Quad Store Upload](images/ui/uc3.png)
 

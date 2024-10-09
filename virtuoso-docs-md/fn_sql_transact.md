@@ -1,10 +1,10 @@
-<div id="fn_sql_transact" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ sql_transact — get list of available DSNs
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_transact" class="funcsynopsis">
+<div>
 
 |                           |                             |
 |---------------------------|-----------------------------|
 | ` `**`sql_transact`**` (` | in `dsn_name ` varchar ,    |
 |                           | in `rollback ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ sql_transact — get list of available DSNs
 
 </div>
 
-<div id="desc_sql_transact" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ work on the remote dsn_name prior to `sql_transact ` .
 
 </div>
 
-<div id="params_sql_transact" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id111915" class="refsect2">
+<div>
 
 ### dsn_name
 
@@ -63,7 +63,7 @@ The name of the data source being used on the remote.
 
 </div>
 
-<div id="id111918" class="refsect2">
+<div>
 
 ### rollback
 
@@ -73,7 +73,7 @@ Activate the desired behavior. Set to 1 for rollback, ignore to commit.
 
 </div>
 
-<div id="ret_sql_transact" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -81,15 +81,15 @@ None.
 
 </div>
 
-<div id="examples_sql_transact" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sql_transact" class="example">
+<div>
 
 **Example 24.401. Control remote rollback/commit behavior**
 
-<div class="example-contents">
+<div>
 
 This code fragment can be used to demonstrate the effects of directly
 controlling the rollback/commit behavior of remote data sources
@@ -139,7 +139,7 @@ select MIN (ID) from mydsn..rb_test;
 
 </div>
 
-<div id="seealso_sql_transact" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="thevdbrel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="ch-vdbengine.html#consneed4vdb" class="link"
   title="8.1.1. The Need for VDB Engines">The Need for VDB Engines</a>

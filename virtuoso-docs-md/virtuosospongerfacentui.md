@@ -1,6 +1,6 @@
-<div id="virtuosospongerfacentui" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtuosospongerfacentuirest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ The Virtuoso Faceted web service provide following REST interface:
 
 Service description:
 
-<div class="itemizedlist">
+<div>
 
 - Endpoint: http://\<cname\>/fct/service for ex.
   http://lod.openlinksw.com/fct/service
@@ -104,9 +104,9 @@ Produces following response:
 
 </div>
 
-<div id="virtuosospongerfacentuirestapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -133,9 +133,9 @@ You can use this API with Virtuoso SQL calls that provide data to your
 VSP/VSPX, ASP.NET, PHP, etc., -based interfaces using ODBC, JDBC,
 ADO.NET, or XMLA connectivity (SPASQL) to Virtuoso.
 
-<div id="virtuosospongerfacentuirestapidef" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -368,9 +368,9 @@ fct_exec
 
 </div>
 
-<div id="virtuosospongerfacentuirestapiexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -389,7 +389,7 @@ perform a "text" search for the word "Mike" assuming this exists in your
 Virtuoso RDF store (if not amend the query in the fct_example.vsp code
 sample below to search for text known to exist).
 
-<div class="orderedlist">
+<div>
 
 1.  The service can be used in the following sample fct_example.vsp:
 
@@ -435,7 +435,7 @@ sample below to search for text known to exist).
         <div
     xml:id="res">
           <xsl:if test="/facets/complete = 'yes' and /facets/processed = 0 and $rowcnt = 0">
-            <div class="empty_result">
+            <div>
               Nothing found.
             </div>
           </xsl:if>
@@ -513,15 +513,15 @@ sample below to search for text known to exist).
 
 3.  The result of executing the fct_example.vsp should be:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fcapiex1" class="figure">
+    <div>
 
     **Figure 16.183. Faceted API Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted API Example](images/ui/fcapiex1.png)
 
@@ -541,9 +541,9 @@ sample below to search for text known to exist).
 
 </div>
 
-<div id="virtuosospongerfacentuirest_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

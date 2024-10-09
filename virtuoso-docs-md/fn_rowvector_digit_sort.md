@@ -1,10 +1,10 @@
-<div id="fn_rowvector_digit_sort" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ of arrays.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rowvector_digit_sort" class="funcsynopsis">
+<div>
 
 |                                   |                                   |
 |-----------------------------------|-----------------------------------|
@@ -25,7 +25,7 @@ of arrays.
 |                                   | in `key_idx_in_row ` integer ,    |
 |                                   | in `sort_ascending ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ of arrays.
 
 </div>
 
-<div id="desc_rowvector_digit_sort" class="refsect1">
+<div>
 
 ## Description
 
@@ -64,11 +64,11 @@ This function supports only integer values of sorting keys.
 
 </div>
 
-<div id="params_rowvector_digit_sort" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102568" class="refsect2">
+<div>
 
 ### data
 
@@ -76,7 +76,7 @@ A vector of rows to sort.
 
 </div>
 
-<div id="id102571" class="refsect2">
+<div>
 
 ### key_idx_in_row
 
@@ -85,7 +85,7 @@ less than the length of each row.
 
 </div>
 
-<div id="id102574" class="refsect2">
+<div>
 
 ### sort_ascending
 
@@ -95,7 +95,7 @@ Direction of sorting, nonzero for ascending sort, zero for descending.
 
 </div>
 
-<div id="ret_rowvector_digit_sort" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -103,7 +103,7 @@ The function returns the length of the *`data `* vector.
 
 </div>
 
-<div id="seealso_rowvector_digit_sort" class="refsect1">
+<div>
 
 ## See Also
 

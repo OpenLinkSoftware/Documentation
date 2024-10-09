@@ -1,10 +1,10 @@
-<div id="fn_exec_score" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ exec_score — Compiles a SQL statement and returns the estimate time cost
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exec_score" class="funcsynopsis">
+<div>
 
 |                         |                             |
 |-------------------------|-----------------------------|
@@ -24,7 +24,7 @@ exec_score — Compiles a SQL statement and returns the estimate time cost
 |                         | out `state ` varchar ,      |
 |                         | out `message ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ exec_score — Compiles a SQL statement and returns the estimate time cost
 
 </div>
 
-<div id="desc_exec_score" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ state, error message and returns the estimate time cost in milliseconds.
 
 </div>
 
-<div id="params_exec_score" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88226" class="refsect2">
+<div>
 
 ### *`str `*
 
@@ -58,7 +58,7 @@ for parameter markers.
 
 </div>
 
-<div id="id88231" class="refsect2">
+<div>
 
 ### state
 
@@ -68,7 +68,7 @@ error is not present.
 
 </div>
 
-<div id="id88235" class="refsect2">
+<div>
 
 ### message
 
@@ -80,7 +80,7 @@ present.
 
 </div>
 
-<div id="ret_exec_score" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -89,14 +89,14 @@ time cost for the query execution.
 
 </div>
 
-<div id="errors_exec_score" class="refsect1">
+<div>
 
 ## Errors
 
 The function will generate a SQL 22023 error value if a supplied
 parameter is not of the type expected.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|
@@ -108,15 +108,15 @@ parameter is not of the type expected.
 
 </div>
 
-<div id="examples_exec_score" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_exec_score" class="example">
+<div>
 
 **Example 24.106. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select exec_score ('select * from T1');
@@ -130,7 +130,7 @@ SQL> select exec_score ('select * from T1');
 
 </div>
 
-<div id="seealso_exec_score" class="refsect1">
+<div>
 
 ## See Also
 

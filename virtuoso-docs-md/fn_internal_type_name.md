@@ -1,10 +1,10 @@
-<div id="fn_internal_type_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ the argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_internal_type_name" class="funcsynopsis">
+<div>
 
 |                                 |                               |
 |---------------------------------|-------------------------------|
 | ` `**`internal_type_name`**` (` | `internal_type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -31,13 +31,13 @@ the argument
 
 </div>
 
-<div id="fsyn_dv_type_title" class="funcsynopsis">
+<div>
 
 |                            |                               |
 |----------------------------|-------------------------------|
 | ` `**`dv_type_title`**` (` | `internal_type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ the argument
 
 </div>
 
-<div id="desc_02" class="refsect1">
+<div>
 
 ## Description
 

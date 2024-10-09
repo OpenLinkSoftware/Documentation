@@ -1,10 +1,10 @@
-<div id="fn_st_get_bounding_box_n" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ or ...COLLECTION shape, returns the bounding box of a member.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_get_bounding_box_n" class="funcsynopsis">
+<div>
 
 |                                    |                    |
 |------------------------------------|--------------------|
 | ` `**`st_get_bounding_box_n`**` (` | in `shape ` any ,  |
 |                                    | in `idx ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ or ...COLLECTION shape, returns the bounding box of a member.
 
 </div>
 
-<div id="desc_st_get_bounding_box_n" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ class="function">st_get_bounding_box_n(ST_GeometryN (shape,idx)) </code></a>
 
 </div>
 
-<div id="params_st_get_bounding_box_n" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131163" class="refsect2">
+<div>
 
 ### shape
 
@@ -59,7 +59,7 @@ Shape
 
 </div>
 
-<div id="id131166" class="refsect2">
+<div>
 
 ### idx
 
@@ -69,7 +69,7 @@ Index
 
 </div>
 
-<div id="ret_st_get_bounding_box_n" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -77,15 +77,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_get_bounding_box_n" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_get_bounding_box_n" class="example">
+<div>
 
 **Example 24.662. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select st_get_bounding_box_n (
@@ -129,7 +129,7 @@ BOX2D(0.0 0.0,5.000001 5.000001)
 
 </div>
 
-<div id="seealso_st_get_bounding_box_n" class="refsect1">
+<div>
 
 ## See Also
 

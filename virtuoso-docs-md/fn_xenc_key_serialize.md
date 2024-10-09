@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_serialize" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xenc_key_serialize — Extracts a key from user's repository
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_serialize" class="funcsynopsis">
+<div>
 
 |                                        |                       |
 |----------------------------------------|-----------------------|
 | `varchar `**`xenc_key_serialize`**` (` | in `name ` varchar ,  |
 |                                        | in `public ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xenc_key_serialize — Extracts a key from user's repository
 
 </div>
 
-<div id="desc_xenc_key_serialize" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ extract private or public.
 
 </div>
 
-<div id="params_xenc_key_serialize" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120740" class="refsect2">
+<div>
 
 ### name
 
@@ -56,7 +56,7 @@ The key name.
 
 </div>
 
-<div id="id120743" class="refsect2">
+<div>
 
 ### public
 
@@ -66,7 +66,7 @@ The key name.
 
 </div>
 
-<div id="ret_xenc_key_serialize" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ The function returns serialized key material.
 
 </div>
 
-<div id="examples_xenc_key_serialize" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_key_serialize" class="example">
+<div>
 
 **Example 24.476. Exporting a RSA public key.**
 
-<div class="example-contents">
+<div>
 
 The 'ServerPrivate.pfx' is a own RSA key so we exporting public part to
 supply to some party to encrypt data for us.

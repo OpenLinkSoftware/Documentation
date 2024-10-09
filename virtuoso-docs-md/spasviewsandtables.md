@@ -1,6 +1,6 @@
-<div id="spasviewsandtables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,9 +65,9 @@ The meta-data returned by ODBC catalog calls for a procedure view will
 show the columns as they were declared, just like a regular view.
 Procedure views are never updatable.
 
-<div id="proctabparams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

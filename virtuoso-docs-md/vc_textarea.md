@@ -1,10 +1,10 @@
-<div id="vc_textarea" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ textarea — Scriptable text-area input.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_textarea" class="funcsynopsis">
+<div>
 
 |                          |                                      |
 |--------------------------|--------------------------------------|
@@ -49,7 +49,7 @@ textarea — Scriptable text-area input.
 |                          | `debug-srcline` (optional) ,         |
 |                          | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -59,7 +59,7 @@ textarea — Scriptable text-area input.
 
 </div>
 
-<div id="vc_desc_textarea" class="refsect1">
+<div>
 
 ## Description
 
@@ -67,7 +67,7 @@ Scriptable, databindable HTML text area.
 
 </div>
 
-<div id="vc_attrs_textarea" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -137,11 +137,11 @@ control is changed.
 
 **type. **
 
-<div id="id43354" class="table">
+<div>
 
 **Table 14.12. Allowed values of the 'type' attribute**
 
-<div class="table-contents">
+<div>
 
 |          |                                                                                                                  |
 |----------|------------------------------------------------------------------------------------------------------------------|
@@ -284,7 +284,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_textarea" class="refsect1">
+<div>
 
 ## Declaration of type vspx_textarea
 
@@ -295,7 +295,7 @@ create type vspx_textarea under vspx_text  temporary self as ref
   overriding method vc_render () returns any
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------|

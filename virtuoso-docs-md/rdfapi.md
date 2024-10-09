@@ -1,6 +1,6 @@
-<div id="rdfapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,9 +63,9 @@ those strings as dependent data. The sharing of the same node dictionary
 by all readers of an application will ensure that no blank node is
 duplicated.
 
-<div id="rdfapidataimport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,9 +79,9 @@ duplicated.
 
 </div>
 
-<div id="rdfapidataimportttlp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -132,9 +132,9 @@ SQL> DB.DBA.TTLP (file_to_string_output ('.\tmp\data.ttl'), '', 'http://my_graph
 
 </div>
 
-<div id="rdfapidataimportttlpmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -164,9 +164,9 @@ create procedure DB.DBA.TTLP_MT (
 
 </div>
 
-<div id="rdfapidataimportxmlttlpmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -271,9 +271,9 @@ http://www.w3.org/People/Berners-Lee/card#i   http://xmlns.com/foaf/0.1/knows   
 
 </div>
 
-<div id="rdfapidataimportttlphash" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -306,9 +306,9 @@ silently skip triples with literal subjects.
 
 </div>
 
-<div id="rdfapidataimportloadrdfxml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -337,9 +337,9 @@ class="link" title="Example">example</a> .
 
 </div>
 
-<div id="rdfapidataimportloadrdfuri" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -382,9 +382,9 @@ otherwise they will be stored but are not queryable via SPARQL.
 
 </div>
 
-<div id="rdfapidataexport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -417,9 +417,9 @@ create procedure DB.DBA.RDF_TRIPLES_TO_RDF_XML_TEXT (
 
 </div>
 
-<div id="rdfapidataquery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

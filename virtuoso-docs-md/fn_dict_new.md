@@ -1,10 +1,10 @@
-<div id="fn_dict_new" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ dict_new — Creates a new dictionary to store key-value pairs.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_new" class="funcsynopsis">
+<div>
 
 |                                 |                         |
 |---------------------------------|-------------------------|
 | `dictionary `**`dict_new`**` (` | in `size ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ dict_new — Creates a new dictionary to store key-value pairs.
 
 </div>
 
-<div id="desc_dict_new" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ class="function">dict_duplicate ()</code></a> .
 
 </div>
 
-<div id="params_dict_new" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86895" class="refsect2">
+<div>
 
 ### size
 
@@ -74,7 +74,7 @@ number of keys to be stored.
 
 </div>
 
-<div id="ret_dict_new" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,7 +82,7 @@ The function returns a new empty dictionary object.
 
 </div>
 
-<div id="seealso_dict_new" class="refsect1">
+<div>
 
 ## See Also
 

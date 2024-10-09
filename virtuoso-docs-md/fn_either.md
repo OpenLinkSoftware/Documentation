@@ -1,10 +1,10 @@
-<div id="fn_either" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ either — conditionally return one of specified parameters
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_either" class="funcsynopsis">
+<div>
 
 |                     |                     |
 |---------------------|---------------------|
@@ -24,7 +24,7 @@ either — conditionally return one of specified parameters
 |                     | in `arg1 ` any ,    |
 |                     | in `arg2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ either — conditionally return one of specified parameters
 
 </div>
 
-<div id="desc_either" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ either returns a copy of arg1 if cond is something else than integer 0
 
 </div>
 
-<div id="params_either" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87490" class="refsect2">
+<div>
 
 ### cond
 
@@ -55,7 +55,7 @@ Anything
 
 </div>
 
-<div id="id87493" class="refsect2">
+<div>
 
 ### arg1
 
@@ -63,7 +63,7 @@ Anything
 
 </div>
 
-<div id="id87496" class="refsect2">
+<div>
 
 ### arg2
 
@@ -73,7 +73,7 @@ Anything
 
 </div>
 
-<div id="ret_either" class="refsect1">
+<div>
 
 ## Return values
 
@@ -81,15 +81,15 @@ A copy of arg1 or arg2, which could be of any type.
 
 </div>
 
-<div id="errors_either" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id87504" class="table">
+<div>
 
-**Table 24.26. Errors signalled by `either ` and `stringdate `**
+**Table 24.25. Errors signalled by `either ` and `stringdate `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -103,15 +103,15 @@ A copy of arg1 or arg2, which could be of any type.
 
 </div>
 
-<div id="examples_either" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_either_1" class="example">
+<div>
 
 **Example 24.97. Simple Example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select either (mod (1, 2), 'odd', 'even');

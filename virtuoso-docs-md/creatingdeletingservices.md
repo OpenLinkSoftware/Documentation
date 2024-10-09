@@ -1,6 +1,6 @@
-<div id="creatingdeletingservices" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -31,7 +31,7 @@ Starting a new Virtuoso service manually: virtuoso-odbc-f +service start
 Showing a list of existing Virtuoso services: virtuoso-odbc-f +service
 list
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>

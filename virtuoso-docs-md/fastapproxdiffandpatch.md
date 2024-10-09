@@ -1,6 +1,6 @@
-<div id="fastapproxdiffandpatch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,7 +28,7 @@ all graphs without blank nodes, most of FOAF files, graphs that can be
 
 The basic idea is as simple as zipper:
 
-<div class="itemizedlist">
+<div>
 
 - Place one graph at the left and one to the right,
 
@@ -62,9 +62,9 @@ possible to try same interaction on triples where `N1` and `N2` are in
 subject position, that's how slides move. A typical example of a long
 zipper is closed list with matched heads.
 
-<div id="fastapproxdiffandpatchhow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -78,7 +78,7 @@ zipper is closed list with matched heads.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Using <a href="fn_rdf_graph_diff.html" class="link"
   title="DB.DBA.RDF_GRAPH_DIFF">DB.DBA.RDF_GRAPH_DIFF</a>
@@ -93,9 +93,9 @@ zipper is closed list with matched heads.
 
 </div>
 
-<div id="fastapproxdiffandpatchclt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -149,9 +149,9 @@ title="DB.DBA.RDF_GRAPH_COLLECT_FP_LIST">DB.DBA.RDF_GRAPH_COLLECT_FP_LIST</a>
 
 </div>
 
-<div id="fastapproxdiffandpatchimpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="rdfgraphsecuritylevel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

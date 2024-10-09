@@ -1,6 +1,6 @@
-<div id="qssqltoxml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,15 +63,15 @@ From Conductor <span class="emphasis">*XML/SQL_XML*</span> you can
 execute SQL query with options on how to produce XML structures from the
 results.
 
-<div class="figure-float">
+<div>
 
-<div id="qssql2xml001" class="figure">
+<div>
 
 **Figure 3.52. SQL to XML**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SQL to XML](images/ui/qssql2xml001.png)
 
@@ -93,15 +93,15 @@ WebDAV storage is all achieved without any programming. The XML document
 extract below is a depiction of the XML document tree produced using the
 "FOR XML" AUTO option.
 
-<div class="figure-float">
+<div>
 
-<div id="qssql2xml002" class="figure">
+<div>
 
 **Figure 3.53. SQL to XML results**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SQL to XML results](images/ui/qssql2xml002.png)
 
@@ -119,15 +119,15 @@ The Virtuoso Demo database provides a set of sample tables in the Demo
 catalogue, and some sample XML views that use them. The "StoredQueries"
 tab lists saved XML Views as shown below.
 
-<div class="figure-float">
+<div>
 
-<div id="qssql2xml003" class="figure">
+<div>
 
 **Figure 3.54. SQL to XML save views**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SQL to XML save views](images/ui/qssql2xml003.png)
 
@@ -146,9 +146,9 @@ You can press <span class="emphasis">*Edit*</span> to edit them, or
 XML FILE itself to see the results in your default browser, a sample of
 the output is shown above.
 
-<div id="qsforxmlmodes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -188,22 +188,22 @@ create procedure xmla (in q varchar)
 }
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*RAW*</span> mode produces an XML entity from
   each row of the result set, and does not attempt to construct
   hierarchies. Each row's data is enclosed in a ROW element and each
   column is either an attribute or child element.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="qssql2xml103" class="figure">
+  <div>
 
   **Figure 3.55. SQL to XML using FOR XML RAW mode**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![SQL to XML using FOR XML RAW mode](images/ui/qssql2xml103.png)
 
@@ -231,7 +231,7 @@ create procedure xmla (in q varchar)
       where "product"."CategoryID" = "category"."CategoryID" FOR XML RAW');
   ```
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                                                                                           |
   |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -275,15 +275,15 @@ create procedure xmla (in q varchar)
   children thereof are closed and a new element is started, with
   children filled out from other columns of the result set.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="qssql2xml102" class="figure">
+  <div>
 
   **Figure 3.56. SQL to XML using FOR XML AUTO mode**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![SQL to XML using FOR XML AUTO mode](images/ui/qssql2xml102.png)
 
@@ -311,7 +311,7 @@ create procedure xmla (in q varchar)
       where "product"."CategoryID" = "category"."CategoryID" FOR XML AUTO');
   ```
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                                                                                           |
   |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -347,7 +347,7 @@ create procedure xmla (in q varchar)
   .....
   ```
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                                                                                                                 |
   |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -363,15 +363,15 @@ create procedure xmla (in q varchar)
   this is and where in the tree it will be placed are determined by the
   values of the 2 first columns, TAG and PARENT.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="qssql2xml101" class="figure">
+  <div>
 
   **Figure 3.57. SQL to XML using FOR XML EXPLICIT mode**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![SQL to XML using FOR XML EXPLICIT mode](images/ui/qssql2xml101.png)
 
@@ -408,7 +408,7 @@ create procedure xmla (in q varchar)
   FOR XML EXPLICIT');
   ```
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                                                                                           |
   |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -453,7 +453,7 @@ create procedure xmla (in q varchar)
   .....
   ```
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                          |
   |:----------------------------:|:-------------------------------------------------------------------------|

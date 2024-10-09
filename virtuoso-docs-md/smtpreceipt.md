@@ -1,6 +1,6 @@
-<div id="smtpreceipt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ be stored in either Virtuoso or non Virtuoso SQL database.
 
 Mail storage can occur in a number of ways:
 
-<div class="orderedlist">
+<div>
 
 1.  Replacing the default generic SMTP mail handler ( the program
     "procmail")
@@ -29,9 +29,9 @@ Mail storage can occur in a number of ways:
 
 </div>
 
-<div id="unixsendmailinstall" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -48,7 +48,7 @@ Mail storage can occur in a number of ways:
 When this configuration is in use, the mails for all of your "sendmail"
 mail recipients are written to a SQL Database table.
 
-<div class="orderedlist">
+<div>
 
 1.  Copy the file "odbc_mail.default.ini" to "/etc/odbc_mail.ini"
 
@@ -99,9 +99,9 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div id="replacingmailsettings" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -115,9 +115,9 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div id="sendmail" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -131,7 +131,7 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Copy odbc_mail.default.ini to ~the_user_name/odbc_mail.ini
 
@@ -179,9 +179,9 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div id="qmail" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -195,7 +195,7 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Copy odbc_mail.default.ini to ~the_user_name/.odbc_mail.ini
 
@@ -225,7 +225,7 @@ mail recipients are written to a SQL Database table.
     If you want to configure qmail so that user 'db' gets all mail for
     example.com, do the following:
 
-    <div class="orderedlist">
+    <div>
 
     1.  create a new user db in /etc/passwd etc.
 
@@ -274,9 +274,9 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div id="courier" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -290,7 +290,7 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Copy odbc_mail.default.ini to ~the_user_name/.odbc_mail.ini
 
@@ -346,9 +346,9 @@ mail recipients are written to a SQL Database table.
 
 </div>
 
-<div id="exim" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -408,9 +408,9 @@ to_db:
 
 </div>
 
-<div id="mailsystables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -429,7 +429,7 @@ The electronic mail accounts are regular SQL accounts.
 Id (MM_ID) of the message is unique per account/folder (folder can be
 'Inbox' etc.)
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                               |
 |:--------------------------:|:--------------------------------------------------------------|
@@ -441,9 +441,9 @@ Id (MM_ID) of the message is unique per account/folder (folder can be
 
 </div>
 
-<div id="pop3client" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -460,9 +460,9 @@ Id (MM_ID) of the message is unique per account/folder (folder can be
 The Virtuoso POP3 Client implementation can retrieve messages from any
 POP3 server.
 
-<div id="fn_pop3_get_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -486,9 +486,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="commands_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -506,11 +506,11 @@ UIDL - get only UIDL's of messages.
 
 DELETE - delete messages after downloading.
 
-<div id="id65916" class="example">
+<div>
 
 **Example 19.5. Examples**
 
-<div class="example-contents">
+<div>
 
 1\. To get 10 KB. messages from the server 'openlinksw.com' POP3 port
 110, user name 'user_1', password 'pass_1'

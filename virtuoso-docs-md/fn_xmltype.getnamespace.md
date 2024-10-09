@@ -1,10 +1,10 @@
-<div id="fn_xmltype.getnamespace" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ providing the instance is schema-based rather than a fragment.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.getnamespace" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | ` `**`XMLType.getNamespace`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ providing the instance is schema-based rather than a fragment.
 
 </div>
 
-<div id="desc_xmltype.getnamespace" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,7 +46,7 @@ also returns NULL if the instance is non-schema based for compatibility.
 
 </div>
 
-<div id="ret_xmltype.getnamespace" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -54,15 +54,15 @@ This function returns a wide string or NULL.
 
 </div>
 
-<div id="examples_xmltype.getnamespace" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.getnamespace" class="example">
+<div>
 
 **Example 24.550. Factors that affect the result of getNamespace()**
 
-<div class="example-contents">
+<div>
 
 The following statements demonstrate how various circumstances may force
 getNamespace() to return NULL.
@@ -118,7 +118,7 @@ NULL
 
 </div>
 
-<div id="seealso_xmltype.getnamespace" class="refsect1">
+<div>
 
 ## See Also
 

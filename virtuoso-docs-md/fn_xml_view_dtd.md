@@ -1,10 +1,10 @@
-<div id="fn_xml_view_dtd" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xml_view_dtd — returns an XML DTD for the output of given XML VIEW
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_view_dtd" class="funcsynopsis">
+<div>
 
 |                                  |                                 |
 |----------------------------------|---------------------------------|
 | `varchar `**`xml_view_dtd`**` (` | in `view_name ` varchar ,       |
 |                                  | in `root_element ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xml_view_dtd — returns an XML DTD for the output of given XML VIEW
 
 </div>
 
-<div id="desc_72" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ wrapped into the specified root element.
 
 </div>
 
-<div id="params_36" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123749" class="refsect2">
+<div>
 
 ### view_name
 
@@ -55,7 +55,7 @@ Name of an XML View.
 
 </div>
 
-<div id="id123752" class="refsect2">
+<div>
 
 ### root_element
 
@@ -65,7 +65,7 @@ Name of the root element.
 
 </div>
 
-<div id="ret_11_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,7 +73,7 @@ XML DTD for the given XML VIEW
 
 </div>
 
-<div id="seealso_45" class="refsect1">
+<div>
 
 ## See Also
 

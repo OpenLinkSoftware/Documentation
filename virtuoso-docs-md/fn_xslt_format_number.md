@@ -1,10 +1,10 @@
-<div id="fn_xslt_format_number" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ numeric value
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xslt_format_number" class="funcsynopsis">
+<div>
 
 |                                 |                               |
 |---------------------------------|-------------------------------|
 | ` `**`xslt_format_number`**` (` | `number ` any ,               |
 |                                 | `format_string ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ numeric value
 
 </div>
 
-<div id="desc_80" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ standard.
 
 </div>
 
-<div id="params_04_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124676" class="refsect2">
+<div>
 
 ### *`number `*
 
@@ -59,7 +59,7 @@ or <span class="type">string </span> .
 
 </div>
 
-<div id="id124683" class="refsect2">
+<div>
 
 ### *`format_string `*
 
@@ -69,7 +69,7 @@ or <span class="type">string </span> .
 
 </div>
 
-<div id="ret_25" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -78,15 +78,15 @@ of *`number `* converted according to the format *`format_string `* .
 
 </div>
 
-<div id="examples_21_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_fn_xslt_format_number_1" class="example">
+<div>
 
 **Example 24.534. Simple examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 xslt_format_number (5351, '#,###'),        5,351
@@ -105,7 +105,7 @@ xslt_format_number (53.56, '0.0');        53.6
 
 </div>
 
-<div id="seealso_50" class="refsect1">
+<div>
 
 ## See Also
 

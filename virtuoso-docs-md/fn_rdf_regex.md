@@ -1,10 +1,10 @@
-<div id="fn_rdf_regex" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.RDF_REGEX — Returns 1 if string s matches pattern p, 0 otherwise.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_regex" class="funcsynopsis">
+<div>
 
 |                               |                                 |
 |-------------------------------|---------------------------------|
@@ -24,7 +24,7 @@ DB.DBA.RDF_REGEX — Returns 1 if string s matches pattern p, 0 otherwise.
 |                               | in `p ` varchar ,               |
 |                               | in `call ` varchar := null `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ DB.DBA.RDF_REGEX — Returns 1 if string s matches pattern p, 0 otherwise.
 
 </div>
 
-<div id="desc_rdf_regex" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ Returns 1 if string s matches pattern p, 0 otherwise
 
 </div>
 
-<div id="params_rdf_regex" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103839" class="refsect2">
+<div>
 
 ### s
 
@@ -54,7 +54,7 @@ source string to check.
 
 </div>
 
-<div id="id103842" class="refsect2">
+<div>
 
 ### p
 
@@ -62,7 +62,7 @@ regular expression pattern string.
 
 </div>
 
-<div id="id103845" class="refsect2">
+<div>
 
 ### coll
 
@@ -72,7 +72,7 @@ unused for now (modes are not yet implemented).
 
 </div>
 
-<div id="ret_rdf_regex" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,15 +80,15 @@ integer
 
 </div>
 
-<div id="examples_rdf_regex" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_regex" class="example">
+<div>
 
 **Example 24.305. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>SELECT DISTINCT DB.DBA.RDF_QNAME_OF_IID ( /*retval[*/  "s-1-1-t0"."S" /* R */ /*]retval*/ ) AS /*tmpl*/ "R"
@@ -125,7 +125,7 @@ http://example.org/ns#y2
 
 </div>
 
-<div id="seealso_rdf_regex" class="refsect1">
+<div>
 
 ## See Also
 

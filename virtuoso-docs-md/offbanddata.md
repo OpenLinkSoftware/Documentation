@@ -1,6 +1,6 @@
-<div id="offbanddata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="udtrepressentsoapstruct" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -31,9 +31,9 @@ implementation supports two ways of specifying how a SOAP value XML
 fragment should be materialized as a user defined type instance, as
 follows.
 
-<div id="udtsoapuseschemafrag" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -125,9 +125,9 @@ types in SOAP.
 
 </div>
 
-<div id="udtsoapudt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

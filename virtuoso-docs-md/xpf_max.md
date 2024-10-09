@@ -1,10 +1,10 @@
-<div id="xpf_max" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ max — Returns maximum value among all its arguments.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_max" class="funcsynopsis">
+<div>
 
 |                        |                  |
 |------------------------|------------------|
@@ -25,7 +25,7 @@ max — Returns maximum value among all its arguments.
 |                        | `... ` ,         |
 |                        | `argN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ max — Returns maximum value among all its arguments.
 
 </div>
 
-<div id="xpf_desc_max" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ This function is not a part of XPATH 1.0 standard library.
 
 </div>
 
-<div id="xpf_params_max" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128139" class="refsect2">
+<div>
 
 ### argI
 
@@ -64,15 +64,15 @@ added to the result, or single value.
 
 </div>
 
-<div id="xpf_ret_max" class="refsect1">
+<div>
 
 ## Return Types
 
-<div id="id128145" class="table">
+<div>
 
-**Table 24.148. Errors signalled by**
+**Table 24.147. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                                              | Description                                                                                             |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -86,15 +86,15 @@ added to the result, or single value.
 
 </div>
 
-<div id="xpf_examples_max" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_max" class="example">
+<div>
 
 **Example 24.601. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 max(/report[@type="daily-sales"]/total)
@@ -108,7 +108,7 @@ max(/report[@type="daily-sales"]/total)
 
 </div>
 
-<div id="xpf_seealso_max" class="refsect1">
+<div>
 
 ## See Also
 

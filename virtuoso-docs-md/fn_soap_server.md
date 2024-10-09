@@ -1,10 +1,10 @@
-<div id="fn_soap_server" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ soap_server — Execute SOAP request and return XML reply as a varchar.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_server" class="funcsynopsis">
+<div>
 
 |                                 |                                   |
 |---------------------------------|-----------------------------------|
@@ -26,7 +26,7 @@ soap_server — Execute SOAP request and return XML reply as a varchar.
 |                                 | in `soap_version ` long ,         |
 |                                 | in `procedure_mappings ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ soap_server — Execute SOAP request and return XML reply as a varchar.
 
 </div>
 
-<div id="desc_soap_server" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ a varchar value.
 
 </div>
 
-<div id="params_soap_server" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110858" class="refsect2">
+<div>
 
 ### req_xml
 
@@ -58,7 +58,7 @@ Required. The XML entity of the SOAP request to execute.
 
 </div>
 
-<div id="id110861" class="refsect2">
+<div>
 
 ### soap_method
 
@@ -66,7 +66,7 @@ Optional(default ""). The "SOAPAction" header field value
 
 </div>
 
-<div id="id110864" class="refsect2">
+<div>
 
 ### lines
 
@@ -75,7 +75,7 @@ to the VSPs for HTTP)
 
 </div>
 
-<div id="id110867" class="refsect2">
+<div>
 
 ### soap_version
 
@@ -84,7 +84,7 @@ Optional(default 11). The SOAP version (11 for SOAP 1.1 and 1 for SOAP
 
 </div>
 
-<div id="id110870" class="refsect2">
+<div>
 
 ### procedure_mappings
 
@@ -103,7 +103,7 @@ case-sensitive fashion.
 
 </div>
 
-<div id="ret_soap_server" class="refsect1">
+<div>
 
 ## Return Types
 

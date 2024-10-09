@@ -1,10 +1,10 @@
-<div id="fn_xenc_decrypt_soap" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xenc_decrypt_soap — Decrypt and verify a SOAP message
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_decrypt_soap" class="funcsynopsis">
+<div>
 
 |                                       |                           |
 |---------------------------------------|---------------------------|
@@ -28,7 +28,7 @@ xenc_decrypt_soap — Decrypt and verify a SOAP message
 |                                       | in `opts ` any ,          |
 |                                       | out `keys ` any `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ xenc_decrypt_soap — Decrypt and verify a SOAP message
 
 </div>
 
-<div id="desc_xenc_decrypt_soap" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ of a *`validate_flag`* parameter) of a SOAP message.
 
 </div>
 
-<div id="params_xenc_decrypt_soap" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119655" class="refsect2">
+<div>
 
 ### xml_text
 
@@ -59,7 +59,7 @@ A string containing SOAP message
 
 </div>
 
-<div id="id119658" class="refsect2">
+<div>
 
 ### soap_version
 
@@ -67,7 +67,7 @@ An integer indication SOAP version (11 for v1.1, 10 for 1.0 etc)
 
 </div>
 
-<div id="id119661" class="refsect2">
+<div>
 
 ### validate_flag
 
@@ -80,7 +80,7 @@ Bit mask flag. See below for details.
 
 </div>
 
-<div id="id119667" class="refsect2">
+<div>
 
 ### encoding
 
@@ -88,7 +88,7 @@ The message ( *`xml_text `* ) character encoding
 
 </div>
 
-<div id="id119671" class="refsect2">
+<div>
 
 ### lang
 
@@ -96,7 +96,7 @@ The message ( *`xml_text `* ) language
 
 </div>
 
-<div id="id119675" class="refsect2">
+<div>
 
 ### opts
 
@@ -106,7 +106,7 @@ vector ('UsernameToken', vector ('label', 'lab1', 'keyAlgorithm' ,
 
 </div>
 
-<div id="id119678" class="refsect2">
+<div>
 
 ### keys
 
@@ -122,7 +122,7 @@ from user's space that matches the signing token.
 
 </div>
 
-<div id="ret_xenc_decrypt_soap" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -130,15 +130,15 @@ On success the function returns decrypted SOAP message.
 
 </div>
 
-<div id="examples_xenc_decrypt_soap" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_decrypt_soap" class="example">
+<div>
 
 **Example 24.456. Decrypting SOAP message**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 declare ekeys, opts, decoded any;
@@ -158,7 +158,7 @@ decoded := xenc_decrypt_soap (body_str, 11, 6, 'UTF-8', 'x-any', opts, ekeys);
 
 </div>
 
-<div id="seealso_xenc_decrypt_soap" class="refsect1">
+<div>
 
 ## See Also
 

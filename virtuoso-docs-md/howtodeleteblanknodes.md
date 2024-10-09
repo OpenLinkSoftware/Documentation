@@ -1,6 +1,6 @@
-<div id="howtodeleteblanknodes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

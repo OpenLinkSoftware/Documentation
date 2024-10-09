@@ -1,6 +1,6 @@
-<div id="otherfactors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

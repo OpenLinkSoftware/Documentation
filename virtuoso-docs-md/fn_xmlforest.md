@@ -1,10 +1,10 @@
-<div id="fn_xmlforest" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ XMLFOREST — Produces a forest of XML elements
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlforest" class="funcsynopsis">
+<div>
 
 |                        |                                          |
 |------------------------|------------------------------------------|
@@ -25,7 +25,7 @@ XMLFOREST — Produces a forest of XML elements
 |                        | `... ` ,                                 |
 |                        | `string_exprN [AS aliasN] ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ XMLFOREST — Produces a forest of XML elements
 
 </div>
 
-<div id="desc_xmlforest" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ is created, then the function returns NULL.
 
 </div>
 
-<div id="xmlforest" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122382" class="refsect2">
+<div>
 
 ### string_exprI \[AS aliasI\]
 
@@ -64,15 +64,15 @@ name but an expression of some other sort.
 
 </div>
 
-<div id="errors_xmlforest" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id122387" class="table">
+<div>
 
-**Table 24.129. Errors signalled by `XMLFOREST `**
+**Table 24.128. Errors signalled by `XMLFOREST `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                    | Description                                                           |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------------------|
@@ -86,15 +86,15 @@ name but an expression of some other sort.
 
 </div>
 
-<div id="xmlforest_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlforest" class="example">
+<div>
 
 **Example 24.503. XMLFOREST() with five parameters.**
 
-<div class="example-contents">
+<div>
 
 The following example produces five (or four) elements ('FName',
 'LName', 'str', 'Title', and 'Region' - if there is a value) from the
@@ -166,7 +166,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmlforest" class="refsect1">
+<div>
 
 ## See Also
 

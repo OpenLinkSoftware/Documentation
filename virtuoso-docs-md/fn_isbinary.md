@@ -1,10 +1,10 @@
-<div id="fn_isbinary" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isbinary — returns true if its argument is of type varbinary
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isbinary" class="funcsynopsis">
+<div>
 
 |                              |                      |
 |------------------------------|----------------------|
 | `boolean `**`isbinary`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isbinary — returns true if its argument is of type varbinary
 
 </div>
 
-<div id="desc_isbinary" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ otherwise.
 
 </div>
 
-<div id="params_isbinary" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94166" class="refsect2">
+<div>
 
 ### arg
 
@@ -55,15 +55,15 @@ Some variable to be assessed.
 
 </div>
 
-<div id="examples_isbinary" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_isbinary" class="example">
+<div>
 
 **Example 24.188. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>select isbinary(0x1213);

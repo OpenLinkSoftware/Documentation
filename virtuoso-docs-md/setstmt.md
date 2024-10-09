@@ -1,6 +1,6 @@
-<div id="setstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="isolation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,11 +47,11 @@ setting. The effect never persists over the return of the containing
 procedure or trigger. The effect does extend into procedures or triggers
 called from after executing the SET ISOLATION statement.
 
-<div id="ex_settingisolations" class="example">
+<div>
 
 **Example 9.41. Setting the isolation level**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 set isolation='serializable';

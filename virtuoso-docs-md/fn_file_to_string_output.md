@@ -1,10 +1,10 @@
-<div id="fn_file_to_string_output" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ file_to_string_output — get contents of a file as a string output stream
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_to_string_output" class="funcsynopsis">
+<div>
 
 |                                    |                       |
 |------------------------------------|-----------------------|
@@ -24,7 +24,7 @@ file_to_string_output — get contents of a file as a string output stream
 |                                    | in `from ` integer ,  |
 |                                    | in `to ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ file_to_string_output — get contents of a file as a string output stream
 
 </div>
 
-<div id="desc_file_to_string_output" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ signal an error.
 
 </div>
 
-<div id="params_file_to_string_output" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88979" class="refsect2">
+<div>
 
 ### file
 
@@ -69,7 +69,7 @@ directory.
 
 </div>
 
-<div id="id88983" class="refsect2">
+<div>
 
 ### from
 
@@ -78,7 +78,7 @@ of the segment to extract. Defaults to 0.
 
 </div>
 
-<div id="id88987" class="refsect2">
+<div>
 
 ### to
 
@@ -89,15 +89,15 @@ the requested segment. Defaults to file length.
 
 </div>
 
-<div id="examples_file_to_string_output" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_file_to_string_output" class="example">
+<div>
 
 **Example 24.117. Insert file contents into a table**
 
-<div class="example-contents">
+<div>
 
 This example shows how to insert file contents into a table `file_table`
 with two columns.
@@ -138,7 +138,7 @@ insert_file ('foo.dat');
 
 </div>
 
-<div id="seealso_file_to_string_output" class="refsect1">
+<div>
 
 ## See Also
 

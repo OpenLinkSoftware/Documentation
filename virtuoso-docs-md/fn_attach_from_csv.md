@@ -1,10 +1,10 @@
-<div id="fn_attach_from_csv" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ attach_from_csv — Attaches CSV files as virtual tables in Virtuoso.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_attach_from_csv" class="funcsynopsis">
+<div>
 
 |                              |                                            |
 |------------------------------|--------------------------------------------|
@@ -28,7 +28,7 @@ attach_from_csv — Attaches CSV files as virtual tables in Virtuoso.
 |                              | in `skip_rows ` int (default 1) ,          |
 |                              | in `pkey_columns ` any (default null) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ attach_from_csv — Attaches CSV files as virtual tables in Virtuoso.
 
 </div>
 
-<div id="desc_attach_from_csv" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ them to be queried as if local to the Virtuoso database schema.
 
 </div>
 
-<div id="params_attach_from_csv" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89606" class="refsect2">
+<div>
 
 ### tb
 
@@ -60,7 +60,7 @@ file
 
 </div>
 
-<div id="id89609" class="refsect2">
+<div>
 
 ### fname
 
@@ -68,7 +68,7 @@ Name of the CSV file, which must be situated in a file system location
 within the scope of 'DirsAllowed' INI setting, in one of the following
 forms:
 
-<div class="itemizedlist">
+<div>
 
 - 'contacts.csv' -- relative path, here assuming a file in the 'pwd' of
   the Virtuoso instance
@@ -87,7 +87,7 @@ forms:
 
 </div>
 
-<div id="id89621" class="refsect2">
+<div>
 
 ### delimiter
 
@@ -95,7 +95,7 @@ Specifies a single character to be treated as the field delimiter.
 
 </div>
 
-<div id="id89624" class="refsect2">
+<div>
 
 ### newline
 
@@ -103,7 +103,7 @@ Specifies a single character to be treated as newline.
 
 </div>
 
-<div id="id89627" class="refsect2">
+<div>
 
 ### esc
 
@@ -111,7 +111,7 @@ Specifies a single character to be treated as escape.
 
 </div>
 
-<div id="id89630" class="refsect2">
+<div>
 
 ### skip_rows
 
@@ -120,14 +120,14 @@ Specifies a number of rows to be ignored as instance data. Default is
 
 </div>
 
-<div id="id89633" class="refsect2">
+<div>
 
 ### pkey_columns
 
 Specifies which ordinal column(s) of the CSV to use as the primary key
 of the virtual table.
 
-<div class="orderedlist">
+<div>
 
 1.  By default, this parameter value is null, and the virtual table will
     have no primary key.
@@ -147,7 +147,7 @@ of the virtual table.
 
 </div>
 
-<div id="errors_attach_from_csv" class="refsect1">
+<div>
 
 ## Errors
 
@@ -156,20 +156,20 @@ creation suitability, will be reported back as errors.
 
 </div>
 
-<div id="examples_attach_from_csv" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_attach_from_csv_1" class="example">
+<div>
 
 **Example 24.125. Simplified CSV File Attachment**
 
-<div class="example-contents">
+<div>
 
 This example demonstrates how to directly attach external CSV file to
 Virtuoso that functions like any other internal TABLE:
 
-<div class="orderedlist">
+<div>
 
 1.  Create CSV file named `contacts1.csv `:
 
@@ -233,18 +233,18 @@ Virtuoso that functions like any other internal TABLE:
 
   
 
-<div id="ex_attach_from_csv_2" class="example">
+<div>
 
 **Example 24.126. Simplified CSV File Attachment with Compound Key
 Generation**
 
-<div class="example-contents">
+<div>
 
 In this example a CSV File System is not only attached to Virtuoso, but
 as part of the process a Primary Key is generated using the first and
 second ordinal columns from the CSV file content:
 
-<div class="orderedlist">
+<div>
 
 1.  Create CSV file named `contacts2.csv`:
 
@@ -309,12 +309,12 @@ second ordinal columns from the CSV file content:
 
   
 
-<div id="ex_attach_from_csv_3" class="example">
+<div>
 
 **Example 24.127. Simplified CSV File Attachment with Composite Key
 Generation**
 
-<div class="example-contents">
+<div>
 
 In this example a CSV File System is not only attached to Virtuoso, but
 as part of the process a Primary Key is generated using the second
@@ -323,7 +323,7 @@ In this example the CompanyID column (which uniquely identifies a
 company) is combined with the `Fname` and `Sname` columns to create a
 primary key for each contact:
 
-<div class="orderedlist">
+<div>
 
 1.  Create CSV file named `contacts3.csv`:
 
@@ -391,7 +391,7 @@ primary key for each contact:
 
 </div>
 
-<div id="seealso_attach_from_csv" class="refsect1">
+<div>
 
 ## See Also
 

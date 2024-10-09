@@ -1,6 +1,6 @@
-<div id="bpelstats" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ The BPEL process can be set to collect statistics, this can be enabled
 by turning on the statistics flag (see Configuration section). If the
 statistics flag is on the following data is available:
 
-<div class="itemizedlist">
+<div>
 
 - count of instance creations per instance creating partner link
 

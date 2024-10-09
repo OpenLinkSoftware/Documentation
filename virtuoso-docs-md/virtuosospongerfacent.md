@@ -1,6 +1,6 @@
-<div id="virtuosospongerfacent" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -31,7 +31,7 @@ The top element of the tree is \<query\>, it must be in namespace
 
 This has the following attributes:
 
-<div class="itemizedlist">
+<div>
 
 - graph="graph_iri" - default is search in all graphs but system
   defaults may override this
@@ -66,7 +66,7 @@ if present, is either a count or a search summary.
 The first column's text child is the text form of the value. The column
 element has the following attributes qualifying this further:
 
-<div class="itemizedlist">
+<div>
 
 - datatype - The xsd type of the value. If this is a URI, the datatype
   is "uri"
@@ -163,7 +163,7 @@ what which subject is presented in the result set.
 
 The type can be:
 
-<div class="itemizedlist">
+<div>
 
 - "properties"
 
@@ -274,9 +274,9 @@ The type can be:
 
 </div>
 
-<div id="virtuosospongerfacentcust" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -292,7 +292,7 @@ The type can be:
 
 The following types of customization will be generally useful:
 
-<div class="itemizedlist">
+<div>
 
 - Resource accounting and limitations, managing access and login
 

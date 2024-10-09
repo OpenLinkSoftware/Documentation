@@ -1,10 +1,10 @@
-<div id="fn_elh_get_handler" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ elh_get_handler — get localization function handler
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_elh_get_handler" class="funcsynopsis">
+<div>
 
 |                                                     |                                        |
 |-----------------------------------------------------|----------------------------------------|
 | `encodedlang_handler_t * `**`elh_get_handler`**` (` | encoding_handler_t \* `encoding ` ,    |
 |                                                     | language_handler_t \* `language ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ elh_get_handler — get localization function handler
 
 </div>
 
-<div id="desc_elh_get_handler" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Gets localization.
 
 </div>
 
-<div id="params_elh_get_handler" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87550" class="refsect2">
+<div>
 
 ### encoding
 
@@ -53,7 +53,7 @@ Name of the encoding to be used.
 
 </div>
 
-<div id="id87553" class="refsect2">
+<div>
 
 ### language
 
@@ -63,7 +63,7 @@ Name of the text language
 
 </div>
 
-<div id="ret_elh_get_handler" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,15 +78,15 @@ failure, otherwise combination's handler will be returned.
 
 </div>
 
-<div id="examples_elh_get_handler" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_elh_get_handler_1" class="example">
+<div>
 
 **Example 24.98. Returning a Handler Pointer**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 encodedlang_handler_t *elh =
@@ -103,7 +103,7 @@ encodedlang_handler_t *elh =
 
 </div>
 
-<div id="seealso_elh_get_handler" class="refsect1">
+<div>
 
 ## See Also
 

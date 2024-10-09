@@ -1,6 +1,6 @@
-<div id="jtademo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,9 +22,9 @@ The JTA demo is located in the
 
 folder.
 
-<div id="jtademosetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,7 +38,7 @@ folder.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  The sample requires 2 or 3 Virtuoso instances and an instance of a
     J2EE 1.3.1 server properly set up and running on the same computer
@@ -81,9 +81,9 @@ folder.
 
 </div>
 
-<div id="jtademoconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -103,9 +103,9 @@ described within the file.
 
 </div>
 
-<div id="jtademo_deploy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -131,9 +131,9 @@ different ways for application deployment.
 
 </div>
 
-<div id="jtademorun" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -151,7 +151,7 @@ The sample folder contains the run scripts for Linux/Unix and Windows.
 
 The run script accepts the following commands:
 
-<div class="variablelist">
+<div>
 
 <span class="term">create</span>  
 Creates and populates the necessary tables.

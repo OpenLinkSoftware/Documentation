@@ -1,6 +1,6 @@
-<div id="installwfas" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,9 +20,9 @@ DataSet and explore that RDF data in an intuitive way by clicking on
 dereferenceable <a href="ch-rdfandsparql.html#rdfiriidtype" class="link"
 title="16.1.1. IRI_ID Type">IRIs</a> .
 
-<div id="installwfasintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,7 +36,7 @@ title="16.1.1. IRI_ID Type">IRIs</a> .
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Microsoft Visual Studio 2008
 

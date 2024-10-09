@@ -1,10 +1,10 @@
-<div id="fn_repl_stat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ REPL_STAT — retrieve status of all subscriptions and publications
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_stat" class="funcsynopsis">
+<div>
 
 |                        |      |
 |------------------------|------|
 | ` `**`REPL_STAT`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ REPL_STAT — retrieve status of all subscriptions and publications
 
 </div>
 
-<div id="desc_repl_stat" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,15 +41,15 @@ for interactive use (via ISQL tool).
 
 </div>
 
-<div id="examples_repl_stat" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_stat_1" class="example">
+<div>
 
 **Example 24.331. Retrieving of the replication status**
 
-<div class="example-contents">
+<div>
 
 This is to show status of the subscriptions. The server shows the name
 of publisher, account is a name of the publication account, level is a
@@ -75,7 +75,7 @@ demo-rep1         demo_tb           3       IN SYNC
 
 </div>
 
-<div id="seealso_repl_stat" class="refsect1">
+<div>
 
 ## See Also
 

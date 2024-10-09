@@ -1,6 +1,6 @@
-<div id="rdfgraphsecurity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfgraphsecuritygroups" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ In some cases, the data-set of a SPARQL query is not known at compile
 time. It is possible to pass IRIs of source graphs via parameters, but
 the method is not perfect as:
 
-<div class="itemizedlist">
+<div>
 
 - not all protocols are suitable for parameter passing, and no one is an
   interoperable standard

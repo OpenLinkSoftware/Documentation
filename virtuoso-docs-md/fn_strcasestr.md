@@ -1,10 +1,10 @@
-<div id="fn_strcasestr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ strcasestr — case-insensitive substring search
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_strcasestr" class="funcsynopsis">
+<div>
 
 |                         |                       |
 |-------------------------|-----------------------|
 | ` `**`strcasestr`**` (` | in `str ` string ,    |
 |                         | in `sub ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ strcasestr — case-insensitive substring search
 
 </div>
 
-<div id="desc_strcasestr" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ NULL if not found.
 
 </div>
 
-<div id="params_strcasestr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112177" class="refsect2">
+<div>
 
 ### str
 
@@ -55,7 +55,7 @@ String to search from.
 
 </div>
 
-<div id="id112180" class="refsect2">
+<div>
 
 ### sub
 
@@ -65,7 +65,7 @@ Substring to search for.
 
 </div>
 
-<div id="ret_strcasestr" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ occurrence of *`sub`* .
 
 </div>
 
-<div id="examples_strcasestr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_strstr" class="example">
+<div>
 
 **Example 24.405. Sample example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 strstr('AbracadabrA','abrA')
@@ -99,7 +99,7 @@ strcasestr('AbracadabrA','abrA')
 
 </div>
 
-<div id="seealso_strcasestr" class="refsect1">
+<div>
 
 ## See Also
 

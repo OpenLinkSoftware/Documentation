@@ -1,6 +1,6 @@
-<div id="rdfperfrdfscheme" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,7 +30,7 @@ the corresponding documentation.
 
 The index scheme consists of the following indices:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*PSOG*</span>
 

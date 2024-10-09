@@ -1,6 +1,6 @@
-<div id="perftips" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="remember" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,7 +30,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Reference parameters (inout and out) are faster then value parameters
   (in).

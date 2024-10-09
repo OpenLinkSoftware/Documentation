@@ -1,6 +1,6 @@
-<div id="rdfperfgeneraldbpedia" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ Cluster v6, all on the same 4 core 2GHz Xeon with 8G RAM. All databases
 were striped on 6 disks. The Cluster configuration was with 4 processes
 in the same box. We ran the queries in two variants:
 
-<div class="itemizedlist">
+<div>
 
 - With graph specified in the SPARQL FROM clause, using the default
   indices.
@@ -40,11 +40,11 @@ v6 it can, because v6 is more space efficient. So we added the index:
 create bitmap index rdf_quad_pogs on rdf_quad (p, o, g, s);
 ```
 
-<div id="id58482" class="table">
+<div>
 
 **Table 16.20. **
 
-<div class="table-contents">
+<div>
 
 |      | Virtuoso v5 with gspo, ogps, pogs | Virtuoso Cluster v6 with gspo, ogps | Virtuoso Cluster v6 with gspo, ogps, pogs |
 |------|-----------------------------------|-------------------------------------|-------------------------------------------|
@@ -88,11 +88,11 @@ about 60% of the space of a non-bitmap index for data such as DBpedia.
 If you intend to do completely arbitrary RDF queries in Virtuoso, then
 chances are you are best off with the above index scheme.
 
-<div id="id58507" class="table">
+<div>
 
 **Table 16.21. **
 
-<div class="table-contents">
+<div>
 
 |      | Virtuoso v5 with gspo, ogps, pogs | Virtuoso Cluster v6 with gspo, ogps, pogs |
 |------|-----------------------------------|-------------------------------------------|

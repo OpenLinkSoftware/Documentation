@@ -1,10 +1,10 @@
-<div id="fn_xml_doc_output_option" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xml_doc_output_option
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_doc_output_option" class="funcsynopsis">
+<div>
 
 |                                           |                                 |
 |-------------------------------------------|---------------------------------|
@@ -24,7 +24,7 @@ xml_doc_output_option
 |                                           | in `option_name ` varchar ,     |
 |                                           | in `option_value ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ xml_doc_output_option
 
 </div>
 
-<div id="desc_xml_doc_output_option" class="refsect1">
+<div>
 
 ## Description
 
@@ -68,11 +68,11 @@ serialization if "doctype-system" is not set.
 
 </div>
 
-<div id="params_xml_doc_output_option" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122994" class="refsect2">
+<div>
 
 ### xml_entity
 
@@ -80,7 +80,7 @@ An XML entity such as that returned by the xslt() function.
 
 </div>
 
-<div id="id122997" class="refsect2">
+<div>
 
 ### option_name
 
@@ -88,7 +88,7 @@ A name of output option to in question.
 
 </div>
 
-<div id="id123000" class="refsect2">
+<div>
 
 ### option_value
 
@@ -101,7 +101,7 @@ XSLT 1.0.
 
 </div>
 
-<div id="ret_xml_doc_output_option" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -110,7 +110,7 @@ the option is not set.
 
 </div>
 
-<div id="errors_xml_doc_output_option" class="refsect1">
+<div>
 
 ## Errors
 
@@ -122,15 +122,15 @@ This function can generate the following errors:
 
 </div>
 
-<div id="examples_xml_doc_output_option" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_doc_output_option" class="example">
+<div>
 
 **Example 24.512. Assessing the SYSTEM DTD location**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create function test_output_option (
@@ -176,7 +176,7 @@ The result:
 
 </div>
 
-<div id="seealso_xml_doc_output_option" class="refsect1">
+<div>
 
 ## See Also
 

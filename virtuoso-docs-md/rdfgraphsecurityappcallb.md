@@ -1,6 +1,6 @@
-<div id="rdfgraphsecurityappcallb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 In some cases, different applications should provide different security
 for different users. Two SPARQL pragmas are provided for this purpose:
 
-<div class="itemizedlist">
+<div>
 
 - Pragma sql:gs-app-callback is to specify Virtuoso/PL callback function
   that return permission bits for given graph.
@@ -34,9 +34,9 @@ The callback is called only if the application has access to the graph
 in question so it may restrict the caller's account but not grant more
 permissions.
 
-<div id="rdfgraphsecurityappcallbex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

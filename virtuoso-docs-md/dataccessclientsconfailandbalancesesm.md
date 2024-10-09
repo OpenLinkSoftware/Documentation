@@ -1,6 +1,6 @@
-<div id="dataccessclientsconfailandbalancesesm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="dataccessclientsconfailandbalancesesmf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ VirtuosoRepository("server1:port1,server2:port2,server3", "uid", "pwd");
 
 </div>
 
-<div id="dataccessclientsconfailandbalancesesmr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,9 +59,9 @@ VirtuosoRepository("server1:port1,server2:port2,server3", "uid", "pwd");
 
 </div>
 
-<div id="dataccessclientsconfailandbalancesesms" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

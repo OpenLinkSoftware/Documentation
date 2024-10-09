@@ -1,6 +1,6 @@
-<div id="cxmlurlptrn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 The following options are supported for CXML link behavior in the SPARQL
 URL Pattern:
 
-<div class="orderedlist">
+<div>
 
 1.  Local faceted navigation links:
 

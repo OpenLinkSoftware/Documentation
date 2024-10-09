@@ -1,10 +1,10 @@
-<div id="xpf_tuple" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ the sequence of the selected items
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_tuple" class="funcsynopsis">
+<div>
 
 |                            |                       |
 |----------------------------|-----------------------|
@@ -26,7 +26,7 @@ the sequence of the selected items
 |                            | `... ` ,              |
 |                            | `seqN ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ the sequence of the selected items
 
 </div>
 
-<div id="xpf_desc_tuple" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ standard functions.
 
 </div>
 
-<div id="xpf_params_tuple" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129654" class="refsect2">
+<div>
 
 ### SeqI
 
@@ -68,7 +68,7 @@ the resulting sequence
 
 </div>
 
-<div id="xpf_ret_tuple" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -76,15 +76,15 @@ Sequence
 
 </div>
 
-<div id="xpf_examples_tuple" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_tuple" class="example">
+<div>
 
 **Example 24.635. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 tuple(/title, /abstract, /intro)
@@ -98,7 +98,7 @@ tuple(/title, /abstract, /intro)
 
 </div>
 
-<div id="xpf_seealso_tuple" class="refsect1">
+<div>
 
 ## See Also
 

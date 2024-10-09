@@ -1,10 +1,10 @@
-<div id="fn_xmltype.getschemaurl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ schema based instances, NULL for non-schema based.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.getschemaurl" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | ` `**`XMLType.getSchemaURL`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ schema based instances, NULL for non-schema based.
 
 </div>
 
-<div id="desc_xmltype.getschemaurl" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ non-schema based types.
 
 </div>
 
-<div id="ret_xmltype.getschemaurl" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -51,15 +51,15 @@ The function returns string.
 
 </div>
 
-<div id="examples_xmltype.getschemaurl" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.getschemaurl" class="example">
+<div>
 
 **Example 24.553. Simple test**
 
-<div class="example-contents">
+<div>
 
 The call of XMLType constructor creates an schema-based instance and
 `getSchemaURL()` returns the specified URL
@@ -84,7 +84,7 @@ file://xmlschema/test0001/clean.xsd
 
 </div>
 
-<div id="seealso_xmltype.getschemaurl" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_hs_resolve" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ HS_Resolve — Returns URL that represents the given DOI
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_hs_resolve" class="funcsynopsis">
+<div>
 
 |                               |                           |
 |-------------------------------|---------------------------|
 | `string `**`HS_Resolve`**` (` | in `doi_val ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ HS_Resolve — Returns URL that represents the given DOI
 
 </div>
 
-<div id="desc_hs_resolve" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ Load6    = plain,hslookup
 
 </div>
 
-<div id="params_hs_resolve" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id114098" class="refsect2">
+<div>
 
 ### doi_val
 
@@ -66,7 +66,7 @@ DOI value
 
 </div>
 
-<div id="ret_hs_resolve" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -74,15 +74,15 @@ A string of URL that represents the given DOI.
 
 </div>
 
-<div id="examples_hs_resolve" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_hs_resolve" class="example">
+<div>
 
 **Example 24.424. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select HS_Resolve('10.1038/35057062');

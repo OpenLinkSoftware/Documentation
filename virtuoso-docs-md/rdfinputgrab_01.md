@@ -1,6 +1,6 @@
-<div id="rdfinputgrab_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -111,7 +111,7 @@ http://example.com/dataspace/person/rickbruner#this     Rick       dangrig
 
 The IRI dereferencing is controlled by the following pragmas:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*input:grab-var*</span>
 

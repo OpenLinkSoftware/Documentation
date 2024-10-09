@@ -1,10 +1,10 @@
-<div id="fn_rdf_graph_group_ins" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ DB.DBA.RDF_GRAPH_GROUP_INS — Inserts graph into group.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_graph_group_ins" class="funcsynopsis">
+<div>
 
 |                                         |                              |
 |-----------------------------------------|------------------------------|
 | ` `**`DB.DBA.RDF_GRAPH_GROUP_INS`**` (` | in `group_name ` varchar ,   |
 |                                         | in `graph_uri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ DB.DBA.RDF_GRAPH_GROUP_INS — Inserts graph into group.
 
 </div>
 
-<div id="desc_rdf_graph_group_ins" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Inserts graph into a given group.
 
 </div>
 
-<div id="params_rdf_graph_group_ins" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101578" class="refsect2">
+<div>
 
 ### group_name
 
@@ -53,7 +53,7 @@ The name of the graph group
 
 </div>
 
-<div id="id101581" class="refsect2">
+<div>
 
 ### graph_uri
 
@@ -63,7 +63,7 @@ graph uri IRI string or IRI_ID
 
 </div>
 
-<div id="ret_rdf_graph_group_ins" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,15 +71,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_rdf_graph_group_ins" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_graph_group_ins" class="example">
+<div>
 
 **Example 24.275. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>DB.DBA.RDF_GRAPH_GROUP_CREATE ('TestGroup',1);
@@ -98,7 +98,7 @@ Done. -- 50 msec.
 
 </div>
 
-<div id="seealso_rdf_graph_group_ins" class="refsect1">
+<div>
 
 ## See Also
 

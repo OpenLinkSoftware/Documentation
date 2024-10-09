@@ -1,10 +1,10 @@
-<div id="fn_sys_stat_histogram" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ optimization
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sys_stat_histogram" class="funcsynopsis">
+<div>
 
 |                                 |                             |
 |---------------------------------|-----------------------------|
@@ -26,7 +26,7 @@ optimization
 |                                 | in `n_buckets ` integer ,   |
 |                                 | in `prec ` integer `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ optimization
 
 </div>
 
-<div id="desc_41" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ differently in the light of the new data.
 
 </div>
 
-<div id="params_12" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113033" class="refsect2">
+<div>
 
 ### table_name
 
@@ -69,7 +69,7 @@ SYS_KEYS.
 
 </div>
 
-<div id="id113036" class="refsect2">
+<div>
 
 ### column_name
 
@@ -77,7 +77,7 @@ The full name of the column exactly as in the COLUMN column in SYS_COLS.
 
 </div>
 
-<div id="id113039" class="refsect2">
+<div>
 
 ### n_buckets
 
@@ -86,7 +86,7 @@ estimation of column predicates costs is more precise.
 
 </div>
 
-<div id="id113042" class="refsect2">
+<div>
 
 ### prec
 
@@ -96,7 +96,7 @@ The density of the rows examined. Defaults to 1 (all the rows)
 
 </div>
 
-<div id="seealso_20" class="refsect1">
+<div>
 
 ## See Also
 

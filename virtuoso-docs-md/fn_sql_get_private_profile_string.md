@@ -1,10 +1,10 @@
-<div id="fn_sql_get_private_profile_string" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ sql_get_private_profile_string — Gets the DSN's attributes list
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_get_private_profile_string" class="funcsynopsis">
+<div>
 
 |                                                   |                         |
 |---------------------------------------------------|-------------------------|
 | `vector `**`sql_get_private_profile_string`**` (` | in `dsn ` varchar ,     |
 |                                                   | in `type ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ sql_get_private_profile_string — Gets the DSN's attributes list
 
 </div>
 
-<div id="desc_get_private_profile_string" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ from the ODBC Installer API.
 
 </div>
 
-<div id="params_sql_get_private_profile_string" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id111739" class="refsect2">
+<div>
 
 ### dsn
 
@@ -60,7 +60,7 @@ is the first argument passed to SQLGetPrivateProfileString.
 
 </div>
 
-<div id="id111742" class="refsect2">
+<div>
 
 ### type
 
@@ -70,7 +70,7 @@ denotes the DSN type.
 
 </div>
 
-<div id="ret_sql_get_private_profile_string" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,7 +78,7 @@ Returns an array of 2-element arrays representing the name/value pairs.
 
 </div>
 
-<div id="seealso_sql_get_private_profile_string" class="refsect1">
+<div>
 
 ## See Also
 

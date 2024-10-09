@@ -1,6 +1,6 @@
-<div id="loadsqldjdbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_dav_api_change" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ manipulating an existing DAV collection or resource
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dav_copy" class="funcsynopsis">
+<div>
 
 |                              |                             |
 |------------------------------|-----------------------------|
@@ -30,7 +30,7 @@ manipulating an existing DAV collection or resource
 |                              | in `auth_uname ` varchar ,  |
 |                              | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ manipulating an existing DAV collection or resource
 
 </div>
 
-<div id="fsyn_dav_move" class="funcsynopsis">
+<div>
 
 |                              |                             |
 |------------------------------|-----------------------------|
@@ -48,7 +48,7 @@ manipulating an existing DAV collection or resource
 |                              | in `auth_uname ` varchar ,  |
 |                              | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -56,7 +56,7 @@ manipulating an existing DAV collection or resource
 
 </div>
 
-<div id="fsyn_dav_prop_set" class="funcsynopsis">
+<div>
 
 |                                  |                             |
 |----------------------------------|-----------------------------|
@@ -66,7 +66,7 @@ manipulating an existing DAV collection or resource
 |                                  | in `auth_uname ` varchar ,  |
 |                                  | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -74,7 +74,7 @@ manipulating an existing DAV collection or resource
 
 </div>
 
-<div id="fsyn_dav_prop_remove" class="funcsynopsis">
+<div>
 
 |                                     |                             |
 |-------------------------------------|-----------------------------|
@@ -84,7 +84,7 @@ manipulating an existing DAV collection or resource
 |                                     | in `auth_uname ` varchar ,  |
 |                                     | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -94,7 +94,7 @@ manipulating an existing DAV collection or resource
 
 </div>
 
-<div id="desc_dav_api_change" class="refsect1">
+<div>
 
 ## Description
 
@@ -126,11 +126,11 @@ XML responses. *`propname `* .
 
 </div>
 
-<div id="params_dav_api_change" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84682" class="refsect2">
+<div>
 
 ### path
 
@@ -138,7 +138,7 @@ Directory and name of source to be operated on.
 
 </div>
 
-<div id="id84685" class="refsect2">
+<div>
 
 ### destination
 
@@ -146,7 +146,7 @@ Directory and name of destination.
 
 </div>
 
-<div id="id84688" class="refsect2">
+<div>
 
 ### overwrite
 
@@ -154,7 +154,7 @@ If non zero then overwrite is enabled. Default is 0.
 
 </div>
 
-<div id="id84691" class="refsect2">
+<div>
 
 ### permissions
 
@@ -163,7 +163,7 @@ Access permission of Dav collection or resource. Defaults to
 
 </div>
 
-<div id="id84694" class="refsect2">
+<div>
 
 ### propname
 
@@ -171,7 +171,7 @@ Property name.
 
 </div>
 
-<div id="id84697" class="refsect2">
+<div>
 
 ### propvalue
 
@@ -179,7 +179,7 @@ Property value.
 
 </div>
 
-<div id="id84700" class="refsect2">
+<div>
 
 ### silent
 
@@ -188,7 +188,7 @@ so errors are returned.
 
 </div>
 
-<div id="id84703" class="refsect2">
+<div>
 
 ### uname
 
@@ -196,7 +196,7 @@ User identifier. Default is 'dav'.
 
 </div>
 
-<div id="id84706" class="refsect2">
+<div>
 
 ### gname
 
@@ -204,7 +204,7 @@ Group identifier. Default is 'dav'.
 
 </div>
 
-<div id="id84709" class="refsect2">
+<div>
 
 ### auth_uname
 
@@ -213,7 +213,7 @@ null.
 
 </div>
 
-<div id="id84712" class="refsect2">
+<div>
 
 ### auth_pwd
 
@@ -223,7 +223,7 @@ Password of Administrator. Default is null.
 
 </div>
 
-<div id="sysprops_dav_api_change" class="refsect1">
+<div>
 
 ## System Properties
 
@@ -237,12 +237,12 @@ In the table below, 'Read/Write' access type means that the application
 can try to set the property. This does not mean that the property can be
 successfully changed for any particular resource or collection.
 
-<div id="id84720" class="table">
+<div>
 
-**Table 24.19. System properties supported by DAV_PROP_GET and
+**Table 24.18. System properties supported by DAV_PROP_GET and
 DAV_PROP_SET functions**
 
-<div class="table-contents">
+<div>
 
 | propname          | Access Type | Data Type      | Description                                                                         |
 |-------------------|-------------|----------------|-------------------------------------------------------------------------------------|
@@ -278,15 +278,15 @@ Only DAV administrator can change ':virtdet' property.
 
 </div>
 
-<div id="errors_dav_api_change" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id84795" class="table">
+<div>
 
-**Table 24.20. Errors signalled by DAV\_\* functions**
+**Table 24.19. Errors signalled by DAV\_\* functions**
 
-<div class="table-contents">
+<div>
 
 | Error Code                           | Description                                                                                                              |
 |--------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
@@ -319,15 +319,15 @@ Only DAV administrator can change ':virtdet' property.
 
 </div>
 
-<div id="examples_dav_api_change" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dav_api_change_1" class="example">
+<div>
 
 **Example 24.77. Copy and move operations**
 
-<div class="example-contents">
+<div>
 
 Renaming of the resource and copy the folder. After executing the
 commands in the http://\[host:port\]/DAV/user/B/ we will show the
@@ -350,7 +350,7 @@ SQL> DB.DBA.DAV_COPY('/DAV/user/A/', '/DAV/user/B/', 1, '110110000R','dav','dav'
 
 </div>
 
-<div id="seealso_dav_api_change" class="refsect1">
+<div>
 
 ## See Also
 

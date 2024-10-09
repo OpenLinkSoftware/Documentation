@@ -1,10 +1,10 @@
-<div id="me_uddi_delete_binding" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ to be deleted.
 
 </div>
 
-<div id="syntax_uddi_delete_binding_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -29,11 +29,11 @@ to be deleted.
 
 </div>
 
-<div id="params_uddi_delete_binding_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id114428" class="refsect2">
+<div>
 
 ### authInfo
 
@@ -42,7 +42,7 @@ token obtained using the *`get_authToken `* call.
 
 </div>
 
-<div id="id114432" class="refsect2">
+<div>
 
 ### bindingKey
 
@@ -53,7 +53,7 @@ known *`bindingTemplate `* data.
 
 </div>
 
-<div id="ret_uddi_delete_binding_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,7 +62,7 @@ single success indicator.
 
 </div>
 
-<div id="errors_uddi_delete_binding_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -70,11 +70,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id114445" class="table">
+<div>
 
-**Table 24.86. Errors signalled by uddi_delete_binding**
+**Table 24.85. Errors signalled by uddi_delete_binding**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                          | Description                                                                                                                                                                                                                     |
 |-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

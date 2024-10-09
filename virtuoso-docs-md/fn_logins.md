@@ -1,6 +1,6 @@
-<div id="fn_logins" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ a client is authenticated against the Virtuoso Server. Three parameters
 are available for audit purposes or any other pre-processing purpose
 totally user definable.
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*user_name:*</span>
 
@@ -47,11 +47,11 @@ login by responding to 3 possible return values:
 | 0 - reject the login                                                              |
 | 1 - allow the login (the user returned should be a valid Virtuoso local user name |
 
-<div id="ex_dbev_login" class="example">
+<div>
 
 **Example 12.4. Sample Database Login Hook**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure "DB"."DBA"."DBEV_LOGIN" (

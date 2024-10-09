@@ -1,10 +1,10 @@
-<div id="fn_repeat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ a given number of times
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repeat" class="funcsynopsis">
+<div>
 
 |                     |                          |
 |---------------------|--------------------------|
 | ` `**`repeat`**` (` | in `str ` string ,       |
 |                     | in `count ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ a given number of times
 
 </div>
 
-<div id="desc_12" class="refsect1">
+<div>
 
 ## Description
 

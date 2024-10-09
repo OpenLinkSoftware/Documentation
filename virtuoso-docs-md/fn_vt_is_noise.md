@@ -1,10 +1,10 @@
-<div id="fn_vt_is_noise" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ vt_is_noise — determines whether input is a noise word
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vt_is_noise_01" class="funcsynopsis">
+<div>
 
 |                          |                             |
 |--------------------------|-----------------------------|
@@ -24,7 +24,7 @@ vt_is_noise — determines whether input is a noise word
 |                          | in `encoding ` varchar ,    |
 |                          | in `language ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ vt_is_noise — determines whether input is a noise word
 
 </div>
 
-<div id="desc_vt_is_noise_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ Determines whether input is a noise word.
 
 </div>
 
-<div id="params_vt_is_noise_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119172" class="refsect2">
+<div>
 
 ### word
 
@@ -54,7 +54,7 @@ Narrow string of the word to be checked
 
 </div>
 
-<div id="id119175" class="refsect2">
+<div>
 
 ### encoding
 
@@ -62,7 +62,7 @@ valid encoding string
 
 </div>
 
-<div id="id119178" class="refsect2">
+<div>
 
 ### language
 
@@ -72,7 +72,7 @@ valid language string
 
 </div>
 
-<div id="ret_vt_is_noise_01" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -81,15 +81,15 @@ language is considered a noise word, or 0 if not.
 
 </div>
 
-<div id="examples_vt_is_noise_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vt_is_noise_01" class="example">
+<div>
 
 **Example 24.449. Determining if a word is a Noise Word**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select vt_is_noise ('a', 'UTF-8', 'X-ANY');

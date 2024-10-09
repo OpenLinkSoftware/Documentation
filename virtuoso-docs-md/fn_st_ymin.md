@@ -1,10 +1,10 @@
-<div id="fn_st_ymin" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ST_YMin — returns minimum y boundaries of a bounding box around a shape.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_ymin" class="funcsynopsis">
+<div>
 
 |                      |                      |
 |----------------------|----------------------|
 | ` `**`ST_YMin`**` (` | in `shape ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ST_YMin — returns minimum y boundaries of a bounding box around a shape.
 
 </div>
 
-<div id="desc_st_ymin" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ a half of full circle.
 
 </div>
 
-<div id="params_st_ymin" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id132420" class="refsect2">
+<div>
 
 ### shape
 
@@ -56,7 +56,7 @@ A bounding box.
 
 </div>
 
-<div id="ret_st_ymin" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Returns double precision.
 
 </div>
 
-<div id="examples_st_ymin" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_ymin" class="example">
+<div>
 
 **Example 24.679. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 DB.DBA.TTLP ('
@@ -115,7 +115,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_st_ymin" class="refsect1">
+<div>
 
 ## See Also
 

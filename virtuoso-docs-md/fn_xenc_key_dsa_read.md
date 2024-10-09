@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_dsa_read" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xenc_key_DSA_read — Importing a DSA key into user's repository
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_dsa_read" class="funcsynopsis">
+<div>
 
 |                                |                             |
 |--------------------------------|-----------------------------|
 | ` `**`xenc_key_DSA_read`**` (` | in `name ` varchar ,        |
 |                                | in `key_data ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xenc_key_DSA_read — Importing a DSA key into user's repository
 
 </div>
 
-<div id="desc_xenc_key_dsa_read" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ Note that key will not be persisted. It is loaded in the memory only.
 
 </div>
 
-<div id="params_xenc_key_dsa_read" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120268" class="refsect2">
+<div>
 
 ### name
 
@@ -56,7 +56,7 @@ Name of the key to register
 
 </div>
 
-<div id="id120271" class="refsect2">
+<div>
 
 ### key_data
 
@@ -66,7 +66,7 @@ The base64 encoded binary data with DSA key material
 
 </div>
 
-<div id="ret_xenc_key_dsa_read" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ No return value.
 
 </div>
 
-<div id="examples_xenc_key_dsa_read" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_key_dsa_read" class="example">
+<div>
 
 **Example 24.467. Loading a shared secret**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 xenc_key_DSA_read ('myDSAkey', 'MII..skipped..Klmu+tlaA==');
@@ -96,7 +96,7 @@ xenc_key_DSA_read ('myDSAkey', 'MII..skipped..Klmu+tlaA==');
 
 </div>
 
-<div id="seealso_xenc_key_dsa_read" class="refsect1">
+<div>
 
 ## See Also
 

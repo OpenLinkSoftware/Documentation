@@ -1,6 +1,6 @@
-<div id="rdfgraphreplication" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ Replication Feature.
 
 Terms used in this section:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Host Virtuoso Instance*</span>
 
@@ -34,7 +34,7 @@ Terms used in this section:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -65,7 +65,7 @@ class="function">DB.DBA.RDF_RDF_REPL_GRAPH_DEL()</code></a></p></td>
 
 The basic outline:
 
-<div class="itemizedlist">
+<div>
 
 - First, use the Virtuoso Conductor on a Host Virtuoso Instance to
   publish a named graph.
@@ -78,9 +78,9 @@ The basic outline:
 
 </div>
 
-<div id="rdfgraphreplicationscenr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -94,15 +94,15 @@ The basic outline:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="topo_scenario" class="figure">
+<div>
 
 **Figure 16.201. **
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![](images/ui/topo-scenario.png)
 
@@ -116,9 +116,9 @@ The basic outline:
 
 </div>
 
-<div id="rdfgraphreplicationscenrint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -152,9 +152,9 @@ http://test.example.com as the web service we are trying to setup.
 
 </div>
 
-<div id="rdfgraphreplicationscenrsup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -168,9 +168,9 @@ http://test.example.com as the web service we are trying to setup.
 
 </div>
 
-<div id="rdfgraphreplicationscenrsupinstv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -187,7 +187,7 @@ http://test.example.com as the web service we are trying to setup.
 All machines in this setup should be installed with similar installation
 paths like:
 
-<div class="itemizedlist">
+<div>
 
 - /opt/virtuoso
 
@@ -206,7 +206,7 @@ for the main database files as well.
 
 Here are the quick installation steps:
 
-<div class="orderedlist">
+<div>
 
 1.  Login as root.
 
@@ -245,9 +245,9 @@ Address = MASTER_IP:1111
 
 </div>
 
-<div id="rdfgraphreplicationscenrsupinstm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -336,12 +336,12 @@ backup_online ('bkup-#', 1000000, 0, vector ('backup'));
 The following files can now be backed up using rsync or similar tool to
 another machine:
 
-<div id="id59498" class="table">
+<div>
 
 **Table 16.22. Files that can be backed up using rsync or similar tool
 to another machine**
 
-<div class="table-contents">
+<div>
 
 | Files                          | Description                                                                                                                   |
 |--------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -363,9 +363,9 @@ are taken which we will explain later on.
 
 </div>
 
-<div id="rdfgraphreplicationscenrsupinstp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -468,12 +468,12 @@ backup_online ('bkup-#', 1000000, 0, vector ('backup'));
 The following files can now be backed up using rsync or similar tool to
 another machine:
 
-<div id="id59531" class="table">
+<div>
 
 **Table 16.23. Files that can be backed up using rsync or similar tool
 to another machine**
 
-<div class="table-contents">
+<div>
 
 | Files                          | Description                                                                                                                   |
 |--------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -495,9 +495,9 @@ are taken which we will explain later on.
 
 </div>
 
-<div id="rdfgraphreplicationscenrsupinstpf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -569,9 +569,9 @@ installation as a blueprint to copy to another FARM-x machine.
 
 </div>
 
-<div id="rdfgraphreplicationscenrsupinstpfs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -599,9 +599,9 @@ ServerName = FARM-2
 
 </div>
 
-<div id="rdfgraphreplicationscenrsupinstpfsi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -646,9 +646,9 @@ repl_sync_all();
 
 </div>
 
-<div id="rdfgraphreplicationscenrsupinstpfsc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

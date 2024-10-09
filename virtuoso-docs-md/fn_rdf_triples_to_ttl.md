@@ -1,10 +1,10 @@
-<div id="fn_rdf_triples_to_ttl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ in TURTLE syntax.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_triples_to_ttl" class="funcsynopsis">
+<div>
 
 |                                        |                        |
 |----------------------------------------|------------------------|
 | ` `**`DB.DBA.RDF_TRIPLES_TO_TTL`**` (` | inout `triples ` any , |
 |                                        | inout `ses ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ in TURTLE syntax.
 
 </div>
 
-<div id="desc_rdf_triples_to_ttl" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ optimization.
 
 </div>
 
-<div id="params_rdf_triples_to_ttl" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101305" class="refsect2">
+<div>
 
 ### triples
 
@@ -57,7 +57,7 @@ vector of triples in 'long valmode'.
 
 </div>
 
-<div id="id101308" class="refsect2">
+<div>
 
 ### ses
 
@@ -67,15 +67,15 @@ an output stream in server default encoding
 
 </div>
 
-<div id="examples_rdf_triples_to_ttl" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_triples_to_ttl" class="example">
+<div>
 
 **Example 24.271. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>create procedure RDFXML2N3 (in _rdfxml varchar)
@@ -146,7 +146,7 @@ _:b1000010001 <http://example.org/stuff/1.0/homePage> <http://purl.org/net/dajob
 
 </div>
 
-<div id="seealso_rdf_triples_to_ttl" class="refsect1">
+<div>
 
 ## See Also
 

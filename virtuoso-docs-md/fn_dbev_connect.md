@@ -1,6 +1,6 @@
-<div id="fn_dbev_connect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -29,11 +29,11 @@ defined in the function. SQL states signalled inside this hook will be
 sent to the client and will cause the connection to be closed server
 side.
 
-<div id="id36453" class="example">
+<div>
 
 **Example 12.2. Simple Connection Logging**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create table security_log (
@@ -74,11 +74,11 @@ If defined this function is executed just before Virtuoso makes
 connections to remote data sources. It can change all of it's inout
 parameters depending on it's logic.
 
-<div id="ex_dbev_dsn_login" class="example">
+<div>
 
 **Example 12.3. Remote Connection Hook**
 
-<div class="example-contents">
+<div>
 
 This examples contains a sample DBEV_DSN_LOGIN hook that will be called
 just before the Virtual Database connection to a datasource is made. The

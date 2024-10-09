@@ -1,10 +1,10 @@
-<div id="fn_upper" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ upper — returns upper case version of string argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_upper" class="funcsynopsis">
+<div>
 
 |                    |                    |
 |--------------------|--------------------|
 | ` `**`upper`**` (` | `str ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ upper — returns upper case version of string argument
 
 </div>
 
-<div id="desc_48" class="refsect1">
+<div>
 
 ## Description
 

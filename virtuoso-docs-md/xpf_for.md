@@ -1,10 +1,10 @@
-<div id="xpf_for" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ for — Repeats some calculation for every item of a given sequence
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_for" class="funcsynopsis">
+<div>
 
 |                     |                          |
 |---------------------|--------------------------|
@@ -24,7 +24,7 @@ for — Repeats some calculation for every item of a given sequence
 |                     | `source_set ` sequence , |
 |                     | `mapping_expn ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ for — Repeats some calculation for every item of a given sequence
 
 </div>
 
-<div id="xpf_desc_for" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ functions.
 
 </div>
 
-<div id="xpf_params_for" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127378" class="refsect2">
+<div>
 
 ### varname
 
@@ -70,7 +70,7 @@ Name of temporary variable
 
 </div>
 
-<div id="id127381" class="refsect2">
+<div>
 
 ### source_set
 
@@ -78,7 +78,7 @@ Sequence of items; every item will cause one call of *`mapping_expn `*
 
 </div>
 
-<div id="id127385" class="refsect2">
+<div>
 
 ### mapping_expn
 
@@ -88,7 +88,7 @@ An expression which should be calculated for items of *`source_set `* .
 
 </div>
 
-<div id="xpf_ret_for" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -96,15 +96,15 @@ Sequence
 
 </div>
 
-<div id="xpf_examples_for" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_for" class="example">
+<div>
 
 **Example 24.588. **
 
-<div class="example-contents">
+<div>
 
 These two expressions are equivalent, but first may be used in any XPATH
 while second is written in XQUERY syntax
@@ -122,7 +122,7 @@ FOR $itm IN /bid/item RETURN 0.20 * $bid_item/price
 
 </div>
 
-<div id="xpf_seealso_for" class="refsect1">
+<div>
 
 ## See Also
 

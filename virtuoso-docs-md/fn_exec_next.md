@@ -1,10 +1,10 @@
-<div id="fn_exec_next" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ exec_next — Get next result from a result set
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exec_next" class="funcsynopsis">
+<div>
 
 |                                       |                              |
 |---------------------------------------|------------------------------|
@@ -25,7 +25,7 @@ exec_next — Get next result from a result set
 |                                       | out `sql_error ` varchar ,   |
 |                                       | out `row_array ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ exec_next — Get next result from a result set
 
 </div>
 
-<div id="desc_exec_next" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ class="function">exec </code></a> .
 
 </div>
 
-<div id="params_rnext" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87955" class="refsect2">
+<div>
 
 ### cursor_handle
 
@@ -65,7 +65,7 @@ exec().
 
 </div>
 
-<div id="id87959" class="refsect2">
+<div>
 
 ### row_array
 
@@ -74,7 +74,7 @@ columns.
 
 </div>
 
-<div id="id87963" class="refsect2">
+<div>
 
 ### sql_state
 
@@ -83,7 +83,7 @@ state.
 
 </div>
 
-<div id="id87967" class="refsect2">
+<div>
 
 ### sql_error
 
@@ -94,7 +94,7 @@ error message.
 
 </div>
 
-<div id="ret_exec_next" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -102,7 +102,7 @@ All data is returned in output parameters.
 
 </div>
 
-<div id="seealso_exec_next" class="refsect1">
+<div>
 
 ## See Also
 

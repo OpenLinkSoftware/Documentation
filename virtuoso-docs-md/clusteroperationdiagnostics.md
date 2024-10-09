@@ -1,6 +1,6 @@
-<div id="clusteroperationdiagnostics" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,9 +43,9 @@ The cl_reset function disconnects any connections to other cluster hosts
 from this host. This makes sure that a fresh connection will be started
 for the status command.
 
-<div id="clusteroperationdiagnosticsnm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -94,7 +94,7 @@ all other points.
 
 The parameters have the following meaning:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*n_threads*</span>
 
@@ -122,9 +122,9 @@ The parameters have the following meaning:
 
 </div>
 
-<div id="clusteroperationdiagnosticscp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -152,9 +152,9 @@ switching, transaction contexts or other overhead.
 
 </div>
 
-<div id="clusteroperationdiagnosticsci" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

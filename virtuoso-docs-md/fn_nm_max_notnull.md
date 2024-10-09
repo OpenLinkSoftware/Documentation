@@ -1,10 +1,10 @@
-<div id="fn_nm_max_notnull" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ ignoring NULLs entirely.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___max_notnull" class="funcsynopsis">
+<div>
 
 |                               |                  |
 |-------------------------------|------------------|
@@ -26,7 +26,7 @@ ignoring NULLs entirely.
 |                               | `... ` ,         |
 |                               | `argN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ ignoring NULLs entirely.
 
 </div>
 
-<div id="desc___max_notnull" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ arguments by ignoring NULLs entirely.
 
 </div>
 
-<div id="params___max_notnull" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94480" class="refsect2">
+<div>
 
 ### argI
 
@@ -59,15 +59,15 @@ Values which can be with type float, integer etc.
 
 </div>
 
-<div id="examples___max_notnull" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex___max_notnull" class="example">
+<div>
 
 **Example 24.193. **
 
-<div class="example-contents">
+<div>
 
 <span class="emphasis">*Example 1* </span>
 
@@ -141,7 +141,7 @@ No. of rows in result: 2
 
 </div>
 
-<div id="seealso___max_notnull" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_user_role_drop" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ USER_ROLE_DROP — Remove an existing role (group).
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_role_drop" class="funcsynopsis">
+<div>
 
 |                             |                         |
 |-----------------------------|-------------------------|
 | ` `**`USER_ROLE_DROP`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ USER_ROLE_DROP — Remove an existing role (group).
 
 </div>
 
-<div id="desc_user_role_drop" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ schema.
 
 </div>
 
-<div id="params_user_role_drop" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116731" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ A string containing the name of the group to be deleted.
 
 </div>
 
-<div id="ret_user_role_drop" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,7 +63,7 @@ None
 
 </div>
 
-<div id="seealso_user_role_drop" class="refsect1">
+<div>
 
 ## See Also
 

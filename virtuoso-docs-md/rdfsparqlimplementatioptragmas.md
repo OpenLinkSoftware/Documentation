@@ -1,6 +1,6 @@
-<div id="rdfsparqlimplementatioptragmas" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,9 +25,9 @@ SPARQL query in form:
 define QName value
 ```
 
-<div id="rdfsparqlimplementatioptragmascinp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -57,7 +57,7 @@ edit the incoming query by placing list of pragmas ended with
 place some graph names, it will get compilation error, not an access to
 the data. input:freeze disables all `input:grab-...` pragmas as well.
 
-<div class="itemizedlist">
+<div>
 
 - `input:ifp` : adds IFP keyword in OPTION (QUIETCAST, ...) clause in
   the generated SQL. The value of this define is not used ATM, an empty
@@ -122,7 +122,7 @@ All these pragmas are described in more details
 title="16.13.1. IRI Dereferencing For FROM Clauses, &quot;define get:...&quot; Pragmas">here</a>
 , but in addition there are some experimental:
 
-<div class="itemizedlist">
+<div>
 
 - `input:grab-intermediate` : extends the set of IRIs to sponge, useful
   in combination with input:grab-seealso. If present then for a given
@@ -165,9 +165,9 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 </div>
 
-<div id="rdfsparqlimplementatioptragmasccg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -181,7 +181,7 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - `sql:assert-user` : defines the user who is supposed to be the single
   "proper" use for the query. If the compiler is launched by other user,
@@ -194,7 +194,7 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 - `sql:gs-app-uid` : application-specific user id to use in callback.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                                          |
   |:--------------------------:|:-------------------------------------------------------------------------|
@@ -249,9 +249,9 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 </div>
 
-<div id="rdfsparqlimplementatioptragmasctr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -265,7 +265,7 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - `output:valmode` : tells the compiler which SQL datatypes should be
   used for output values. ODBC clients and the like known nothing about
@@ -306,9 +306,9 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 </div>
 
-<div id="rdfsparqlimplementatioptragmassfs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -322,7 +322,7 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - "RDF/XML",
 
@@ -342,9 +342,9 @@ Note that all of them can be used in option list of "FROM ... OPTION
 
 </div>
 
-<div id="rdfsparqlimplementatioptragmassdfs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -362,7 +362,7 @@ Supported formats that do not return a string session to the caller, but
 form an HTTP response instead and send it directly to the client HTTP
 connection with an appropriate HTTP header:
 
-<div class="itemizedlist">
+<div>
 
 - "HTTP+XML mime/type",
 
@@ -376,9 +376,9 @@ connection with an appropriate HTTP header:
 
 </div>
 
-<div id="rdfsparqlimplementatioptragmassspfs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -412,7 +412,7 @@ together, and if they're not in conflict then output:valmode is
 redundant: the compiler knows for sure which output:valmode-s are needed
 by various output:format-s.
 
-<div class="itemizedlist">
+<div>
 
 - `output:route` : works only for SPARUL operators and tells the SPARQL
   compiler to generate procedure names that differ from default. As a
@@ -433,9 +433,9 @@ by various output:format-s.
 
 </div>
 
-<div id="rdfsparqlimplementatioptragmasmnotes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -451,7 +451,7 @@ by various output:format-s.
 
 Values of most pragmas are strings. Exceptions are:
 
-<div class="itemizedlist">
+<div>
 
 - input:grab-depth,
 
@@ -470,7 +470,7 @@ that have integer values.
 Values of some pragmas a passed through the compiler to the run-time so
 they are seen in the generated SQL code as arguments of procedures:
 
-<div class="itemizedlist">
+<div>
 
 - get:method,
 

@@ -1,6 +1,6 @@
-<div id="vdbengineingmc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,7 +24,7 @@ one-to-many, etc.).
 <span class="emphasis">*Note:*</span> These steps will need to be
 repeated for each association.
 
-<div class="orderedlist">
+<div>
 
 1.  The first Association I will deal with is the relationship between
     cust_orders and cust_info, identified by the presence of the Scalar
@@ -32,15 +32,15 @@ repeated for each association.
     mpmprelationship, as an entry in a customer order may only be
     associated with one customer's information.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming1" class="figure">
+    <div>
 
     **Figure 8.174. Association**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Association](images/ui/ming1.png)
 
@@ -57,15 +57,15 @@ repeated for each association.
 2.  To add the Association, right click on the Customer entity then Add
     -\> Association.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming2" class="figure">
+    <div>
 
     **Figure 8.175. add the Association**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![add the Association](images/ui/ming2.png)
 
@@ -81,15 +81,15 @@ repeated for each association.
 
 3.  You will now see the Add Association dialog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming3" class="figure">
+    <div>
 
     **Figure 8.176. Add Association dialog**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Association dialog](images/ui/ming3.png)
 
@@ -118,15 +118,15 @@ repeated for each association.
 
     pane.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming4" class="figure">
+    <div>
 
     **Figure 8.177. Navigation Property name**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Navigation Property name](images/ui/ming4.png)
 
@@ -143,15 +143,15 @@ repeated for each association.
 6.  Click that line reading \<Add a Table or View\> to reveal a drop
     down list of all entities.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming5" class="figure">
+    <div>
 
     **Figure 8.178. Add a Table or View**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add a Table or View](images/ui/ming5.png)
 
@@ -169,15 +169,15 @@ repeated for each association.
     association (the entity where the foreign key exists). In this
     example, it is the cust_orders entity.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming6" class="figure">
+    <div>
 
     **Figure 8.179. Entity**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity](images/ui/ming6.png)
 
@@ -195,15 +195,15 @@ repeated for each association.
     association, requiring that you provide relevant target store data
     types in the Column column for the key fields, as depicted here.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming7" class="figure">
+    <div>
 
     **Figure 8.180. Mapping Details**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mapping Details](images/ui/ming7.png)
 
@@ -222,15 +222,15 @@ repeated for each association.
     association is made, since the error messages can be a little
     confusing.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming8" class="figure">
+    <div>
 
     **Figure 8.181. Build the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build the project](images/ui/ming8.png)
 
@@ -246,15 +246,15 @@ repeated for each association.
 
 10. This should result in the following error:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming9" class="figure">
+    <div>
 
     **Figure 8.182. Error**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Error](images/ui/ming9.png)
 
@@ -274,15 +274,15 @@ repeated for each association.
     column - the Ingres column cust_orders.cust_no - which is not
     supported.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming10" class="figure">
+    <div>
 
     **Figure 8.183. Error**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Error](images/ui/ming10.png)
 
@@ -304,15 +304,15 @@ repeated for each association.
 
     Right-click on cust_orders.cust_no then Delete.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming11" class="figure">
+    <div>
 
     **Figure 8.184. delete the mapping**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![delete the mapping](images/ui/ming11.png)
 
@@ -328,15 +328,15 @@ repeated for each association.
 
 12. The model diagram will refresh to reflect this change.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming12" class="figure">
+    <div>
 
     **Figure 8.185. Model Diagram**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Model Diagram](images/ui/ming12.png)
 
@@ -352,15 +352,15 @@ repeated for each association.
 
 13. Build the project, again, using Build -\> Build Solution.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming13" class="figure">
+    <div>
 
     **Figure 8.186. Build project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build project](images/ui/ming13.png)
 
@@ -376,15 +376,15 @@ repeated for each association.
 
 14. The project should now be fine.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ming14" class="figure">
+    <div>
 
     **Figure 8.187. Build Project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build Project](images/ui/ming14.png)
 
@@ -403,15 +403,15 @@ repeated for each association.
 You will need to repeat these steps for each association until you have
 a completed Entity Data Model.
 
-<div class="figure-float">
+<div>
 
-<div id="ming15" class="figure">
+<div>
 
 **Figure 8.188. Entity Data Model**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Entity Data Model](images/ui/ming15.png)
 

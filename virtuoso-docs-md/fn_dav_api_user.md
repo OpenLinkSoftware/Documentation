@@ -1,10 +1,10 @@
-<div id="fn_dav_api_user" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ or resource
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dav_add_user" class="funcsynopsis">
+<div>
 
 |                                  |                             |
 |----------------------------------|-----------------------------|
@@ -34,7 +34,7 @@ or resource
 |                                  | in `auth_uid ` varchar ,    |
 |                                  | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -42,7 +42,7 @@ or resource
 
 </div>
 
-<div id="fsyn_dav_delete_user" class="funcsynopsis">
+<div>
 
 |                                     |                             |
 |-------------------------------------|-----------------------------|
@@ -50,7 +50,7 @@ or resource
 |                                     | in `auth_uid ` varchar ,    |
 |                                     | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -58,13 +58,13 @@ or resource
 
 </div>
 
-<div id="fsyn_dav_home_dir" class="funcsynopsis">
+<div>
 
 |                                  |                        |
 |----------------------------------|------------------------|
 | `varchar `**`DAV_HOME_DIR`**` (` | in `uid ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -72,7 +72,7 @@ or resource
 
 </div>
 
-<div id="fsyn_dav_add_group" class="funcsynopsis">
+<div>
 
 |                                   |                             |
 |-----------------------------------|-----------------------------|
@@ -80,7 +80,7 @@ or resource
 |                                   | in `auth_uid ` varchar ,    |
 |                                   | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -88,7 +88,7 @@ or resource
 
 </div>
 
-<div id="fsyn_dav_delete_group" class="funcsynopsis">
+<div>
 
 |                                      |                             |
 |--------------------------------------|-----------------------------|
@@ -96,7 +96,7 @@ or resource
 |                                      | in `auth_uid ` varchar ,    |
 |                                      | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -106,7 +106,7 @@ or resource
 
 </div>
 
-<div id="desc_dav_api_user" class="refsect1">
+<div>
 
 ## Description
 
@@ -126,11 +126,11 @@ DAV_DELETE_GROUP() remove the existing webDAV group named 'gid'.
 
 </div>
 
-<div id="params_dav_api_user" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id85333" class="refsect2">
+<div>
 
 ### uid
 
@@ -138,7 +138,7 @@ User identifier. Default is 'dav'.
 
 </div>
 
-<div id="id85336" class="refsect2">
+<div>
 
 ### pwd
 
@@ -146,7 +146,7 @@ Password
 
 </div>
 
-<div id="id85339" class="refsect2">
+<div>
 
 ### gid
 
@@ -154,7 +154,7 @@ Group identifier. Default is 'dav'.
 
 </div>
 
-<div id="id85342" class="refsect2">
+<div>
 
 ### perms
 
@@ -162,7 +162,7 @@ Permissions
 
 </div>
 
-<div id="id85345" class="refsect2">
+<div>
 
 ### disable
 
@@ -170,7 +170,7 @@ Disable flag
 
 </div>
 
-<div id="id85348" class="refsect2">
+<div>
 
 ### home
 
@@ -178,7 +178,7 @@ The User's home directory path
 
 </div>
 
-<div id="id85351" class="refsect2">
+<div>
 
 ### full_name
 
@@ -186,7 +186,7 @@ Full name of user
 
 </div>
 
-<div id="id85354" class="refsect2">
+<div>
 
 ### email
 
@@ -194,7 +194,7 @@ User's email
 
 </div>
 
-<div id="id85357" class="refsect2">
+<div>
 
 ### auth_uid
 
@@ -203,7 +203,7 @@ null.
 
 </div>
 
-<div id="id85360" class="refsect2">
+<div>
 
 ### auth_pwd
 
@@ -213,15 +213,15 @@ Password of Administrator. Default is null.
 
 </div>
 
-<div id="errors_dav_api_user" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id85365" class="table">
+<div>
 
-**Table 24.22. Errors signalled by DAV\_\* functions**
+**Table 24.21. Errors signalled by DAV\_\* functions**
 
-<div class="table-contents">
+<div>
 
 | Error Code                           | Description                                                                                                              |
 |--------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
@@ -254,15 +254,15 @@ Password of Administrator. Default is null.
 
 </div>
 
-<div id="examples_dav_api_user" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dav_api_user_1" class="example">
+<div>
 
 **Example 24.80. WebDAV users operations**
 
-<div class="example-contents">
+<div>
 
 The example will create a WebDAV user named 'davuser' belongs to the
 group 'davgroup'. No home directory supplied. The user account is
@@ -282,7 +282,7 @@ SQL> DB.DBA.DAV_ADD_USER ('davuser', 'secret', 'davgroup', '110100000', 0, NULL,
 
 </div>
 
-<div id="seealso_dav_api_user" class="refsect1">
+<div>
 
 ## See Also
 

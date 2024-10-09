@@ -1,10 +1,10 @@
-<div id="fn_repl_revoke" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ REPL_REVOKE — revoke privileges for subscription
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_revoke" class="funcsynopsis">
+<div>
 
 |                          |                             |
 |--------------------------|-----------------------------|
 | ` `**`REPL_REVOKE`**` (` | in `publication ` varchar , |
 |                          | in `grantee ` varchar `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ REPL_REVOKE — revoke privileges for subscription
 
 </div>
 
-<div id="desc_repl_revoke" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ account.
 
 </div>
 
-<div id="params_repl_revoke" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105876" class="refsect2">
+<div>
 
 ### publication
 
@@ -56,13 +56,13 @@ The publication name.
 
 </div>
 
-<div id="id105879" class="refsect2">
+<div>
 
 ### grantee
 
 A valid DB account name to be refused subscription rights.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                     |
 |:----------------------------:|:------------------------------------------------------------------------------------|
@@ -75,16 +75,16 @@ A valid DB account name to be refused subscription rights.
 
 </div>
 
-<div id="examples_repl_revoke" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_revoke_1" class="example">
+<div>
 
 **Example 24.327. Access to 'table_publication' removal for SQL user
 account 'demo'.**
 
-<div class="example-contents">
+<div>
 
 This is to remove permissions to subscribe from SQL user account 'demo'
 for table_publication publication account.
@@ -101,7 +101,7 @@ SQL> DB.DBA.REPL_REVOKE ('table_publication', 'demo');
 
 </div>
 
-<div id="seealso_repl_revoke" class="refsect1">
+<div>
 
 ## See Also
 

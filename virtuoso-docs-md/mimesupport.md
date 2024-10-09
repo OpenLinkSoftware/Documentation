@@ -1,6 +1,6 @@
-<div id="mimesupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,11 +47,11 @@ Content-Disposition, which indicates to the recipient whether the
 content is to be treated simply as an attachment, or whether it is to be
 rendered inline with other content in other body parts.
 
-<div id="ex_mime1" class="example">
+<div>
 
 **Example 19.8. A simple MIME message sample**
 
-<div class="example-contents">
+<div>
 
 Mime message including a picture stored as a file GIF format. Because
 .gif files use 8-bit bytes, and the RFC 822 format requires messages to
@@ -96,11 +96,11 @@ MIME defines a message format that allows for:
 | Multipart message bodies.                                         |
 | Textual header information in character sets other than US-ASCII. |
 
-<div id="ex_samplemimemesg" class="example">
+<div>
 
 **Example 19.9. Sample MIME Message**
 
-<div class="example-contents">
+<div>
 
 MIME uses headers and separators to tell a UA what processing is
 required to re-create the message. An example with no encoded body parts
@@ -176,9 +176,9 @@ is to be saved on local storage under the suggested file name.
 
   
 
-<div id="mimeheaders" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -199,7 +199,7 @@ use only in body parts.
 
 The following headers are defined in MIME:
 
-<div class="itemizedlist">
+<div>
 
 - **MIME-Version. ** Required header indicating that this message is to
   use the rules of MIME. "MIME-Version: 1.0" is the only currently
@@ -254,9 +254,9 @@ might actually be removed by message transfer agents (MTAs).
 
 </div>
 
-<div id="mimetree" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -270,9 +270,9 @@ might actually be removed by message transfer agents (MTAs).
 
 </div>
 
-<div id="fn_mime_tree_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -296,9 +296,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="mimemultipart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -320,11 +320,11 @@ page being specified in the URI. It also adds an additional "params"
 pair for each HTTP request MIME part named "attr-name" and whose value
 is an array of all MIME header fields of that part.
 
-<div id="mime002" class="example">
+<div>
 
 **Example 19.10. Example:**
 
-<div class="example-contents">
+<div>
 
 Consider the following HTTP request:
 

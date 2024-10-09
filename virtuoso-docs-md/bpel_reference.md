@@ -1,6 +1,6 @@
-<div id="bpel_reference" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ a potentially long running business task.
 
 **Used terms . **
 
-<div class="itemizedlist">
+<div>
 
 - **WSDL . ** Web Services Description Language as described in the
   corresponding W3C proposed recommendation. This is a notation for
@@ -60,9 +60,9 @@ a potentially long running business task.
 
 </div>
 
-<div id="bpelact" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -76,9 +76,9 @@ a potentially long running business task.
 
 </div>
 
-<div id="bpelact_common" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -108,9 +108,9 @@ See also section for 'flow' activity below.
 
 </div>
 
-<div id="bpelact_receive" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -130,7 +130,7 @@ message to arrive.
 A BPEL process instance is created by a receive activity with the
 createInstance attribute set to true.
 
-<div id="attrs_receive" class="variablelist">
+<div>
 
 <span class="term">partnerLink </span>  
 name of a partner declared in the script from which the process is to
@@ -164,9 +164,9 @@ used to make instance of the BPEL process and start its execution.
 
 </div>
 
-<div id="bpelact_reply" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -183,7 +183,7 @@ used to make instance of the BPEL process and start its execution.
 allows the business process to send a message in reply to a message that
 was received through a \<receive\>
 
-<div id="attrs" class="variablelist">
+<div>
 
 <span class="term">partnerLink </span>  
 name of a partner declared in the script to which to send a message.
@@ -215,9 +215,9 @@ name of the variable whose value will be used as output message.
 
 </div>
 
-<div id="bpelact_invoke" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -237,7 +237,7 @@ and 'outputVariable' are specified this means request-response operation
 will be performed. Please note that the operation is defined primarily
 in the partner's WSDL.
 
-<div id="attrs_01" class="variablelist">
+<div>
 
 <span class="term">partnerLink </span>  
 name of a partner declared in the script to who send a message and
@@ -282,9 +282,9 @@ name of the variable to which the response will be assigned.
 
 </div>
 
-<div id="bpelact_assign" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -312,9 +312,9 @@ can be used to update the values of variables with new data. An
 </assign>
 ```
 
-<div id="from-spec" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -340,9 +340,9 @@ This represents in \<copy\> the right part of the assignment.
 
 </div>
 
-<div id="to-spec" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -368,9 +368,9 @@ This represents in \<copy\> the l-value of the assignment.
 
 </div>
 
-<div id="bpelact_throw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -386,7 +386,7 @@ This represents in \<copy\> the l-value of the assignment.
 
 generates a fault from inside the business process
 
-<div id="attrs_02" class="variablelist">
+<div>
 
 <span class="term">faultName </span>  
 the fault code to be thrown.
@@ -404,9 +404,9 @@ the fault code to be thrown.
 
 </div>
 
-<div id="bpelact_terminate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -432,9 +432,9 @@ instance.
 
 </div>
 
-<div id="bpelact_wait" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -450,7 +450,7 @@ instance.
 
 Wait until a given point in time or for a specified duration.
 
-<div id="attrs_wait" class="variablelist">
+<div>
 
 <span class="term">for </span>  
 an duration expression as defined in XMLSchema (for example PT10S)
@@ -469,9 +469,9 @@ an date time expression as defined in XMLSchema
 
 </div>
 
-<div id="bpelact_empty" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -496,9 +496,9 @@ insert a "no-op" instruction into a business process
 
 </div>
 
-<div id="bpelact_sequence" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -524,9 +524,9 @@ lexical order
 
 </div>
 
-<div id="bpelact_switch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -542,7 +542,7 @@ lexical order
 
 Select exactly one branch of activity from a set of choices
 
-<div id="attrs_03" class="variablelist">
+<div>
 
 <span class="term">case </span>  
 the branch which will be executed if 'condition' attribute returns true.
@@ -567,9 +567,9 @@ will be executed if all 'case' conditions are evaluated to false.
 
 </div>
 
-<div id="bpelact_while" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -585,7 +585,7 @@ will be executed if all 'case' conditions are evaluated to false.
 
 Repeat activity while a condition is true.
 
-<div id="attrs_04" class="variablelist">
+<div>
 
 <span class="term">condition </span>  
 an XPath expression which will be evaluated every time before contained
@@ -602,9 +602,9 @@ activities. If this evaluates to false the loop finishes.
 
 </div>
 
-<div id="bpelact_pick" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -623,7 +623,7 @@ expire. When one of the events specified in the body of the pick occurs
 the pick completes. Only one of the activities in the body of the pick
 will actually take place.
 
-<div id="attrs_05" class="variablelist">
+<div>
 
 <span class="term">createInstance </span>  
 This is an alternative of the 'receive' to make a new process instance.
@@ -648,9 +648,9 @@ activity.
 </pick>
 ```
 
-<div id="pick" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -672,9 +672,9 @@ activity
 
 </div>
 
-<div id="pick_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -698,9 +698,9 @@ The attributes are the same as for the
 
 </div>
 
-<div id="bpelact_scope" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -717,7 +717,7 @@ The attributes are the same as for the
 defines a nested activity with its own associated variables, fault
 handlers, and compensation handler
 
-<div id="attrs_06" class="variablelist">
+<div>
 
 <span class="term">variableAccessSerializable </span>  
 
@@ -738,9 +738,9 @@ handlers, and compensation handler
 
 </div>
 
-<div id="bpelact_flow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -769,9 +769,9 @@ Specifies one or more activities to be performed concurrently.
 
 </div>
 
-<div id="bpelact_compensate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -798,9 +798,9 @@ fault handler or another compensation handler
 
 </div>
 
-<div id="bpelact_compensationhandler" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -823,9 +823,9 @@ fault handler or another compensation handler
 
 </div>
 
-<div id="bpelact_faulthandlers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -851,9 +851,9 @@ fault handler or another compensation handler
           
 ```
 
-<div id="pick_01_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -872,9 +872,9 @@ matches the thrown fault.
 
 </div>
 
-<div id="pick_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -896,9 +896,9 @@ compensated and the fault will be re-thrown to the outer scope.
 
 </div>
 
-<div id="bpelact_eventhandlers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -942,9 +942,9 @@ operations..
 
 </div>
 
-<div id="bpelact_exec" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -962,7 +962,7 @@ This is a specific extension of the Virtuoso BPEL implementation. The
 exec activity allows executing SQL code from inside a BPEL process
 without having to define a distinct SOAP service for this.
 
-<div id="attrs_01_01" class="variablelist">
+<div>
 
 <span class="term">binding </span>  
 only "SQL", "JAVA" and "CLR" are currently permitted.
@@ -976,9 +976,9 @@ only "SQL", "JAVA" and "CLR" are currently permitted.
           
 ```
 
-<div id="bpelact_exec_sql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1001,9 +1001,9 @@ errors.
 
 </div>
 
-<div id="bpelact_exec_java" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1017,9 +1017,9 @@ errors.
 
 </div>
 
-<div id="bpelact_exec_java_conf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1037,7 +1037,7 @@ First of all, the java support in BPEL4WS is available only for java
 enabled virtuoso servers. In order to enable java support the following
 administration steps need to be taken:
 
-<div class="itemizedlist">
+<div>
 
 - 1\. Make java compiler (javac) available for virtuoso server
 
@@ -1057,9 +1057,9 @@ for the proper operation of the Java interface.
 
 </div>
 
-<div id="bpelact_exec_java_using" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1133,9 +1133,9 @@ to a BPEL error. See details in the next section.
 
 </div>
 
-<div id="bpelact_exec_java_errors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1151,7 +1151,7 @@ to a BPEL error. See details in the next section.
 
 Two types of errors can be signalled:
 
-<div class="itemizedlist">
+<div>
 
 - 1\. upload time exceptions
 
@@ -1162,7 +1162,7 @@ Two types of errors can be signalled:
 The first type exceptions are related to configuration and java syntax
 errors. These are as follows:
 
-<div class="itemizedlist">
+<div>
 
 - 1\. \[BPELX\] The "system" call is disabled, it is needed for use java
   code in BPEL4WS scripts. \* This error is signalled when the
@@ -1243,9 +1243,9 @@ The handler takes the error message from the variable which holds it
 
 </div>
 
-<div id="bpelact_exec_java_accessors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1283,9 +1283,9 @@ is returned.
 
 </div>
 
-<div id="bpelact_exec_java_vars" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1306,9 +1306,9 @@ variables.
 
 </div>
 
-<div id="bpelact_exec_java_example" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1500,9 +1500,9 @@ and support WSDL file:
 
 </div>
 
-<div id="bpelact_exec_clr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1516,9 +1516,9 @@ and support WSDL file:
 
 </div>
 
-<div id="bpelact_exec_clr_conf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1536,7 +1536,7 @@ The CLR is available only for CLR enabled Virtuoso servers. In order to
 configure the server for CLR support in BPEL4WS engine the following
 administration steps need to be taken:
 
-<div class="itemizedlist">
+<div>
 
 - 1\. Initiate "CLRAssembliesDir" configuration entry ("Directory where
   .NET CLR assemblies must be stored") by the path where
@@ -1546,9 +1546,9 @@ administration steps need to be taken:
 
 </div>
 
-<div id="bpelact_exec_clr_using" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1637,9 +1637,9 @@ translated to a BPEL error. See details in the next section.
 
 </div>
 
-<div id="bpelact_exec_clr_errors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1719,9 +1719,9 @@ The handler takes the error message from the variable which holds it
 
 </div>
 
-<div id="bpelact_exec_clr_accessors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1742,9 +1742,9 @@ section</a> for details.
 
 </div>
 
-<div id="bpelact_exec_clr_vars" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1764,9 +1764,9 @@ section</a> for details.
 
 </div>
 
-<div id="bpelact_exec_clr_sample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

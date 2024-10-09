@@ -1,10 +1,10 @@
-<div id="fn_regr_r2" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ regression line.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regr_r2" class="funcsynopsis">
+<div>
 
 |                             |                      |
 |-----------------------------|----------------------|
 | `numeric `**`REGR_R2`**` (` | in `expr1 ` any ,    |
 |                             | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ regression line.
 
 </div>
 
-<div id="desc_regr_r2" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ The return values are:
 
 </div>
 
-<div id="params_regr_r2" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78862" class="refsect2">
+<div>
 
 ### expr1
 
@@ -63,7 +63,7 @@ Number expression.
 
 </div>
 
-<div id="id78865" class="refsect2">
+<div>
 
 ### expr2
 
@@ -73,7 +73,7 @@ Number expression.
 
 </div>
 
-<div id="ret_regr_r2" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,7 +82,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_regr_r2" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="xpf_round" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ round — Returns the integer that is the nearest to the argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_round" class="funcsynopsis">
+<div>
 
 |                           |                    |
 |---------------------------|--------------------|
 | `integer `**`round`**` (` | `num ` number `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ round — Returns the integer that is the nearest to the argument.
 
 </div>
 
-<div id="xpf_desc_round" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ negative infinity is returned.
 
 </div>
 
-<div id="xpf_params_round" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128855" class="refsect2">
+<div>
 
 ### num
 
@@ -59,21 +59,21 @@ The value to be rounded
 
 </div>
 
-<div id="xpf_ret_round" class="refsect1">
+<div>
 
 ## Return Types
 
 </div>
 
-<div id="xpf_examples_round" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_round" class="example">
+<div>
 
 **Example 24.616. **
 
-<div class="example-contents">
+<div>
 
 The following expressions are true:
 
@@ -94,7 +94,7 @@ round(-2.6) = -2
 
 </div>
 
-<div id="xpf_seealso_round" class="refsect1">
+<div>
 
 ## See Also
 

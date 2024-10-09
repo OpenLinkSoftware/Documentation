@@ -1,6 +1,6 @@
-<div id="vspequi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

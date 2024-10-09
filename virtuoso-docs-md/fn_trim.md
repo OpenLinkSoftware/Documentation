@@ -1,10 +1,10 @@
-<div id="fn_trim" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ trim — removes characters from both ends of string argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_trim" class="funcsynopsis">
+<div>
 
 |                   |                          |
 |-------------------|--------------------------|
 | ` `**`trim`**` (` | `str ` string ,          |
 |                   | `trimchars ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ trim — removes characters from both ends of string argument
 
 </div>
 
-<div id="desc_44" class="refsect1">
+<div>
 
 ## Description
 

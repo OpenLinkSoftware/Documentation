@@ -1,10 +1,10 @@
-<div id="fn_stat_export" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ stat_export — Produces a statistics summary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_stat_export" class="funcsynopsis">
+<div>
 
 |                          |      |
 |--------------------------|------|
 | ` `**`stat_export`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ stat_export — Produces a statistics summary.
 
 </div>
 
-<div id="desc_stat_export" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,21 +43,21 @@ class="function">stat_import() </code></a> function
 
 </div>
 
-<div id="params_stat_export" class="refsect1">
+<div>
 
 ## Parameters
 
 </div>
 
-<div id="examples_stat_export" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_stat_export" class="example">
+<div>
 
 **Example 24.214. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 -- produce statistics for a given database:
@@ -72,7 +72,7 @@ SQL> string_to_file('stat.dv', serialize(stat_export()), -2);
 
 </div>
 
-<div id="seealso_stat_export" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="rdfperformancetuning" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 For RDF query performance, we have the following possible questions:
 
-<div class="itemizedlist">
+<div>
 
 - Is the Virtuoso process properly configured to handle big data sets?
 
@@ -30,9 +30,9 @@ For RDF query performance, we have the following possible questions:
 
 </div>
 
-<div id="rdfperfgeneral" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -69,11 +69,11 @@ NumberOfBuffers) parameters in the Virtuoso configuration file
 (virtuoso.ini) for various memory sizes are as follows, with each buffer
 consisting of 8K bytes:
 
-<div id="id57906" class="table">
+<div>
 
 **Table 16.19. recommended NumberOfBUffers and MaxDirtyBuffers**
 
-<div class="table-contents">
+<div>
 
 | System RAM | NumberOfBuffers | MaxDirtyBuffers |
 |------------|-----------------|-----------------|

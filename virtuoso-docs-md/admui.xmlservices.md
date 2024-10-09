@@ -1,6 +1,6 @@
-<div id="admui.xmlservices" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="sqlxmlstmts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,11 +33,11 @@
 Go to XML/SQL-XML and enter a SQL to XML statement in the
 <span class="emphasis">*SQLX or SQL-XML Query*</span> text-area:
 
-<div id="id14894" class="example">
+<div>
 
 **Example 6.15. For example:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SELECT "product".ProductID AS "id",
@@ -53,15 +53,15 @@ FOR XML AUTO ELEMENT
 
   
 
-<div class="figure-float">
+<div>
 
-<div id="id14897" class="figure">
+<div>
 
 **Figure 6.92. SQL-XML Statements**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SQL-XML Statements](images/ui/sql_xml_mng_01.png)
 
@@ -125,9 +125,9 @@ enable this option for the query.
 
 </div>
 
-<div id="xpathsearch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -147,15 +147,15 @@ XQuery Document Search applies the XPATH expression to every realized
 XML contained within the Query Scope to qualify search hit results. Note
 that this does not include XML Views unless persistent.
 
-<div class="figure-float">
+<div>
 
-<div id="id14932" class="figure">
+<div>
 
 **Figure 6.93. XPATH Query of DAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XPATH Query of DAV](images/ui/dav_xpath_01.png)
 
@@ -178,15 +178,15 @@ WebDAV to make a selection. The query will then be confined to the
 selected resource or collection and its children. Then Click the button
 "Next" in order to continue.
 
-<div class="figure-float">
+<div>
 
-<div id="id14940" class="figure">
+<div>
 
 **Figure 6.94. XPATH Query of DAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XPATH Query of DAV](images/ui/dav_xpath_02.png)
 
@@ -234,15 +234,15 @@ Template, fill in the "Create as XML Template Description" field.
 
 Click the button "Save".
 
-<div class="figure-float">
+<div>
 
-<div id="id14965" class="figure">
+<div>
 
 **Figure 6.95. XPATH Query of DAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XPATH Query of DAV](images/ui/dav_xpath_03.png)
 
@@ -256,15 +256,15 @@ Click the button "Save".
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id14970" class="figure">
+<div>
 
 **Figure 6.96. XPATH Query of DAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XPATH Query of DAV](images/ui/dav_xpath_04.png)
 
@@ -281,15 +281,15 @@ Click the button "Save".
 If for location you have chosen /DAV/xmlsql/xquery.xml, you can view the
 saved file accessing the url: http://host:port/DAV/xmlsql/xquery.xml
 
-<div class="figure-float">
+<div>
 
-<div id="id14976" class="figure">
+<div>
 
 **Figure 6.97. XPATH Query of DAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XPATH Query of DAV](images/ui/dav_xpath_05.png)
 

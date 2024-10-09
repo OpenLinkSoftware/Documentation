@@ -1,10 +1,10 @@
-<div id="fn_lh_get_handler" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ lh_get_handler — Returns language handler
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_lh_get_handler" class="funcsynopsis">
+<div>
 
 |                                             |                                     |
 |---------------------------------------------|-------------------------------------|
 | `lang_handler_t * `**`lh_get_handler`**` (` | const char \* `language_name ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ lh_get_handler — Returns language handler
 
 </div>
 
-<div id="desc_lh_get_handler" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Returns language handler
 
 </div>
 
-<div id="params_lh_get_handler" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95741" class="refsect2">
+<div>
 
 ### language_name
 
@@ -54,7 +54,7 @@ Name of language handler.
 
 </div>
 
-<div id="ret_lh_get_handler" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,7 +64,7 @@ return NULL.
 
 </div>
 
-<div id="seealso_lh_get_handler" class="refsect1">
+<div>
 
 ## See Also
 

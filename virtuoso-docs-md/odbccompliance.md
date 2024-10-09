@@ -1,6 +1,6 @@
-<div id="odbccompliance" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,9 +21,9 @@ wide versions of the ODBC API (e.g. SQLColumnsW) in Windows. This driver
 enables you to communicate with local or remote Virtuoso servers across
 any combination of platforms supported by Virtuoso.
 
-<div id="odbccompliance_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,9 +37,9 @@ any combination of platforms supported by Virtuoso.
 
 </div>
 
-<div id="sqlallochandle" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,9 +59,9 @@ allocated descriptor handles. That is why the SQLAllocHandle
 
 </div>
 
-<div id="sqlbulkoperations" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,9 +79,9 @@ Only the SQL_ADD operation is supported.
 
 </div>
 
-<div id="sqlcolattributes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -98,7 +98,7 @@ Only the SQL_ADD operation is supported.
 The virtuoso ODBC driver does not return information for the following
 attributes:
 
-<div class="itemizedlist">
+<div>
 
 - **SQL_COLUMN_TABLE_NAME. ** Returns an empty string instead
 
@@ -118,9 +118,9 @@ attributes:
 
 </div>
 
-<div id="sqldriverconnect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -137,7 +137,7 @@ attributes:
 The Virtuoso ODBC driver recognizes the following SQLDriverConnect
 connection string keywords:
 
-<div class="itemizedlist">
+<div>
 
 - **DSN. ** The data source name.
 
@@ -184,9 +184,9 @@ connection string keywords:
 
 </div>
 
-<div id="sqlgetenvattr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -205,9 +205,9 @@ It allows the value to be set and retrieved but with no further effect.
 
 </div>
 
-<div id="sqlnativesql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -226,9 +226,9 @@ Virtuoso is the ODBC syntax.
 
 </div>
 
-<div id="not_supp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -244,7 +244,7 @@ Virtuoso is the ODBC syntax.
 
 Virtuoso ODBC driver does not support the following ODBC API functions:
 
-<div class="itemizedlist">
+<div>
 
 - SQLCopyDesc
 

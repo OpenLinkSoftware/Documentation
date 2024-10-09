@@ -1,10 +1,10 @@
-<div id="fn_charsets_list" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ charsets_list — List known character set names and aliases.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_charsets_list" class="funcsynopsis">
+<div>
 
 |                               |                                |
 |-------------------------------|--------------------------------|
 | `any `**`charsets_list`**` (` | in `gen_res_set ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ charsets_list — List known character set names and aliases.
 
 </div>
 
-<div id="desc_charsets_list" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ one varchar column with a name of a character set or alias.
 
 </div>
 
-<div id="params_charsets_list" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82161" class="refsect2">
+<div>
 
 ### *`gen_res_set `*
 
@@ -60,7 +60,7 @@ a result set: 0 means no, 1 means yes.
 
 </div>
 
-<div id="ret_charsets_list" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -69,7 +69,7 @@ An <span class="type">array </span> of <span class="type">string </span>
 
 </div>
 
-<div id="errors_charsets_list" class="refsect1">
+<div>
 
 ## Errors
 
@@ -79,15 +79,15 @@ This function can generate the following errors:
 
 </div>
 
-<div id="examples_charsets_list" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_charsets_list1" class="example">
+<div>
 
 **Example 24.39. List character sets as a result set**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> charsets_list(1);
@@ -118,11 +118,11 @@ There are 132 predefined character sets in total that would be listed.
 
   
 
-<div id="ex_charsets_list0" class="example">
+<div>
 
 **Example 24.40. Get first 2 character set names/aliases**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 ....
@@ -140,7 +140,7 @@ y := aref (x, 1); -- will be '819'
 
 </div>
 
-<div id="seealso_charsets_list" class="refsect1">
+<div>
 
 ## See Also
 

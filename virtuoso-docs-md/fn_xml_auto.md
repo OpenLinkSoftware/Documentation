@@ -1,10 +1,10 @@
-<div id="fn_xml_auto" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xml_auto — prepares and executes given SQL for XML string output
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_auto" class="funcsynopsis">
+<div>
 
 |                       |                              |
 |-----------------------|------------------------------|
@@ -24,7 +24,7 @@ xml_auto — prepares and executes given SQL for XML string output
 |                       | in `params ` any ,           |
 |                       | in `string_output ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ xml_auto — prepares and executes given SQL for XML string output
 
 </div>
 
-<div id="desc_xml_auto" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ going to the user agent.
 
 </div>
 
-<div id="params_xml_auto" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122706" class="refsect2">
+<div>
 
 ### sql_text
 
@@ -73,7 +73,7 @@ value from the *`params `* vector.
 
 </div>
 
-<div id="id122710" class="refsect2">
+<div>
 
 ### params
 
@@ -81,7 +81,7 @@ Vector of parameters, one element per ? used in the query.
 
 </div>
 
-<div id="id122713" class="refsect2">
+<div>
 
 ### string_output
 
@@ -91,7 +91,7 @@ String variable or stream for receiving the result.
 
 </div>
 
-<div id="ret_xml_auto" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -100,15 +100,15 @@ context of the calling VSP page.
 
 </div>
 
-<div id="errors_xml_auto" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id122721" class="table">
+<div>
 
-**Table 24.130. Errors signalled by `xml_auto `**
+**Table 24.129. Errors signalled by `xml_auto `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                      | Error Text                                                                                                                                        | Description                                                                    |
 |---------------------------------------|---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
@@ -124,15 +124,15 @@ context of the calling VSP page.
 
 </div>
 
-<div id="examples_xml_auto" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_auto" class="example">
+<div>
 
 **Example 24.507. Producing XML from SQL**
 
-<div class="example-contents">
+<div>
 
 The procedure below takes an SQL string, evaluates it - converting to
 XML - and produces a result set where the XML text is returned as a
@@ -158,7 +158,7 @@ create procedure xmla (in q varchar)
 
 </div>
 
-<div id="seealso_xml_auto" class="refsect1">
+<div>
 
 ## See Also
 

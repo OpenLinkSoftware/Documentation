@@ -1,10 +1,10 @@
-<div id="fn_dict_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ in the given dictionary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_get" class="funcsynopsis">
+<div>
 
 |                          |                              |
 |--------------------------|------------------------------|
@@ -25,7 +25,7 @@ in the given dictionary.
 |                          | in `key ` any ,              |
 |                          | in `default_value ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ in the given dictionary.
 
 </div>
 
-<div id="desc_dict_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ default value is integer zero.
 
 </div>
 
-<div id="params_dict_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86377" class="refsect2">
+<div>
 
 ### dict
 
@@ -59,7 +59,7 @@ Dictionary object to search in.
 
 </div>
 
-<div id="id86380" class="refsect2">
+<div>
 
 ### key
 
@@ -67,7 +67,7 @@ Key whose dependent part should be found.
 
 </div>
 
-<div id="id86383" class="refsect2">
+<div>
 
 ### default_value
 
@@ -78,7 +78,7 @@ dictionary.
 
 </div>
 
-<div id="ret_dict_get" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -86,7 +86,7 @@ The function can return a value of any type.
 
 </div>
 
-<div id="seealso_dict_get" class="refsect1">
+<div>
 
 ## See Also
 

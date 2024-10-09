@@ -1,10 +1,10 @@
-<div id="fn_adjust_timezone" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ but new timezone offset, as it is specified by the second argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_adjust_timezone" class="funcsynopsis">
+<div>
 
 |                                      |                                    |
 |--------------------------------------|------------------------------------|
@@ -25,7 +25,7 @@ but new timezone offset, as it is specified by the second argument
 |                                      | in `tz_offset ` integer ,          |
 |                                      | in `ignore_timezone ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ but new timezone offset, as it is specified by the second argument
 
 </div>
 
-<div id="desc_adjust_timezone" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ handled like it is a GMT value.
 
 </div>
 
-<div id="params_adjust_timezone" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83471" class="refsect2">
+<div>
 
 ### dt
 
@@ -60,7 +60,7 @@ Datetime value.
 
 </div>
 
-<div id="id83474" class="refsect2">
+<div>
 
 ### tz_offset
 
@@ -68,7 +68,7 @@ Timezone offset.
 
 </div>
 
-<div id="id83477" class="refsect2">
+<div>
 
 ### ignore_timezone
 
@@ -78,15 +78,15 @@ Flag.
 
 </div>
 
-<div id="examples_adjust_timezone" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_adjust_timezone" class="example">
+<div>
 
 **Example 24.60. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> SELECT adjust_timezone(cast('2014-12-31 15:00-12:00' as datetime),0,1) ;
@@ -103,7 +103,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_adjust_timezone" class="refsect1">
+<div>
 
 ## See Also
 

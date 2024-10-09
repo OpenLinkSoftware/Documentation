@@ -1,10 +1,10 @@
-<div id="fn_isnull" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isnull — returns true if its argument is NULL
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isnull" class="funcsynopsis">
+<div>
 
 |                     |                      |
 |---------------------|----------------------|
 | ` `**`isnull`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isnull — returns true if its argument is NULL
 
 </div>
 
-<div id="desc_isnull" class="refsect1">
+<div>
 
 ## Description
 

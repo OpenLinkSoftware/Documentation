@@ -1,10 +1,10 @@
-<div id="fn_elh_load_handler" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ elh_load_handler — load encoding handler into system
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_elh_load_handler" class="funcsynopsis">
+<div>
 
 |                                  |                                              |
 |----------------------------------|----------------------------------------------|
 | `int `**`elh_load_handler`**` (` | encodedlang_handler_t \* `new_handler ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ elh_load_handler — load encoding handler into system
 
 </div>
 
-<div id="desc_elh_load_handler" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ handlers.
 
 </div>
 
-<div id="params_elh_load_handler" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87596" class="refsect2">
+<div>
 
 ### new_handler
 
@@ -64,7 +64,7 @@ callback functions.
 
 </div>
 
-<div id="seealso_elh_load_handler" class="refsect1">
+<div>
 
 ## See Also
 

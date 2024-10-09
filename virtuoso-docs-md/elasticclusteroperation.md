@@ -1,6 +1,6 @@
-<div id="elasticclusteroperation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="elasticclusteroperationinit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -141,9 +141,9 @@ partitioning hash values than logical slices.
 
 </div>
 
-<div id="elasticclusteroperationaddremovehost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

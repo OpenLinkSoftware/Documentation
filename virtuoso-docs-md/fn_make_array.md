@@ -1,10 +1,10 @@
-<div id="fn_make_array" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ make_array — returns a new array
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_make_array" class="funcsynopsis">
+<div>
 
 |                              |                            |
 |------------------------------|----------------------------|
 | `array `**`make_array`**` (` | in `length ` integer ,     |
 |                              | in `content ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ make_array — returns a new array
 
 </div>
 
-<div id="desc_make_array" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ The initial content of the array is undefined.
 
 </div>
 
-<div id="params_make_array" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96273" class="refsect2">
+<div>
 
 ### length
 
@@ -54,7 +54,7 @@ Number of elements to be allocated in the resultant array.
 
 </div>
 
-<div id="id96276" class="refsect2">
+<div>
 
 ### content
 
@@ -69,7 +69,7 @@ initial content of the array is undefined.
 
 </div>
 
-<div id="ret_make_array" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -77,18 +77,18 @@ An array of specified length and data type
 
 </div>
 
-<div id="errors_make_array" class="refsect1">
+<div>
 
 ## Errors
 
 <a href="datatypeerror.html" class="link"
 title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
-<div id="id96286" class="table">
+<div>
 
 **Table 24.53. Errors signalled by make_array()**
 
-<div class="table-contents">
+<div>
 
 | sqlstate                              | error code                            | error text                                                                             |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------|

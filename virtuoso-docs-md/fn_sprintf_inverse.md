@@ -1,10 +1,10 @@
-<div id="fn_sprintf_inverse" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sprintf_inverse — returns vector on a specified pattern.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sprintf_inverse" class="funcsynopsis">
+<div>
 
 |                              |                     |
 |------------------------------|---------------------|
@@ -24,7 +24,7 @@ sprintf_inverse — returns vector on a specified pattern.
 |                              | `format ` string ,  |
 |                              | `err ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ sprintf_inverse — returns vector on a specified pattern.
 
 </div>
 
-<div id="desc_25" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ matches the format string then it returns vector of the pattern values.
 
 </div>
 
-<div id="params_sprintf_inverse" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id111137" class="refsect2">
+<div>
 
 ### strg
 
@@ -56,7 +56,7 @@ a string to parse
 
 </div>
 
-<div id="id111140" class="refsect2">
+<div>
 
 ### format
 
@@ -64,7 +64,7 @@ a format string
 
 </div>
 
-<div id="id111143" class="refsect2">
+<div>
 
 ### err
 
@@ -78,15 +78,15 @@ that were not found due to mismatch
 
 </div>
 
-<div id="examples_sprintf_inverse" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sprintf_inverse" class="example">
+<div>
 
 **Example 24.388. Example 1**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select sprintf_inverse ('qwe123asd456zxcABRACADABRA', 'qwe%dasd%dzxc%s', 2);
@@ -106,11 +106,11 @@ SQL>
 
   
 
-<div id="ex_sprintf_inverse_01" class="example">
+<div>
 
 **Example 24.389. Example 2**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select sprintf_inverse ('---123', '%-R', 2);

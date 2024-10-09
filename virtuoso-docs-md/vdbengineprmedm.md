@@ -1,6 +1,6 @@
-<div id="vdbengineprmedm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,22 +24,22 @@ following steps.
 <span class="emphasis">*Note:*</span> These steps will need to be
 repeated for each association.
 
-<div class="orderedlist">
+<div>
 
 1.  The first Association will deal with is the relationship between
     Customer and Invoice, identified by the presence of the scalar
     property Cust_Num in both entities. This is a one-to-many
     relationship, as a Customer may have any number of Invoices.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro1" class="figure">
+    <div>
 
     **Figure 8.95. Association**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Association](images/ui/mpro1.png)
 
@@ -56,15 +56,15 @@ repeated for each association.
 2.  To add the Association, right click on the Customer entity then Add
     -\> Association.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro2" class="figure">
+    <div>
 
     **Figure 8.96. add the Association**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![add the Association](images/ui/mpro2.png)
 
@@ -80,15 +80,15 @@ repeated for each association.
 
 3.  You will now see the Add Association dialog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro3" class="figure">
+    <div>
 
     **Figure 8.97. Add Association dialog**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Association dialog](images/ui/mpro3.png)
 
@@ -109,15 +109,15 @@ repeated for each association.
     This better reflects the multiplicity of the association such that a
     Customer is associated with zero or many Invoices (plural).
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro4" class="figure">
+    <div>
 
     **Figure 8.98. Navigation Property name**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Navigation Property name](images/ui/mpro4.png)
 
@@ -133,7 +133,7 @@ repeated for each association.
 
     Typically, here is where you will:
 
-    <div class="itemizedlist">
+    <div>
 
     - Select the entity at each end of the association
 
@@ -147,15 +147,15 @@ repeated for each association.
 5.  Once you then hit OK the diagram is refreshed to include the newly
     created association.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro5" class="figure">
+    <div>
 
     **Figure 8.99. diagram**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![diagram](images/ui/mpro5.png)
 
@@ -173,15 +173,15 @@ repeated for each association.
     association, so right-click the association on the diagram, and
     select Table Mapping to display the Mapping Details pane.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro6" class="figure">
+    <div>
 
     **Figure 8.100. Table Mapping**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Table Mapping](images/ui/mpro6.png)
 
@@ -198,15 +198,15 @@ repeated for each association.
 7.  Click that line reading \<Add a Table or View\> to reveal a drop
     down list of all entities.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro7" class="figure">
+    <div>
 
     **Figure 8.101. Add a Table or View**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add a Table or View](images/ui/mpro7.png)
 
@@ -224,15 +224,15 @@ repeated for each association.
     association (the entity where the foreign key exists). In this
     example, it is the Invoice entity.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro8" class="figure">
+    <div>
 
     **Figure 8.102. Entity**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity](images/ui/mpro8.png)
 
@@ -250,15 +250,15 @@ repeated for each association.
     association, requiring that you provide relevant target store data
     types in the Column column for the key fields, as depicted here.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro9" class="figure">
+    <div>
 
     **Figure 8.103. Mapping Details**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mapping Details](images/ui/mpro9.png)
 
@@ -272,15 +272,15 @@ repeated for each association.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro10" class="figure">
+    <div>
 
     **Figure 8.104. Mapping Details**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mapping Details](images/ui/mpro10.png)
 
@@ -294,15 +294,15 @@ repeated for each association.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro11" class="figure">
+    <div>
 
     **Figure 8.105. Mapping Details**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mapping Details](images/ui/mpro11.png)
 
@@ -321,15 +321,15 @@ repeated for each association.
     association is made, since the error messages can be a little
     confusing.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro12" class="figure">
+    <div>
 
     **Figure 8.106. Build the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build the project](images/ui/mpro12.png)
 
@@ -345,15 +345,15 @@ repeated for each association.
 
 11. This should result in the following error:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro13" class="figure">
+    <div>
 
     **Figure 8.107. Error**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Error](images/ui/mpro13.png)
 
@@ -372,15 +372,15 @@ repeated for each association.
     Property Customer, which are both mapped to the same target column -
     the Progress column Invoice.Cust_Num - and this is not supported.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro14" class="figure">
+    <div>
 
     **Figure 8.108. Error**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Error](images/ui/mpro14.png)
 
@@ -402,15 +402,15 @@ repeated for each association.
 
     Right click on Invoice.Cust_Num then Delete.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro15" class="figure">
+    <div>
 
     **Figure 8.109. delete the mapping**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![delete the mapping](images/ui/mpro15.png)
 
@@ -426,15 +426,15 @@ repeated for each association.
 
 13. The model diagram will refresh to reflect this change.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro16" class="figure">
+    <div>
 
     **Figure 8.110. Model Diagram**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Model Diagram](images/ui/mpro16.png)
 
@@ -450,15 +450,15 @@ repeated for each association.
 
 14. Build the project, again, using Build -\> Build Solution.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro17" class="figure">
+    <div>
 
     **Figure 8.111. Build project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build project](images/ui/mpro17.png)
 
@@ -474,15 +474,15 @@ repeated for each association.
 
 15. The project should now be fine.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="mpro18" class="figure">
+    <div>
 
     **Figure 8.112. Build Project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build Project](images/ui/mpro18.png)
 
@@ -501,15 +501,15 @@ repeated for each association.
 You will need to repeat these steps for each association until you have
 a completed Entity Data Model.
 
-<div class="figure-float">
+<div>
 
-<div id="mpro19" class="figure">
+<div>
 
 **Figure 8.113. Entity Data Model**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Entity Data Model](images/ui/mpro19.png)
 

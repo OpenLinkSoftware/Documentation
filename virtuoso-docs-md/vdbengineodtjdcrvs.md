@@ -1,6 +1,6 @@
-<div id="vdbengineodtjdcrvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the ODBC to JDBC Bridge Northwind database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora1" class="figure">
+    <div>
 
     **Figure 8.505. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_16" class="figure">
+    <div>
 
     **Figure 8.506. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora2" class="figure">
+    <div>
 
     **Figure 8.507. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/eora2.png)
 
@@ -137,15 +137,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora3" class="figure">
+    <div>
 
     **Figure 8.508. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/eora3.png)
 
@@ -161,15 +161,15 @@ the ODBC to JDBC Bridge Northwind database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora4" class="figure">
+    <div>
 
     **Figure 8.509. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora5" class="figure">
+    <div>
 
     **Figure 8.510. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/eora5.png)
 
@@ -241,15 +241,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora6" class="figure">
+    <div>
 
     **Figure 8.511. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora7" class="figure">
+    <div>
 
     **Figure 8.512. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora8" class="figure">
+    <div>
 
     **Figure 8.513. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the ODBC to JDBC Bridge Northwind database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora9" class="figure">
+    <div>
 
     **Figure 8.514. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora10" class="figure">
+    <div>
 
     **Figure 8.515. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/jbsora10.png)
 
@@ -405,15 +405,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora11" class="figure">
+    <div>
 
     **Figure 8.516. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -429,15 +429,15 @@ the ODBC to JDBC Bridge Northwind database:
 
 15. Click OK to add the connection.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora11_01" class="figure">
+    <div>
 
     **Figure 8.517. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/jbsora11.png)
 
@@ -466,15 +466,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora12" class="figure">
+    <div>
 
     **Figure 8.518. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/jbsora12.png)
 
@@ -511,15 +511,15 @@ the ODBC to JDBC Bridge Northwind database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora13" class="figure">
+    <div>
 
     **Figure 8.519. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/jbsora13.png)
 
@@ -540,15 +540,15 @@ the ODBC to JDBC Bridge Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="jbsora14" class="figure">
+    <div>
 
     **Figure 8.520. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/jbsora14.png)
 

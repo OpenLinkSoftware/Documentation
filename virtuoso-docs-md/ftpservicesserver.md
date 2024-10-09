@@ -1,6 +1,6 @@
-<div id="ftpservicesserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -119,7 +119,7 @@ section of the Virtuoso INI file.
 The FTP server root directory is the home directory of the authenticated
 DAV user.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

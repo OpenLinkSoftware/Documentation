@@ -1,10 +1,10 @@
-<div id="fn_mod" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ mod — returns the modulus of its arguments
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mod" class="funcsynopsis">
+<div>
 
 |                  |                         |
 |------------------|-------------------------|
 | ` `**`mod`**` (` | `dividend ` integer ,   |
 |                  | `divisor ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ mod — returns the modulus of its arguments
 
 </div>
 
-<div id="desc_06" class="refsect1">
+<div>
 
 ## Description
 

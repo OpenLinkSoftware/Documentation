@@ -1,10 +1,10 @@
-<div id="fn_soap_wsdl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ varchar.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_wsdl" class="funcsynopsis">
+<div>
 
 |                               |                             |
 |-------------------------------|-----------------------------|
 | `varchar `**`soap_wsdl`**` (` | in `module_name ` varchar , |
 |                               | in `URL ` varchar `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ varchar.
 
 </div>
 
-<div id="desc_21" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ way as /SOAP/services.wsdl is generated for the procedures in WS.SOAP.
 
 </div>
 
-<div id="params_05" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110898" class="refsect2">
+<div>
 
 ### module
 
@@ -55,7 +55,7 @@ Required. The name of the module to describe. This can be partial name.
 
 </div>
 
-<div id="id110901" class="refsect2">
+<div>
 
 ### URL
 
@@ -66,7 +66,7 @@ error). The URL to include in the WSDL file
 
 </div>
 
-<div id="ret_10" class="refsect1">
+<div>
 
 ## Return Types
 

@@ -1,6 +1,6 @@
-<div id="sqlrefxmldatatype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,11 +22,11 @@ values, but will always return an XML entity when selected.
 Since ODBC does not support an XML entity type this column will appear
 as a LONG VARCHAR when selected from ODBC based clients.
 
-<div id="ex_xmlcolumntype" class="example">
+<div>
 
 **Example 9.15. Using LONG XML Columns**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE TABLE xml_col_test (
@@ -57,7 +57,7 @@ ____________________________________________________________________________
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------------------------------------------------------|

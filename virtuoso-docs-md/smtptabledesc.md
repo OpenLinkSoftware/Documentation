@@ -1,6 +1,6 @@
-<div id="smtptabledesc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -45,7 +45,7 @@ create table DB.DBA.MAIL_MESSAGE (
 ;
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                              |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------|

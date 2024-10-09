@@ -1,6 +1,6 @@
-<div id="createexthostproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,11 +55,11 @@ For more details see
 title="9.2.1. CREATE TYPE Statement">CREATE TYPE</a> and Runtime hosting
 chapters.
 
-<div id="ex_createexthostproc_jvm" class="example">
+<div>
 
 **Example 11.6. CREATE PROCEDURE for a Java method:**
 
-<div class="example-contents">
+<div>
 
 Here is an example for CREATE PROCEDURE and the hosted Java VM:
 
@@ -84,11 +84,11 @@ Java HotSpot(TM) Client VM
 
   
 
-<div id="ex_createexthostproc_clr" class="example">
+<div>
 
 **Example 11.7. CREATE PROCEDURE for a CLR method:**
 
-<div class="example-contents">
+<div>
 
 Here is an example for CREATE PROCEDURE and the hosted CLR:
 

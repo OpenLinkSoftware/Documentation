@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksgetcertattr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="me_uddi_get_businessdetailext" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ information for one or more specified *`businessEntities `* .
 
 </div>
 
-<div id="syntax_uddi_get_businessdetailext_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -29,7 +29,7 @@ information for one or more specified *`businessEntities `* .
 
 </div>
 
-<div id="desc_uddi_get_businessdetailext_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ this API specification, rather than a UDDI-enabled server.
 
 </div>
 
-<div id="params_uddi_get_businessdetailext_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id115268" class="refsect2">
+<div>
 
 ### businessKey
 
@@ -57,7 +57,7 @@ known *`businessEntity `* data.
 
 </div>
 
-<div id="ret_uddi_get_businessdetailext_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,7 +73,7 @@ attribute set to true.
 
 </div>
 
-<div id="errors_uddi_get_businessdetailext_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -81,11 +81,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id115286" class="table">
+<div>
 
-**Table 24.98. Errors signalled by uddi_get_businessDetailExt**
+**Table 24.97. Errors signalled by uddi_get_businessDetailExt**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                         | Description                                                                                                                                                                                                                                                                                                                                                  |
 |----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

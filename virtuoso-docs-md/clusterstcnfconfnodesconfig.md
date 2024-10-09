@@ -1,6 +1,6 @@
-<div id="clusterstcnfconfnodesconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,9 +16,9 @@
 
 This section applies to Virtuoso as of version 6.x and higher.
 
-<div id="clusterstcnfconfnodesconfigwhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,9 +37,9 @@ Slave) Nodes of a Virtuoso Elastic Cluster to service HTTP clients.
 
 </div>
 
-<div id="clusterstcnfconfnodesconfigwhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -62,9 +62,9 @@ spreading HTTP requests across the cluster's nodes.
 
 </div>
 
-<div id="clusterstcnfconfnodesconfighow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -81,7 +81,7 @@ spreading HTTP requests across the cluster's nodes.
 This documentation details the steps for the installation and
 configuration of a Virtuoso Elastic Cluster on Unix:
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*Step 1*</span>
 
@@ -99,9 +99,9 @@ configuration of a Virtuoso Elastic Cluster on Unix:
 
 </div>
 
-<div id="clusterstcnfconfnodesconfiginst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -120,7 +120,7 @@ Server
 
 Each node can be configured to provide HTTP services as follows:
 
-<div class="orderedlist">
+<div>
 
 1.  Copy the `[HTTP Server]` section from the Primary instance's
     configuration file (by default, `virtuoso.ini` ) to the
@@ -180,9 +180,9 @@ Each node can be configured to provide HTTP services as follows:
 
 </div>
 
-<div id="clusterstcnfconfnodesconfigservice" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -203,19 +203,19 @@ Any HTTP services required on the subordinate instance will need to
 specifically installed or configured on that physical node. For example,
 the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 
-<div class="orderedlist">
+<div>
 
 1.  Log in into the Virtuoso Conductor http://hostname:port/conductor :
 
-    <div class="figure-float">
+    <div>
 
-    <div id="clst1" class="figure">
+    <div>
 
     **Figure 2.185. Configure SPARQL Endpoint: log in**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Configure SPARQL Endpoint: log in](images/ui/cluster1.jpg)
 
@@ -232,16 +232,16 @@ the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 2.  Go the the Web Application Server -\> Virtual Domains & Directories
     tab:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="clst2" class="figure">
+    <div>
 
     **Figure 2.186. Configure SPARQL Endpoint: Virtual Domains and
     Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Configure SPARQL Endpoint: Virtual Domains and
     Directories](images/ui/cluster2.jpg)
@@ -258,15 +258,15 @@ the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 
 3.  Select the New Directory Action for the Default Web Site HTTP host:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="clst3" class="figure">
+    <div>
 
     **Figure 2.187. Configure SPARQL Endpoint: new directory**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Configure SPARQL Endpoint: new directory](images/ui/cluster3.jpg)
 
@@ -283,15 +283,15 @@ the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 4.  Select the Type radio button and SPARQL access point item from the
     drop down list box:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="clst4" class="figure">
+    <div>
 
     **Figure 2.188. Configure SPARQL Endpoint: set type SPARQL**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Configure SPARQL Endpoint: set type
     SPARQL](images/ui/cluster4.jpg)
@@ -311,16 +311,16 @@ the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 6.  Enter /sparql as the Path param in the Virtual Directory Information
     section and click Save Changes:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="clst5" class="figure">
+    <div>
 
     **Figure 2.189. Configure SPARQL Endpoint: set /sparql virtual
     directory**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Configure SPARQL Endpoint: set /sparql virtual
     directory](images/ui/cluster5.jpg)
@@ -338,15 +338,15 @@ the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 7.  The SPARQL endpoint will not be accessible on
     http://hostname:port/sparql the the newly configured slave nodes:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="clst6" class="figure">
+    <div>
 
     **Figure 2.190. Configure SPARQL Endpoint: SPARQL Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Configure SPARQL Endpoint: SPARQL
     Endpoint](images/ui/cluster6.jpg)
@@ -394,9 +394,9 @@ the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 
 </div>
 
-<div id="clusterstcnfconfnodesconfigload" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -418,9 +418,9 @@ cluster, to provide the desired load balancing.
 
 </div>
 
-<div id="clusterstcnfconfnodesconfigaddinf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -434,7 +434,7 @@ cluster, to provide the desired load balancing.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Only the Primary Node of an Elastic Cluster may be configured as a
   Publisher for Virtuoso Replication Cluster purposes.

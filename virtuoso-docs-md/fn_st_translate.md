@@ -1,10 +1,10 @@
-<div id="fn_st_translate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ the provided dX, dY and dZ.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_translate" class="funcsynopsis">
+<div>
 
 |                           |                   |
 |---------------------------|-------------------|
@@ -26,7 +26,7 @@ the provided dX, dY and dZ.
 |                           | in `dY ` any ,    |
 |                           | in `dZ ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ the provided dX, dY and dZ.
 
 </div>
 
-<div id="desc_st_translate" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ dX, dY and dZ.
 
 </div>
 
-<div id="params_st_translate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id132060" class="refsect2">
+<div>
 
 ### shape
 
@@ -57,7 +57,7 @@ Geometry.
 
 </div>
 
-<div id="id132063" class="refsect2">
+<div>
 
 ### dX
 
@@ -65,7 +65,7 @@ X coordinate.
 
 </div>
 
-<div id="id132066" class="refsect2">
+<div>
 
 ### dY
 
@@ -73,7 +73,7 @@ Y coordinate.
 
 </div>
 
-<div id="id132069" class="refsect2">
+<div>
 
 ### dZ
 
@@ -83,15 +83,15 @@ Z coordinate.
 
 </div>
 
-<div id="examples_st_translate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_translate" class="example">
+<div>
 
 **Example 24.674. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.TTLP ('
@@ -137,7 +137,7 @@ http://geo-api-demo/polygon3      POLYGON((1.10 3.20,2.10 4.20,1.10 5.20,0.10 4.
 
 </div>
 
-<div id="seealso_st_translate" class="refsect1">
+<div>
 
 ## See Also
 

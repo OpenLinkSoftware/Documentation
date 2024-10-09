@@ -1,6 +1,6 @@
-<div id="xmlforproducingvsp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -29,11 +29,11 @@ must be set to allow execution (see
 title="14.1.2. Virtual Directories">Virtual Directories Support and
 Execution Privileges</a> ).
 
-<div id="ex_vxsl1" class="example">
+<div>
 
 **Example 14.14. Executable (V)XSL**
 
-<div class="example-contents">
+<div>
 
 Source of portfolio.vxml
 

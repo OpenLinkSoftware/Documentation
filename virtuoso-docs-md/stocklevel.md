@@ -1,6 +1,6 @@
-<div id="stocklevel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

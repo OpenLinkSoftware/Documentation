@@ -1,10 +1,10 @@
-<div id="fn_dict_destructive_list_rnd_keys" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ dictionary
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_destructive_list_rnd_keys" class="funcsynopsis">
+<div>
 
 |                                             |                               |
 |---------------------------------------------|-------------------------------|
 | ` `**`dict_destructive_list_rnd_keys`**` (` | inout `dict ` dictionary ,    |
 |                                             | in `batch_size ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ dictionary
 
 </div>
 
-<div id="desc_dict_destructive_list_rnd_keys" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ that the dictionary is exausted.
 
 </div>
 
-<div id="params_dict_destructive_list_rnd_keys" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86816" class="refsect2">
+<div>
 
 ### dict
 
@@ -67,7 +67,7 @@ The dictionary where result keys come from.
 
 </div>
 
-<div id="id86819" class="refsect2">
+<div>
 
 ### batch_size
 
@@ -80,7 +80,7 @@ is preferable to keep it below 200000.
 
 </div>
 
-<div id="ret_dict_destructive_list_rnd_keys" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -89,15 +89,15 @@ NULL or an empty dictionary.
 
 </div>
 
-<div id="examples_dict_destructive_list_rnd_keys" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_dict_destructive_list_rnd_keys" class="example">
+<div>
 
 **Example 24.94. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The function gets a dictionary with RDF triples stored as keys and
 inserts all these triples into a given graph.
@@ -128,7 +128,7 @@ create function DB.DBA.INSERT_DICT_IN_GRAPH (in graph_iri varchar, in triples_di
 
 </div>
 
-<div id="seealso_dict_destructive_list_rnd_keys" class="refsect1">
+<div>
 
 ## See Also
 

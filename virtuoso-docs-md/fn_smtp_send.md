@@ -1,10 +1,10 @@
-<div id="fn_smtp_send" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ smtp_send — send message to SMTP server
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_smtp_send_01" class="funcsynopsis">
+<div>
 
 |                        |                          |
 |------------------------|--------------------------|
@@ -25,7 +25,7 @@ smtp_send — send message to SMTP server
 |                        | in `recipient ` string , |
 |                        | in `body ` string `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ smtp_send — send message to SMTP server
 
 </div>
 
-<div id="desc_smtp_send_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ The message Body contains headers such as Subject, From, To, Cc, Bcc and
 then continues with the actual message text itself. New lines can be
 added using '\r\n'
 
-<div id="examples_smtp_send_02" class="example">
+<div>
 
 **Example 24.377. Example:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 'Subject: subject message\r\nFrom: sender\r\nTo: recipient\r\nCc:
@@ -73,11 +73,11 @@ headers and the message body text.
 
   
 
-<div id="examples_smtp_send_03" class="example">
+<div>
 
 **Example 24.378. Example:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 smtp_send(

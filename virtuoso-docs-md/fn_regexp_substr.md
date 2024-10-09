@@ -1,10 +1,10 @@
-<div id="fn_regexp_substr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ substring
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regexp_substr" class="funcsynopsis">
+<div>
 
 |                                              |                                     |
 |----------------------------------------------|-------------------------------------|
@@ -25,7 +25,7 @@ substring
 |                                              | in `str ` (varchar\|nvarchar) ,     |
 |                                              | in `offset ` integer `)`;           |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,11 +35,11 @@ substring
 
 </div>
 
-<div id="params_regexp_substr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100063" class="refsect2">
+<div>
 
 ### pattern
 
@@ -47,7 +47,7 @@ the regexp pattern string
 
 </div>
 
-<div id="id100066" class="refsect2">
+<div>
 
 ### str
 
@@ -56,7 +56,7 @@ searched for
 
 </div>
 
-<div id="id100069" class="refsect2">
+<div>
 
 ### offset
 
@@ -68,7 +68,7 @@ subexpression and so on
 
 </div>
 
-<div id="desc_09" class="refsect1">
+<div>
 
 ## Description
 
@@ -81,15 +81,15 @@ expression having two subexpressions: '2\[34\]' and '2\[35\]'.
 
 </div>
 
-<div id="examples_regexp_substr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_regexp_substr_1" class="example">
+<div>
 
 **Example 24.253. Simple example**
 
-<div class="example-contents">
+<div>
 
 Let's apply the above regexp to the following source string:
 22232225222323
@@ -148,7 +148,7 @@ second pair of braces.
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Compatibility:">
 <colgroup>
@@ -165,7 +165,7 @@ width="25"><img src="images/note.png" alt="[Note]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The regular
 expressions supported here follow version 7.9 of the Perl Compatible
 Regular Expression (PCRE) syntax.</p>
-<div class="orderedlist">
+<div>
 <ol type="1">
 <li><p><a
 href="https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions"
@@ -182,7 +182,7 @@ target="_top">PCRE.org</a></p></li>
 
 </div>
 
-<div id="seealso_regexp_substr" class="refsect1">
+<div>
 
 ## See Also
 

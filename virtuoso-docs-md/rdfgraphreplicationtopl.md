@@ -1,6 +1,6 @@
-<div id="rdfgraphreplicationtopl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ Typical replication topologies are Chains, Stars and Bi-directional.
 They can be achieved with Virtuoso, by repeating the "Publish" and/or
 "Subscribe" steps on each relevant node.
 
-<div id="rdfgraphreplicationtoplstar" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,15 +36,15 @@ They can be achieved with Virtuoso, by repeating the "Publish" and/or
 
 In a Star, there is one Publisher, and many Subscribers.
 
-<div class="figure-float">
+<div>
 
-<div id="star1" class="figure">
+<div>
 
 **Figure 16.202. Star Replication Topology**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Star Replication Topology](images/ui/topo-star.png)
 
@@ -60,7 +60,7 @@ In a Star, there is one Publisher, and many Subscribers.
 
 To set up a Star, follow the scenario:
 
-<div class="orderedlist">
+<div>
 
 1.  Configure Instance \#1 to Publish.
 
@@ -70,9 +70,9 @@ To set up a Star, follow the scenario:
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -89,9 +89,9 @@ To set up a Star, follow the scenario:
 The following How-To walks you through setting up Virtuoso RDF Graph
 Replication in a Star Topology.
 
-<div id="rdfgraphreplicationtoplstarexpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -105,9 +105,9 @@ Replication in a Star Topology.
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarexprini" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -124,7 +124,7 @@ Replication in a Star Topology.
 Suppose there are 3 Virtuoso instances respectively with the following
 ini parameters values:
 
-<div class="orderedlist">
+<div>
 
 1.  virtuoso1.ini:
 
@@ -202,9 +202,9 @@ ini parameters values:
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarexprdsn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -226,9 +226,9 @@ with names db1, db2 and db3, respectively.
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarexprcnd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -250,9 +250,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarexprph" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -266,19 +266,19 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to Conductor -\> Replication -\> Transactional -\> Publications
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star2" class="figure">
+    <div>
 
     **Figure 16.203. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r6.png)
 
@@ -296,15 +296,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 3.  A publication with the name RDF Publication should be created:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star3" class="figure">
+    <div>
 
     **Figure 16.204. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r7.png)
 
@@ -322,15 +322,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 5.  You will be shown the publication items page:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star4" class="figure">
+    <div>
 
     **Figure 16.205. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r8.png)
 
@@ -350,15 +350,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     http://example.org
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star5" class="figure">
+    <div>
 
     **Figure 16.206. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r9.png)
 
@@ -377,15 +377,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 8.  The item will be created and shown in the list of items for the
     currently viewed publication.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star6" class="figure">
+    <div>
 
     **Figure 16.207. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r10.png)
 
@@ -403,9 +403,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarexprih" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -422,19 +422,19 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 There are several ways to insert data into a Virtuoso Named Graph. In
 this example, we will use the Virtuoso Conductor's Import RDF feature:
 
-<div class="orderedlist">
+<div>
 
 1.  In the Virtuoso Conductor, go to Linked Data -\> Quad Store Upload:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star7" class="figure">
+    <div>
 
     **Figure 16.208. Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Replication Topology](images/ui/uc1.png)
 
@@ -450,7 +450,7 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 2.  In the form:
 
-    <div class="itemizedlist">
+    <div>
 
     - Tick the box for Resource URL and enter your resource URL, for
       e.g.:
@@ -467,15 +467,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star8" class="figure">
+    <div>
 
     **Figure 16.209. Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Replication Topology](images/ui/r2.png)
 
@@ -493,15 +493,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 4.  A successful upload will result in this message:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star9" class="figure">
+    <div>
 
     **Figure 16.210. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r3.png)
 
@@ -524,15 +524,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
      WHERE { ?s ?p ?o }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star10" class="figure">
+    <div>
 
     **Figure 16.211. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r4.png)
 
@@ -554,15 +554,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
      WHERE { ?s ?p ?o }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star11" class="figure">
+    <div>
 
     **Figure 16.212. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r5.png)
 
@@ -580,9 +580,9 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarexprsp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -596,19 +596,19 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to Conductor -\> Replication -\> Transactional -\> Subscriptions
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star12" class="figure">
+    <div>
 
     **Figure 16.213. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r11.png)
 
@@ -624,15 +624,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 2.  Click New Subscription
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star13" class="figure">
+    <div>
 
     **Figure 16.214. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r12.png)
 
@@ -649,15 +649,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 3.  Specify a new Data Source Enter or selected target data source from
     the available connected Data Sources:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star14" class="figure">
+    <div>
 
     **Figure 16.215. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r13.png)
 
@@ -671,15 +671,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star15" class="figure">
+    <div>
 
     **Figure 16.216. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r13a.png)
 
@@ -695,15 +695,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 4.  Click Publications list
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star16" class="figure">
+    <div>
 
     **Figure 16.217. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r15.png)
 
@@ -719,15 +719,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 5.  Select the RDF Publication and click List Items
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star17" class="figure">
+    <div>
 
     **Figure 16.218. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r16.png)
 
@@ -745,15 +745,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 7.  The subscription will be created
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star18" class="figure">
+    <div>
 
     **Figure 16.219. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r18.png)
 
@@ -777,15 +777,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
      WHERE {?s ?p ?o}
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star19" class="figure">
+    <div>
 
     **Figure 16.220. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r19.png)
 
@@ -808,15 +808,15 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
      WHERE {?s ?p ?o}
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star20" class="figure">
+    <div>
 
     **Figure 16.221. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r5.png)
 
@@ -836,9 +836,9 @@ These steps may be repeated for any number of Subscriber.
 
 </div>
 
-<div id="rdfgraphreplicationtoplstarexprch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -852,7 +852,7 @@ These steps may be repeated for any number of Subscriber.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  To check the starting count, on the Destination Virtuoso Instance
     SPARQL Endpoint, execute:
@@ -887,15 +887,15 @@ These steps may be repeated for any number of Subscriber.
       } ;
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star21" class="figure">
+    <div>
 
     **Figure 16.222. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r22.png)
 
@@ -909,15 +909,15 @@ These steps may be repeated for any number of Subscriber.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star22" class="figure">
+    <div>
 
     **Figure 16.223. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r23.png)
 
@@ -941,15 +941,15 @@ These steps may be repeated for any number of Subscriber.
      WHERE { ?s ?p ?o }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="star23" class="figure">
+    <div>
 
     **Figure 16.224. Star Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Star Replication Topology](images/ui/r24.png)
 
@@ -971,9 +971,9 @@ These steps may be repeated for any number of Subscriber.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchain" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -992,15 +992,15 @@ Subscriber. That Subscriber may also serve as a Publisher, again with
 only one Subscriber. The chain ends with a Subscriber which does not
 Publish.
 
-<div class="figure-float">
+<div>
 
-<div id="chain1" class="figure">
+<div>
 
 **Figure 16.225. Chain Replication Topology**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Chain Replication Topology](images/ui/topo-chain.png)
 
@@ -1016,7 +1016,7 @@ Publish.
 
 To set up a Chain, follow the scenario:
 
-<div class="orderedlist">
+<div>
 
 1.  Configure Instance \#1 to Publish.
 
@@ -1030,9 +1030,9 @@ To set up a Chain, follow the scenario:
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1049,9 +1049,9 @@ To set up a Chain, follow the scenario:
 The following How-To walks you through setting up Virtuoso RDF Graph
 Replication in a Chain Topology.
 
-<div id="rdfgraphreplicationtoplchainexpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1065,9 +1065,9 @@ Replication in a Chain Topology.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexprini" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1084,7 +1084,7 @@ Replication in a Chain Topology.
 Suppose there are 3 Virtuoso instances respectively with the following
 ini parameters values:
 
-<div class="orderedlist">
+<div>
 
 1.  virtuoso1.ini:
 
@@ -1162,9 +1162,9 @@ ini parameters values:
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexprdsn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1186,9 +1186,9 @@ with names db1, db2 and db3, respectively.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexprcnd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1210,9 +1210,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexpr_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1226,22 +1226,22 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://example.com:8891/conductor and log in as dba
 
 2.  Go to Conductor - \> Replication - \> Transactional - \>
     Publications
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain2" class="figure">
+    <div>
 
     **Figure 16.226. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m1.png)
 
@@ -1265,15 +1265,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     should be created
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain3" class="figure">
+    <div>
 
     **Figure 16.227. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m2.png)
 
@@ -1291,15 +1291,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 6.  You will be shown the publication items page
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain4" class="figure">
+    <div>
 
     **Figure 16.228. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m3.png)
 
@@ -1319,15 +1319,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     http://example.org
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain5" class="figure">
+    <div>
 
     **Figure 16.229. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m4.png)
 
@@ -1346,15 +1346,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain6" class="figure">
+    <div>
 
     **Figure 16.230. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m5.png)
 
@@ -1372,9 +1372,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexpr_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1388,21 +1388,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Log in at http://example.com:8892/conductor
 
 2.  Go to Replication - \> Transactional - \> Subscriptions
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain7" class="figure">
+    <div>
 
     **Figure 16.231. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m6.png)
 
@@ -1420,15 +1420,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     <span class="emphasis">*New Subscription*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain8" class="figure">
+    <div>
 
     **Figure 16.232. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m7.png)
 
@@ -1444,15 +1444,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 4.  From the list of "Specify new data source" select Data Source db1
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain9" class="figure">
+    <div>
 
     **Figure 16.233. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m8.png)
 
@@ -1468,15 +1468,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 5.  Enter for db1 dba user credentials
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain10" class="figure">
+    <div>
 
     **Figure 16.234. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m9.png)
 
@@ -1498,15 +1498,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     will be shown in the "Connected Data Sources" list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain11" class="figure">
+    <div>
 
     **Figure 16.235. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m10.png)
 
@@ -1526,15 +1526,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     the "Connected Data Sources" list and click "Publications list"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain12" class="figure">
+    <div>
 
     **Figure 16.236. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m11.png)
 
@@ -1552,15 +1552,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain13" class="figure">
+    <div>
 
     **Figure 16.237. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m12.png)
 
@@ -1576,15 +1576,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 10. As result will be shown the "Confirm subscription" page.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain14" class="figure">
+    <div>
 
     **Figure 16.238. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m13.png)
 
@@ -1601,15 +1601,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 11. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain15" class="figure">
+    <div>
 
     **Figure 16.239. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m14.png)
 
@@ -1627,15 +1627,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 13. The subscription will be created.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain16" class="figure">
+    <div>
 
     **Figure 16.240. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m15.png)
 
@@ -1653,9 +1653,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexpr_03" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1669,22 +1669,22 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://example.com:8892/conductor and log in as dba
 
 2.  Go to Conductor - \> Replication - \> Transactional - \>
     Publications
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain17" class="figure">
+    <div>
 
     **Figure 16.241. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m16.png)
 
@@ -1708,15 +1708,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     should be created
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain18" class="figure">
+    <div>
 
     **Figure 16.242. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m17.png)
 
@@ -1734,15 +1734,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 6.  You will be shown the publication items page
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain19" class="figure">
+    <div>
 
     **Figure 16.243. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m18.png)
 
@@ -1762,15 +1762,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     http://example.org
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain20" class="figure">
+    <div>
 
     **Figure 16.244. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m19.png)
 
@@ -1789,15 +1789,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain21" class="figure">
+    <div>
 
     **Figure 16.245. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m20.png)
 
@@ -1815,9 +1815,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexpr_04" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1831,21 +1831,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Log in at http://example.com:8893/conductor
 
 2.  Go to Replication - \> Transactional - \> Subscriptions
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain22" class="figure">
+    <div>
 
     **Figure 16.246. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m21.png)
 
@@ -1863,15 +1863,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     <span class="emphasis">*New Subscription*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain23" class="figure">
+    <div>
 
     **Figure 16.247. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m22.png)
 
@@ -1887,15 +1887,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 4.  From the list of "Specify new data source" select Data Source db2
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain24" class="figure">
+    <div>
 
     **Figure 16.248. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m23.png)
 
@@ -1911,15 +1911,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 5.  Enter for db2 dba user credentials
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain25" class="figure">
+    <div>
 
     **Figure 16.249. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m24.png)
 
@@ -1935,15 +1935,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 6.  Click "Add Data Source"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain26" class="figure">
+    <div>
 
     **Figure 16.250. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m25.png)
 
@@ -1964,15 +1964,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     will be shown in the "Connected Data Sources" list. Select it and
     click "Publications list"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain27" class="figure">
+    <div>
 
     **Figure 16.251. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m26.png)
 
@@ -1990,15 +1990,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain28" class="figure">
+    <div>
 
     **Figure 16.252. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m27.png)
 
@@ -2014,15 +2014,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 9.  As result will be shown the "Confirm subscription" page.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain29" class="figure">
+    <div>
 
     **Figure 16.253. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m28.png)
 
@@ -2039,15 +2039,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 10. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain30" class="figure">
+    <div>
 
     **Figure 16.254. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m29.png)
 
@@ -2065,15 +2065,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 12. The subscription will be created.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain31" class="figure">
+    <div>
 
     **Figure 16.255. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m30.png)
 
@@ -2091,9 +2091,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainind" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2107,21 +2107,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Log in at http://example.com:8891/conductor
 
 2.  Go to Linked Data -\> Quad Store Upload:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain32" class="figure">
+    <div>
 
     **Figure 16.256. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/uc1.png)
 
@@ -2137,7 +2137,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 3.  In the shown form:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Tick the box for
 
@@ -2155,15 +2155,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
         http://example.org
         ```
 
-        <div class="figure-float">
+        <div>
 
-        <div id="chain33" class="figure">
+        <div>
 
         **Figure 16.257. Chain Replication Topology**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Chain Replication Topology](images/ui/m32.png)
 
@@ -2183,15 +2183,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 5.  A successful upload will result in a shown message.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain34" class="figure">
+    <div>
 
     **Figure 16.258. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m33.png)
 
@@ -2215,15 +2215,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     WHERE { ?s ?p ?o }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain35" class="figure">
+    <div>
 
     **Figure 16.259. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m34.png)
 
@@ -2243,15 +2243,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain36" class="figure">
+    <div>
 
     **Figure 16.260. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m35.png)
 
@@ -2269,9 +2269,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexcdd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2285,7 +2285,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  To check the starting count, on each of the Destination Virtuoso
     Instances db2 and db3 from SPARQL Endpoint execute:
@@ -2302,15 +2302,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain37" class="figure">
+    <div>
 
     **Figure 16.261. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m35.png)
 
@@ -2328,9 +2328,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexadd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2344,7 +2344,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Disconnect db2 and db3.
 
@@ -2372,15 +2372,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
       } ;
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain38" class="figure">
+    <div>
 
     **Figure 16.262. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m36.png)
 
@@ -2398,15 +2398,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 4.  As result the triples will be inserted
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain39" class="figure">
+    <div>
 
     **Figure 16.263. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m36a.png)
 
@@ -2436,15 +2436,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain40" class="figure">
+    <div>
 
     **Figure 16.264. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m38.png)
 
@@ -2462,9 +2462,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplchainexchki" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2478,7 +2478,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Start instances db2 and db3
 
@@ -2498,15 +2498,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="chain41" class="figure">
+    <div>
 
     **Figure 16.265. Chain Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Chain Replication Topology](images/ui/m38.png)
 
@@ -2528,9 +2528,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbid" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2544,9 +2544,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2570,9 +2570,9 @@ db1 ---->
  db2
 ```
 
-<div id="rdfgraphreplicationtoplbidexpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2586,9 +2586,9 @@ db1 ---->
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprini" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2605,7 +2605,7 @@ db1 ---->
 Suppose there are 2 Virtuoso instances respectively with the following
 ini parameters values:
 
-<div class="orderedlist">
+<div>
 
 1.  virtuoso1.ini:
 
@@ -2659,9 +2659,9 @@ ini parameters values:
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprdsn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2683,9 +2683,9 @@ and db2 respectively.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcnd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2707,9 +2707,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcph" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2723,21 +2723,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://example.com:8892/conductor and log in as dba
 
 2.  Go to Conductor -\> Replication -\> Transactional -\> Publications
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1" class="figure">
+    <div>
 
     **Figure 16.266. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd1.png)
 
@@ -2761,15 +2761,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     should be created
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_01" class="figure">
+    <div>
 
     **Figure 16.267. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd2.png)
 
@@ -2787,15 +2787,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 6.  You will be shown the publication items page
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_02" class="figure">
+    <div>
 
     **Figure 16.268. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd3.png)
 
@@ -2815,15 +2815,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     http://example.org
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_03" class="figure">
+    <div>
 
     **Figure 16.269. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd4.png)
 
@@ -2842,15 +2842,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_04" class="figure">
+    <div>
 
     **Figure 16.270. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd5.png)
 
@@ -2868,9 +2868,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2884,21 +2884,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Log in at http://example.com:8891/conductor
 
 2.  Go to Replication -\> Transactional -\> Subscriptions
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_05" class="figure">
+    <div>
 
     **Figure 16.271. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd6.png)
 
@@ -2916,15 +2916,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     <span class="emphasis">*New Subscription*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_06" class="figure">
+    <div>
 
     **Figure 16.272. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd7.png)
 
@@ -2940,15 +2940,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 4.  From the list of "Specify new data source" select Data Source db2
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_07" class="figure">
+    <div>
 
     **Figure 16.273. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd8.png)
 
@@ -2964,15 +2964,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 5.  Enter for db2 dba user credentials
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_08" class="figure">
+    <div>
 
     **Figure 16.274. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd9.png)
 
@@ -2994,15 +2994,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     will be shown in the "Connected Data Sources" list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_09" class="figure">
+    <div>
 
     **Figure 16.275. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd10.png)
 
@@ -3022,15 +3022,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     the "Connected Data Sources" list and click "Publications list"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_10" class="figure">
+    <div>
 
     **Figure 16.276. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd11.png)
 
@@ -3048,15 +3048,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_11" class="figure">
+    <div>
 
     **Figure 16.277. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd12.png)
 
@@ -3072,15 +3072,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 10. As result will be shown the "Confirm subscription" page.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_12" class="figure">
+    <div>
 
     **Figure 16.278. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd13.png)
 
@@ -3097,15 +3097,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 11. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_13" class="figure">
+    <div>
 
     **Figure 16.279. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd14.png)
 
@@ -3123,15 +3123,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 13. The subscription will be created.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_14" class="figure">
+    <div>
 
     **Figure 16.280. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd15.png)
 
@@ -3149,9 +3149,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcpd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3165,21 +3165,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://example.com:8891/conductor and log in as dba
 
 2.  Go to Conductor -\> Replication -\> Transactional -\> Publications
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_15" class="figure">
+    <div>
 
     **Figure 16.281. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd16.png)
 
@@ -3203,15 +3203,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     should be created
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_16" class="figure">
+    <div>
 
     **Figure 16.282. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd17.png)
 
@@ -3229,15 +3229,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 6.  You will be shown the publication items page
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_17" class="figure">
+    <div>
 
     **Figure 16.283. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd18.png)
 
@@ -3257,15 +3257,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     http://example.org
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_18" class="figure">
+    <div>
 
     **Figure 16.284. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd19.png)
 
@@ -3284,15 +3284,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_19" class="figure">
+    <div>
 
     **Figure 16.285. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd20.png)
 
@@ -3310,9 +3310,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcsh" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3326,21 +3326,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Log in at http://example.com:8892/conductor
 
 2.  Go to Replication -\> Transactional -\> Subscriptions
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_20" class="figure">
+    <div>
 
     **Figure 16.286. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd21.png)
 
@@ -3358,15 +3358,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     <span class="emphasis">*New Subscription*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_21" class="figure">
+    <div>
 
     **Figure 16.287. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd22.png)
 
@@ -3382,15 +3382,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 4.  From the list of "Specify new data source" select Data Source db1
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_22" class="figure">
+    <div>
 
     **Figure 16.288. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd23.png)
 
@@ -3406,15 +3406,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 5.  Enter for db1 dba user credentials
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_23" class="figure">
+    <div>
 
     **Figure 16.289. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd24.png)
 
@@ -3430,15 +3430,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 6.  Click "Add Data Source"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_24" class="figure">
+    <div>
 
     **Figure 16.290. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd25.png)
 
@@ -3459,15 +3459,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     will be shown in the "Connected Data Sources" list. Select it and
     click "Publications list"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_25" class="figure">
+    <div>
 
     **Figure 16.291. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd26.png)
 
@@ -3485,15 +3485,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_26" class="figure">
+    <div>
 
     **Figure 16.292. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd27.png)
 
@@ -3509,15 +3509,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 9.  As result will be shown the "Confirm subscription" page.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_27" class="figure">
+    <div>
 
     **Figure 16.293. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd28.png)
 
@@ -3534,15 +3534,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 10. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_28" class="figure">
+    <div>
 
     **Figure 16.294. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd29.png)
 
@@ -3560,15 +3560,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 12. The subscription will be created.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_29" class="figure">
+    <div>
 
     **Figure 16.295. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd30.png)
 
@@ -3586,9 +3586,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprinsh" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3602,21 +3602,21 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Log in at http://example.com:8892/conductor
 
 2.  Go to Linked Data -\> Quad Store Upload:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_30" class="figure">
+    <div>
 
     **Figure 16.296. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/uc1.png)
 
@@ -3648,15 +3648,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     http://example.org
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_31" class="figure">
+    <div>
 
     **Figure 16.297. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd32.png)
 
@@ -3674,15 +3674,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 7.  A successful upload will result in a shown message.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_32" class="figure">
+    <div>
 
     **Figure 16.298. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/m33.png)
 
@@ -3706,15 +3706,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
     WHERE { ?s ?p ?o }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_33" class="figure">
+    <div>
 
     **Figure 16.299. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd34.png)
 
@@ -3734,15 +3734,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_34" class="figure">
+    <div>
 
     **Figure 16.300. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd35.png)
 
@@ -3760,9 +3760,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcdin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3776,7 +3776,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  To check the starting count, execute from db1's SPARQL Endpoint:
 
@@ -3792,15 +3792,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_35" class="figure">
+    <div>
 
     **Figure 16.301. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd35.png)
 
@@ -3818,9 +3818,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprinsd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3834,7 +3834,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Disconnect db1.
 
@@ -3850,15 +3850,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
       } ;
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_36" class="figure">
+    <div>
 
     **Figure 16.302. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd36.png)
 
@@ -3876,15 +3876,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 4.  As result the triples will be inserted
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_37" class="figure">
+    <div>
 
     **Figure 16.303. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd37.png)
 
@@ -3914,15 +3914,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_38" class="figure">
+    <div>
 
     **Figure 16.304. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd38.png)
 
@@ -3940,9 +3940,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcddi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3956,7 +3956,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Start instance db1
 
@@ -3976,15 +3976,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_39" class="figure">
+    <div>
 
     **Figure 16.305. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd38.png)
 
@@ -4002,9 +4002,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprinsah" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4018,7 +4018,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Disconnect db2.
 
@@ -4040,15 +4040,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
       } ;
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_40" class="figure">
+    <div>
 
     **Figure 16.306. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd39.png)
 
@@ -4066,15 +4066,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 4.  As result the triples will be inserted
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_41" class="figure">
+    <div>
 
     **Figure 16.307. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd40.png)
 
@@ -4104,15 +4104,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_42" class="figure">
+    <div>
 
     **Figure 16.308. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd41.png)
 
@@ -4130,9 +4130,9 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div id="rdfgraphreplicationtoplbidexprcdadi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4146,7 +4146,7 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Start instance db2
 
@@ -4166,15 +4166,15 @@ class="ulink" target="_top">conductor_dav.vad</a> package.
 
     as total.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="bid1_43" class="figure">
+    <div>
 
     **Figure 16.309. Bi-directional Replication Topology**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Bi-directional Replication Topology](images/ui/bd41.png)
 

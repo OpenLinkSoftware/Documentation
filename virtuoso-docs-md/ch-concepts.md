@@ -1,6 +1,6 @@
-<div id="ch-concepts" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -35,7 +35,7 @@ and WSDL.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -76,9 +76,9 @@ Support](websrvcsproto.html)</span>
 
 </div>
 
-<div id="coredbengine" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -92,9 +92,9 @@ Support](websrvcsproto.html)</span>
 
 </div>
 
-<div id="logicaldatamodel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -112,9 +112,9 @@ Virtuoso provides an extended Object Relational model which offers all
 the flexibility of relational access with inheritance, run time data
 typing, late binding, identity based access.
 
-<div id="ldmtable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -131,7 +131,7 @@ typing, late binding, identity based access.
 A table is a uniquely named entity that has the following
 characteristics:
 
-<div class="itemizedlist">
+<div>
 
 - Zero or more columns
 
@@ -152,9 +152,9 @@ and its rows can be thought of as a class-instance relationship.
 
 </div>
 
-<div id="ldmcols" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -175,7 +175,7 @@ database wide 'identity'.
 
 A column has the following characteristics:
 
-<div class="itemizedlist">
+<div>
 
 - Table
 
@@ -191,9 +191,9 @@ A column has the following characteristics:
 
 </div>
 
-<div id="ldmkey" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -212,7 +212,7 @@ physical database. A key is always defined with respect to one table but
 may occur in several as a result of inheritance. Keys have unique names
 inside the table. A key has the following characteristics:
 
-<div class="itemizedlist">
+<div>
 
 - A database wide key ID
 
@@ -234,9 +234,9 @@ inside the table. A key has the following characteristics:
 
 </div>
 
-<div id="ldmsubtable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -263,9 +263,9 @@ A table has at most one supertable.
 
 </div>
 
-<div id="ldmobjectid" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -319,9 +319,9 @@ primary key. Declaring a primary key is therefore always advisable.
 
 </div>
 
-<div id="datatypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -337,9 +337,9 @@ primary key. Declaring a primary key is therefore always advisable.
 
 Virtuoso supports most SQL 92 data types.
 
-<div id="dtcharvchar" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -353,7 +353,7 @@ Virtuoso supports most SQL 92 data types.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - CHARACTER
 
@@ -391,9 +391,9 @@ A string literal is delimited by single quotes.
 
 </div>
 
-<div id="dtany" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -407,7 +407,7 @@ A string literal is delimited by single quotes.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - ANY
 
@@ -423,9 +423,9 @@ The length is stored separately. The space required is 2+length
 
 </div>
 
-<div id="dtnumeric" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -439,7 +439,7 @@ The length is stored separately. The space required is 2+length
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - NUMERIC
 
@@ -485,9 +485,9 @@ Literals with an exponent are of type double precision.
 
 </div>
 
-<div id="dtint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -501,7 +501,7 @@ Literals with an exponent are of type double precision.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - INT
 
@@ -523,9 +523,9 @@ type if they fit in the 32 bit range.
 
 </div>
 
-<div id="dtfloat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -539,7 +539,7 @@ type if they fit in the 32 bit range.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - FLOAT
 
@@ -560,9 +560,9 @@ Any number literal with an exponent has the double type, e.g. 2e9.
 
 </div>
 
-<div id="dtreal" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -576,7 +576,7 @@ Any number literal with an exponent has the double type, e.g. 2e9.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - REAL
 
@@ -587,9 +587,9 @@ C *`float`* type. The storage requirement is 5 bytes.
 
 </div>
 
-<div id="dtlong" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -603,7 +603,7 @@ C *`float`* type. The storage requirement is 5 bytes.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - LONG VARCHAR
 
@@ -642,9 +642,9 @@ type.
 
 </div>
 
-<div id="dtvarbinary" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -658,7 +658,7 @@ type.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - VARBINARY
 
@@ -677,9 +677,9 @@ representation of the bytes, 2 characters per byte, e.g.
 
 </div>
 
-<div id="dttimestamp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -693,7 +693,7 @@ representation of the bytes, 2 characters per byte, e.g.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - TIMESTAMP
 
@@ -745,9 +745,9 @@ but not with other types without explicit casting.
 
 </div>
 
-<div id="timezoneless" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -782,9 +782,9 @@ so old applications will continue to work as before. When developing new
 applications, please pay attention to the check-list at the end of this
 section.
 
-<div id="timezonelessenable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -814,7 +814,7 @@ virtuoso.ini and the database file.
 
 The possible variants are:
 
-<div class="itemizedlist">
+<div>
 
 - Never use timezoneless, as it was in old databases. Always set local
   timezone on parsing strings if no timezone specified. An attempt to
@@ -883,9 +883,9 @@ primary variant, `TimezonelessDatetimes=1` as the second best.
 
 </div>
 
-<div id="timezonelessfdstr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -925,9 +925,9 @@ of minutes. For historical reasons, "`-00:00` " notation differs from
 
 </div>
 
-<div id="timezonelesscomp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -949,7 +949,7 @@ order; any order is OK as soon as it does not break the rules and common
 sense, but it should be well-defined. Virtuoso's order for mix of
 timezoned and timezoneless datetimes is very simple.
 
-<div class="orderedlist">
+<div>
 
 1.  All timezoned datetimes are sorted in natural chronological order,
     like if they are converted to GMT first. The value of timezone
@@ -965,9 +965,9 @@ timezoned and timezoneless datetimes is very simple.
 
 </div>
 
-<div id="timezonelessrfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -981,7 +981,7 @@ timezoned and timezoneless datetimes is very simple.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_is_timezoneless.html" class="link"
   title="is_timezoneless"><code
@@ -1149,9 +1149,9 @@ timezoned and timezoneless datetimes is very simple.
 
 </div>
 
-<div id="twobyteunicode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1177,7 +1177,7 @@ data type when used as SQL data.
 
 There are 3 additional data types to enable storing of Unicode data:
 
-<div class="itemizedlist">
+<div>
 
 - NCHAR
 
@@ -1226,9 +1226,9 @@ large enough to represent all the Unicode characters.
 
 </div>
 
-<div id="conceptsudt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1250,7 +1250,7 @@ as exactly required.
 
 User defined types can be used to defined database table columns.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                  |
 |:--------------------------:|:---------------------------------------------------------------------------------|
@@ -1261,9 +1261,9 @@ User defined types can be used to defined database table columns.
 
 </div>
 
-<div id="widefunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1289,9 +1289,9 @@ provides equivalent functions for wide output, such as `make_wstring()`
 
 </div>
 
-<div id="wideodbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1314,9 +1314,9 @@ escapes.
 
 </div>
 
-<div id="nvdb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1338,9 +1338,9 @@ the VDB the Server's system character set is used (where available).
 
 </div>
 
-<div id="lrgdtrelations" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1371,9 +1371,9 @@ All these types have the common trait of representing sequences of
 characters and hence some common operations and conversions are possible
 between them.
 
-<div id="storageindb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1390,7 +1390,7 @@ between them.
 The descriptions below apply to insert and update operations for these
 types:
 
-<div class="itemizedlist">
+<div>
 
 - Long varchar = x, where x is:
 
@@ -1438,9 +1438,9 @@ as specified above if stored as a column value.
 
 </div>
 
-<div id="retrcolvals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1473,9 +1473,9 @@ a persistent XML tree, it comes back as an XML entity.
 
 </div>
 
-<div id="assignments" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1511,9 +1511,9 @@ restrictions.
 
 </div>
 
-<div id="builtinsqlfuncs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1533,7 +1533,7 @@ length is above the maximum length of a varchar, the conversion fails
 and Virtuoso signals an error. You can interchange long and varchar
 types as long as the length remains under the varchar maximum of 16MB.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                            |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1550,9 +1550,9 @@ detect it with type test functions such as `isblob()` .
 
 </div>
 
-<div id="longrowlenlim" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1579,9 +1579,9 @@ inlined there is no difference in retrieval speed.
 
 </div>
 
-<div id="handlinglongdt4inou" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1620,7 +1620,7 @@ title="xml_persistent"><code
 class="function">xml_persistent()</code></a> function with the file://
 protocol.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                          |
 |:--------------------------:|:-------------------------|
@@ -1635,9 +1635,9 @@ protocol.
 
 </div>
 
-<div id="colstore" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1687,9 +1687,9 @@ This will give performance substantially worse than row-wise storage.
 However, bulk inserts and deletes are efficient with column-wise
 storage.
 
-<div id="colstorecreatetblind" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1753,9 +1753,9 @@ time based on the data itself.
 
 </div>
 
-<div id="colstoretransup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1782,9 +1782,9 @@ transactions pending.
 
 </div>
 
-<div id="colstorespaceutil" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1809,7 +1809,7 @@ view has been accessed. Thus, one must first make a selection from
 The columns of <span class="emphasis">*sys_col_info*</span> have the
 following meaning:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*COI_TABLE*</span>
 
@@ -1929,7 +1929,7 @@ The top line is the overall summary across all the compression types.
 The lines below give information per-compression-type. The values of
 <span class="emphasis">*coi_type*</span> mean the following:
 
-<div class="itemizedlist">
+<div>
 
 - 1 -
 
@@ -1990,9 +1990,9 @@ The lines below give information per-compression-type. The values of
 
 </div>
 
-<div id="explvectprcode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2013,7 +2013,7 @@ either by declaring a whole procedure to be vectored or by executing a
 block inside a procedure on multiple values at one time. See more
 detailed description, respectively for:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="vectoredprocedure.html" class="link"
   title="11.7.14. Vectored Procedures">Vectored Procedures</a>
@@ -2032,9 +2032,9 @@ detailed description, respectively for:
 
 </div>
 
-<div id="locking" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2052,9 +2052,9 @@ Virtuoso offers a dynamic locking strategy that combines the high
 resolution of row-level locking with the performance of page locking for
 large transactions.
 
-<div id="isolevels" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2091,9 +2091,9 @@ memory consumption. All transactions that have changed the database also
 have a roll-forward log, used to recreate the effects of the transaction
 during roll-forward recovery.
 
-<div id="readuncommit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2113,9 +2113,9 @@ not be committed, hence there is no guarantee of transaction integrity.
 
 </div>
 
-<div id="readcommit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2158,9 +2158,9 @@ section of virtuoso.ini to 2.
 
 </div>
 
-<div id="rowbyrowautocommit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2216,9 +2216,9 @@ making updates in larger batches but this is under 10%.
 
 </div>
 
-<div id="repeatableread" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2246,9 +2246,9 @@ the original transaction.
 
 </div>
 
-<div id="serializable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2287,9 +2287,9 @@ the rows they operate on, regardless of specified isolation.
 
 </div>
 
-<div id="lockextent" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2316,9 +2316,9 @@ page where there are no row-level locks.
 
 </div>
 
-<div id="transactionsize" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2343,9 +2343,9 @@ always disk-based.
 
 </div>
 
-<div id="internationalization" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2464,7 +2464,7 @@ Example:
 Virtuoso supports the following types of translations from Unicode
 characters to narrow characters:
 
-<div class="itemizedlist">
+<div>
 
 - String translation:
 
@@ -2492,9 +2492,9 @@ characters to narrow characters:
 
 </div>
 
-<div id="charsetclientusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2533,9 +2533,9 @@ translation described above.
 
 </div>
 
-<div id="charsetserverusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2554,9 +2554,9 @@ NCHAR/LONG NVARCHAR to any other type.
 
 </div>
 
-<div id="charsethttpusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2594,9 +2594,9 @@ returned by the FOR XML directive, by XML Views, and for WebDAV content.
 
 </div>
 
-<div id="charsetxmlproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2615,9 +2615,9 @@ defined in the SYS_CHARSETS table and UTF8.
 
 </div>
 
-<div id="gensql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2634,9 +2634,9 @@ defined in the SYS_CHARSETS table and UTF8.
 The `xpath()` and `xpath_contains()` functions translate their
 expressions as follows:
 
-<div id="inputproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2657,9 +2657,9 @@ expressions as follows:
 
 </div>
 
-<div id="outputproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2684,9 +2684,9 @@ expressions as follows:
 
 </div>
 
-<div id="dbccollationsdef" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2714,9 +2714,9 @@ For example a case-insensitive collation can be defined by specifying
 all the lower case letters to have the same collation weights as the
 corresponding uppercase ones.
 
-<div id="coldeffile" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2732,7 +2732,7 @@ corresponding uppercase ones.
 
 The collation definition file should follow the following guidelines:
 
-<div class="itemizedlist">
+<div>
 
 - Each definition should reside on a separate line.
 
@@ -2751,9 +2751,9 @@ class="function">collation_define ( COLLATION_NAME FILE_PATH ADD_TYPE )</code></
 
 </div>
 
-<div id="dbconssys_collations" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2789,7 +2789,7 @@ and vice versa.
 
 A collation can be deleted by deleting its row from SYS_COLLATIONS.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                              |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------|
@@ -2800,9 +2800,9 @@ A collation can be deleted by deleting its row from SYS_COLLATIONS.
 
 </div>
 
-<div id="collation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2837,9 +2837,9 @@ A collation identifier has the same form as any other SQL identifier
 (\<qualifier\>.\<owner\>.\<name\>) and it can be escaped with the same
 syntax as other identifiers.
 
-<div id="tablecoll" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2875,9 +2875,9 @@ ignored until the next restart.
 
 </div>
 
-<div id="dbcoll" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

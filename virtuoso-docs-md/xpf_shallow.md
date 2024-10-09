@@ -1,10 +1,10 @@
-<div id="xpf_shallow" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ shallow — Returns a shallow copy of the given XML entity
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_shallow" class="funcsynopsis">
+<div>
 
 |                            |                    |
 |----------------------------|--------------------|
 | `entity `**`shallow`**` (` | `ent ` entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ shallow — Returns a shallow copy of the given XML entity
 
 </div>
 
-<div id="xpf_desc_shallow" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ given entity but have no children.
 
 </div>
 
-<div id="xpf_params_shallow" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128943" class="refsect2">
+<div>
 
 ### ent
 
@@ -56,7 +56,7 @@ The XML entity to copy
 
 </div>
 
-<div id="xpf_ret_shallow" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ The function returns an XML entity.
 
 </div>
 
-<div id="xpf_errors_shallow" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id128951" class="table">
+<div>
 
-**Table 24.151. Errors signalled by shallow()**
+**Table 24.150. Errors signalled by shallow()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                            | Description                                                                             |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
@@ -87,15 +87,15 @@ The function returns an XML entity.
 
 </div>
 
-<div id="xpf_examples_shallow" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_shallow" class="example">
+<div>
 
 **Example 24.618. Find Martha's spouse**
 
-<div class="example-contents">
+<div>
 
 The idea of the following sample is from W3C's XQuery Use Cases (case
 1.9.4.1.). The query should find all persons whose name is "Marta" and
@@ -121,7 +121,7 @@ about children.
 
 </div>
 
-<div id="xpf_seealso_shallow" class="refsect1">
+<div>
 
 ## See Also
 

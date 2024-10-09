@@ -1,10 +1,10 @@
-<div id="fn_datediff" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ datediff — get difference of 2 dates
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_datediff" class="funcsynopsis">
+<div>
 
 |                       |                           |
 |-----------------------|---------------------------|
@@ -24,7 +24,7 @@ datediff — get difference of 2 dates
 |                       | in `date1 ` datetime ,    |
 |                       | in `date2 ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ datediff — get difference of 2 dates
 
 </div>
 
-<div id="desc_datediff" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ integer in the specified units.
 
 </div>
 
-<div id="params_datediff" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84196" class="refsect2">
+<div>
 
 ### unit
 
@@ -56,7 +56,7 @@ The resulting unit name as a string. May be 'millisecond', 'second',
 
 </div>
 
-<div id="id84199" class="refsect2">
+<div>
 
 ### date1
 
@@ -65,7 +65,7 @@ from *`date2 `*
 
 </div>
 
-<div id="id84204" class="refsect2">
+<div>
 
 ### date2
 
@@ -76,7 +76,7 @@ from
 
 </div>
 
-<div id="ret_datediff" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -85,15 +85,15 @@ Difference of *`date1 `* and *`date2 `* as an <span class="type">integer
 
 </div>
 
-<div id="errors_datediff" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id84217" class="table">
+<div>
 
-**Table 24.17. Errors signalled by `datediff `**
+**Table 24.16. Errors signalled by `datediff `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                      | Description                                           |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------|
@@ -107,15 +107,15 @@ Difference of *`date1 `* and *`date2 `* as an <span class="type">integer
 
 </div>
 
-<div id="examples_datediff" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_datediff" class="example">
+<div>
 
 **Example 24.71. A simple example**
 
-<div class="example-contents">
+<div>
 
 Get hour difference of 1996.10.10 and 1996.10.11.
 
@@ -135,11 +135,11 @@ _________________________________________________________________________
 
   
 
-<div id="ex_datediff_2" class="example">
+<div>
 
 **Example 24.72. Demo DB example**
 
-<div class="example-contents">
+<div>
 
 Get average order processing time in days
 
@@ -163,7 +163,7 @@ _________________________________________________________________________
 
 </div>
 
-<div id="seealso_datediff" class="refsect1">
+<div>
 
 ## See Also
 

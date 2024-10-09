@@ -1,10 +1,10 @@
-<div id="fn_repl_pub_init_image" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_PUB_INIT_IMAGE — create initial image of publication on publisher
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_pub_init_image" class="funcsynopsis">
+<div>
 
 |                                  |                                   |
 |----------------------------------|-----------------------------------|
@@ -24,7 +24,7 @@ REPL_PUB_INIT_IMAGE — create initial image of publication on publisher
 |                                  | in `image_file_path ` varchar ,   |
 |                                  | in `bytes_per_file ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ REPL_PUB_INIT_IMAGE — create initial image of publication on publisher
 
 </div>
 
-<div id="desc_repl_pub_init_image" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ to a several files).
 
 </div>
 
-<div id="params_repl_pub_init_image" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105653" class="refsect2">
+<div>
 
 ### publication
 
@@ -65,7 +65,7 @@ publication account name.
 
 </div>
 
-<div id="id105656" class="refsect2">
+<div>
 
 ### image_file_path
 
@@ -74,7 +74,7 @@ publication.
 
 </div>
 
-<div id="id105659" class="refsect2">
+<div>
 
 ### bytes_per_file
 
@@ -84,15 +84,15 @@ at which bytes count to split file into next slice.
 
 </div>
 
-<div id="examples_repl_pub_init_image" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_pub_init_image_1" class="example">
+<div>
 
 **Example 24.325. Creating and loading of the initial image**
 
-<div class="example-contents">
+<div>
 
 This shows creating a image with inital data of the published items and
 store in the 'tbl_pub.log' file.
@@ -124,7 +124,7 @@ SQL> replay 'tbl_pub.log.1';
 
 </div>
 
-<div id="seealso_repl_pub_init_image" class="refsect1">
+<div>
 
 ## See Also
 

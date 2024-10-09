@@ -1,10 +1,10 @@
-<div id="fn_st_y" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ st_y — Retrieves the y coordinate of a geometry.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_y" class="funcsynopsis">
+<div>
 
 |                   |                  |
 |-------------------|------------------|
 | ` `**`st_y`**` (` | in `g ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ st_y — Retrieves the y coordinate of a geometry.
 
 </div>
 
-<div id="desc_st_y" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Retrieves the y coordinate of a geometry.
 
 </div>
 
-<div id="params_st_y" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90692" class="refsect2">
+<div>
 
 ### g
 
@@ -54,7 +54,7 @@ Geometry
 
 </div>
 
-<div id="ret_st_y" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ Returns double precision.
 
 </div>
 
-<div id="examples_st_y" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_y" class="example">
+<div>
 
 **Example 24.138. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SELECT st_y( st_point (10, 20));
@@ -112,7 +112,7 @@ No. of rows in result: 10
 
 </div>
 
-<div id="seealso_st_y" class="refsect1">
+<div>
 
 ## See Also
 

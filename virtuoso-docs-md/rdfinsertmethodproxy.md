@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodproxy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_xtree_doc" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xtree_doc — returns an entity object created from an XML document
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xtree_doc" class="funcsynopsis">
+<div>
 
 |                        |                                         |
 |------------------------|-----------------------------------------|
@@ -27,7 +27,7 @@ xtree_doc — returns an entity object created from an XML document
 |                        | in `content_language ` varchar ,        |
 |                        | in `dtd_validator_config ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ xtree_doc — returns an entity object created from an XML document
 
 </div>
 
-<div id="desc_81" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ documents (e.g. less than 5 megabytes and xper_doc for larger documents.
 
 </div>
 
-<div id="params_43" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124822" class="refsect2">
+<div>
 
 ### document
 
@@ -63,7 +63,7 @@ well formed XML or HTML document
 
 </div>
 
-<div id="id124825" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -72,7 +72,7 @@ mode (with quiet recovery after any syntax error)
 
 </div>
 
-<div id="id124828" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -81,7 +81,7 @@ given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id124831" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -91,7 +91,7 @@ mode and 'LATIN-1' for HTML mode.
 
 </div>
 
-<div id="id124834" class="refsect2">
+<div>
 
 ### content_language
 
@@ -101,7 +101,7 @@ various human languages')
 
 </div>
 
-<div id="id124837" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -115,7 +115,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="ret_26" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -124,15 +124,15 @@ be a memory-resident structure of nested heterogeneous vectors.
 
 </div>
 
-<div id="examples_28" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xtree_doc" class="example">
+<div>
 
 **Example 24.537. xtree_doc**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare tree any;
@@ -151,7 +151,7 @@ tree := xtree_doc (file_to_string ('doc.xml'));
 
 </div>
 
-<div id="seealso_51" class="refsect1">
+<div>
 
 ## See Also
 

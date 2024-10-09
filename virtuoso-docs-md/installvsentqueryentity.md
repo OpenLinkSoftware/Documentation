@@ -1,6 +1,6 @@
-<div id="installvsentqueryentity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ display controls to the object collections returned from these queries.
 <span class="emphasis">*Query the departments in the School
 database*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  At the beginning of the code file for the
 
@@ -154,7 +154,7 @@ database*</span>
 <span class="emphasis">*Display courses for the selected
 department*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  In the
 

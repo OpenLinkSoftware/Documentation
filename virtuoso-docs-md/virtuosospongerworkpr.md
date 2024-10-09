@@ -1,6 +1,6 @@
-<div id="virtuosospongerworkpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 When an RDF aware client requests data from a network accessible
 resource via the Sponger the following events occur:
 
-<div class="itemizedlist">
+<div>
 
 - A requests in made for data in RDF form, and if RDF is returned
   nothing further happens
@@ -68,7 +68,7 @@ enables the development of Custom Resolvers for naming schemes (e.g.
 URNs) associated with protocols beyond HTTP. Examples of custom
 resolvers include:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://dbpedia.org/resource/LSID" class="ulink"
   target="_top">LSID</a>

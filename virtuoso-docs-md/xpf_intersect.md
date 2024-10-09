@@ -1,10 +1,10 @@
-<div id="xpf_intersect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ intersect — Returns an intersect of two sets
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_intersect" class="funcsynopsis">
+<div>
 
 |                                |                       |
 |--------------------------------|-----------------------|
 | `sequence `**`intersect`**` (` | `set1 ` sequence ,    |
 |                                | `set2 ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ intersect — Returns an intersect of two sets
 
 </div>
 
-<div id="xpf_desc_intersect" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ class="function">distinct() </code></a> function.
 
 </div>
 
-<div id="xpf_params_intersect" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127705" class="refsect2">
+<div>
 
 ### set1, set2
 
@@ -63,7 +63,7 @@ Sequence that contains items of the resulting intersect.
 
 </div>
 
-<div id="xpf_ret_intersect" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,7 +71,7 @@ The function returns a sequence of distinct values.
 
 </div>
 
-<div id="xpf_seealso_intersect" class="refsect1">
+<div>
 
 ## See Also
 

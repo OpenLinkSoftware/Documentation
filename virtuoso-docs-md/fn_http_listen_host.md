@@ -1,10 +1,10 @@
-<div id="fn_http_listen_host" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ user-defined HTTP listener
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_listen_host" class="funcsynopsis">
+<div>
 
 |                                      |                                   |
 |--------------------------------------|-----------------------------------|
@@ -25,7 +25,7 @@ user-defined HTTP listener
 |                                      | in `action ` integer ,            |
 |                                      | in `options ` vector `)`;         |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ user-defined HTTP listener
 
 </div>
 
-<div id="desc_http_listen_host" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ of the listener, 1 for started and 0 for stopped.
 
 </div>
 
-<div id="params_http_listen_host" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92895" class="refsect2">
+<div>
 
 ### interface_address
 
@@ -60,7 +60,7 @@ current state.
 
 </div>
 
-<div id="id92898" class="refsect2">
+<div>
 
 ### action
 
@@ -74,7 +74,7 @@ Can only take one of the following integer values:
 
 </div>
 
-<div id="id92905" class="refsect2">
+<div>
 
 ### options
 
@@ -98,7 +98,7 @@ INI file settings.
 
 </div>
 
-<div id="ret_http_listen_host" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -107,15 +107,15 @@ state of the listener, 1 for started and 0 for stopped.
 
 </div>
 
-<div id="examples_http_listen_host" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_listen_host" class="example">
+<div>
 
 **Example 24.167. Starting/stopping and state retrieval of a listener**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 

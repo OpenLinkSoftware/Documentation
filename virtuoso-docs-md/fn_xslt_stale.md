@@ -1,10 +1,10 @@
-<div id="fn_xslt_stale" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xslt_stale — force reload of XSL stylesheet
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xslt_stale" class="funcsynopsis">
+<div>
 
 |                         |                        |
 |-------------------------|------------------------|
 | ` `**`xslt_stale`**` (` | in `uri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xslt_stale — force reload of XSL stylesheet
 
 </div>
 
-<div id="desc_xslt_stale" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ function is needed to force a reload.
 
 </div>
 
-<div id="params_xslt_stale" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124772" class="refsect2">
+<div>
 
 ### uri
 
@@ -67,7 +67,7 @@ The location of the style sheet to force a reload.
 
 </div>
 
-<div id="errors_xslt_stale" class="refsect1">
+<div>
 
 ## Errors
 
@@ -77,15 +77,15 @@ used by other transaction when the `xslt_stale()` is called.
 
 </div>
 
-<div id="examples_xslt_stale" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xslt_stale" class="example">
+<div>
 
 **Example 24.536. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 sheet := 'virt://WS.WS.SYS_DAV_RES.RES_FULL_PATH.RES_CONTENT:/DAV/stylesheets/document.xsl';
@@ -101,7 +101,7 @@ xslt(sheet, xml_doc_tree);
 
 </div>
 
-<div id="seealso_xslt_stale" class="refsect1">
+<div>
 
 ## See Also
 

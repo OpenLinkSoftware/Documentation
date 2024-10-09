@@ -1,6 +1,6 @@
-<div id="dataccessclientsconfailandbalance" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,9 +37,9 @@ makes use of the ODBC driver, would simply make use of a suitably
 configured JDBC or ODBC connect string to enable Failover or Round Robin
 connections to be made with them.
 
-<div id="dataccessclientsconfailandbalanceodbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -53,9 +53,9 @@ connections to be made with them.
 
 </div>
 
-<div id="dataccessclientsconfailandbalanceodbcf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -75,9 +75,9 @@ Driver={OpenLink Virtuoso};Host=server1:port1,server2:port2,server3:port3;UID=db
 
 </div>
 
-<div id="dataccessclientsconfailandbalanceodbcr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -98,15 +98,15 @@ Driver={OpenLink Virtuoso};Host=server1:port1,server2:port2,server3:port3;UID=db
 Or alternatively ensure the "use Round Robin for failover connection"
 check box in the setup dialog.
 
-<div class="figure-float">
+<div>
 
-<div id="adf1" class="figure">
+<div>
 
 **Figure 7.35. ODBC Round Robin Connect String format**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ODBC Round Robin Connect String format](images/ui/adf1.png)
 

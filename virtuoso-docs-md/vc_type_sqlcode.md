@@ -1,10 +1,10 @@
-<div id="vc_type_sqlcode" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ procedure.
 
 </div>
 
-<div id="vc_desc_sqlcode" class="refsect1">
+<div>
 
 ## Description
 

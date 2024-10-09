@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtuosotipsandtricksgeotr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -62,7 +62,7 @@ first created and thus just needs to be populated with the geometry data
 in the RDF triples, which is what the `DB.DBA.RDF_GEO_FILL ()` function
 does.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:
 ">
@@ -86,7 +86,7 @@ Manipulation of Geometries in RDF</a></p></li>
 <li><p><a href="rdfsparqlgeospatexmp.html" class="link"
 title="16.15.4. GEO Spatial Examples">GEO Spatial Examples</a></p></li>
 <li><p>GEO Spatial Tutorials:</p>
-<div class="itemizedlist">
+<div>
 <ul>
 <li><p><a
 href="http://virtuoso.openlinksw.com/presentations/SPARQL_Tutorials/SPARQL_Tutorials_Part_2/SPARQL_Tutorials_Part_2.html#(26)"

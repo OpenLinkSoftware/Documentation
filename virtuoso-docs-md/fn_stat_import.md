@@ -1,10 +1,10 @@
-<div id="fn_stat_import" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ stat_import — Imports database statistics
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_stat_import" class="funcsynopsis">
+<div>
 
 |                          |                            |
 |--------------------------|----------------------------|
 | ` `**`stat_import`**` (` | in `st_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ stat_import — Imports database statistics
 
 </div>
 
-<div id="desc_stat_import" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ This function imports produced database statistics.
 
 </div>
 
-<div id="params_stat_import" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96202" class="refsect2">
+<div>
 
 ### st_name
 
@@ -54,15 +54,15 @@ Name of the statistics file.
 
 </div>
 
-<div id="examples_stat_import" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_stat_import" class="example">
+<div>
 
 **Example 24.213. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 -- produce statistics for a given database:
@@ -80,7 +80,7 @@ SQL> stat_import (deserialize (file_to_string ('stat.dv')));
 
 </div>
 
-<div id="seealso_stat_import" class="refsect1">
+<div>
 
 ## See Also
 

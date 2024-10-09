@@ -1,10 +1,10 @@
-<div id="fn_bif_arg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -16,11 +16,11 @@ built in function
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bif_arg" class="funcsynopsis">
+<div>
 
 |                             |                             |
 |-----------------------------|-----------------------------|
@@ -29,7 +29,7 @@ built in function
 |                             | int `nth ` ,                |
 |                             | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_array_arg" class="funcsynopsis">
+<div>
 
 |                                   |                             |
 |-----------------------------------|-----------------------------|
@@ -46,7 +46,7 @@ built in function
 |                                   | int `nth ` ,                |
 |                                   | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -54,7 +54,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_array_or_null_arg" class="funcsynopsis">
+<div>
 
 |                                           |                             |
 |-------------------------------------------|-----------------------------|
@@ -63,7 +63,7 @@ built in function
 |                                           | int `nth ` ,                |
 |                                           | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -71,7 +71,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_bin_arg" class="funcsynopsis">
+<div>
 
 |                                 |                             |
 |---------------------------------|-----------------------------|
@@ -80,7 +80,7 @@ built in function
 |                                 | int `nth ` ,                |
 |                                 | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -88,7 +88,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_double_arg" class="funcsynopsis">
+<div>
 
 |                                    |                             |
 |------------------------------------|-----------------------------|
@@ -97,7 +97,7 @@ built in function
 |                                    | int `nth ` ,                |
 |                                    | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -105,7 +105,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_entity_arg" class="funcsynopsis">
+<div>
 
 |                                    |                             |
 |------------------------------------|-----------------------------|
@@ -114,7 +114,7 @@ built in function
 |                                    | int `nth ` ,                |
 |                                    | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -122,7 +122,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_float_arg" class="funcsynopsis">
+<div>
 
 |                                   |                             |
 |-----------------------------------|-----------------------------|
@@ -131,7 +131,7 @@ built in function
 |                                   | int `nth ` ,                |
 |                                   | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -139,7 +139,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_long_arg" class="funcsynopsis">
+<div>
 
 |                                  |                             |
 |----------------------------------|-----------------------------|
@@ -148,7 +148,7 @@ built in function
 |                                  | int `nth ` ,                |
 |                                  | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -156,7 +156,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_long_or_char_arg" class="funcsynopsis">
+<div>
 
 |                                          |                             |
 |------------------------------------------|-----------------------------|
@@ -165,7 +165,7 @@ built in function
 |                                          | int `nth ` ,                |
 |                                          | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -173,7 +173,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_string_arg" class="funcsynopsis">
+<div>
 
 |                                    |                             |
 |------------------------------------|-----------------------------|
@@ -181,7 +181,7 @@ built in function
 |                                    | int `nth ` ,                |
 |                                    | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -189,7 +189,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_string_or_null_arg" class="funcsynopsis">
+<div>
 
 |                                            |                             |
 |--------------------------------------------|-----------------------------|
@@ -198,7 +198,7 @@ built in function
 |                                            | int `nth ` ,                |
 |                                            | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -206,7 +206,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_string_or_wide_or_null_arg" class="funcsynopsis">
+<div>
 
 |                                                    |                             |
 |----------------------------------------------------|-----------------------------|
@@ -215,7 +215,7 @@ built in function
 |                                                    | int `nth ` ,                |
 |                                                    | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -223,7 +223,7 @@ built in function
 
 </div>
 
-<div id="fsyn_bif_strses_arg" class="funcsynopsis">
+<div>
 
 |                                    |                             |
 |------------------------------------|-----------------------------|
@@ -232,7 +232,7 @@ built in function
 |                                    | int `nth ` ,                |
 |                                    | char \* `func ` `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -242,7 +242,7 @@ built in function
 
 </div>
 
-<div id="desc_bif_arg" class="refsect1">
+<div>
 
 ## Description
 
@@ -262,11 +262,11 @@ Functions (BIFs).
 
 </div>
 
-<div id="params_bif_arg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81068" class="refsect2">
+<div>
 
 ### qst
 
@@ -274,7 +274,7 @@ Query instance.
 
 </div>
 
-<div id="id81071" class="refsect2">
+<div>
 
 ### args
 
@@ -282,7 +282,7 @@ input arguments.
 
 </div>
 
-<div id="id81074" class="refsect2">
+<div>
 
 ### nth
 
@@ -290,7 +290,7 @@ which argument to retrieve (zero indexed).
 
 </div>
 
-<div id="id81077" class="refsect2">
+<div>
 
 ### func
 
@@ -300,7 +300,7 @@ name of calling function. This will be printed in the SQL error message.
 
 </div>
 
-<div id="ret_bif_arg" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -311,11 +311,11 @@ function not to have validation of a data type.
 The values returned by any of these belong to the query instance, and
 the bif is not authorized to modify or free them.
 
-<div id="id81084" class="table">
+<div>
 
 **Table 24.5. Return types**
 
-<div class="table-contents">
+<div>
 
 | Function                       | Type validated and returned            |
 |--------------------------------|----------------------------------------|
@@ -341,15 +341,15 @@ the bif is not authorized to modify or free them.
 
 </div>
 
-<div id="examples_bif_arg" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_bif_len" class="example">
+<div>
 
 **Example 24.22. Creating a function my_length()**
 
-<div class="example-contents">
+<div>
 
 A function called `my_length ` written by developers, may process a
 string argument by making a call to `bif_string_arg` .

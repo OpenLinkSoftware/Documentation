@@ -1,6 +1,6 @@
-<div id="droptable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

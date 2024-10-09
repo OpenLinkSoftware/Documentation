@@ -1,6 +1,6 @@
-<div id="whatisnewto2x" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,15 +14,15 @@
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="varch32" class="figure">
+<div>
 
 **Figure 1.1. OpenLink Virtuoso Product Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![OpenLink Virtuoso Product Architecture](images/varch32.jpg)
 
@@ -36,9 +36,9 @@
 
 </div>
 
-<div id="oxmldocstore" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

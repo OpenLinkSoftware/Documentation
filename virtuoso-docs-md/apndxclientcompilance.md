@@ -1,6 +1,6 @@
-<div id="apndxclientcompilance" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,11 +19,11 @@ clients can connect to all servers. For best results, the version should
 be identical on both ends of ODBC and JDBC connections. However, the
 following table shows which combinations should generally be successful.
 
-<div id="id77766" class="table">
+<div>
 
 **Table 23.7. **
 
-<div class="table-contents">
+<div>
 
 |               |     |     |     |     |     |     |     |     |
 |---------------|-----|-----|-----|-----|-----|-----|-----|-----|

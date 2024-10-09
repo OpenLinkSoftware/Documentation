@@ -1,6 +1,6 @@
-<div id="aggregates" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,9 +43,9 @@ instead of many. SQL optimizer may use sophisticated heuristics to find
 the fastest way of doing a complex query with aggregates but it cannot
 optimize the code of a stored procedure.
 
-<div id="aggcreateaggrstmt1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

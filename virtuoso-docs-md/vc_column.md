@@ -1,10 +1,10 @@
-<div id="vc_column" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ column — A column marker.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_column" class="funcsynopsis">
+<div>
 
 |                        |                               |
 |------------------------|-------------------------------|
@@ -31,7 +31,7 @@ column — A column marker.
 |                        | `debug-srcline` (optional) ,  |
 |                        | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -41,7 +41,7 @@ column — A column marker.
 
 </div>
 
-<div id="vc_desc_column" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,7 +56,7 @@ procedures that return resultsets and for the data-source control.
 
 </div>
 
-<div id="vc_attrs_column" class="refsect1">
+<div>
 
 ## Attributes
 

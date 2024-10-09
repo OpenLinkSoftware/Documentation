@@ -1,10 +1,10 @@
-<div id="fn_set_row_count" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ in the context of the caller
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_set_row_count" class="funcsynopsis">
+<div>
 
 |                                   |                           |
 |-----------------------------------|---------------------------|
 | `integer `**`set_row_count`**` (` | in `increment ` integer , |
 |                                   | in `what ` integer `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ in the context of the caller
 
 </div>
 
-<div id="desc_set_row_count" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ the affected rows counter is an negative integer it will be set to zero.
 
 </div>
 
-<div id="params_set_row_count" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109751" class="refsect2">
+<div>
 
 ### increment
 
@@ -59,7 +59,7 @@ also
 
 </div>
 
-<div id="id109754" class="refsect2">
+<div>
 
 ### what
 
@@ -70,7 +70,7 @@ context the counter, 1 - to update the counter in context of the caller.
 
 </div>
 
-<div id="ret_set_row_count" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -79,16 +79,16 @@ not applicable.
 
 </div>
 
-<div id="examples_set_row_count" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_set_row_count" class="example">
+<div>
 
 **Example 24.372. Setting the affected rows counter in instead of
 trigger**
 
-<div class="example-contents">
+<div>
 
 The following SQL script will make two instead of triggers on atable
 "hid" and inside them will are called set_row_count to set the rows
@@ -134,7 +134,7 @@ which are used to demonstrate the return value of row_count.
 
 </div>
 
-<div id="seealso_set_row_count" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodshttpput" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

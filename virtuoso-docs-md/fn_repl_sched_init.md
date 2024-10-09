@@ -1,10 +1,10 @@
-<div id="fn_repl_sched_init" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ REPL_SCHED_INIT — adds scheduled job to synchronize subscriptions
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_sched_init" class="funcsynopsis">
+<div>
 
 |                              |      |
 |------------------------------|------|
 | ` `**`REPL_SCHED_INIT`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ REPL_SCHED_INIT — adds scheduled job to synchronize subscriptions
 
 </div>
 
-<div id="desc_repl_sched_init" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,15 +43,15 @@ corresponding row from the SYS_SCHEDULED_EVENTS table.
 
 </div>
 
-<div id="examples_repl_sched_init" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_sched_init_1" class="example">
+<div>
 
 **Example 24.328. Enabling a synchronization for all subscriptions**
 
-<div class="example-contents">
+<div>
 
 This will enable scheduled task to synchronize all defined
 subscriptions.
@@ -68,7 +68,7 @@ SQL> DB.DBA.REPL_SCHED_INIT ();
 
 </div>
 
-<div id="seealso_sched_init" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_xslt_sheet" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xslt_sheet — declares an XSL stylesheet for use
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xslt_sheet" class="funcsynopsis">
+<div>
 
 |                         |                       |
 |-------------------------|-----------------------|
 | ` `**`xslt_sheet`**` (` | in `uri ` varchar ,   |
 |                         | in `entity ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xslt_sheet — declares an XSL stylesheet for use
 
 </div>
 
-<div id="desc_xslt_sheet" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ be used as the stylesheet argument of xslt.
 
 </div>
 
-<div id="params_xslt_sheet" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124725" class="refsect2">
+<div>
 
 ### uri
 
@@ -58,7 +58,7 @@ The location of the XSLT style sheet
 
 </div>
 
-<div id="id124728" class="refsect2">
+<div>
 
 ### entity
 
@@ -69,15 +69,15 @@ function
 
 </div>
 
-<div id="examples_xslt_sheet" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xslt_sheet" class="example">
+<div>
 
 **Example 24.535. Preparing a Style Sheet from the File System**
 
-<div class="example-contents">
+<div>
 
 The `xslt_view()` function first defines the style sheet from a file.
 The `xslt_sheet()` function is called with the name and the root element
@@ -109,7 +109,7 @@ create procedure xslt_view (in v varchar, in xst varchar)
 
 </div>
 
-<div id="seealso_xslt_sheet" class="refsect1">
+<div>
 
 ## See Also
 

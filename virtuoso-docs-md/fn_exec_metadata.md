@@ -1,10 +1,10 @@
-<div id="fn_exec_metadata" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ exec_metadata — Compiles a SQL statement and returns the metadata
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exec_metadata" class="funcsynopsis">
+<div>
 
 |                            |                             |
 |----------------------------|-----------------------------|
@@ -25,7 +25,7 @@ exec_metadata — Compiles a SQL statement and returns the metadata
 |                            | out `message ` varchar ,    |
 |                            | out `metadata ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ exec_metadata — Compiles a SQL statement and returns the metadata
 
 </div>
 
-<div id="desc_exec_metadata" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ state, error message, column metadata if the statement is a select.
 
 </div>
 
-<div id="params_exec_metadata" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88104" class="refsect2">
+<div>
 
 ### *`str `*
 
@@ -59,7 +59,7 @@ for parameter markers.
 
 </div>
 
-<div id="id88109" class="refsect2">
+<div>
 
 ### state
 
@@ -69,7 +69,7 @@ error is not present.
 
 </div>
 
-<div id="id88113" class="refsect2">
+<div>
 
 ### message
 
@@ -79,18 +79,18 @@ present.
 
 </div>
 
-<div id="id88117" class="refsect2">
+<div>
 
 ### metadata
 
 An output parameter of type <span class="type">vector </span> returning
 the metadata of the statement and its result.
 
-<div id="id88121" class="table">
+<div>
 
-**Table 24.29. The stmt_meta array**
+**Table 24.28. The stmt_meta array**
 
-<div class="table-contents">
+<div>
 
 | Element | Name        | Description                                                                                                        |
 |---------|-------------|--------------------------------------------------------------------------------------------------------------------|
@@ -104,11 +104,11 @@ the metadata of the statement and its result.
 
   
 
-<div id="id88143" class="table">
+<div>
 
-**Table 24.30. Columns array of metadata**
+**Table 24.29. Columns array of metadata**
 
-<div class="table-contents">
+<div>
 
 | Element | Name       | Description                                                                               |
 |---------|------------|-------------------------------------------------------------------------------------------|
@@ -130,14 +130,14 @@ the metadata of the statement and its result.
 
 </div>
 
-<div id="errors_exec_metadata" class="refsect1">
+<div>
 
 ## Errors
 
 The function will generate a SQL 22023 error value if a supplied
 parameter is not of the type expected.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|
@@ -149,15 +149,15 @@ parameter is not of the type expected.
 
 </div>
 
-<div id="examples_exec_metadata" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_exec_metadata" class="example">
+<div>
 
 **Example 24.105. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure get_meta (in str varchar)
@@ -179,7 +179,7 @@ create procedure get_meta (in str varchar)
 
 </div>
 
-<div id="seealso_exec_metadata" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_dav_api_search" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ a DAV collection or resource
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dav_search_id" class="funcsynopsis">
+<div>
 
 |                                   |                         |
 |-----------------------------------|-------------------------|
 | `integer `**`DAV_SEARCH_ID`**` (` | in `path ` varchar ,    |
 |                                   | in `what ` char(1) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,14 +32,14 @@ a DAV collection or resource
 
 </div>
 
-<div id="fsyn_dav_search_path" class="funcsynopsis">
+<div>
 
 |                                     |                         |
 |-------------------------------------|-------------------------|
 | `varchar `**`DAV_SEARCH_PATH`**` (` | in `id ` integer ,      |
 |                                     | in `what ` char(1) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ a DAV collection or resource
 
 </div>
 
-<div id="fsyn_dav_dir_list" class="funcsynopsis">
+<div>
 
 |                              |                             |
 |------------------------------|-----------------------------|
@@ -56,7 +56,7 @@ a DAV collection or resource
 |                              | in `auth_uid ` varchar ,    |
 |                              | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -66,7 +66,7 @@ a DAV collection or resource
 
 </div>
 
-<div id="desc_dav_api_search" class="refsect1">
+<div>
 
 ## Description
 
@@ -95,11 +95,11 @@ information about the requested path:
 
 </div>
 
-<div id="params_dav_api_search" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id85106" class="refsect2">
+<div>
 
 ### path
 
@@ -107,7 +107,7 @@ Name of DAV location to search.
 
 </div>
 
-<div id="id85109" class="refsect2">
+<div>
 
 ### what
 
@@ -116,7 +116,7 @@ or 'P' for parent collection.
 
 </div>
 
-<div id="id85112" class="refsect2">
+<div>
 
 ### id
 
@@ -124,7 +124,7 @@ Identifier of resource or collection, for example from DAV_SEARCH_ID().
 
 </div>
 
-<div id="id85115" class="refsect2">
+<div>
 
 ### recursive
 
@@ -133,7 +133,7 @@ is 0 which causes a search in current path only.
 
 </div>
 
-<div id="id85118" class="refsect2">
+<div>
 
 ### auth_uid
 
@@ -142,7 +142,7 @@ null.
 
 </div>
 
-<div id="id85121" class="refsect2">
+<div>
 
 ### auth_pwd
 
@@ -152,15 +152,15 @@ Password of Administrator. Default is null.
 
 </div>
 
-<div id="errors_dav_api_search" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id85126" class="table">
+<div>
 
-**Table 24.21. Errors signalled by DAV\_\* functions**
+**Table 24.20. Errors signalled by DAV\_\* functions**
 
-<div class="table-contents">
+<div>
 
 | Error Code                           | Description                                                                                                              |
 |--------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
@@ -193,15 +193,15 @@ Password of Administrator. Default is null.
 
 </div>
 
-<div id="examples_dav_api_search" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dav_api_search_1" class="example">
+<div>
 
 **Example 24.79. Searching in WebDAV**
 
-<div class="example-contents">
+<div>
 
 The example shows retrieval of the resource id by given path string
 
@@ -229,7 +229,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_dav_api_search" class="refsect1">
+<div>
 
 ## See Also
 

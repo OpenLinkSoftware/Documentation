@@ -1,10 +1,10 @@
-<div id="vc_placeholder" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ placeholder — Placeholder for original page in the decoration page.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_placeholder" class="funcsynopsis">
+<div>
 
 |                             |                              |
 |-----------------------------|------------------------------|
@@ -24,7 +24,7 @@ placeholder — Placeholder for original page in the decoration page.
 |                             | `debug-srcline` (optional) , |
 |                             | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ placeholder — Placeholder for original page in the decoration page.
 
 </div>
 
-<div id="vc_desc_placeholder" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ original page should be placed.
 
 </div>
 
-<div id="vc_attrs_placeholder" class="refsect1">
+<div>
 
 ## Attributes
 

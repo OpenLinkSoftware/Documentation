@@ -1,6 +1,6 @@
-<div id="chpntset" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_mime_part" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ mime_part — used to compose a MIME message body part.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mime_part" class="funcsynopsis">
+<div>
 
 |                           |                                     |
 |---------------------------|-------------------------------------|
@@ -25,7 +25,7 @@ mime_part — used to compose a MIME message body part.
 |                           | in `transfer_encoding ` varchar ,   |
 |                           | in `data ` varchar `)`;             |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ mime_part — used to compose a MIME message body part.
 
 </div>
 
-<div id="desc_mime_part" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ This function is used to make a MIME part that can be used with the
 
 </div>
 
-<div id="params_mime_part" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96551" class="refsect2">
+<div>
 
 ### content_type
 
@@ -62,7 +62,7 @@ value.
 
 </div>
 
-<div id="id96554" class="refsect2">
+<div>
 
 ### content_disposition
 
@@ -72,7 +72,7 @@ Content-Disposition header should include a file name parameter.
 
 </div>
 
-<div id="id96557" class="refsect2">
+<div>
 
 ### transfer_encoding
 
@@ -80,7 +80,7 @@ The encoding method to use, such as base64.
 
 </div>
 
-<div id="id96560" class="refsect2">
+<div>
 
 ### data
 
@@ -90,7 +90,7 @@ The content of the message.
 
 </div>
 
-<div id="ret_mime_part" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -99,15 +99,15 @@ function.
 
 </div>
 
-<div id="examples_mime_part" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_mime_part" class="example">
+<div>
 
 **Example 24.218. Creating a MIME message body**
 
-<div class="example-contents">
+<div>
 
 This example will show the output in ISQL of producing a two part MIME
 message using the mime_body() and mime_part() functions.
@@ -149,7 +149,7 @@ dGhpcyBpcyBhIHNlY29uZA==
 
 </div>
 
-<div id="seealso_mime_part" class="refsect1">
+<div>
 
 ## See Also
 

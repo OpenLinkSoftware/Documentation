@@ -1,10 +1,10 @@
-<div id="fn_smime_verify" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ smime_verify — Verifies signature of signed MIME message
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_smime_verify" class="funcsynopsis">
+<div>
 
 |                                  |                           |
 |----------------------------------|---------------------------|
@@ -25,7 +25,7 @@ smime_verify — Verifies signature of signed MIME message
 |                                  | out `signer_certs ` any , |
 |                                  | in `flags ` integer `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ smime_verify — Verifies signature of signed MIME message
 
 </div>
 
-<div id="desc_smime_verify" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ PEM-encoded certificates.
 
 </div>
 
-<div id="params_smime_verify" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110124" class="refsect2">
+<div>
 
 ### msg_text
 
@@ -58,7 +58,7 @@ The text of the message
 
 </div>
 
-<div id="id110127" class="refsect2">
+<div>
 
 ### certs
 
@@ -66,7 +66,7 @@ array of strings containing CA certificates
 
 </div>
 
-<div id="id110130" class="refsect2">
+<div>
 
 ### signer_certs
 
@@ -74,17 +74,17 @@ for receipt of PEM encoded certificates
 
 </div>
 
-<div id="id110133" class="refsect2">
+<div>
 
 ### flags
 
 A bitmask. See table below for valid mask values. Default is 0.
 
-<div id="id110136" class="table">
+<div>
 
-**Table 24.80. Bit values for *`flags `***
+**Table 24.79. Bit values for *`flags `***
 
-<div class="table-contents">
+<div>
 
 | Mask | Name           | Description                                                                                 |
 |------|----------------|---------------------------------------------------------------------------------------------|
@@ -104,7 +104,7 @@ A bitmask. See table below for valid mask values. Default is 0.
 
 </div>
 
-<div id="ret_smime_verify" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -113,15 +113,15 @@ the signers is returned.
 
 </div>
 
-<div id="examples_smime_verify" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_smime_verify_01" class="example">
+<div>
 
 **Example 24.374. Verifying a Signed MIME Message**
 
-<div class="example-contents">
+<div>
 
 Example (where signed.eml contains the output from smime_sign.
 
@@ -142,7 +142,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_smime_verify" class="refsect1">
+<div>
 
 ## See Also
 

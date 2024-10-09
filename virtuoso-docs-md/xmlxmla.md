@@ -1,6 +1,6 @@
-<div id="xmlxmla" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -266,11 +266,11 @@ grant execute on DB.."Discover" to "XMLA";
 grant execute on DB.."Execute" to "XMLA";
 ```
 
-<div id="ex_virtdir4xmla" class="example">
+<div>
 
 **Example 17.36. Simple Discovery Request/Response examples**
 
-<div class="example-contents">
+<div>
 
 The following example shows a simple request for discovering data
 sources and response from server.

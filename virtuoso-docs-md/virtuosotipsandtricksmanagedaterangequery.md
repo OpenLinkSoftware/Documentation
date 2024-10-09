@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksmanagedaterangequery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

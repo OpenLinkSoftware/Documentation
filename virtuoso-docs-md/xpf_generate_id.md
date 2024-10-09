@@ -1,10 +1,10 @@
-<div id="xpf_generate_id" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ generate-id — Returns a string that uniquely identifies the node.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_generate_id" class="funcsynopsis">
+<div>
 
 |                                |                        |
 |--------------------------------|------------------------|
 | `string `**`generate-id`**` (` | `place ` node_set `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ generate-id — Returns a string that uniquely identifies the node.
 
 </div>
 
-<div id="xpf_desc_generate_id" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ If the argument is omitted, it defaults to the context node.
 
 </div>
 
-<div id="xpf_params_generate_id" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127575" class="refsect2">
+<div>
 
 ### place
 
@@ -66,7 +66,7 @@ Node-set whose first node is used as a key to generate a resulting ID
 
 </div>
 
-<div id="xpf_ret_generate_id" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ String which is syntactically an XML name.
 
 </div>
 
-<div id="xpf_examples_generate_id" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_generate_id" class="example">
+<div>
 
 **Example 24.591. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 generate_id(.)

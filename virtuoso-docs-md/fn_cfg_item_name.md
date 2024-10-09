@@ -1,10 +1,10 @@
-<div id="fn_cfg_item_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ cfg_item_name — get nth item name from ini file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cfg_item_name" class="funcsynopsis">
+<div>
 
 |                            |                               |
 |----------------------------|-------------------------------|
@@ -24,7 +24,7 @@ cfg_item_name — get nth item name from ini file
 |                            | in `section ` varchar ,       |
 |                            | in `item_index ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ cfg_item_name — get nth item name from ini file
 
 </div>
 
-<div id="desc_cfg_item_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ returned, otherwise on success the function returns the item name.
 
 </div>
 
-<div id="params_cfg_item_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81726" class="refsect2">
+<div>
 
 ### path
 
@@ -56,7 +56,7 @@ Name of the INI file.
 
 </div>
 
-<div id="id81729" class="refsect2">
+<div>
 
 ### section
 
@@ -64,7 +64,7 @@ Name of the section in the INI file.
 
 </div>
 
-<div id="id81732" class="refsect2">
+<div>
 
 ### item_index
 
@@ -74,7 +74,7 @@ Zero based index to the item within the section to be listed.
 
 </div>
 
-<div id="ret_cfg_item_name" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -83,15 +83,15 @@ referenced by *`section `* and *`item_index `* .
 
 </div>
 
-<div id="examples_cfg_item_name" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_cfg_item_name_1" class="example">
+<div>
 
 **Example 24.32. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Display the first keyname in the \[Parameters\] section of the current
 virtuoso.ini file.
@@ -113,7 +113,7 @@ ServerPort
 
 </div>
 
-<div id="seealso_cfg_item_name" class="refsect1">
+<div>
 
 ## See Also
 

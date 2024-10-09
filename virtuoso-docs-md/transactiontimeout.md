@@ -1,6 +1,6 @@
-<div id="transactiontimeout" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

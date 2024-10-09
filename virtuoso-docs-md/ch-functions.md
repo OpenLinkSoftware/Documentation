@@ -1,6 +1,6 @@
-<div id="ch-functions" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -31,7 +31,7 @@ can be used in XPATH, XSLT, XQuery.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 

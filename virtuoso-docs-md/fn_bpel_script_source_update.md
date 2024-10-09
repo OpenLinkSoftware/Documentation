@@ -1,10 +1,10 @@
-<div id="fn_bpel_script_source_update" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ repository
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_script_source_update_01" class="funcsynopsis">
+<div>
 
 |                                             |                        |
 |---------------------------------------------|------------------------|
@@ -25,7 +25,7 @@ repository
 |                                             | in `url ` varchar ,    |
 |                                             | in `content ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,11 +35,11 @@ repository
 
 </div>
 
-<div id="params_script_source_update_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130128" class="refsect2">
+<div>
 
 ### scp_id
 
@@ -48,7 +48,7 @@ with new source
 
 </div>
 
-<div id="id130132" class="refsect2">
+<div>
 
 ### url
 
@@ -56,7 +56,7 @@ with new source
 
 </div>
 
-<div id="id130136" class="refsect2">
+<div>
 
 ### content
 
@@ -67,7 +67,7 @@ script source directly.
 
 </div>
 
-<div id="ret_script_source_update_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,7 +75,7 @@ This function does not return a value
 
 </div>
 
-<div id="desc_script_source_update_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -85,15 +85,15 @@ do that. The URL and content parameters works as in script_upload.
 
 </div>
 
-<div id="examples_script_source_update_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_script_source_update_01" class="example">
+<div>
 
 **Example 24.645. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
       SQL> BPEL.BPEL.script_source_update (1, 'file:/LoanFlow.bpel', null);

@@ -1,10 +1,10 @@
-<div id="fn_http_request_status" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ response
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_request_status" class="funcsynopsis">
+<div>
 
 |                                  |                                |
 |----------------------------------|--------------------------------|
 | ` `**`http_request_status`**` (` | in `status_line ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ response
 
 </div>
 
-<div id="desc_http_request_status" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ headers.
 
 </div>
 
-<div id="params_http_request_status" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93398" class="refsect2">
+<div>
 
 ### status_line
 

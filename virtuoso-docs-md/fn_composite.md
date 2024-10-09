@@ -1,10 +1,10 @@
-<div id="fn_composite" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ composite — create a composite object
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_composite" class="funcsynopsis">
+<div>
 
 |                                     |               |
 |-------------------------------------|---------------|
 | `composite obj `**`composite`**` (` | in `x ` any , |
 |                                     | `... ` `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ composite — create a composite object
 
 </div>
 
-<div id="desc_composite" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ argument. The total serialized length of the arguments may not exceed
 
 </div>
 
-<div id="params_composite" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82488" class="refsect2">
+<div>
 
 ### *`x `* ...
 
@@ -59,7 +59,7 @@ The function takes a variable number of parameters of any type.
 
 </div>
 
-<div id="ret_composite" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -67,15 +67,15 @@ A <span class="type">composite </span> object
 
 </div>
 
-<div id="errors_composite" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id82498" class="table">
+<div>
 
-**Table 24.13. Errors signalled by composite**
+**Table 24.12. Errors signalled by composite**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                          | Description                                      |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------|--------------------------------------------------|
@@ -89,15 +89,15 @@ A <span class="type">composite </span> object
 
 </div>
 
-<div id="examples_composite" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_composite" class="example">
+<div>
 
 **Example 24.45. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get second component of a composite of two integers. See reference page
 for <a href="fn_composite_ref.html" class="link"
@@ -122,7 +122,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_composite" class="refsect1">
+<div>
 
 ## See Also
 

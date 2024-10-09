@@ -1,10 +1,10 @@
-<div id="vc_radio_button" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ radio-button — Scriptable radio button.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_radio_button" class="funcsynopsis">
+<div>
 
 |                              |                                      |
 |------------------------------|--------------------------------------|
@@ -48,7 +48,7 @@ radio-button — Scriptable radio button.
 |                              | `debug-srcline` (optional) ,         |
 |                              | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -58,7 +58,7 @@ radio-button — Scriptable radio button.
 
 </div>
 
-<div id="vc_desc_radio_button" class="refsect1">
+<div>
 
 ## Description
 
@@ -66,7 +66,7 @@ is a scriptable version of HTML radio button.
 
 </div>
 
-<div id="vc_attrs_radio_button" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -263,7 +263,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_radio_button" class="refsect1">
+<div>
 
 ## Declaration of type vspx_radio_button
 
@@ -280,15 +280,15 @@ overriding method vc_set_model () returns any
 
 </div>
 
-<div id="vc_ex_radio_button" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_radio_button__0" class="example">
+<div>
 
 **Example 14.39.  Groups of radio buttons.**
 
-<div class="example-contents">
+<div>
 
 The form contains two groups of radio buttons, three button in each
 group.
@@ -331,7 +331,7 @@ group.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                     |
 |:--------------------------:|:--------------------------------------------------------------------|

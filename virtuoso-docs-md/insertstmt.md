@@ -1,6 +1,6 @@
-<div id="insertstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -71,9 +71,9 @@ value will be used for that column. If no default value has been
 specified either by a CREATE or MODIFY TABLE statement then NULL will be
 used.
 
-<div id="insertsoft" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

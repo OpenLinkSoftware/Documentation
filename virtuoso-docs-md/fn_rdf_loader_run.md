@@ -1,10 +1,10 @@
-<div id="fn_rdf_loader_run" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ rdf_loader_run — Performs bulk load.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_loader_run" class="funcsynopsis">
+<div>
 
 |                             |                                   |
 |-----------------------------|-----------------------------------|
 | ` `**`rdf_loader_run`**` (` | in `max_files ` integer := NULL , |
 |                             | in `log_enable ` int := 2 `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ rdf_loader_run — Performs bulk load.
 
 </div>
 
-<div id="desc_rdf_loader_run" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ into older versions.
 
 </div>
 
-<div id="params_rdf_loader_run" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100524" class="refsect2">
+<div>
 
 ### max_files
 
@@ -64,7 +64,7 @@ Maximum files to be loaded.
 
 </div>
 
-<div id="id100527" class="refsect2">
+<div>
 
 ### log_enable
 
@@ -76,15 +76,15 @@ nodes), then the log_enable mode should be set to 3.
 
 </div>
 
-<div id="examples_rdf_loader_run" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_loader_run" class="example">
+<div>
 
 **Example 24.260. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> rdf_loader_run();
@@ -98,7 +98,7 @@ SQL> rdf_loader_run();
 
 </div>
 
-<div id="seealso_rdf_loader_run_01" class="refsect1">
+<div>
 
 ## See Also
 

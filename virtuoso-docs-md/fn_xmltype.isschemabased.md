@@ -1,10 +1,10 @@
-<div id="fn_xmltype.isschemabased" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ schema-based, otherwise returns 0.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.isschemabased" class="funcsynopsis">
+<div>
 
 |                                    |      |
 |------------------------------------|------|
 | ` `**`XMLType.isSchemaBased`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ schema-based, otherwise returns 0.
 
 </div>
 
-<div id="desc_xmltype.isschemabased" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ a URI of an XML schema that can be used for schema validation via
 
 </div>
 
-<div id="ret_xmltype.isschemabased" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -51,15 +51,15 @@ The function returns 1 or 0.
 
 </div>
 
-<div id="examples_xmltype.isschemabased" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.isschemabased" class="example">
+<div>
 
 **Example 24.556. Simple tests**
 
-<div class="example-contents">
+<div>
 
 The following three calls display the behaviour of the
 `isSchemaBased() ` . Note that it does no actual checks whether the
@@ -104,7 +104,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.isschemabased" class="refsect1">
+<div>
 
 ## See Also
 

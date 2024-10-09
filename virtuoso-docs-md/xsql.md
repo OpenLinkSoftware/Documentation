@@ -1,6 +1,6 @@
-<div id="xsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -57,9 +57,9 @@ file system or Virtuoso DAV. The editing can take place using a regular
 text editor or a supporting XML editor or some specialized third-party
 XSQL tool.
 
-<div id="xsqlsyntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

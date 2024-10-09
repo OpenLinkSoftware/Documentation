@@ -1,10 +1,10 @@
-<div id="fn_group_concat_distinct" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ token strings delimited with delimiter
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_group_concat_distinct" class="funcsynopsis">
+<div>
 
 |                                           |                          |
 |-------------------------------------------|--------------------------|
 | ` `**`DB.DBA.GROUP_CONCAT_DISTINCT`**` (` | in `token ` varchar ,    |
 |                                           | in `delim ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ token strings delimited with delimiter
 
 </div>
 
-<div id="desc_group_concat_distinct" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ SPARQL queries. In SQL queries the prefix is "DB.DBA".
 
 </div>
 
-<div id="params_group_concat_distinct" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102748" class="refsect2">
+<div>
 
 ### token
 
@@ -60,7 +60,7 @@ An item that should be added to a delimited list.
 
 </div>
 
-<div id="id102751" class="refsect2">
+<div>
 
 ### delim
 
@@ -70,7 +70,7 @@ The delimeter character to be used in the concatenation.
 
 </div>
 
-<div id="ret_group_concat_distinct" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,15 +78,15 @@ any
 
 </div>
 
-<div id="examples_group_concat_distinct" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_group_concat_distinct" class="example">
+<div>
 
 **Example 24.288. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SPARQL
@@ -118,7 +118,7 @@ No. of rows in result: 2
 
 </div>
 
-<div id="seealso_group_concat_distinct" class="refsect1">
+<div>
 
 ## See Also
 

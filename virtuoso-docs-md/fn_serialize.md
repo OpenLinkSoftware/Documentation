@@ -1,10 +1,10 @@
-<div id="fn_serialize" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ arrays into a binary string and back
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_serialize" class="funcsynopsis">
+<div>
 
 |                                     |                     |
 |-------------------------------------|---------------------|
 | `binary string `**`serialize`**` (` | in `tree ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -31,13 +31,13 @@ arrays into a binary string and back
 
 </div>
 
-<div id="fsyn_deserialize" class="funcsynopsis">
+<div>
 
 |                                       |                        |
 |---------------------------------------|------------------------|
 | `binary string `**`deserialize`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ arrays into a binary string and back
 
 </div>
 
-<div id="desc_17" class="refsect1">
+<div>
 
 ## Description
 
@@ -62,7 +62,7 @@ is the identity function.
 
 These functions are useful for persisting heterogeneous arrays.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                       |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------|

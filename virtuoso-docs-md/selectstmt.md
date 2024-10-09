@@ -1,6 +1,6 @@
-<div id="selectstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="selectsyntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

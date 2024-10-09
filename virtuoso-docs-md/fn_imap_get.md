@@ -1,10 +1,10 @@
-<div id="fn_imap_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ imap_get — get messages from a IMAP4 mail server.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_imap_get" class="funcsynopsis">
+<div>
 
 |                            |                            |
 |----------------------------|----------------------------|
@@ -28,7 +28,7 @@ imap_get — get messages from a IMAP4 mail server.
 |                            | in `list ` vector ,        |
 |                            | in `use_ssl ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ imap_get — get messages from a IMAP4 mail server.
 
 </div>
 
-<div id="desc_imap_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ version 4rev1 as defined in rfc3501.
 
 </div>
 
-<div id="params_imap_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99111" class="refsect2">
+<div>
 
 ### host
 
@@ -61,7 +61,7 @@ default for port, so to connect to the standard port for IMAP, use
 
 </div>
 
-<div id="id99114" class="refsect2">
+<div>
 
 ### user
 
@@ -69,7 +69,7 @@ default for port, so to connect to the standard port for IMAP, use
 
 </div>
 
-<div id="id99118" class="refsect2">
+<div>
 
 ### password
 
@@ -77,7 +77,7 @@ default for port, so to connect to the standard port for IMAP, use
 
 </div>
 
-<div id="id99122" class="refsect2">
+<div>
 
 ### command
 
@@ -94,7 +94,7 @@ Command <span class="type">string </span> . Valid values are '
 
 </div>
 
-<div id="id99135" class="refsect2">
+<div>
 
 ### folder_id
 
@@ -102,7 +102,7 @@ IMAP4 mail box ID (e.g. 'INBOX', 'Draft' and etc) to work with.
 
 </div>
 
-<div id="id99138" class="refsect2">
+<div>
 
 ### list
 
@@ -110,7 +110,7 @@ A list of items to work with, depends on the command.
 
 </div>
 
-<div id="id99141" class="refsect2">
+<div>
 
 ### use_ssl
 
@@ -120,13 +120,13 @@ Use SSL connection, 1 - use, 0 - do not use.
 
 </div>
 
-<div id="ret_07" class="refsect1">
+<div>
 
 ## Return Types
 
 Depends on the command value:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*list* </span> : - list of mail boxes in
   selected mail box (needs folder_id, if folder_id = '' work with root
@@ -458,15 +458,15 @@ Depends on the command value:
 
 </div>
 
-<div id="errors_imap_get" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id99225" class="table">
+<div>
 
-**Table 24.63. Errors signalled by all commands**
+**Table 24.62. Errors signalled by all commands**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                                                       | Description |
 |---------------------------------|---------------------------------------|------------------------------------------------------------------------------------------------------------------|-------------|
@@ -485,11 +485,11 @@ Depends on the command value:
 
   
 
-<div id="id99299" class="table">
+<div>
 
-**Table 24.64. Errors signalled by command "delete":**
+**Table 24.63. Errors signalled by command "delete":**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                         | Description |
 |---------------------------------|---------------------------------------|------------------------------------------------------------------------------------|-------------|
@@ -502,11 +502,11 @@ Depends on the command value:
 
   
 
-<div id="id99325" class="table">
+<div>
 
-**Table 24.65. Errors signalled by command "create":**
+**Table 24.64. Errors signalled by command "create":**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                         | Description |
 |---------------------------------|---------------------------------------|------------------------------------------------------------------------------------|-------------|
@@ -519,11 +519,11 @@ Depends on the command value:
 
   
 
-<div id="id99351" class="table">
+<div>
 
-**Table 24.66. Errors signalled by command "select":**
+**Table 24.65. Errors signalled by command "select":**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                                   | Description |
 |---------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------|-------------|
@@ -536,11 +536,11 @@ Depends on the command value:
 
   
 
-<div id="id99377" class="table">
+<div>
 
-**Table 24.67. Errors signalled by command "expunge":**
+**Table 24.66. Errors signalled by command "expunge":**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                   | Description |
 |---------------------------------|---------------------------------------|------------------------------------------------------------------------------|-------------|
@@ -552,11 +552,11 @@ Depends on the command value:
 
   
 
-<div id="id99395" class="table">
+<div>
 
-**Table 24.68. Errors signalled by command "rename":**
+**Table 24.67. Errors signalled by command "rename":**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                                                                      | Description |
 |---------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -570,11 +570,11 @@ Depends on the command value:
 
   
 
-<div id="id99429" class="table">
+<div>
 
-**Table 24.69. Errors signalled by command "fetch":**
+**Table 24.68. Errors signalled by command "fetch":**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                          | Description |
 |---------------------------------|---------------------------------------|-------------------------------------------------------------------------------------|-------------|
@@ -588,11 +588,11 @@ Depends on the command value:
 
   
 
-<div id="id99463" class="table">
+<div>
 
-**Table 24.70. Errors signalled by command "delete":**
+**Table 24.69. Errors signalled by command "delete":**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                      | Description |
 |---------------------------------|---------------------------------------|-----------------------------------------------------------------|-------------|
@@ -604,11 +604,11 @@ Depends on the command value:
 
   
 
-<div id="id99481" class="table">
+<div>
 
-**Table 24.71. Errors signalled by incorrect command value:**
+**Table 24.70. Errors signalled by incorrect command value:**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                                  | Description |
 |---------------------------------|---------------------------------------|-----------------------------------------------------------------------------|-------------|
@@ -622,7 +622,7 @@ Depends on the command value:
 
 </div>
 
-<div id="seealso_01_01" class="refsect1">
+<div>
 
 ## See Also
 

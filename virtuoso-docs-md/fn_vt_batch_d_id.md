@@ -1,10 +1,10 @@
-<div id="fn_vt_batch_d_id" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ vt_batch_d_id — Specify a document to update in a vt batch.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_batch_d_id_01" class="funcsynopsis">
+<div>
 
 |                            |                     |
 |----------------------------|---------------------|
 | ` `**`vt_batch_d_id`**` (` | in `d_id ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ vt_batch_d_id — Specify a document to update in a vt batch.
 
 </div>
 
-<div id="desc_vt_batch_d_id_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ ascending order of ID.
 
 </div>
 
-<div id="params_vt_batch_d_id_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118786" class="refsect2">
+<div>
 
 ### d_id
 
@@ -56,15 +56,15 @@ the free text document ID of the row whose index entry is to be updated.
 
 </div>
 
-<div id="errors_vt_batch_d_id_01" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id118791" class="table">
+<div>
 
-**Table 24.115. Errors signalled by**
+**Table 24.114. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -78,7 +78,7 @@ the free text document ID of the row whose index entry is to be updated.
 
 </div>
 
-<div id="seealso_vt_batch_d_id_01" class="refsect1">
+<div>
 
 ## See Also
 

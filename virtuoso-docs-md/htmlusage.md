@@ -1,6 +1,6 @@
-<div id="htmlusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,9 +19,9 @@ a FORM with data from the user being sent when a submit button is
 pressed. We then examine the elements and attributes of this simple form
 that are important to us at this stage.
 
-<div id="basicform" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,11 +35,11 @@ that are important to us at this stage.
 
 </div>
 
-<div id="id66211" class="example">
+<div>
 
 **Example 19.11. Simple Forms**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <HTML>
@@ -89,9 +89,9 @@ button or it is the first time the page has been visited.
 
 </div>
 
-<div id="formvalues" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -108,11 +108,11 @@ button or it is the first time the page has been visited.
 Now we add some VSP to check the values of the parameters in the form.
 VSP markup is typically contained in \<?vsp ... ?\> blocks.
 
-<div id="id66220" class="example">
+<div>
 
 **Example 19.12. Forms and Values**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <HTML>
@@ -161,9 +161,9 @@ array that contains all page parameters from the previous FORM state.
 
 </div>
 
-<div id="formandvspconditions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -181,11 +181,11 @@ Now we extend this further to add some conditional control so that if a
 value was entered we can respond directly to it. We will also use a
 variable this time, which must be declared first.
 
-<div id="id66237" class="example">
+<div>
 
 **Example 19.13. Conditional Processing Using IF**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <HTML>
@@ -225,9 +225,9 @@ variable this time, which must be declared first.
 
 </div>
 
-<div id="vsppgctrl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -244,11 +244,11 @@ variable this time, which must be declared first.
 We now extend this to control the whole content of the page. In this
 example we see that VSP and HTML can be interleaved.
 
-<div id="id66243" class="example">
+<div>
 
 **Example 19.14. Page Control**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <HTML>
@@ -307,9 +307,9 @@ to return you to the previous state when pressed.
 
 </div>
 
-<div id="params" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -325,11 +325,11 @@ to return you to the previous state when pressed.
 
 Now we will use two pages to do the same job as in the demo above.
 
-<div id="id66250" class="example">
+<div>
 
 **Example 19.15. Using more than one page**
 
-<div class="example-contents">
+<div>
 
 Page 1
 
@@ -376,9 +376,9 @@ Page 2
 
 </div>
 
-<div id="formsandjs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

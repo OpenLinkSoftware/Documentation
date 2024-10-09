@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodsimilerdfbankapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,7 +26,7 @@ Accounts
 
 Add in the shown form:
 
-<div class="itemizedlist">
+<div>
 
 - For bank: address: http://demo.openlinksw.com/bank
 

@@ -1,6 +1,6 @@
-<div id="jdbc4features" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="jdbc4dsprops" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,11 +36,11 @@ source using JDBC `javax.sql.DataSource` instances. The Virtuoso JDBC
 interface in the `virtuoso.jdbc4.VirtuosoDataSource` class, supporting
 the following properties:
 
-<div id="jdbcdatasourceprops_01" class="decimalstyle">
+<div>
 
 **Table 7.16. JDBC 4.0 VirtuosoDataSource properties**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Name           | Type             | URL Option Equivalent | Description                                    |     |
 |:---------------|------------------|-----------------------|------------------------------------------------|-----|
@@ -101,9 +101,9 @@ Additionally, the following attributres are supported:
 
 </div>
 
-<div id="jdbcdspool4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -264,9 +264,9 @@ public void setMaxStatements(int parm);
 
 </div>
 
-<div id="jdbcxa4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -306,7 +306,7 @@ Virtuoso XA datasources. The exact procedure of this depends on the J2EE
 server in use (such as BEA WebLogic, IBM WebSphere, etc). Generally,
 this includes two steps:
 
-<div class="orderedlist">
+<div>
 
 1.  Include the JDBC driver's jar file into J2EE server's class path.
 
@@ -325,7 +325,7 @@ Driver For JDBC 4.0 javax.sql.DataSource</a> .
 For example, the following has to be done in case of Sun's J2EE
 Reference Implementation.
 
-<div class="orderedlist">
+<div>
 
 1.  Add the path of virtjdbc4.jar to the J2EE_CLASSPATH variable in the
     file \$(J2EE_HOME)/bin/userconfig.bat on Windows or
@@ -354,9 +354,9 @@ Reference Implementation.
 
 </div>
 
-<div id="jdbcrs4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -381,9 +381,9 @@ implement it's methods.
 
 </div>
 
-<div id="jdbcrdf4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

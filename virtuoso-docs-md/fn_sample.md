@@ -1,10 +1,10 @@
-<div id="fn_sample" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ it.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sample" class="funcsynopsis">
+<div>
 
 |                            |                          |
 |----------------------------|--------------------------|
 | ` `**`DB.DBA.SAMPLE`**` (` | in `token ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ it.
 
 </div>
 
-<div id="desc_sample" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ Note: Using the "sql:" prefix is mandatory for this aggregate.
 
 </div>
 
-<div id="params_sample" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102653" class="refsect2">
+<div>
 
 ### strg
 
@@ -58,7 +58,7 @@ An item from multiset.
 
 </div>
 
-<div id="ret_sample" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,15 +66,15 @@ any
 
 </div>
 
-<div id="examples_sample" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sample" class="example">
+<div>
 
 **Example 24.286. **
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SPARQL
@@ -102,7 +102,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_sample" class="refsect1">
+<div>
 
 ## See Also
 

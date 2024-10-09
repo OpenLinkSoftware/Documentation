@@ -1,10 +1,10 @@
-<div id="fn_sub_schedule" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ subscription
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sub_schedule" class="funcsynopsis">
+<div>
 
 |                           |                             |
 |---------------------------|-----------------------------|
@@ -25,7 +25,7 @@ subscription
 |                           | in `publication ` varchar , |
 |                           | in `interval ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ subscription
 
 </div>
 
-<div id="desc_sub_schedule" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ Add scheduled job for periodically synchronizing a subscription.
 
 </div>
 
-<div id="params_sub_schedule" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112668" class="refsect2">
+<div>
 
 ### server_name
 
@@ -55,7 +55,7 @@ target publisher server name.
 
 </div>
 
-<div id="id112671" class="refsect2">
+<div>
 
 ### publication
 
@@ -63,7 +63,7 @@ publication name.
 
 </div>
 
-<div id="id112674" class="refsect2">
+<div>
 
 ### interval
 
@@ -73,7 +73,7 @@ interval between synchronization attempts (in minutes).
 
 </div>
 
-<div id="seealso_sub_schedule" class="refsect1">
+<div>
 
 ## See Also
 

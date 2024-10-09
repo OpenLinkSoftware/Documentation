@@ -1,6 +1,6 @@
-<div id="ointernetsrv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

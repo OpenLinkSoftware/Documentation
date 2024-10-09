@@ -1,10 +1,10 @@
-<div id="fn_xml_get_system_paths" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xml_get_system_paths — Returns vector of all system paths.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_get_system_paths" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | ` `**`xml_get_system_paths`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xml_get_system_paths — Returns vector of all system paths.
 
 </div>
 
-<div id="id123214" class="refsection">
+<div>
 
 ## 
 

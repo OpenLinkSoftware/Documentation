@@ -1,10 +1,10 @@
-<div id="fn_vt_batch_feed_offband" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ batch.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_batch_feed_offband_01" class="funcsynopsis">
+<div>
 
 |                                    |                                 |
 |------------------------------------|---------------------------------|
@@ -25,7 +25,7 @@ batch.
 |                                    | in `clustered_values ` string , |
 |                                    | in `is_del ` integer `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ batch.
 
 </div>
 
-<div id="desc_vt_batch_feed_offband_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ This function is needed only for very unusual free text indexes.
 
 </div>
 
-<div id="params_vt_batch_feed_offband_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118911" class="refsect2">
+<div>
 
 ### vt_batch
 
@@ -63,7 +63,7 @@ been called.
 
 </div>
 
-<div id="id118916" class="refsect2">
+<div>
 
 ### clustered_values
 
@@ -75,7 +75,7 @@ current document.
 
 </div>
 
-<div id="id118919" class="refsect2">
+<div>
 
 ### is_del
 
@@ -86,7 +86,7 @@ deleted.
 
 </div>
 
-<div id="ret_vt_batch_feed_offband_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -95,16 +95,16 @@ user by application code
 
 </div>
 
-<div id="examples_vt_batch_feed_offband_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vt_batch_feed_offband_01" class="example">
+<div>
 
 **Example 24.447. Free text indexing of composed text clustered with
 offband columns**
 
-<div class="example-contents">
+<div>
 
 Table LEADS contains descriptions of articles of some set of newspapers.
 Hook functions compose text that contains not only subject of article,
@@ -177,7 +177,7 @@ clustered with (ORG_ID) using function;
 
 </div>
 
-<div id="seealso_vt_batch_feed_offband_01" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_http_request_header" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_request_header — returns array of HTTP request header lines
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_request_header" class="funcsynopsis">
+<div>
 
 |                                     |                                  |
 |-------------------------------------|----------------------------------|
@@ -25,7 +25,7 @@ http_request_header — returns array of HTTP request header lines
 |                                     | in `attr-name ` varchar ,        |
 |                                     | in `default_value ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ http_request_header — returns array of HTTP request header lines
 
 </div>
 
-<div id="desc_http_request_header" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ This function provides access to the HTTP request header lines.
 
 </div>
 
-<div id="ret_http_request_header" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ value.
 
 </div>
 
-<div id="examples_http_request_header" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_request_header" class="example">
+<div>
 
 **Example 24.176. Accessing the HTTP request headers**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <p>Your request follows</p>

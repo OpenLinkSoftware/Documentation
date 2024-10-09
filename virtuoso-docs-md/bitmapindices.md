@@ -1,6 +1,6 @@
-<div id="bitmapindices" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -77,9 +77,9 @@ another key in the order PGOS which can be implemented as a bitmap index
 because S is an IRI ID, hence integer-like for purposes of bitmap
 indices.
 
-<div id="bitmapindandtrans" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

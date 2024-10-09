@@ -1,10 +1,10 @@
-<div id="fn_xml_persistent" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ given XML document
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_persistent" class="funcsynopsis">
+<div>
 
 |                             |                                         |
 |-----------------------------|-----------------------------------------|
@@ -28,7 +28,7 @@ given XML document
 |                             | in `content_language ` varchar ,        |
 |                             | in `dtd_validator_config ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ given XML document
 
 </div>
 
-<div id="desc_xml_persistent" class="refsect1">
+<div>
 
 ## Description
 
@@ -59,11 +59,11 @@ class="function">xml_tree()</code></a> .
 
 </div>
 
-<div id="params_xml_persistent" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123253" class="refsect2">
+<div>
 
 ### document
 
@@ -71,7 +71,7 @@ well formed XML or HTML documen
 
 </div>
 
-<div id="id123256" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -80,7 +80,7 @@ mode (with quiet recovery after any syntax error)
 
 </div>
 
-<div id="id123259" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -89,7 +89,7 @@ given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id123262" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -99,7 +99,7 @@ mode and 'LATIN-1' for HTML mode
 
 </div>
 
-<div id="id123265" class="refsect2">
+<div>
 
 ### content_language
 
@@ -109,7 +109,7 @@ various human languages)
 
 </div>
 
-<div id="id123268" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -123,7 +123,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="ret_xml_persistent" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -131,15 +131,15 @@ Parse tree as a structure of nested heterogeneous vectors.
 
 </div>
 
-<div id="examples_xml_persistent" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_persistent" class="example">
+<div>
 
 **Example 24.516. XML_Persistent**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 declare tree any;
@@ -158,7 +158,7 @@ tree := xml_persistent (file_to_string ('doc.xml'));
 
 </div>
 
-<div id="seealso_xml_persistent" class="refsect1">
+<div>
 
 ## See Also
 

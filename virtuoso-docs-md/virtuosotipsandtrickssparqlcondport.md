@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtrickssparqlcondport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ Virtuoso Web Server has the capability to create extra listeners using
 the <a href="admui.internetdomains.html" class="link"
 title="6.2.5. Internet Domains">Conductor interface</a> .
 
-<div class="orderedlist">
+<div>
 
 1.  At install time you have your HTTP Server port in your virtuoso.ini
     set to 8890, which you want to keep in your local network as this
@@ -67,7 +67,7 @@ title="6.2.5. Internet Domains">Conductor interface</a> .
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                      |
 |:--------------------------:|:-----------------------------------------------------|

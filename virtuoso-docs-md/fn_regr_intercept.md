@@ -1,10 +1,10 @@
-<div id="fn_regr_intercept" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ REGR_INTERCEPT — Returns the y-intercept of the regression line.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regr_intercept" class="funcsynopsis">
+<div>
 
 |                                    |                      |
 |------------------------------------|----------------------|
 | `numeric `**`REGR_INTERCEPT`**` (` | in `expr1 ` any ,    |
 |                                    | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ REGR_INTERCEPT — Returns the y-intercept of the regression line.
 
 </div>
 
-<div id="desc_regr_intercept" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ AVG(expr1) - REGR_SLOPE(expr1, expr2) * AVG(expr2)
 
 </div>
 
-<div id="params_regr_intercept" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id79035" class="refsect2">
+<div>
 
 ### expr1
 
@@ -59,7 +59,7 @@ Number expression.
 
 </div>
 
-<div id="id79038" class="refsect2">
+<div>
 
 ### expr2
 
@@ -69,7 +69,7 @@ Number expression.
 
 </div>
 
-<div id="ret_regr_intercept" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,7 +78,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_regr_intercept" class="refsect1">
+<div>
 
 ## See Also
 

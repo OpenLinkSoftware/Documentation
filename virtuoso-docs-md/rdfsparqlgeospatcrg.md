@@ -1,6 +1,6 @@
-<div id="rdfsparqlgeospatcrg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

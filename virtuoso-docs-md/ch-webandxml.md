@@ -1,6 +1,6 @@
-<div id="ch-webandxml" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -134,7 +134,7 @@ documents like popular browsers can.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -307,9 +307,9 @@ Function Arguments](xmldom.html#xmldomtypecasting)</span>
 
 </div>
 
-<div id="forxmlforsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -371,7 +371,7 @@ is executed through the
 <a href="fn_xml_auto.html" class="link" title="xml_auto"><code
 class="function">xml_auto()</code></a> function.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                                                                                                    |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -381,9 +381,9 @@ class="function">xml_auto()</code></a> function.
 
 </div>
 
-<div id="forxmlexplicmode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -440,7 +440,7 @@ is inserted as the next child of the last element with the TAG equal to
 the new row's PARENT. All open tags are closed at the end of the result
 set.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                  |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -451,9 +451,9 @@ set.
 
 </div>
 
-<div id="examplesofforxml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -485,11 +485,11 @@ create procedure xmla (in q varchar)
 
 Now we can apply this to a couple of examples:
 
-<div id="id45610" class="example">
+<div>
 
 **Example 15.1. XML RAW**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 xmla ('select "category"."CategoryID", "CategoryName",
@@ -529,11 +529,11 @@ xmla ('select "category"."CategoryID", "CategoryName",
 As we can see, RAW mode produces a simple row-by-row account of the data
 encased within the \<ROW.../\> tags. This is the simplest mode.
 
-<div id="id45615" class="example">
+<div>
 
 **Example 15.2. XML AUTO**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 xmla ('select "category"."CategoryID", "CategoryName",
@@ -576,11 +576,11 @@ In contrast to RAW mode, AUTO produces results that are more tree-like.
 Only one category element is used for each category, and that contains
 all the children of the category.
 
-<div id="id45620" class="example">
+<div>
 
 **Example 15.3. XML EXPLICIT**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 xmla ('
@@ -644,9 +644,9 @@ in these cases.
 
 </div>
 
-<div id="forxmlfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -665,9 +665,9 @@ class="function">xml_auto()</code></a>
 
 </div>
 
-<div id="forxmlsyntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

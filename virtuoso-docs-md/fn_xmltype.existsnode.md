@@ -1,10 +1,10 @@
-<div id="fn_xmltype.existsnode" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ expression.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.existsnode" class="funcsynopsis">
+<div>
 
 |                                 |                                  |
 |---------------------------------|----------------------------------|
 | ` `**`XMLType.existsNode`**` (` | in `xpath_expn ` varchar ,       |
 |                                 | in `namespace_map ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ expression.
 
 </div>
 
-<div id="desc_xmltype.existsnode" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ or if the first result is not a node.
 
 </div>
 
-<div id="params_xmltype.existsnode" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125359" class="refsect2">
+<div>
 
 ### xpath_expn
 
@@ -60,7 +60,7 @@ A text of XPATH expression to evaluate.
 
 </div>
 
-<div id="id125362" class="refsect2">
+<div>
 
 ### namespace_map
 
@@ -72,7 +72,7 @@ list of declarations then these two lists are concatenated.
 
 </div>
 
-<div id="ret_xmltype.existsnode" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,15 +80,15 @@ The function returns integer 1 or 0
 
 </div>
 
-<div id="examples_xmltype.existsnode" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.existsnode" class="example">
+<div>
 
 **Example 24.547. A table with an XMLType column**
 
-<div class="example-contents">
+<div>
 
 This populates a table with XML data and then reports which rows contain
 'empno' element inside 'emp'.
@@ -121,7 +121,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.existsnode" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="xpf_append" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ append — Creates an sequence of all items from given sequences.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_append" class="funcsynopsis">
+<div>
 
 |                             |                       |
 |-----------------------------|-----------------------|
@@ -25,7 +25,7 @@ append — Creates an sequence of all items from given sequences.
 |                             | `... ` ,              |
 |                             | `seqN ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ append — Creates an sequence of all items from given sequences.
 
 </div>
 
-<div id="xpf_desc_append" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ standard functions.
 
 </div>
 
-<div id="xpf_params_append" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126002" class="refsect2">
+<div>
 
 ### SeqI
 
@@ -64,7 +64,7 @@ The sequence of items to be placed into the resulting sequence
 
 </div>
 
-<div id="xpf_ret_append" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ Sequence
 
 </div>
 
-<div id="xpf_examples_append" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_append" class="example">
+<div>
 
 **Example 24.563. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 append(/abstract, /chapter, /appendix/section)
@@ -94,7 +94,7 @@ append(/abstract, /chapter, /appendix/section)
 
 </div>
 
-<div id="xpf_seealso_append" class="refsect1">
+<div>
 
 ## See Also
 

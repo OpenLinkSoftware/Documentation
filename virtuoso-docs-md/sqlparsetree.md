@@ -1,6 +1,6 @@
-<div id="sqlparsetree" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -143,9 +143,9 @@ length in pointer-size units.
 Note that in this example the tree is spliced in place, only adding
 nodes. There is no need to free data or to modify the top node.
 
-<div id="notesonspecialparsetree" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

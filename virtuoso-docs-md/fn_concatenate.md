@@ -1,10 +1,10 @@
-<div id="fn_concatenate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ concatenate — concatenate strings
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_concatenate" class="funcsynopsis">
+<div>
 
 |                                |                   |
 |--------------------------------|-------------------|
 | `string `**`concatenate`**` (` | in `arg_1 ` any , |
 |                                | `... ` `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ concatenate — concatenate strings
 
 </div>
 
-<div id="desc_concatenate" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ class="function">concat </code></a> .
 
 </div>
 
-<div id="seealso_concatenate" class="refsect1">
+<div>
 
 ## See Also
 

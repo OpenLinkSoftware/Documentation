@@ -1,6 +1,6 @@
-<div id="fttfuncs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="fn_vt_batch_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

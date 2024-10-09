@@ -1,10 +1,10 @@
-<div id="xpf_union" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ union — Returns an union of two or more sets
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_union" class="funcsynopsis">
+<div>
 
 |                            |                        |
 |----------------------------|------------------------|
@@ -24,7 +24,7 @@ union — Returns an union of two or more sets
 |                            | `set2 ` sequence ... , |
 |                            | `setN` sequence`)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ union — Returns an union of two or more sets
 
 </div>
 
-<div id="xpf_desc_union" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ passed.
 
 </div>
 
-<div id="xpf_params_union" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129697" class="refsect2">
+<div>
 
 ### setI
 
@@ -63,7 +63,7 @@ Sequence that contains items of the resulting union.
 
 </div>
 
-<div id="xpf_ret_union" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,7 +71,7 @@ The function returns an unordered sequence of distinct values.
 
 </div>
 
-<div id="xpf_seealso_union" class="refsect1">
+<div>
 
 ## See Also
 

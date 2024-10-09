@@ -1,10 +1,10 @@
-<div id="fn_http_proxy" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ client
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_proxy" class="funcsynopsis">
+<div>
 
 |                         |                            |
 |-------------------------|----------------------------|
@@ -25,7 +25,7 @@ client
 |                         | in `header ` any ,         |
 |                         | in `content ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ client
 
 </div>
 
-<div id="desc_http_proxy" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ for re-routing a request to another server in the middle of a VSP page.
 
 </div>
 
-<div id="params_http_proxy" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93301" class="refsect2">
+<div>
 
 ### host
 
@@ -59,7 +59,7 @@ the semi-column ':' character MUST be used as the separator.
 
 </div>
 
-<div id="id93304" class="refsect2">
+<div>
 
 ### header
 
@@ -69,7 +69,7 @@ to the target server without any conversion.
 
 </div>
 
-<div id="id93307" class="refsect2">
+<div>
 
 ### content
 
@@ -80,15 +80,15 @@ as specified in HTML standards.
 
 </div>
 
-<div id="examples_http_proxy" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_proxy" class="example">
+<div>
 
 **Example 24.175. Retrieving Current Path of Request**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp

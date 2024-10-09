@@ -1,10 +1,10 @@
-<div id="fn_registry_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ registry_get — Returns a current value of a registry setting
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_registry_get" class="funcsynopsis">
+<div>
 
 |                                  |                         |
 |----------------------------------|-------------------------|
 | `varchar `**`registry_get`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ registry_get — Returns a current value of a registry setting
 
 </div>
 
-<div id="desc_registry_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ registry.
 
 </div>
 
-<div id="params_registry_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104544" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ Name of the registry setting
 
 </div>
 
-<div id="ret_registry_get" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ variable does not exist, a 0 (zero) is returned.
 
 </div>
 
-<div id="examples_registry_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_registry_var1" class="example">
+<div>
 
 **Example 24.313. Setting and Retrieving Registry Settings**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select registry_get('var_demo');
@@ -100,7 +100,7 @@ some arb data
 
 </div>
 
-<div id="seealso_registry_get" class="refsect1">
+<div>
 
 ## See Also
 

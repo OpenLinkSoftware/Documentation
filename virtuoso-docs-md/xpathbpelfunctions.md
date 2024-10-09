@@ -1,6 +1,6 @@
-<div id="xpathbpelfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="fn_bpel_get_var_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -39,9 +39,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_set_var_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -64,9 +64,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="xpf_processxquery_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -89,9 +89,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="xpf_processxslt_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -114,9 +114,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="xpf_processxsql_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

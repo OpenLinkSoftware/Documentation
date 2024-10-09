@@ -1,6 +1,6 @@
-<div id="tipsdbnotstart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,15 +32,15 @@ virtuoso is running from the Task Manager, and you can shut it down
 using the command "<span class="emphasis">*virtuoso +service
 stop*</span> ".
 
-<div class="figure-float">
+<div>
 
-<div id="image32" class="figure">
+<div>
 
 **Figure 3.58. Command Prompt**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Command Prompt](images/virttour32.gif)
 

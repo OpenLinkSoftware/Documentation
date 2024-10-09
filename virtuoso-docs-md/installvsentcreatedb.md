@@ -1,6 +1,6 @@
-<div id="installvsentcreatedb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Download the <a
     href="http://download.openlinksw.com/packages/5.0/virtuoso/schools_db_dav.vad"
@@ -27,15 +27,15 @@
 
     tab of the Virtuoso Conductor.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado1" class="figure">
+    <div>
 
     **Figure 2.95. Conductor Packages**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor Packages](images/ui/uado1.png)
 
@@ -67,15 +67,15 @@
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado2" class="figure">
+    <div>
 
     **Figure 2.96. Install package**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Install package](images/ui/uado2.png)
 
@@ -95,15 +95,15 @@
 
     button to begin the installation process.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado3" class="figure">
+    <div>
 
     **Figure 2.97. Install package.**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Install package.](images/ui/uado3.png)
 
@@ -124,15 +124,15 @@
     tab and scroll down to confirm the \*schools_db\* package is listed
     as installed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado4" class="figure">
+    <div>
 
     **Figure 2.98. Install package**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Install package](images/ui/uado4.png)
 
@@ -151,19 +151,19 @@
 <span class="emphasis">*Create the Course Manager application using
 Visual Studio*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uados1" class="figure">
+    <div>
 
     **Figure 2.99. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/uados1.png)
 
@@ -221,15 +221,15 @@ Visual Studio*</span>
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado5" class="figure">
+    <div>
 
     **Figure 2.100. Create project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Create project](images/ui/uado5.png)
 
@@ -247,7 +247,7 @@ Visual Studio*</span>
 
 <span class="emphasis">*Create the Course Viewer form*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  In the <span class="emphasis">*CourseManager*</span> project, select
     the default form (Form1).
@@ -260,15 +260,15 @@ Visual Studio*</span>
     <span class="emphasis">*CourseViewer.vb*</span> or
     <span class="emphasis">*CourseViewer.cs*</span> to open the form.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado6" class="figure">
+    <div>
 
     **Figure 2.101. CourseViewer.vb**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![CourseViewer.vb](images/ui/uado6.png)
 
@@ -301,15 +301,15 @@ Visual Studio*</span>
     and change the <span class="emphasis">*Name*</span> of the control
     to <span class="emphasis">*courseGridView*</span> .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="uado7" class="figure">
+    <div>
 
     **Figure 2.102. DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView](images/ui/uado7.png)
 

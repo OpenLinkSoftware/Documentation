@@ -1,10 +1,10 @@
-<div id="fn_vector" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ vector — make a vector
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vector" class="funcsynopsis">
+<div>
 
 |                     |                    |
 |---------------------|--------------------|
@@ -25,7 +25,7 @@ vector — make a vector
 |                     | `... ` ,           |
 |                     | `elem-n ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ vector — make a vector
 
 </div>
 
-<div id="desc_vector" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ the given arguments.
 
 </div>
 
-<div id="params_vector" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118263" class="refsect2">
+<div>
 
 ### *`elem1..n `*
 
@@ -58,7 +58,7 @@ Values of any types (not necessarily of one and the same type).
 
 </div>
 
-<div id="ret_vector" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -67,15 +67,15 @@ arguments containing copies of the arguments.
 
 </div>
 
-<div id="examples_vector" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vector_1" class="example">
+<div>
 
 **Example 24.439. Inspecting a vector with dbg_obj_print**
 
-<div class="example-contents">
+<div>
 
 SQL clients can not process vectors directly so the simplest way to look
 at the content of a vector is to print it no server's console.
@@ -90,11 +90,11 @@ dbg_obj_print (vector (1, 2.34, 'A string', atof('3.14')))
 
   
 
-<div id="ex_vector_2" class="example">
+<div>
 
 **Example 24.440. Pretty-print function for vectors**
 
-<div class="example-contents">
+<div>
 
 The following function gets a heterogeneous vector of strings, nubers
 and other vectors and returns a string that is an SQL expression that
@@ -153,7 +153,7 @@ vector ())
 
 </div>
 
-<div id="seealso_vector" class="refsect1">
+<div>
 
 ## See Also
 

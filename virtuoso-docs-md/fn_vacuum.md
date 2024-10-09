@@ -1,10 +1,10 @@
-<div id="fn_vacuum" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ since v6)
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vacuum" class="funcsynopsis">
+<div>
 
 |                            |                                           |
 |----------------------------|-------------------------------------------|
 | ` `**`DB.DBA.VACUUM`**` (` | in `table_name ` varchar (default %) ,    |
 |                            | in `index_name ` varchar (default %) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,11 +34,11 @@ since v6)
 
 </div>
 
-<div id="desc_vacuum" class="refsect1">
+<div>
 
 ## Description
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                              |
 |:----------------------------:|:-----------------------------------------------------------------------------|
@@ -47,7 +47,7 @@ since v6)
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                           |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -79,11 +79,11 @@ space will free the space and vacuum may be rerun.
 
 </div>
 
-<div id="params_vacuum" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84056" class="refsect2">
+<div>
 
 ### table_name
 
@@ -93,7 +93,7 @@ APP.USER.DATA
 
 </div>
 
-<div id="id84071" class="refsect2">
+<div>
 
 ### index_name
 
@@ -107,15 +107,15 @@ column of SYS_KEYS.
 
 </div>
 
-<div id="examples_vacuum" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vacuum" class="example">
+<div>
 
 **Example 24.68. Simple example**
 
-<div class="example-contents">
+<div>
 
 Vacuum the entire database:
 

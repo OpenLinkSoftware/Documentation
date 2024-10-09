@@ -1,10 +1,10 @@
-<div id="fn_name_part" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ table name.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_name_part" class="funcsynopsis">
+<div>
 
 |                               |                            |
 |-------------------------------|----------------------------|
@@ -25,7 +25,7 @@ table name.
 |                               | in `idx ` integer ,        |
 |                               | in `dstring ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ table name.
 
 </div>
 
-<div id="desc_name_part" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ the correct index from a 0 base: 0 would return "DB", 1 would return
 
 </div>
 
-<div id="params_name_part" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97007" class="refsect2">
+<div>
 
 ### string
 
@@ -60,7 +60,7 @@ The string to be disected.
 
 </div>
 
-<div id="id97010" class="refsect2">
+<div>
 
 ### idx
 
@@ -68,7 +68,7 @@ The part index starting from 0.
 
 </div>
 
-<div id="id97013" class="refsect2">
+<div>
 
 ### dstring
 
@@ -78,7 +78,7 @@ The default value if the found value is null.
 
 </div>
 
-<div id="ret_name_part" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -86,15 +86,15 @@ A string will be returned containing the text from the specified index.
 
 </div>
 
-<div id="errors_name_part" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id97021" class="table">
+<div>
 
-**Table 24.56. Errors signalled by**
+**Table 24.55. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                     | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------|-------------|
@@ -109,15 +109,15 @@ A string will be returned containing the text from the specified index.
 
 </div>
 
-<div id="examples_name_part" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_name_part" class="example">
+<div>
 
 **Example 24.224. Using the name_part() function**
 
-<div class="example-contents">
+<div>
 
 This simple example shows the 3 parts of a table name being retrieved
 using the name_part() function from ISQL.

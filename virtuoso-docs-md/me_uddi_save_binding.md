@@ -1,10 +1,10 @@
-<div id="me_uddi_save_binding" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ structure
 
 </div>
 
-<div id="syntax_uddi_save_binding_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -30,7 +30,7 @@ structure
 
 </div>
 
-<div id="desc_uddi_save_binding_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ one or more *`bindingTemplate`* structures to one or more existing
 
 </div>
 
-<div id="params_uddi_save_binding_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id115481" class="refsect2">
+<div>
 
 ### authInfo
 
@@ -54,7 +54,7 @@ token, obtained using the *`get_authToken `* call.
 
 </div>
 
-<div id="id115485" class="refsect2">
+<div>
 
 ### bindingTemplate
 
@@ -65,7 +65,7 @@ attribute value.
 
 </div>
 
-<div id="id115492" class="refsect2">
+<div>
 
 ### Behavior
 
@@ -84,7 +84,7 @@ processing order, which is determined by the position of the
 
 </div>
 
-<div id="ret_uddi_save_binding_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,7 +93,7 @@ registered information for the affected *`bindingTemplate`* structures.
 
 </div>
 
-<div id="errors_uddi_save_binding_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -101,11 +101,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id115514" class="table">
+<div>
 
-**Table 24.102. Errors signalled by uddi_save_binding**
+**Table 24.101. Errors signalled by uddi_save_binding**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                             | Description                                                                                                                                                                                                                                             |
 |--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

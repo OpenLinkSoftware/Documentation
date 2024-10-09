@@ -1,10 +1,10 @@
-<div id="fn_system" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ system — runs a shell command from SQL
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_system" class="funcsynopsis">
+<div>
 
 |                     |                            |
 |---------------------|----------------------------|
 | ` `**`system`**` (` | in `command ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ system — runs a shell command from SQL
 
 </div>
 
-<div id="desc_system" class="refsect1">
+<div>
 
 ## Description
 

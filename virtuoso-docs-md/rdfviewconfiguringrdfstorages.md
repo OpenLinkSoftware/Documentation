@@ -1,6 +1,6 @@
-<div id="rdfviewconfiguringrdfstorages" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,7 +23,7 @@ shared between all quad storages of an RDF meta schema but every quad
 storage contains only a subset of all available quad patterns. Two quad
 storages are always defined:
 
-<div class="itemizedlist">
+<div>
 
 - A
 
@@ -53,7 +53,7 @@ storages are always defined:
 
 Three statements for manipulating storages are
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*create quad storage storage-name {
   quad-map-decls } .*</span>

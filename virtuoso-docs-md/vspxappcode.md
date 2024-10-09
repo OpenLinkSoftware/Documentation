@@ -1,6 +1,6 @@
-<div id="vspxappcode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ with `"--"` . The expression will be evaluated at render time, where the
 <span class="emphasis">*control*</span> variable refers to the enclosing
 VSPX template control, e.g. the page instance when at top level.
 
-<div id="vspxvspcompatinlinesql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -75,7 +75,7 @@ statement can be a compound statement ending in another \<?vsp ?\>
 processing instruction at the same nesting level under the same parent
 tag. The other pi's \<?V and \<?U expect a SQL expression.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                   |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

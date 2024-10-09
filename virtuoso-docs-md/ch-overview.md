@@ -1,6 +1,6 @@
-<div id="ch-overview" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -27,7 +27,7 @@ may already be in mind.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -439,9 +439,9 @@ used with Virtuoso?](howtomanagesslprotocolsandciphers.html)</span>
 
 </div>
 
-<div id="whatisvirtuoso" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

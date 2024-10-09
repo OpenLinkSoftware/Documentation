@@ -1,6 +1,6 @@
-<div id="vfoafsslcacondt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,7 +23,7 @@ different services.
 For ODS, the dba user must import a certificate with primary key and
 with name id_rsa. The process takes the following steps:
 
-<div class="orderedlist">
+<div>
 
 1.  A signing authority (e.g., RSA Labs) generates a site certificate.
 
@@ -32,15 +32,15 @@ with name id_rsa. The process takes the following steps:
 3.  The site certificate is imported with name id_rsa for user dba using
     the Conductor.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl27" class="figure">
+    <div>
 
     **Figure 17.6. Conductor CA Keys Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor CA Keys Import](images/ui/foafssl27.png)
 

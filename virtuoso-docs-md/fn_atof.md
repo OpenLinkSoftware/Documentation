@@ -1,10 +1,10 @@
-<div id="fn_atof" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ atof — Convert a string to single precision float
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_atof" class="funcsynopsis">
+<div>
 
 |                   |                       |
 |-------------------|-----------------------|
 | ` `**`atof`**` (` | in `arg ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ atof — Convert a string to single precision float
 
 </div>
 
-<div id="desc_atof" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ returned.
 
 </div>
 
-<div id="params_atof" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80584" class="refsect2">
+<div>
 
 ### *`arg `*
 
@@ -56,7 +56,7 @@ A string input parameter
 
 </div>
 
-<div id="ret_atof" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Single precision floating point
 
 </div>
 
-<div id="examples_atof" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_atof" class="example">
+<div>
 
 **Example 24.17. Simple examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select atof('1.23456789');
@@ -111,7 +111,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_atof" class="refsect1">
+<div>
 
 ## See Also
 

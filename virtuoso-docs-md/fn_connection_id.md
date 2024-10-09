@@ -1,10 +1,10 @@
-<div id="fn_connection_id" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ connection_id — get connection identifier
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_connection_id" class="funcsynopsis">
+<div>
 
 |                            |      |
 |----------------------------|------|
 | ` `**`connection_id`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ connection_id — get connection identifier
 
 </div>
 
-<div id="desc_connection_id" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,7 +40,7 @@ This function returns a string uniquely identifying the connection in
 this server instance. It is usually a combination of server's port
 number and a serial number of the client.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                           |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -51,7 +51,7 @@ number and a serial number of the client.
 
 </div>
 
-<div id="ret_connection_id" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -59,15 +59,15 @@ A <span class="type">VARCHAR </span> connection identifier.
 
 </div>
 
-<div id="examples_connection_id" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_connection_id" class="example">
+<div>
 
 **Example 24.49. Return The Current Connection ID**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select connection_id();

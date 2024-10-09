@@ -1,6 +1,6 @@
-<div id="gsets" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

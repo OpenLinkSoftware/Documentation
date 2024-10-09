@@ -1,6 +1,6 @@
-<div id="virtuosospongerfacentexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

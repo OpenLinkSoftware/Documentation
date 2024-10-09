@@ -1,10 +1,10 @@
-<div id="fn_rdf_graph_group_create" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ DB.DBA.RDF_GRAPH_GROUP_CREATE — Creates graph group.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_graph_group_create" class="funcsynopsis">
+<div>
 
 |                                            |                              |
 |--------------------------------------------|------------------------------|
 | ` `**`DB.DBA.RDF_GRAPH_GROUP_CREATE`**` (` | in `group_name ` varchar ,   |
 |                                            | in `is_silent ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ DB.DBA.RDF_GRAPH_GROUP_CREATE — Creates graph group.
 
 </div>
 
-<div id="desc_rdf_graph_group_create" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Creates graph group.
 
 </div>
 
-<div id="params_rdf_graph_group_create" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101538" class="refsect2">
+<div>
 
 ### group_name
 
@@ -53,7 +53,7 @@ The name of the graph group
 
 </div>
 
-<div id="id101541" class="refsect2">
+<div>
 
 ### is_silent
 
@@ -65,7 +65,7 @@ message.
 
 </div>
 
-<div id="ret_rdf_graph_group_create" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_rdf_graph_group_create" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_graph_group_create" class="example">
+<div>
 
 **Example 24.274. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>DB.DBA.RDF_GRAPH_GROUP_CREATE ('TestGroup',1);
@@ -104,7 +104,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_rdf_graph_group_create" class="refsect1">
+<div>
 
 ## See Also
 

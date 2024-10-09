@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtrickscontrolunicode3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,7 +23,7 @@ variants at the very beginning of free-text indexing or parsing a
 free-text query string. The parameter's value is an integer that is
 bitmask with only 2 bits in use atm:
 
-<div class="orderedlist">
+<div>
 
 1.  0: the default behavior, do not normalize anything, so "Jose" and
     "José" are two distinct words.
@@ -128,7 +128,7 @@ strings as free-text engine will do with XAnyNormalization=3 , the
 function will be provided as a separate patch and depends on this
 specific patch.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                     |
 |:--------------------------:|:--------------------------------------------------------------------|

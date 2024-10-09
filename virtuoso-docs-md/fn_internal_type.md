@@ -1,10 +1,10 @@
-<div id="fn_internal_type" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ internal_type — returns internal integer datatype of its argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_internal_type" class="funcsynopsis">
+<div>
 
 |                            |                      |
 |----------------------------|----------------------|
 | ` `**`internal_type`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ internal_type — returns internal integer datatype of its argument
 
 </div>
 
-<div id="desc_01" class="refsect1">
+<div>
 
 ## Description
 

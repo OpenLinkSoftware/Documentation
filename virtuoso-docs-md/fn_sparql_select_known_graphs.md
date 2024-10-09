@@ -1,10 +1,10 @@
-<div id="fn_sparql_select_known_graphs" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ graphs.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_select_known_graphs" class="funcsynopsis">
+<div>
 
 |                                                |      |
 |------------------------------------------------|------|
 | ` `**`DB.DBA.SPARQL_SELECT_KNOWN_GRAPHS`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ graphs.
 
 </div>
 
-<div id="desc_sparql_select_known_graphs" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,13 +41,13 @@ This function returns URIs for all explicitly created graphs.
 
 </div>
 
-<div id="params_sparql_select_known_graphs" class="refsect1">
+<div>
 
 ## Parameters
 
 </div>
 
-<div id="ret_sparql_select_known_graphs" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -55,15 +55,15 @@ varchar
 
 </div>
 
-<div id="examples_sparql_select_known_graphs" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sparql_select_known_graphs" class="example">
+<div>
 
 **Example 24.284. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 # Create explicitly a graph:
@@ -108,7 +108,7 @@ http://rdfs.org/sioc/ns#
 
 </div>
 
-<div id="seealso_sparql_select_known_graphs" class="refsect1">
+<div>
 
 ## See Also
 

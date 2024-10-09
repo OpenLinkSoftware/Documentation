@@ -1,6 +1,6 @@
-<div id="faultfaulttolermng" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,7 +23,7 @@ all state is kept synchronous.
 
 When a host unexpectedly disconnects, the following takes place:
 
-<div class="itemizedlist">
+<div>
 
 - All transactions which have a write affecting this host become
   uncommittable. The application will see this immediately, as soon as
@@ -108,7 +108,7 @@ and starting the database again. Then the dba would issue cl_host_enable
 
 To do this without downtime, one may do the following:
 
-<div class="itemizedlist">
+<div>
 
 - Disable checkpoints on Host2: checkpoint_interval (0); Operations
   continue. Copy the database files of host2 to host1.

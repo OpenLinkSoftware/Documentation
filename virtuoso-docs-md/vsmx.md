@@ -1,6 +1,6 @@
-<div id="vsmx" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -68,15 +68,15 @@ demo database contains samples that can be found as:
 http://[host:port]/SOAP/services.vsmx
 ```
 
-<div class="figure-float">
+<div>
 
-<div id="id63691" class="figure">
+<div>
 
 **Figure 17.66. VSMX Test Page**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![VSMX Test Page](images/ui/vsmx001.png)
 

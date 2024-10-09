@@ -1,10 +1,10 @@
-<div id="fn_import_clr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ based on the CLR Reflection API.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_import_clr" class="funcsynopsis">
+<div>
 
 |                            |                                  |
 |----------------------------|----------------------------------|
@@ -25,7 +25,7 @@ based on the CLR Reflection API.
 |                            | in `classes_vector ` any ,       |
 |                            | in `security_mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ based on the CLR Reflection API.
 
 </div>
 
-<div id="desc_import_clr" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ CLR Reflection API.
 
 </div>
 
-<div id="params_import_clr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93934" class="refsect2">
+<div>
 
 ### assemblies_vector
 
@@ -56,7 +56,7 @@ a vector of assembly names (as VARCHAR) to look into (or null).
 
 </div>
 
-<div id="id93937" class="refsect2">
+<div>
 
 ### classes_vector
 
@@ -66,7 +66,7 @@ case the `assemblies_vector ` cannot be NULL).
 
 </div>
 
-<div id="id93941" class="refsect2">
+<div>
 
 ### security_mode
 
@@ -81,15 +81,15 @@ This optional parameter defines the access mode as follows:
 
 </div>
 
-<div id="examples_import_clr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_import_clr" class="example">
+<div>
 
 **Example 24.186. Importing a Class**
 
-<div class="example-contents">
+<div>
 
 Here is a simple C# program that we can import and use with Virtuoso.
 This example requires that you are running Virtuoso with CLR support.
@@ -155,7 +155,7 @@ classes.
 
 </div>
 
-<div id="seealso_import_clr" class="refsect1">
+<div>
 
 ## See Also
 

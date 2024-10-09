@@ -1,10 +1,10 @@
-<div id="fn_xq_sequence_agg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ of all values passed the the aggregate.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xq_sequence_agg" class="funcsynopsis">
+<div>
 
 |                                           |                              |
 |-------------------------------------------|------------------------------|
 | `vector `**`DB.DBA.XQ_SEQUENCE_AGG`**` (` | `value_expression ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ of all values passed the the aggregate.
 
 </div>
 
-<div id="desc_xq_sequence_agg" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ consists of all values passed the aggregate.
 
 </div>
 
-<div id="params_xq_sequence_agg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id79470" class="refsect2">
+<div>
 
 ### value_expression
 
@@ -75,7 +75,7 @@ sequence then it is treated as UTF-8 and not subject to encoding.
 
 </div>
 
-<div id="ret_xq_sequence_agg" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,7 +83,7 @@ Any
 
 </div>
 
-<div id="seealso_xq_sequence_agg" class="refsect1">
+<div>
 
 ## See Also
 

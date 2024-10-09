@@ -1,6 +1,6 @@
-<div id="installsilvercrser" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Open the ADO.Net Data Service project in
 
@@ -44,15 +44,15 @@
 
     dialog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf32" class="figure">
+    <div>
 
     **Figure 2.167. Add Silverlight Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Silverlight Application](images/ui/sparqlwinf32.png)
 
@@ -82,15 +82,15 @@
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf33" class="figure">
+    <div>
 
     **Figure 2.168. Add a test page**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add a test page](images/ui/sparqlwinf33.png)
 
@@ -220,15 +220,15 @@
     . This will launch the browser and open
     SilverlightApplication1TestPage.aspx.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf34" class="figure">
+    <div>
 
     **Figure 2.169. SilverlightApplication1TestPage.aspx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SilverlightApplication1TestPage.aspx](images/ui/sparqlwinf34.png)
 
@@ -246,15 +246,15 @@
 
 Clicking on one of the IRIs will open the page using description.vsp.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf35" class="figure">
+<div>
 
 **Figure 2.170. using description.vsp**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![using description.vsp](images/ui/sparqlwinf35.png)
 

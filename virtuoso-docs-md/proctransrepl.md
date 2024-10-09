@@ -1,6 +1,6 @@
-<div id="proctransrepl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,7 +43,7 @@ file name for it. The server can then start adding transactions to the
 publication, which can happen either under application control or
 implicitly.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                       |
 |:--------------------------:|:--------------------------------------------------------------------------------------|
@@ -146,9 +146,9 @@ request from subscriber. If subscriber is found to be invalid all
 further sync requests from it are ignored. Such subscriber need to be
 reinitialized manually and marked as valid using Admin UI.
 
-<div id="pubitems" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="ch-hooks" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -28,7 +28,7 @@ and SQL compilation events.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -85,9 +85,9 @@ simplified database security system. The system will record all logins
 and logouts and will enforce custom security rules on reading a specific
 application table.
 
-<div id="fn_dbev_startup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -115,11 +115,11 @@ Result sets are not allowed and return values are discarded. All custom
 Virtuoso Server Extensions (VSEs) will be defined when calling this
 procedure.
 
-<div id="id36444" class="example">
+<div>
 
 **Example 12.1. Sample Startup Procedure Hook**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure DB.DBA.DBEV_STARTUP ()

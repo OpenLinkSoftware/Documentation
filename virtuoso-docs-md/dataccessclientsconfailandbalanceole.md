@@ -1,6 +1,6 @@
-<div id="dataccessclientsconfailandbalanceole" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="dataccessclientsconfailandbalanceolef" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ Provider=VIRTOLEDB;Data Source=server1:port1,server2:port2,server3;User Id=dba;P
 
 </div>
 
-<div id="dataccessclientsconfailandbalanceoler" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

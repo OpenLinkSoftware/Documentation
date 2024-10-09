@@ -1,6 +1,6 @@
-<div id="sparqldebug" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,7 +79,7 @@ If some triple pattern inside <span class="emphasis">*group-pattern*
 sql:signal-void-variables 1* </span> will force the compiler to signal
 the error.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -107,7 +107,7 @@ string_to_file ('debug.sql', sparql_to_sql_text ('SELECT * WHERE { graph ?g { ?s
 (The -2 is to overwrite the previous version of the file, as this
 function may be called many times).
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                         |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

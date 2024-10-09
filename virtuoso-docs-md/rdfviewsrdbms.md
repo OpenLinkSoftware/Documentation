@@ -1,6 +1,6 @@
-<div id="rdfviewsrdbms" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ of Web 1.0 or Web 2.0 solutions. Linked Data Views are also suitable for
 declaring custom representation for RDF triples, e.g. property tables,
 where one row holds many single-valued properties.
 
-<div id="rdfviewsintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -52,7 +52,7 @@ RDF and opening it to SPARQL access. We can mention D2RQ, SPASQL,
 Squirrel RDF, DBLP and others. The Virtuoso effort differs from these
 mainly in the following:
 
-<div class="itemizedlist">
+<div>
 
 - Integration with a triple store. Virtuoso can process a query for
   which some triple patterns will go to local or remote relational data

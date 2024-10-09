@@ -1,10 +1,10 @@
-<div id="fn_uuvalidate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ characters, suitable for transfer via "ASCII-only" data channels
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_uuvalidate" class="funcsynopsis">
+<div>
 
 |                         |                                        |
 |-------------------------|----------------------------------------|
 | ` `**`uuvalidate`**` (` | in `input ` string or string session , |
 |                         | in `mode ` integer `)`;                |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ characters, suitable for transfer via "ASCII-only" data channels
 
 </div>
 
-<div id="desc_uuvalidate" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ Format of Internet Message Bodies).
 Currently, eight conventions are used for mail attachments. In Virtuoso,
 they are enumerated by integer IDs.
 
-<div id="id117264" class="table">
+<div>
 
-**Table 24.111. Unicode-like standards, supported by Virtuoso**
+**Table 24.110. Unicode-like standards, supported by Virtuoso**
 
-<div class="table-contents">
+<div>
 
 | ID  | Standard                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 |-----|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -78,11 +78,11 @@ they are enumerated by integer IDs.
 
 </div>
 
-<div id="params_uuvalidate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117311" class="refsect2">
+<div>
 
 ### input
 
@@ -90,7 +90,7 @@ String or string-output session with data to be encoded.
 
 </div>
 
-<div id="id117314" class="refsect2">
+<div>
 
 ### mode
 
@@ -100,7 +100,7 @@ Integer ID of encoding to be used.
 
 </div>
 
-<div id="ret_uuvalidate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -109,15 +109,15 @@ section.
 
 </div>
 
-<div id="errors_uuvalidate" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id117322" class="table">
+<div>
 
-**Table 24.112. Errors signalled by**
+**Table 24.111. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                           | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------|-------------|
@@ -131,15 +131,15 @@ section.
 
 </div>
 
-<div id="examples_uuvalidate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_uuvalidate" class="example">
+<div>
 
 **Example 24.435. Detection of encoding type**
 
-<div class="example-contents">
+<div>
 
 The function gets a string 'Hello' in BinHex encoding and returns 5
 indicating that the string is probably in BinHex encoding.
@@ -158,7 +158,7 @@ select uuvalidate (':5''9XE''m:', 0);
 
 </div>
 
-<div id="seealso_uuvalidate" class="refsect1">
+<div>
 
 ## See Also
 

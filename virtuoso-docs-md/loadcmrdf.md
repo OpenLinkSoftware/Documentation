@@ -1,6 +1,6 @@
-<div id="loadcmrdf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,9 +25,9 @@ SPARQL LOAD <x> [INTO <y>]
 SPARQL LOAD <ResourceURL>
 ```
 
-<div id="loadcmrdfex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ SPARQL LOAD <ResourceURL>
 
 </div>
 
-<div id="loadcmrdfex1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -75,9 +75,9 @@ SQL>
 
 </div>
 
-<div id="loadcmrdfex2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -91,7 +91,7 @@ SQL>
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Create DAV collection which is visible to public, for ex:
     http://example.com/DAV/tmp
@@ -133,9 +133,9 @@ SQL>
 
 </div>
 
-<div id="loadcmrdfex3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

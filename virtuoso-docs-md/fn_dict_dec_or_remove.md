@@ -1,10 +1,10 @@
-<div id="fn_dict_dec_or_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ deletes it if it becomes zero or negative.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_dec_or_remove" class="funcsynopsis">
+<div>
 
 |                                 |                                    |
 |---------------------------------|------------------------------------|
@@ -25,7 +25,7 @@ deletes it if it becomes zero or negative.
 |                                 | in `key ` any ,                    |
 |                                 | in `value_decrement ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ deletes it if it becomes zero or negative.
 
 </div>
 
-<div id="desc_dict_dec_or_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ Informally, the function reverts the effect of `dict_inc_or_add ` .
 
 </div>
 
-<div id="params_dict_dec_or_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86230" class="refsect2">
+<div>
 
 ### dict
 
@@ -66,7 +66,7 @@ dictionary.
 
 </div>
 
-<div id="id86233" class="refsect2">
+<div>
 
 ### key
 
@@ -74,7 +74,7 @@ Key of a dictionary item to process.
 
 </div>
 
-<div id="id86236" class="refsect2">
+<div>
 
 ### value decrement
 
@@ -85,7 +85,7 @@ associated with *`key `* .
 
 </div>
 
-<div id="ret_dict_dec_or_remove" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -94,7 +94,7 @@ zero in any other case.
 
 </div>
 
-<div id="seealso_dict_dec_or_remove" class="refsect1">
+<div>
 
 ## See Also
 

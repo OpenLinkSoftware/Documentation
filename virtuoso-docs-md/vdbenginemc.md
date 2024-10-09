@@ -1,6 +1,6 @@
-<div id="vdbenginemc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -93,9 +93,9 @@ to generate an EDM. In the case of the Oracle Human Resources database
 all tables are not nullable, thus this should not be an issue in this
 case.
 
-<div id="vdbenginemcinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -119,7 +119,7 @@ ODBC Driver can be used.
 Installation instructions for the OpenLink ODBC Driver for Oracle are
 available from:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC"

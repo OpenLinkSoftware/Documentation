@@ -1,10 +1,10 @@
-<div id="fn_sqrt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sqrt — calculate square root
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sqrt" class="funcsynopsis">
+<div>
 
 |                   |                               |
 |-------------------|-------------------------------|
 | ` `**`sqrt`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sqrt — calculate square root
 
 </div>
 
-<div id="desc_30" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ IEEE 64-bit float.
 
 </div>
 
-<div id="params_07" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112044" class="refsect2">
+<div>
 
 ### x
 
@@ -55,7 +55,7 @@ IEEE 64-bit float.
 
 </div>
 
-<div id="ret_02_01" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -63,15 +63,15 @@ IEEE 64-bit float.
 
 </div>
 
-<div id="examples_08" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sqrt" class="example">
+<div>
 
 **Example 24.402. Stored Procedure Example**
 
-<div class="example-contents">
+<div>
 
 Calculate square roots of integers between 2 numbers.
 
@@ -120,7 +120,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_14" class="refsect1">
+<div>
 
 ## See Also
 

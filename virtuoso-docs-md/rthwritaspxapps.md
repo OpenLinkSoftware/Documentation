@@ -1,6 +1,6 @@
-<div id="rthwritaspxapps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,15 +34,15 @@ without compromising your development platform.
 
 The Virtuoso CLR hosting is implemented using the VSEI.
 
-<div class="figure-float">
+<div>
 
-<div id="http_handler_aspx" class="figure">
+<div>
 
 **Figure 14.16. The HTTP ASP.Net handler**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The HTTP ASP.Net handler](images/http_handler_aspx.jpg)
 
@@ -56,7 +56,7 @@ The Virtuoso CLR hosting is implemented using the VSEI.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -84,9 +84,9 @@ Client</a></p></td>
 
 </div>
 
-<div id="rthprogramming" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -122,15 +122,15 @@ tree of controls and classes. The CodeBehind is compiled into an object
 on this tree when the page is requested. The Web Form must inherit from
 a "base-class" defined in the CodeBehind class file.
 
-<div class="figure-float">
+<div>
 
-<div id="rthwriteaspx001" class="figure">
+<div>
 
 **Figure 14.17. ASPX Web Form class hierarchy**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ASPX Web Form class hierarchy](images/rth/writeaspx001.jpg)
 
@@ -148,11 +148,11 @@ Now we will create a new Web Form containing an HTML heading and an
 ASP.Net DataGrid control that will display results from the local
 Virtuoso server.
 
-<div id="ex_virttest.aspx" class="example">
+<div>
 
 **Example 14.50. Sample .Net Web Application: VirtTest.aspx**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <%@ Page Language="vb" Inherits="VirtTest" Src="VirtTest.aspx.vb" %>
@@ -198,12 +198,12 @@ The following code fragment is the CodeBehind, VirtTest.aspx.vb.
 Now we want some logic behind the Web Form. We have placed a DataGrid
 control on a web page but we need to supply data to it now:
 
-<div id="ex_virttest.aspx.vb" class="example">
+<div>
 
 **Example 14.51. Sample .Net Web Application CodeBehind:
 VirtTest.aspx.vb**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 imports System

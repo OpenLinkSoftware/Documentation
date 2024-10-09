@@ -1,6 +1,6 @@
-<div id="furthervsp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -84,11 +84,11 @@ http_proxy(). The output which can generated (with http functions, etc.)
 before and after http_proxy is called will be discarded before sending
 the result of link retrieval to the user-agent.
 
-<div id="virtpxy" class="example">
+<div>
 
 **Example 14.10. Virtuoso Proxy**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 ...
@@ -106,9 +106,9 @@ the result of link retrieval to the user-agent.
 
   
 
-<div id="httpcharsettings" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -145,9 +145,9 @@ default setting.
 
 </div>
 
-<div id="sesmanvars" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -177,7 +177,7 @@ The post-processing function hook can be any user-defined Virtuoso/PL
 procedure, it will be executed every time after processing of the active
 page.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

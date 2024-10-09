@@ -1,6 +1,6 @@
-<div id="rdfsparqlgeospatexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfsparqlgeospatexmp1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -57,9 +57,9 @@ http://linkedgeodata.org/vocabulary#wood                                        
 
 </div>
 
-<div id="rdfsparqlgeospatexmp2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -114,9 +114,9 @@ http://dbpedia.org/resource/Stansted_Mountfitchet                               
 
 </div>
 
-<div id="rdfsparqlgeospatexmp3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -173,9 +173,9 @@ http://dbpedia.org/resource/Nonington                                           
 
 </div>
 
-<div id="rdfsparqlgeospatexmp4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -221,9 +221,9 @@ http://dbpedia.org/class/yago/SkyscrapersInLondon               60
 
 </div>
 
-<div id="rdfsparqlgeospatexmp5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -288,9 +288,9 @@ ns5:id  rdf:type    ns2:node ,
 
 </div>
 
-<div id="rdfsparqlgeospatexmp6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -339,9 +339,9 @@ http://dbpedia.org/ontology/Place                                               
 
 </div>
 
-<div id="rdfsparqlgeospatexmp7" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -390,9 +390,9 @@ http://www.w3.org/2002/07/owl#Thing                                             
 
 </div>
 
-<div id="rdfsparqlgeospatexmp8" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -439,9 +439,9 @@ http://linkedgeodata.org/vocabulary#church                                      
 
 </div>
 
-<div id="rdfsparqlgeospatexmp9" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -486,9 +486,9 @@ Square Jean XXIII
 
 </div>
 
-<div id="rdfsparqlgeospatexmp10" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -541,9 +541,9 @@ Synagogue                             Le Loir dans la Th+?-?i+?-?re       0.1632
 
 </div>
 
-<div id="rdfsparqlgeospatexmp11" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -604,9 +604,9 @@ http://dbpedia.org/resource/Baden-W%C3%BCrttemberg        10755000         25112
 
 </div>
 
-<div id="rdfsparqlgeospatexmp12" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -680,9 +680,9 @@ ns6:id  ns0:name    "Synagogue" ;
 
 </div>
 
-<div id="rdfsparqlgeospatexmp13" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -728,9 +728,9 @@ true
 
 </div>
 
-<div id="rdfsparqlgeospatexmp14" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -787,9 +787,9 @@ http://linkedgeodata.org/triplify/node/251043135#id  48.8562   2.361    Le Loir 
 
 </div>
 
-<div id="rdfsparqlgeospatexmp15" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -849,9 +849,9 @@ http://linkedgeodata.org/triplify/way/14155323#id      H+?-otel Dieu            
 
 </div>
 
-<div id="rdfsparqlgeospatexmp16" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -910,9 +910,9 @@ ns5:id  rdf:type    ns2:node ,
 
 </div>
 
-<div id="rdfsparqlgeospatexmp17" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -971,9 +971,9 @@ http://dbpedia.org/resource/Bletchingley            30
 
 </div>
 
-<div id="rdfsparqlgeospatexmp18" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1043,9 +1043,9 @@ http://dbpedia.org/resource/M4_motorway       http://dbpedia.org/resource/Heston
 
 </div>
 
-<div id="rdfsparqlgeospatexmp18_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1102,9 +1102,9 @@ http://linkedgeodata.org/triplify/node/276208684#id                       -85   
 
 </div>
 
-<div id="rdfsparqlgeospatexmp19" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1135,9 +1135,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlgeospatexmp20" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1168,9 +1168,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlgeospatexmp21" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1209,9 +1209,9 @@ ORDER BY ASC( ?date )
 
 </div>
 
-<div id="rdfsparqlgeospatexmp22" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

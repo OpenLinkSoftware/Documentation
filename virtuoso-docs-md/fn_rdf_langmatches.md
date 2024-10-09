@@ -1,10 +1,10 @@
-<div id="fn_rdf_langmatches" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ pattern t.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_langmatches" class="funcsynopsis">
+<div>
 
 |                                     |                      |
 |-------------------------------------|----------------------|
 | ` `**`DB.DBA.RDF_LANGMATCHES`**` (` | in `r ` varchar ,    |
 |                                     | in `t ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ pattern t.
 
 </div>
 
-<div id="desc_rdf_langmatches" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ Returns 1 if language identifier r matches lang pattern t
 
 </div>
 
-<div id="params_rdf_langmatches" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103906" class="refsect2">
+<div>
 
 ### r
 
@@ -54,7 +54,7 @@ language identifies (string or NULL).
 
 </div>
 
-<div id="id103909" class="refsect2">
+<div>
 
 ### t
 
@@ -64,7 +64,7 @@ language pattern (exact name, first two letters or '\*').
 
 </div>
 
-<div id="ret_rdf_langmatches" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ integer
 
 </div>
 
-<div id="examples_rdf_langmatches" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_langmatches" class="example">
+<div>
 
 **Example 24.306. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>SELECT DB.DBA.RDF_QNAME_OF_IID ( /*retval[*/  "s-4-1-t0"."P" /* p */ /*]retval*/ ) AS /*tmpl*/ "p",
@@ -108,7 +108,7 @@ http://example.org/a
 
 </div>
 
-<div id="seealso_rdf_langmatches" class="refsect1">
+<div>
 
 ## See Also
 

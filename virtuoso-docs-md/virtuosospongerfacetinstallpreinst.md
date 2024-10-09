@@ -1,6 +1,6 @@
-<div id="virtuosospongerfacetinstallpreinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ If you have an existing Virtuoso 6.x installation, and your Quad Store
 has greater than 10K worth of triples, please perform the following
 steps:
 
-<div class="orderedlist">
+<div>
 
 1.  Run the following commands using the Virtuoso isql program before
     installing the Faceted Browser VAD:

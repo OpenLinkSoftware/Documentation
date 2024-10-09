@@ -1,10 +1,10 @@
-<div id="fn_lh_load_handler" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ lh_load_handler — Loads given handler in global table of the server
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_lh_load_handler" class="funcsynopsis">
+<div>
 
 |                                 |                                       |
 |---------------------------------|---------------------------------------|
 | `int `**`lh_load_handler`**` (` | lang_handler_t \* `new_handler ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ lh_load_handler — Loads given handler in global table of the server
 
 </div>
 
-<div id="desc_lh_load_handler" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ handlers.
 
 </div>
 
-<div id="params_lh_load_handler" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95775" class="refsect2">
+<div>
 
 ### new_handler
 
@@ -63,7 +63,7 @@ callback functions.
 
 </div>
 
-<div id="seealso_lh_load_handler" class="refsect1">
+<div>
 
 ## See Also
 

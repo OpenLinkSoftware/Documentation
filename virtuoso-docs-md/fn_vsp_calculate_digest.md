@@ -1,10 +1,10 @@
-<div id="fn_vsp_calculate_digest" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ HTTP digest authentication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vsp_calculate_digest" class="funcsynopsis">
+<div>
 
 |                                   |                            |
 |-----------------------------------|----------------------------|
@@ -25,7 +25,7 @@ HTTP digest authentication
 |                                   | in `password ` varchar ,   |
 |                                   | in `credentials ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ HTTP digest authentication
 
 </div>
 
-<div id="desc_vsp_calculate_digest" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ basic a NULL will be returned.
 
 </div>
 
-<div id="params_vsp_calculate_digest" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118677" class="refsect2">
+<div>
 
 ### username
 
@@ -61,7 +61,7 @@ A string with name of the user account name
 
 </div>
 
-<div id="id118680" class="refsect2">
+<div>
 
 ### password
 
@@ -70,17 +70,17 @@ external LDAP server etc.)
 
 </div>
 
-<div id="id118683" class="refsect2">
+<div>
 
 ### credentials
 
 A vector of name/value pairs (the keyword and value are strings) of:
 
-<div id="id118686" class="table">
+<div>
 
-**Table 24.114. Valid values**
+**Table 24.113. Valid values**
 
-<div class="table-contents">
+<div>
 
 | Name     | Description                            |
 |----------|----------------------------------------|
@@ -104,7 +104,7 @@ A vector of name/value pairs (the keyword and value are strings) of:
 
 </div>
 
-<div id="ret_vsp_calculate_digest" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -113,15 +113,15 @@ Otherwise returns null.
 
 </div>
 
-<div id="examples_vsp_calculate_digest_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vsp_calculate_digest_01" class="example">
+<div>
 
 **Example 24.446. A VSP page performing digest authentication**
 
-<div class="example-contents">
+<div>
 
 The following page check for digest authentication and returns OK if
 authentication succeeds, otherwise it asks for authentication again.
@@ -177,7 +177,7 @@ authentication succeeds, otherwise it asks for authentication again.
 
 </div>
 
-<div id="seealso_vsp_calculate_digest_01" class="refsect1">
+<div>
 
 ## See Also
 

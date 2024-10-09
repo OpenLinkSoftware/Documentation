@@ -1,6 +1,6 @@
-<div id="sparqlcleanerrantdata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="sparqlcleanerrantdatawhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ Cleaning up errant data using SPARQL Update Language.
 
 </div>
 
-<div id="sparqlcleanerrantdatawhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,9 +55,9 @@ retrospective error correction.
 
 </div>
 
-<div id="sparqlcleanerrantdatahow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

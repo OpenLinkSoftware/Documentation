@@ -1,6 +1,6 @@
-<div id="oledbdatatypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="mappings" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,11 +35,11 @@ parameters (IColumnsInfo::GetColumnInfo,
 ICommandWithParameters::GetParameterInfo) use the mapping of Virtuoso
 data types into OLE DB data types shown in the following table.
 
-<div id="id21938" class="table">
+<div>
 
 **Table 7.18. Data Type Mappings**
 
-<div class="table-contents">
+<div>
 
 | Virtuoso Type  | OLE DB Type        |
 |----------------|--------------------|
@@ -71,9 +71,9 @@ data types into OLE DB data types shown in the following table.
 
 </div>
 
-<div id="conversions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -97,9 +97,9 @@ for the list of supported data type conversions.
 
 </div>
 
-<div id="longdata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -117,7 +117,7 @@ Long data types include LONG VARCHAR, LONG NVARCHAR, and LONG VARBINARY.
 A long value can only be bound to a buffer that have one of these OLE DB
 types:
 
-<div class="itemizedlist">
+<div>
 
 - DBTYPE_IUNKNOWN
 

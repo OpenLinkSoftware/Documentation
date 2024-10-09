@@ -1,6 +1,6 @@
-<div id="grantprocstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,15 +27,15 @@ The grantee should have SQL rights in order execution of procedure to be
 granted to this user. The rights can be set from Conductor-\>System
 Admin-\>User Accounts-\>Account-\>Edit-\>User Type:
 
-<div class="figure-float">
+<div>
 
-<div id="usrt" class="figure">
+<div>
 
 **Figure 11.1. User Type**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![User Type](images/ui/usrt.png)
 

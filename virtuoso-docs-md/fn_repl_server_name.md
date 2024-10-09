@@ -1,10 +1,10 @@
-<div id="fn_repl_server_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ name for specified DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_server_name" class="funcsynopsis">
+<div>
 
 |                                      |                        |
 |--------------------------------------|------------------------|
 | `varchar `**`REPL_SERVER_NAME`**` (` | in `dsn ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ name for specified DSN
 
 </div>
 
-<div id="desc_repl_server_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ replication server name.
 
 </div>
 
-<div id="params_repl_server_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107706" class="refsect2">
+<div>
 
 ### item
 
@@ -56,7 +56,7 @@ Dsn is a data source name.
 
 </div>
 
-<div id="ret_repl_server_name" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,15 +66,15 @@ to `REPL_CREATE_SNAPSHOT_SUB()` , `REPL_DROP_SNAPSHOT_SUB()` and
 
 </div>
 
-<div id="examples_repl_server_name" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_repl_server_name" class="example">
+<div>
 
 **Example 24.348. Obtaining replication server name**
 
-<div class="example-contents">
+<div>
 
 The following statement demonstrates obtaining replication server name
 for server with DSN 'localhost:1121':
@@ -98,7 +98,7 @@ demoserver2
 
 </div>
 
-<div id="seealso_repl_server_name" class="refsect1">
+<div>
 
 ## See Also
 

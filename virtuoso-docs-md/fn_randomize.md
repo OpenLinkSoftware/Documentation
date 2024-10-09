@@ -1,10 +1,10 @@
-<div id="fn_randomize" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ randomize — initializes the random number generator
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_randomize" class="funcsynopsis">
+<div>
 
 |                        |                         |
 |------------------------|-------------------------|
 | ` `**`randomize`**` (` | in `seed ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ randomize — initializes the random number generator
 
 </div>
 
-<div id="desc_08" class="refsect1">
+<div>
 
 ## Description
 

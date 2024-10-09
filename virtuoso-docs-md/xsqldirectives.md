@@ -1,6 +1,6 @@
-<div id="xsqldirectives" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="xsql_delete_request" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,9 +67,9 @@ element in queue and so on.
 
 </div>
 
-<div id="xsql_dml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -113,9 +113,9 @@ dbg_obj_print ({@X} * {@Y}, '\n');
 
 </div>
 
-<div id="xsql_include_owa" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -133,9 +133,9 @@ This Oracle-specific directive is not implemented.
 
 </div>
 
-<div id="xsql_include_param" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -184,9 +184,9 @@ undesired effects.
 
 </div>
 
-<div id="xsql_include_request_params" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -204,9 +204,9 @@ This directive is not implemented in this version.
 
 </div>
 
-<div id="xsql_include_xml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -224,9 +224,9 @@ This directive is not implemented in this version.
 
 </div>
 
-<div id="xsql_include_xsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -244,9 +244,9 @@ This directive is not implemented in this version.
 
 </div>
 
-<div id="xsql_insert_param" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -305,9 +305,9 @@ ROW element in queue and so on.
 
 </div>
 
-<div id="xsql_insert_request" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -364,9 +364,9 @@ ROW element in queue and so on.
 
 </div>
 
-<div id="xsql_query" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -456,9 +456,9 @@ SELECT U_ID, U_NAME, U_FULL_NAME from SYS_USERS where U_FULL_NAME like {@usermas
 
 </div>
 
-<div id="xsql_ref_cursor" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -476,9 +476,9 @@ This directive is not implemented in this version of Virtuoso Server.
 
 </div>
 
-<div id="xsql_set_cookie" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -496,9 +496,9 @@ This Oracle-specific directive is not implemented.
 
 </div>
 
-<div id="xsql_set_page_param" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -574,9 +574,9 @@ create XML element will be equal to the name of parameter.
 
 </div>
 
-<div id="xsql_set_session_param" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -594,9 +594,9 @@ This Oracle-specific directive is not implemented.
 
 </div>
 
-<div id="xsql_set_stylesheet_param" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -614,9 +614,9 @@ This directive is not implemented.
 
 </div>
 
-<div id="xsql_update_request" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

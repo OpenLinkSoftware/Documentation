@@ -1,10 +1,10 @@
-<div id="fn_sparql_eval_to_array" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ protocol, produces a vector of vectors of SQL values.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_eval_to_array" class="funcsynopsis">
+<div>
 
 |                                          |                            |
 |------------------------------------------|----------------------------|
@@ -25,7 +25,7 @@ protocol, produces a vector of vectors of SQL values.
 |                                          | in `dflt_graph ` varchar , |
 |                                          | in `maxrows ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ protocol, produces a vector of vectors of SQL values.
 
 </div>
 
-<div id="desc_sparql_eval_to_array" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ SQL values.
 
 </div>
 
-<div id="params_sparql_eval_to_array" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103521" class="refsect2">
+<div>
 
 ### query
 
@@ -56,7 +56,7 @@ text of SPARQL query to execute.
 
 </div>
 
-<div id="id103524" class="refsect2">
+<div>
 
 ### dflt_graph
 
@@ -65,7 +65,7 @@ query
 
 </div>
 
-<div id="id103527" class="refsect2">
+<div>
 
 ### maxrows
 
@@ -75,7 +75,7 @@ limit on numbers of rows that should be returned.
 
 </div>
 
-<div id="ret_sparql_eval_to_array" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,15 +83,15 @@ any
 
 </div>
 
-<div id="examples_sparql_eval_to_array" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sparql_eval_to_array" class="example">
+<div>
 
 **Example 24.303. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select DB.DBA.SPARQL_EVAL_TO_ARRAY('SELECT * WHERE {?s ?p ?o}','http://example/bookStore' ,2);
@@ -112,7 +112,7 @@ vector(0x00ae6874,0x00ae6844)
 
 </div>
 
-<div id="seealso_sparql_eval_to_array" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="bpelapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,9 +16,9 @@
 
 The following API functions are available:
 
-<div id="fn_bpel_compile_script_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_copy_script_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -66,9 +66,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_get_partner_links_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -91,9 +91,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_instance_delete_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -116,9 +116,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_purge_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -141,9 +141,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_script_delete_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -166,9 +166,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_script_obsolete_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -191,9 +191,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_script_source_update_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -216,9 +216,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_script_upload_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -241,9 +241,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_wsdl_upload_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -266,9 +266,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_plink_get_option_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -291,9 +291,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_plink_set_option_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -316,9 +316,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="fn_bpel_import_script_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="oledbdatasource" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="initprops" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,11 +33,11 @@
 VIRTOLEDB supports the following properties in the initialization
 property group.
 
-<div id="id22277" class="table">
+<div>
 
 **Table 7.21. Supported Initialization and Authorization Properties**
 
-<div class="table-contents">
+<div>
 
 | Property                               | R/W        |
 |----------------------------------------|------------|
@@ -60,12 +60,12 @@ property group.
 In addition, VIRTOLEDB implements a provider-specific property set
 DBPROPSET_VIRTUOSODBINIT with the following properties
 
-<div id="id22333" class="table">
+<div>
 
 **Table 7.22. Provider-Specific Initialization and Authorization
 Properties**
 
-<div class="table-contents">
+<div>
 
 | Property                 | R/W        |
 |--------------------------|------------|
@@ -80,9 +80,9 @@ Properties**
 
 </div>
 
-<div id="oledbdatasourceprops" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -99,11 +99,11 @@ Properties**
 VIRTOLEDB supports the following properties in the data source property
 group.
 
-<div id="id22362" class="table">
+<div>
 
 **Table 7.23. Supported Data Source Properties**
 
-<div class="table-contents">
+<div>
 
 | Property                   | R/W        |
 |----------------------------|------------|
@@ -118,9 +118,9 @@ group.
 
 </div>
 
-<div id="datasourceinfoprops" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -137,11 +137,11 @@ group.
 VIRTOLEDB supports the following properties in the data source
 information property group.
 
-<div id="id22385" class="table">
+<div>
 
 **Table 7.24. Supported Data Source Information Properties**
 
-<div class="table-contents">
+<div>
 
 | Property                           | R/W       |
 |------------------------------------|-----------|

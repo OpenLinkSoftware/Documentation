@@ -1,6 +1,6 @@
-<div id="sqlexception" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,7 +43,7 @@ srv_make_error makes the error structure. The expression
 sqlr_resignal (srv_make_error ("12345", "message")); is equivalent to
 sqlr_error ("12345", "message");
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                         |
 |:----------------------------:|:--------------------------------------------------------|

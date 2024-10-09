@@ -1,10 +1,10 @@
-<div id="fn_sql_config_data_sources" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ attribute string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_config_data_sources" class="funcsynopsis">
+<div>
 
 |                                            |                           |
 |--------------------------------------------|---------------------------|
@@ -25,7 +25,7 @@ attribute string
 |                                            | in `type ` varchar ,      |
 |                                            | in `attrib ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ attribute string
 
 </div>
 
-<div id="desc_config_data_sources" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ ODBC Installer API.
 
 </div>
 
-<div id="params_sql_config_data_sources" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -58,7 +58,7 @@ ODBC Installer API.
 
 </div>
 
-<div id="ret_sql_config_data_sources" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,7 +66,7 @@ Returns the ODBC status code.
 
 </div>
 
-<div id="seealso_sql_config_data_sources" class="refsect1">
+<div>
 
 ## See Also
 

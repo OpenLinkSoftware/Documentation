@@ -1,6 +1,6 @@
-<div id="xmlservices" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="xpath_sql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

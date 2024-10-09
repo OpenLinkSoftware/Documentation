@@ -1,10 +1,10 @@
-<div id="fn_result_names" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ result_names
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_result_names" class="funcsynopsis">
+<div>
 
 |                           |                  |
 |---------------------------|------------------|
@@ -24,7 +24,7 @@ result_names
 |                           | `... ` ,         |
 |                           | in `var_n ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ result_names
 
 </div>
 
-<div id="desc_result_names" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ knows what columns and their types are to be returned.
 
 </div>
 
-<div id="params_result_names" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108574" class="refsect2">
+<div>
 
 ### var_1, ..., var_n
 
@@ -66,7 +66,7 @@ The column variables previously declared or otherwise.
 
 </div>
 
-<div id="seealso_result_names" class="refsect1">
+<div>
 
 ## See Also
 

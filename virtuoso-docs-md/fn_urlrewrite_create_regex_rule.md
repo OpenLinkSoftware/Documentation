@@ -1,10 +1,10 @@
-<div id="fn_urlrewrite_create_regex_rule" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ URLREWRITE_CREATE_REGEX_RULE — Creates regex rules.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_urlrewrite_create_regex_rule" class="funcsynopsis">
+<div>
 
 |                                           |                                      |
 |-------------------------------------------|--------------------------------------|
@@ -33,7 +33,7 @@ URLREWRITE_CREATE_REGEX_RULE — Creates regex rules.
 |                                           | in `http_redirect_code ` integer ,   |
 |                                           | in `http_header_lines ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -43,7 +43,7 @@ URLREWRITE_CREATE_REGEX_RULE — Creates regex rules.
 
 </div>
 
-<div id="desc_urlrewrite_create_regex_rule" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ Creates regex rules.
 
 </div>
 
-<div id="params_urlrewrite_create_regex_rule" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93826" class="refsect2">
+<div>
 
 ### *`rule_iri `*
 
@@ -63,7 +63,7 @@ The rule's name / identifier
 
 </div>
 
-<div id="id93830" class="refsect2">
+<div>
 
 ### *`allow_update `*
 
@@ -82,7 +82,7 @@ updated.
 
 </div>
 
-<div id="id93837" class="refsect2">
+<div>
 
 ### *`nice_match `*
 
@@ -90,7 +90,7 @@ A regex match expression to parse the URL into a vector of occurrences.
 
 </div>
 
-<div id="id93841" class="refsect2">
+<div>
 
 ### *`nice_params `*
 
@@ -100,7 +100,7 @@ string.
 
 </div>
 
-<div id="id93845" class="refsect2">
+<div>
 
 ### *`nice_min_params `*
 
@@ -111,7 +111,7 @@ rules.
 
 </div>
 
-<div id="id93849" class="refsect2">
+<div>
 
 ### *`target_compose `*
 
@@ -119,7 +119,7 @@ A regex compose expression for the URL of the destination page.
 
 </div>
 
-<div id="id93853" class="refsect2">
+<div>
 
 ### *`target_params `*
 
@@ -135,7 +135,7 @@ HTTP request header lines. Note that '\*Accept\*' will return the whole
 
 </div>
 
-<div id="id93860" class="refsect2">
+<div>
 
 ### *`target_expn `*
 
@@ -144,7 +144,7 @@ call.
 
 </div>
 
-<div id="id93864" class="refsect2">
+<div>
 
 ### *`accept_pattern `*
 
@@ -152,7 +152,7 @@ A regex expression to match the HTTP Accept header
 
 </div>
 
-<div id="id93868" class="refsect2">
+<div>
 
 ### *`do_not_continue `*
 
@@ -161,7 +161,7 @@ the next rule from same rule list, and 0 signifies try the next rule.
 
 </div>
 
-<div id="id93872" class="refsect2">
+<div>
 
 ### *`http_redirect_code `*
 
@@ -172,7 +172,7 @@ redirect internally.
 
 </div>
 
-<div id="id93876" class="refsect2">
+<div>
 
 ### *`http_header_lines `*
 
@@ -182,7 +182,7 @@ Additional header lines to be added to the return value.
 
 </div>
 
-<div id="ret_urlrewrite_create_regex_rule" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -190,15 +190,15 @@ The return value is not specified.
 
 </div>
 
-<div id="examples_urlrewrite_create_regex_rule" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_urlrewrite_create_regex_rule1" class="example">
+<div>
 
 **Example 24.184. Example 1**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
@@ -222,11 +222,11 @@ DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
 
   
 
-<div id="ex_urlrewrite_create_regex_rule2" class="example">
+<div>
 
 **Example 24.185. Example 2**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 DB.DBA.URLREWRITE_CREATE_REGEX_RULE (

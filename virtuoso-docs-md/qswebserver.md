@@ -1,6 +1,6 @@
-<div id="qswebserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="qsvirtdir" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -39,9 +39,9 @@ a redirect mechanism is not a universal way to do this. It is better to
 define virtual hosts and paths to the directory entries which contain
 Web pages.
 
-<div id="qsvirtdirpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -61,9 +61,9 @@ title="14.1.2. Virtual Directories">Virtual Directories Section</a> .
 
 </div>
 
-<div id="qsvirtdirui" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -80,20 +80,20 @@ title="14.1.2. Virtual Directories">Virtual Directories Section</a> .
 This step by step example will define a virtual directory /help that
 will point to the directory /departments/support/
 
-<div class="orderedlist">
+<div>
 
 1.  From the Conductor UI go to Web Application Server/ Virtual Domains
     & Directories.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdir1" class="figure">
+    <div>
 
     **Figure 3.22. Http Hosts and Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Http Hosts and Directories](images/ui/virtdir1.png)
 
@@ -109,15 +109,15 @@ will point to the directory /departments/support/
 
 2.  Open the "folder" icon for your {Default Web Site}.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdir2" class="figure">
+    <div>
 
     **Figure 3.23. Edit URL mappings**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Edit URL mappings](images/ui/virtdir2.png)
 
@@ -133,15 +133,15 @@ will point to the directory /departments/support/
 
 3.  Click the link "New Directory" to add a new virtual directory.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdir3" class="figure">
+    <div>
 
     **Figure 3.24. Add virtual directory**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add virtual directory](images/ui/virtdir3.png)
 
@@ -158,15 +158,15 @@ will point to the directory /departments/support/
 4.  Select for "Type" File system, as this mapping example will be from
     one directory to another, and click "Next".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdir4" class="figure">
+    <div>
 
     **Figure 3.25. Use File system template**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Use File system template](images/ui/virtdir4.png)
 
@@ -185,15 +185,15 @@ will point to the directory /departments/support/
     and the default page name are required. Click finally the button
     "Save Changes".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdir5" class="figure">
+    <div>
 
     **Figure 3.26. Mapping details**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mapping details](images/ui/virtdir5.png)
 

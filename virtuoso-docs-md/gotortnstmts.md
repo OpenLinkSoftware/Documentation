@@ -1,6 +1,6 @@
-<div id="gotortnstmts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,7 +41,7 @@ Returning from a procedure automatically frees any resources associated
 with the procedure. This includes values in local variables or call by
 value (IN) parameters and any cursors that may be open.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                             |
 |:--------------------------:|:------------------------------------------------------------|

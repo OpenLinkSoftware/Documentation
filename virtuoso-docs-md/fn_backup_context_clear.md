@@ -1,10 +1,10 @@
-<div id="fn_backup_context_clear" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ checkpoint space as ready for online backup
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_backup_context_clear" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | ` `**`backup_context_clear`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ checkpoint space as ready for online backup
 
 </div>
 
-<div id="desc_backup_context_clear" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ in the checkpoint space as ready for backup.
 
 </div>
 
-<div id="seealso_backup_context_clear" class="refsect1">
+<div>
 
 ## See Also
 

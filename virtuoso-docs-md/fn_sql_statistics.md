@@ -1,10 +1,10 @@
-<div id="fn_sql_statistics" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sql_statistics — retrieve statistics information on remote DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_statistics" class="funcsynopsis">
+<div>
 
 |                                   |                            |
 |-----------------------------------|----------------------------|
@@ -27,7 +27,7 @@ sql_statistics — retrieve statistics information on remote DSN
 |                                   | in `is_unique ` integer ,  |
 |                                   | in `detail ` integer `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ sql_statistics — retrieve statistics information on remote DSN
 
 </div>
 
-<div id="desc_sql_statistics" class="refsect1">
+<div>
 
 ## Description
 
@@ -59,7 +59,7 @@ each column.
 
 </div>
 
-<div id="params_sql_statistics" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -67,7 +67,7 @@ As defined in ODBC API for the corresponding catalog call.
 
 </div>
 
-<div id="ret_sql_statistics" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,15 +78,15 @@ represented as an array with one element for each column.
 
 </div>
 
-<div id="examples_sql_statistics" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sql_statistics" class="example">
+<div>
 
 **Example 24.396. Simple Example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 dbg_obj_print (sql_statistics ('Local Virtuoso', 'Demo', NULL, 'Orders', 0, 1));
@@ -104,7 +104,7 @@ dbg_obj_print (sql_statistics ('Local Virtuoso', 'Demo', NULL, 'Orders', 0, 1));
 
 </div>
 
-<div id="seealso_sql_statistics" class="refsect1">
+<div>
 
 ## See Also
 

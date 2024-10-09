@@ -1,10 +1,10 @@
-<div id="fn_nntp_auth_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ authorization
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_nntp_auth_get" class="funcsynopsis">
+<div>
 
 |                                 |                                 |
 |---------------------------------|---------------------------------|
@@ -29,7 +29,7 @@ authorization
 |                                 | in `first_message ` integer ,   |
 |                                 | in `last_message ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ authorization
 
 </div>
 
-<div id="desc_nntp_auth_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ requiring authorization. See nntp_get for more information.
 
 </div>
 
-<div id="params_nntp_auth_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97085" class="refsect2">
+<div>
 
 ### server
 
@@ -62,7 +62,7 @@ default for port, so to connect to the standard port for NNTP, use
 
 </div>
 
-<div id="id97088" class="refsect2">
+<div>
 
 ### user
 
@@ -70,7 +70,7 @@ The username.
 
 </div>
 
-<div id="id97091" class="refsect2">
+<div>
 
 ### password
 
@@ -78,7 +78,7 @@ The user password.
 
 </div>
 
-<div id="id97094" class="refsect2">
+<div>
 
 ### command
 
@@ -96,7 +96,7 @@ Command <span class="type">string </span> . Valid values are:
 
 </div>
 
-<div id="id97106" class="refsect2">
+<div>
 
 ### group
 
@@ -106,7 +106,7 @@ A <span class="type">string </span> containing name of the news group.
 
 </div>
 
-<div id="ret_02" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -114,15 +114,15 @@ A vector of vectors the content depends of command.
 
 </div>
 
-<div id="errors_nntp_auth_get" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id97115" class="table">
+<div>
 
-**Table 24.57. Errors signalled by nntp_auth_get**
+**Table 24.56. Errors signalled by nntp_auth_get**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                  | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|-------------|

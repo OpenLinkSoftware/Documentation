@@ -1,6 +1,6 @@
-<div id="usingxmlfreetext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,7 +28,7 @@ Arbitrary free text criteria can appear inside the XPath expression of
 `text-contains()` , which may only be used within *`xcontains`* as it
 relies on the underlying free text index.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                           |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------|

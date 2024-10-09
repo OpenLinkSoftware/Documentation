@@ -1,6 +1,6 @@
-<div id="virtuosospongerfacetinstallposinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Build Full Text Indexes by running the following commands using the
     Virtuoso
@@ -70,15 +70,15 @@
     http://cname/about/html/http/news.cnet.com
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst4" class="figure">
+    <div>
 
     **Figure 16.117. Network Resource Fetch data**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Network Resource Fetch data](images/ui/fb3.png)
 
@@ -92,15 +92,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst4_01" class="figure">
+    <div>
 
     **Figure 16.118. Network Resource Fetch data**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Network Resource Fetch data](images/ui/fb4.png)
 
@@ -117,15 +117,15 @@
 5.  Use the Faceted Browser Search and Find User Interface to search for
     information on "CNET":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst5" class="figure">
+    <div>
 
     **Figure 16.119. Faceted Browser Search**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Browser Search](images/ui/fb5.png)
 
@@ -142,15 +142,15 @@
 6.  Results of the following form should be returned for the network
     resource data being fetched.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst6" class="figure">
+    <div>
 
     **Figure 16.120. Faceted Browser Search Results**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Browser Search Results](images/ui/fb6.png)
 
@@ -168,15 +168,15 @@
 
 8.  Results of the classes/properties should be returned:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst7" class="figure">
+    <div>
 
     **Figure 16.121. Results of the classes/properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Results of the classes/properties](images/ui/fb7.png)
 
@@ -197,15 +197,15 @@
     resource. Note that automatically is generated QRCode image for the
     described entity.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst7_01" class="figure">
+    <div>
 
     **Figure 16.122. Results of the classes/properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Results of the classes/properties](images/ui/fb8.png)
 
@@ -224,15 +224,15 @@
 
 12. To exclude a type, un-tick the checkbox associated with the type:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst8" class="figure">
+    <div>
 
     **Figure 16.123. Exclude Type(s)**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Exclude Type(s)](images/ui/fb9.png)
 
@@ -250,15 +250,15 @@
 
 14. Results of excluding the Type(s) should be shown:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst9" class="figure">
+    <div>
 
     **Figure 16.124. Results of Excluded Type(s)**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Results of Excluded Type(s)](images/ui/fb10.png)
 
@@ -396,15 +396,15 @@
 16. Click "New search" from the Entity Relations Navigation and go to
     "Entity Label Lookup" tab:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst10" class="figure">
+    <div>
 
     **Figure 16.125. Query Faceted Browser Web service endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Query Faceted Browser Web service endpoint](images/ui/fb11.png)
 
@@ -421,15 +421,15 @@
 17. In the Label auto-complete text box of the Entity Label Lookup tab,
     enter the name of an rdfs label to be Described:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst11" class="figure">
+    <div>
 
     **Figure 16.126. Select a URI from the list of available Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Select a URI from the list of available
     Labels](images/ui/fb12.png)
@@ -447,15 +447,15 @@
 18. Select a URI from the list of available Labels to obtain a
     description of the URI:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst11_01" class="figure">
+    <div>
 
     **Figure 16.127. Select a URI from the list of available Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Select a URI from the list of available
     Labels](images/ui/fb13.png)
@@ -470,15 +470,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst11_02" class="figure">
+    <div>
 
     **Figure 16.128. Select a URI from the list of available Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Select a URI from the list of available
     Labels](images/ui/fb14.png)
@@ -495,15 +495,15 @@
 
 19. Click "Facets" and go to "Entity URI Lookup" tab:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst12" class="figure">
+    <div>
 
     **Figure 16.129. Enter URI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Enter URI](images/ui/fb15.png)
 
@@ -520,15 +520,15 @@
 20. In the URI auto-complete text box of the Entity URI Lookup tab enter
     the name URI to be Described:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst12_01" class="figure">
+    <div>
 
     **Figure 16.130. Enter URI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Enter URI](images/ui/fb16.png)
 
@@ -545,15 +545,15 @@
 21. Select a URI from the list of available Labels to obtain a
     description of the URI:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst13" class="figure">
+    <div>
 
     **Figure 16.131. Obtain a description of the URI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Obtain a description of the URI](images/ui/fb17.png)
 
@@ -567,15 +567,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst13_01" class="figure">
+    <div>
 
     **Figure 16.132. Obtain a description of the URI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Obtain a description of the URI](images/ui/fb18.png)
 

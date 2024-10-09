@@ -1,6 +1,6 @@
-<div id="rowlevelsecurity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -118,7 +118,7 @@ conditions are fixed at the time of compiling the procedure. Reassigning
 a policy counts as a change to the table, causing recompilation of all
 concerned procedures, triggers and client statements.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -127,9 +127,9 @@ concerned procedures, triggers and client statements.
 
 </div>
 
-<div id="pldrlsfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="compilingandlinking" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ e.g. `-lm` , `-ldl` .
 
 The Virtuoso distribution contains the following libraries/object files:
 
-<div class="itemizedlist">
+<div>
 
 - **libvirtuoso-\* libraries/object files. ** The Virtuoso engine. The
   suffix denotes the kind of remote and threading support : -iodbc for

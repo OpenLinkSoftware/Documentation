@@ -1,10 +1,10 @@
-<div id="fn_dt_set_tz" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ dt_set_tz — modifies the timezone component of a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dt_set_tz" class="funcsynopsis">
+<div>
 
 |                        |                       |
 |------------------------|-----------------------|
 | ` `**`dt_set_tz`**` (` | in `dt ` datetime ,   |
 |                        | in `tz ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ dt_set_tz — modifies the timezone component of a datetime
 
 </div>
 
-<div id="desc_dt_set_tz" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ timezoneless then no error is signaled.
 
 </div>
 
-<div id="params_dt_set_tz" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87378" class="refsect2">
+<div>
 
 ### dt
 
@@ -63,7 +63,7 @@ The original <span class="type">DATETIME </span> .
 
 </div>
 
-<div id="id87382" class="refsect2">
+<div>
 
 ### tz
 
@@ -73,7 +73,7 @@ The original <span class="type">DATETIME </span> .
 
 </div>
 
-<div id="ret_dt_set_tz" class="refsect1">
+<div>
 
 ## Return Types
 

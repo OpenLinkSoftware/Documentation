@@ -1,10 +1,10 @@
-<div id="fn_bit_not" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ bit_not — Returns bitwise NOT of a 32-bit integer.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bit_not" class="funcsynopsis">
+<div>
 
 |                      |                       |
 |----------------------|-----------------------|
 | ` `**`bit_not`**` (` | in `n1 ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ bit_not — Returns bitwise NOT of a 32-bit integer.
 
 </div>
 
-<div id="desc_bit_not" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ to maintain compatibility.
 
 </div>
 
-<div id="ret_bit_not" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -51,15 +51,15 @@ Integer.
 
 </div>
 
-<div id="examples_bit_not" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_bit_not" class="example">
+<div>
 
 **Example 24.25. Using bitwise-NOT**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select bit_not (18);
@@ -77,7 +77,7 @@ select bit_not (-18);
 
 </div>
 
-<div id="seealso_bit_not" class="refsect1">
+<div>
 
 ## See Also
 

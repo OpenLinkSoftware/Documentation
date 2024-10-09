@@ -1,6 +1,6 @@
-<div id="openldapinstall" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ with Virtuoso on the Linux platform. For other platforms the
 installation of OpenLDAP and configuration of the ODBC data source may
 differ.
 
-<div class="orderedlist">
+<div>
 
 1.  download the OpenLDAP distribution from
     <a href="http://www.openldap.org" class="ulink"
@@ -83,9 +83,9 @@ differ.
 
 </div>
 
-<div id="virtbacksql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -157,9 +157,9 @@ create index entry_idx_entry_id on ldap_entry_objclasses(entry_id);
 
 </div>
 
-<div id="virttestdbsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

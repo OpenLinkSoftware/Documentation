@@ -1,6 +1,6 @@
-<div id="vwstrust" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -46,7 +46,7 @@ Each WS enabled SOAP endpoint should have a list of supported encryption
 methods, keys that may be issued, and authorized users. This can be
 achieved using a PL (Stored Procedure) hook.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------|
@@ -91,7 +91,7 @@ The call to `wst_cli ` performs the following actions:
 Server tokens are stored in the `WST_SERVER_ISSUER_TOKENS ` system
 table.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                          |
 |:--------------------------:|:-------------------------|
@@ -137,11 +137,11 @@ create procedure  DB.DBA.WS_TRUST_TOKEN_GEN (
 ;
 ```
 
-<div id="ex_wstrust1" class="example">
+<div>
 
 **Example 17.34. Example**
 
-<div class="example-contents">
+<div>
 
 1\) client ask for context token token service:
 
@@ -245,11 +245,11 @@ ultimate service
 
   
 
-<div id="ex_wst2" class="example">
+<div>
 
 **Example 17.35. Full WS-Trust Programmatic Sample**
 
-<div class="example-contents">
+<div>
 
 Table for sample results
 

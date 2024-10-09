@@ -1,6 +1,6 @@
-<div id="newssrvadd_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

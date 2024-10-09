@@ -1,10 +1,10 @@
-<div id="fn_http_unlock" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_unlock — Unlocks the HTTP Web Server port
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_unlock" class="funcsynopsis">
+<div>
 
 |                             |                        |
 |-----------------------------|------------------------|
 | `any `**`http_unlock`**` (` | in `pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_unlock — Unlocks the HTTP Web Server port
 
 </div>
 
-<div id="desc_http_unlock" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ unlocks the HTTP Web Server port
 
 </div>
 
-<div id="params_http_unlock" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91886" class="refsect2">
+<div>
 
 ### pwd
 
@@ -55,15 +55,15 @@ The password of the dba user.
 
 </div>
 
-<div id="examples_http_unlock" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_unlock" class="example">
+<div>
 
 **Example 24.153. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> http_unlock('password');
@@ -80,7 +80,7 @@ SQL>
 
 </div>
 
-<div id="seealso_http_unlock" class="refsect1">
+<div>
 
 ## See Also
 

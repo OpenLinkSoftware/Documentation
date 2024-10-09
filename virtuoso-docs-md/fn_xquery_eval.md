@@ -1,10 +1,10 @@
-<div id="fn_xquery_eval" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ result(s).
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xquery_eval" class="funcsynopsis">
+<div>
 
 |                          |                                   |
 |--------------------------|-----------------------------------|
@@ -26,7 +26,7 @@ result(s).
 |                          | in `index ` integer ,             |
 |                          | in `named_params ` vector `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ result(s).
 
 </div>
 
-<div id="desc_79" class="refsect1">
+<div>
 
 ## Description
 
@@ -66,11 +66,11 @@ are valid XQuery variable names.
 
 </div>
 
-<div id="params_42" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124541" class="refsect2">
+<div>
 
 ### xquery_expression
 
@@ -84,7 +84,7 @@ header of the stylesheet.
 
 </div>
 
-<div id="id124545" class="refsect2">
+<div>
 
 ### xml_tree
 
@@ -92,7 +92,7 @@ An XML entity such as that returned from the `xtree_doc() ` function.
 
 </div>
 
-<div id="id124549" class="refsect2">
+<div>
 
 ### index
 
@@ -104,7 +104,7 @@ atomic values).
 
 </div>
 
-<div id="id124552" class="refsect2">
+<div>
 
 ### named_params
 
@@ -115,7 +115,7 @@ processor.
 
 </div>
 
-<div id="ret_24" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -125,15 +125,15 @@ is supplied then the output is an array.
 
 </div>
 
-<div id="examples_27" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xquery_eval" class="example">
+<div>
 
 **Example 24.532. Finding the Authors of Document Titles**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select xt_file, xquery_eval ('<authors>//author</authors>', t) from xml_text
@@ -154,7 +154,7 @@ children contains all retrieved entities.
 
 </div>
 
-<div id="seealso_49" class="refsect1">
+<div>
 
 ## See Also
 

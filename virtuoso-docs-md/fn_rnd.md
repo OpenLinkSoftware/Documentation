@@ -1,10 +1,10 @@
-<div id="fn_rnd" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ rnd — returns a random number between 0 and n - 1 inclusive
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rnd" class="funcsynopsis">
+<div>
 
 |                        |                      |
 |------------------------|----------------------|
 | `number `**`rnd`**` (` | in `n ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ rnd — returns a random number between 0 and n - 1 inclusive
 
 </div>
 
-<div id="desc_15" class="refsect1">
+<div>
 
 ## Description
 

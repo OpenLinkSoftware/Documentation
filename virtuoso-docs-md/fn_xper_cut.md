@@ -1,10 +1,10 @@
-<div id="fn_xper_cut" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ of data pointed by given XPER entity
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xper_cut" class="funcsynopsis">
+<div>
 
 |                       |                                   |
 |-----------------------|-----------------------------------|
 | ` `**`xper_cut`**` (` | in `source_xper ` XML_Entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ of data pointed by given XPER entity
 
 </div>
 
-<div id="desc_75" class="refsect1">
+<div>
 
 ## Description
 
@@ -126,11 +126,11 @@ top-level node.
 
 </div>
 
-<div id="params_39" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124187" class="refsect2">
+<div>
 
 ### source_xper
 
@@ -140,7 +140,7 @@ XML Entity
 
 </div>
 
-<div id="seealso_02_01" class="refsect1">
+<div>
 
 ## See Also
 

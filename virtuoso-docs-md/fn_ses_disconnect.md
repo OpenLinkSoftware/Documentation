@@ -1,10 +1,10 @@
-<div id="fn_ses_disconnect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ses_disconnect — Disconnections a TCP session.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ses_disconnect" class="funcsynopsis">
+<div>
 
 |                             |                           |
 |-----------------------------|---------------------------|
 | ` `**`ses_disconnect`**` (` | in `ses ` ses_handle `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ses_disconnect — Disconnections a TCP session.
 
 </div>
 
-<div id="desc_ses_disconnect" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ occur.
 
 </div>
 
-<div id="params_ses_disconnect" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109621" class="refsect2">
+<div>
 
 ### ses
 
@@ -57,7 +57,7 @@ A valid session handle.
 
 </div>
 
-<div id="seealso_ses_disconnect" class="refsect1">
+<div>
 
 ## See Also
 

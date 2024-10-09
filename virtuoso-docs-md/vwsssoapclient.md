@@ -1,6 +1,6 @@
-<div id="vwsssoapclient" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ enabled, in which case it can return the request and the response
 messages as well. Some of the parameters are optional, not all are
 required and they can be named.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                      |
 |:--------------------------:|:---------------------------------------------------------------------|

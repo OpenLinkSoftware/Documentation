@@ -1,10 +1,10 @@
-<div id="fn_http_header" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_header — Specifies non-default HTTP response headers
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_header" class="funcsynopsis">
+<div>
 
 |                          |                         |
 |--------------------------|-------------------------|
 | ` `**`http_header`**` (` | in `head ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_header — Specifies non-default HTTP response headers
 
 </div>
 
-<div id="desc_http_header" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,15 +50,15 @@ Use http_request_status for that.
 
 </div>
 
-<div id="examples_http_header" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_header" class="example">
+<div>
 
 **Example 24.164. Modifying the headers**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <?vsp

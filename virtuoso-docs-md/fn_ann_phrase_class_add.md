@@ -1,10 +1,10 @@
-<div id="fn_ann_phrase_class_add" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.ANN_PHRASE_CLASS_ADD — Returns APC_ID of a phrase class.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ann_phrase_class_add" class="funcsynopsis">
+<div>
 
 |                                          |                             |
 |------------------------------------------|-----------------------------|
@@ -29,7 +29,7 @@ DB.DBA.ANN_PHRASE_CLASS_ADD — Returns APC_ID of a phrase class.
 |                                          | in `auth_uname ` varchar ,  |
 |                                          | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ DB.DBA.ANN_PHRASE_CLASS_ADD — Returns APC_ID of a phrase class.
 
 </div>
 
-<div id="desc_ann_phrase_class_add" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ DB.DBA.ANN_PHRASE_CLASS_ADD() with parameter "mode" equal to
 
 </div>
 
-<div id="params_ann_phrase_class_add" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103021" class="refsect2">
+<div>
 
 ### \_name
 
@@ -63,7 +63,7 @@ a name of new phrase class
 
 </div>
 
-<div id="id103024" class="refsect2">
+<div>
 
 ### \_owner_uid
 
@@ -71,7 +71,7 @@ owner UID, will be stored as APC_OWNER_UID, can be NULL for public
 
 </div>
 
-<div id="id103027" class="refsect2">
+<div>
 
 ### \_reader_gid
 
@@ -79,7 +79,7 @@ reader GID, will be stored as APC_READER_GID, can be NULL for public
 
 </div>
 
-<div id="id103030" class="refsect2">
+<div>
 
 ### \_callback
 
@@ -87,7 +87,7 @@ value for APC_CALLBACK field
 
 </div>
 
-<div id="id103033" class="refsect2">
+<div>
 
 ### \_app_env
 
@@ -95,7 +95,7 @@ value for APC_APP_ENV field
 
 </div>
 
-<div id="id103036" class="refsect2">
+<div>
 
 ### mode
 
@@ -105,7 +105,7 @@ will signal, 'soft' return APC_ID of (unchanged) existing class,
 
 </div>
 
-<div id="id103039" class="refsect2">
+<div>
 
 ### auth_uname
 
@@ -113,7 +113,7 @@ Authentication name
 
 </div>
 
-<div id="id103042" class="refsect2">
+<div>
 
 ### auth_pwd
 
@@ -123,15 +123,15 @@ Authentication password
 
 </div>
 
-<div id="examples_ann_phrase_class_add" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ann_phrase_class_add" class="example">
+<div>
 
 **Example 24.292. ANN_PHRASE_CLASS_ADD**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>select ANN_PHRASE_CLASS_ADD ('My check', null, null, null, 'My check visa', '', 'dba', 'dba');
@@ -161,7 +161,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_ann_phrase_class_add" class="refsect1">
+<div>
 
 ## See Also
 

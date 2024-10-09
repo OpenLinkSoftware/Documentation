@@ -1,10 +1,10 @@
-<div id="fn_dayname" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,17 +14,17 @@ datetime to its components
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dayname" class="funcsynopsis">
+<div>
 
 |                      |                        |
 |----------------------|------------------------|
 | ` `**`dayname`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,13 +32,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_monthname" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
 | ` `**`monthname`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -46,13 +46,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_dayofmonth" class="funcsynopsis">
+<div>
 
 |                         |                        |
 |-------------------------|------------------------|
 | ` `**`dayofmonth`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -60,13 +60,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_dayofweek" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
 | ` `**`dayofweek`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -74,13 +74,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_dayofyear" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
 | ` `**`dayofyear`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -88,13 +88,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_quarter" class="funcsynopsis">
+<div>
 
 |                      |                        |
 |----------------------|------------------------|
 | ` `**`quarter`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -102,13 +102,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_week" class="funcsynopsis">
+<div>
 
 |                   |                        |
 |-------------------|------------------------|
 | ` `**`week`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -116,13 +116,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_month" class="funcsynopsis">
+<div>
 
 |                    |                        |
 |--------------------|------------------------|
 | ` `**`month`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -130,13 +130,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_year" class="funcsynopsis">
+<div>
 
 |                   |                        |
 |-------------------|------------------------|
 | ` `**`year`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -144,13 +144,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_hour" class="funcsynopsis">
+<div>
 
 |                   |                        |
 |-------------------|------------------------|
 | ` `**`hour`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -158,13 +158,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_minute" class="funcsynopsis">
+<div>
 
 |                     |                        |
 |---------------------|------------------------|
 | ` `**`minute`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -172,13 +172,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_second" class="funcsynopsis">
+<div>
 
 |                     |                        |
 |---------------------|------------------------|
 | ` `**`second`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -186,13 +186,13 @@ datetime to its components
 
 </div>
 
-<div id="fsyn_timezone" class="funcsynopsis">
+<div>
 
 |                       |                        |
 |-----------------------|------------------------|
 | ` `**`timezone`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -202,7 +202,7 @@ datetime to its components
 
 </div>
 
-<div id="desc_dayname" class="refsect1">
+<div>
 
 ## Description
 
@@ -230,11 +230,11 @@ type.
 
 </div>
 
-<div id="params_dayname" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id85766" class="refsect2">
+<div>
 
 ### *`dt `*
 
@@ -244,7 +244,7 @@ A <span class="type">datetime </span> value.
 
 </div>
 
-<div id="ret_dayname" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -253,15 +253,15 @@ The others return an <span class="type">integer </span> .
 
 </div>
 
-<div id="examples_dayname" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dayname_1" class="example">
+<div>
 
 **Example 24.82. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select dayname(stringdate('2001-03-02'));
@@ -282,7 +282,7 @@ Friday
 
 </div>
 
-<div id="seealso_dayname" class="refsect1">
+<div>
 
 ## See Also
 

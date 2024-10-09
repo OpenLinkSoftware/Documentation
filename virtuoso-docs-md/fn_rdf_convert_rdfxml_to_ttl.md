@@ -1,10 +1,10 @@
-<div id="fn_rdf_convert_rdfxml_to_ttl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.RDF_CONVERT_RDFXML_TO_TTL — Converts rdf xml to ttl.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_convert_rdfxml_to_ttl" class="funcsynopsis">
+<div>
 
 |                                               |                           |
 |-----------------------------------------------|---------------------------|
@@ -24,7 +24,7 @@ DB.DBA.RDF_CONVERT_RDFXML_TO_TTL — Converts rdf xml to ttl.
 |                                               | in `base ` varchar ,      |
 |                                               | inout `ttl_ses ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ DB.DBA.RDF_CONVERT_RDFXML_TO_TTL — Converts rdf xml to ttl.
 
 </div>
 
-<div id="desc_rdf_convert_rdfxml_to_ttl" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ Converts rdf xml to ttl.
 
 </div>
 
-<div id="params_rdf_convert_rdfxml_to_ttl" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101483" class="refsect2">
+<div>
 
 ### strg
 
@@ -54,7 +54,7 @@ text of the rdf resource
 
 </div>
 
-<div id="id101486" class="refsect2">
+<div>
 
 ### base
 
@@ -62,7 +62,7 @@ base IRI to resolve relative IRIs to absolute
 
 </div>
 
-<div id="id101489" class="refsect2">
+<div>
 
 ### ttl_ses
 
@@ -72,7 +72,7 @@ ttl resource
 
 </div>
 
-<div id="ret_rdf_convert_rdfxml_to_ttl" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,15 +80,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_rdf_convert_rdfxml_to_ttl" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_convert_rdfxml_to_ttl" class="example">
+<div>
 
 **Example 24.273. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure DB.DBA.RDF_XML_IRI_TO_TTL (inout obj any, inout ses any)
@@ -248,7 +248,7 @@ DB.DBA.RDF_CONVERT_RDFXML_FILE_TO_TTL_FILE ('open_source_projects.rdf', 'http://
 
 </div>
 
-<div id="seealso_rdf_convert_rdfxml_to_ttl" class="refsect1">
+<div>
 
 ## See Also
 

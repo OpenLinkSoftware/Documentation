@@ -1,6 +1,6 @@
-<div id="compositedatatype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ length, may be stored as a column value for a column declared as ANY,
 and may be a key part in a SQL index. Thus, comparison is defined for
 composites as follows:
 
-<div class="itemizedlist">
+<div>
 
 - Composites are equal if all parts are equal.
 
@@ -49,7 +49,7 @@ composite and a zero based index and returns the value. The serialized
 length of a composite is limited to 255 characters. If a composite is
 used in a free text index it is limited to 30 characters.
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_composite.html" class="link"
   title="composite">composite()</a>
@@ -59,7 +59,7 @@ used in a free text index it is limited to 30 characters.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                 |
 |:--------------------------:|:------------------------------------------------------------------------------------------------|

@@ -1,10 +1,10 @@
-<div id="fn_xpf_extension" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xpf_extension — declare an XPath extension function
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xpf_extension" class="funcsynopsis">
+<div>
 
 |                                |                                   |
 |--------------------------------|-----------------------------------|
 | `void `**`xpf_extension`**` (` | in `fname ` varchar ,             |
 |                                | in `procedure_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xpf_extension — declare an XPath extension function
 
 </div>
 
-<div id="desc_xpf_extension" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ procedure.
 
 </div>
 
-<div id="params_xpf_extension" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124400" class="refsect2">
+<div>
 
 ### fname
 
@@ -73,7 +73,7 @@ the extension function
 
 </div>
 
-<div id="id124403" class="refsect2">
+<div>
 
 ### procedure_name
 
@@ -85,7 +85,7 @@ it will not be registered and error will be signalled.
 
 </div>
 
-<div id="ret_xpf_extension" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,15 +93,15 @@ None (void).
 
 </div>
 
-<div id="errors_xpf_extension" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id124411" class="table">
+<div>
 
-**Table 24.136. Errors signalled by**
+**Table 24.135. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                   | Description                                                               |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -116,15 +116,15 @@ None (void).
 
 </div>
 
-<div id="examples_xpf_extension" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xpf_extension" class="example">
+<div>
 
 **Example 24.531. Declaring a New XSLT Function**
 
-<div class="example-contents">
+<div>
 
 First define a PL procedure, then declare an XPath extension function
 and to represent it.
@@ -203,7 +203,7 @@ with constant string 'Title'.
 
 </div>
 
-<div id="seealso_xpf_extension" class="refsect1">
+<div>
 
 ## See Also
 

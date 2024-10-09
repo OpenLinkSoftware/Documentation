@@ -1,10 +1,10 @@
-<div id="fn_sparql_rdb2rdf_list_tables" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ that are used as sources for Linked Data Views.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_rdb2rdf_list_tables" class="funcsynopsis">
+<div>
 
 |                                                |                         |
 |------------------------------------------------|-------------------------|
 | ` `**`DB.DBA.SPARQL_RDB2RDF_LIST_TABLES`**` (` | in `mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ that are used as sources for Linked Data Views.
 
 </div>
 
-<div id="desc_sparql_rdb2rdf_list_tables" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ mode argument should be zero in current version.
 
 </div>
 
-<div id="params_sparql_rdb2rdf_list_tables" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102487" class="refsect2">
+<div>
 
 ### mode
 
@@ -61,7 +61,7 @@ mode argument should be zero in current version.
 
 </div>
 
-<div id="ret_sparql_rdb2rdf_list_tables" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -69,7 +69,7 @@ vector
 
 </div>
 
-<div id="seealso_sparql_rdb2rdf_list_tables" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_http_param" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_param — returns value of a HTML form parameter in VSP context
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_param" class="funcsynopsis">
+<div>
 
 |                         |                         |
 |-------------------------|-------------------------|
 | ` `**`http_param`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_param — returns value of a HTML form parameter in VSP context
 
 </div>
 
-<div id="desc_http_param" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ authentication PL hook, as in this place there is no 'params' argument.
 
 </div>
 
-<div id="params_http_param" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93167" class="refsect2">
+<div>
 
 ### name
 
@@ -59,7 +59,7 @@ A string with name of the parameter to return
 
 </div>
 
-<div id="ret_http_param" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -67,7 +67,7 @@ Returns value of a HTML form parameter, or array of all parameters.
 
 </div>
 
-<div id="seealso_http_param" class="refsect1">
+<div>
 
 ## See Also
 

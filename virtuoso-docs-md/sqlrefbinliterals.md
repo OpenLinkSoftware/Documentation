@@ -1,6 +1,6 @@
-<div id="sqlrefbinliterals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

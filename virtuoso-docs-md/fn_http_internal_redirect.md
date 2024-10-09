@@ -1,10 +1,10 @@
-<div id="fn_http_internal_redirect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_internal_redirect — Performs internal redirect.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_internal_redirect" class="funcsynopsis">
+<div>
 
 |                                        |                               |
 |----------------------------------------|-------------------------------|
@@ -25,7 +25,7 @@ http_internal_redirect — Performs internal redirect.
 |                                        | in `long_url ` varchar ,      |
 |                                        | in `keep_lpath ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ http_internal_redirect — Performs internal redirect.
 
 </div>
 
-<div id="desc_http_internal_redirect" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ endpoints.
 
 </div>
 
-<div id="params_http_internal_redirect" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92608" class="refsect2">
+<div>
 
 ### full_path
 
@@ -64,7 +64,7 @@ Set new logical path to be redirected to.
 
 </div>
 
-<div id="id92611" class="refsect2">
+<div>
 
 ### p_full_path
 
@@ -72,7 +72,7 @@ Set physical path to be redirected to.
 
 </div>
 
-<div id="id92614" class="refsect2">
+<div>
 
 ### long_url
 
@@ -80,7 +80,7 @@ Reserved for internal usage.
 
 </div>
 
-<div id="id92617" class="refsect2">
+<div>
 
 ### keep_lpath
 
@@ -90,15 +90,15 @@ Reserved for internal usage.
 
 </div>
 
-<div id="examples_http_internal_redirect" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_internal_redirect" class="example">
+<div>
 
 **Example 24.162. Using http_internal_redirect()**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure my_redirect()
@@ -124,7 +124,7 @@ create procedure my_redirect()
 
 </div>
 
-<div id="seealso_http_internal_redirect" class="refsect1">
+<div>
 
 ## See Also
 

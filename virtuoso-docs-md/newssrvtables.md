@@ -1,6 +1,6 @@
-<div id="newssrvtables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_curdatetimeoffset" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ adjusted fractional part of seconds
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_curdatetimeoffset" class="funcsynopsis">
+<div>
 
 |                                |                                          |
 |--------------------------------|------------------------------------------|
 | ` `**`curdatetimeoffset`**` (` | in `fraction_microseconds ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ adjusted fractional part of seconds
 
 </div>
 
-<div id="desc_curdatetimeoffset" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ in GMT timezone.
 
 </div>
 
-<div id="params_curdatetimeoffset" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83773" class="refsect2">
+<div>
 
 ### fraction_microseconds
 
@@ -62,7 +62,7 @@ Microseconds.
 
 </div>
 
-<div id="ret_curdatetimeoffset" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -70,7 +70,7 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="errors_curdatetimeoffset" class="refsect1">
+<div>
 
 ## Errors
 
@@ -78,15 +78,15 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="examples_curdatetimeoffset" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_curdatetimeoffset_1" class="example">
+<div>
 
 **Example 24.64. Get a timestamp**
 
-<div class="example-contents">
+<div>
 
 Get a timestamp in human-readable form.
 
@@ -110,7 +110,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_curdatetimeoffset" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="xpf_string_length" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ string-length — Returns the number of characters in the string.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_string_length" class="funcsynopsis">
+<div>
 
 |                                   |                     |
 |-----------------------------------|---------------------|
 | `integer `**`string-length`**` (` | `strg ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ string-length — Returns the number of characters in the string.
 
 </div>
 
-<div id="xpf_desc_string_length" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ node.
 
 </div>
 
-<div id="xpf_params_string_length" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129166" class="refsect2">
+<div>
 
 ### strg
 
@@ -57,7 +57,7 @@ The string whose length must be measured.
 
 </div>
 
-<div id="xpf_ret_string_length" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,15 +65,15 @@ Integer
 
 </div>
 
-<div id="xpf_examples_string_length" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_string_length" class="example">
+<div>
 
 **Example 24.622. **
 
-<div class="example-contents">
+<div>
 
 The following expressions returns 5.
 
@@ -89,7 +89,7 @@ string-length('ABCDE')
 
 </div>
 
-<div id="xpf_seealso_string_length" class="refsect1">
+<div>
 
 ## See Also
 

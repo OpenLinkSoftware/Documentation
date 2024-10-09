@@ -1,6 +1,6 @@
-<div id="handlingplcondit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,9 +33,9 @@ Handlers are active only for the duration of the enclosing compound
 statement. When an exception is thrown outside the handler's scope then
 this handler is never called.
 
-<div id="declarecondit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -106,7 +106,7 @@ SQLSTATE '*' SQLSTATE '42*'
 SQLSTATE '42S22'
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                          |
 |:----------------------------:|:-----------------------------------------------------------------------------------------|

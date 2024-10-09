@@ -1,10 +1,10 @@
-<div id="fn_st_astext" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ geometry.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_astext" class="funcsynopsis">
+<div>
 
 |                        |                  |
 |------------------------|------------------|
 | ` `**`st_astext`**` (` | in `g ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ geometry.
 
 </div>
 
-<div id="desc_st_astext" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Returns the well known text (WKT) representation of the geometry.
 
 </div>
 
-<div id="params_st_astext" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91016" class="refsect2">
+<div>
 
 ### g
 
@@ -55,7 +55,7 @@ Geometry point
 
 </div>
 
-<div id="ret_st_astext" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ Returns varchar.
 
 </div>
 
-<div id="examples_st_astext" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_astext" class="example">
+<div>
 
 **Example 24.142. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SPARQL
@@ -106,7 +106,7 @@ No. of rows in result: 10
 
 </div>
 
-<div id="seealso_st_astext" class="refsect1">
+<div>
 
 ## See Also
 

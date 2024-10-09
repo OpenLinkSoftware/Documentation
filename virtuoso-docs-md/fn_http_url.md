@@ -1,10 +1,10 @@
-<div id="fn_http_url" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_url — write to HTTP client or string output stream with URL escapes
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_url" class="funcsynopsis">
+<div>
 
 |                       |                       |
 |-----------------------|-----------------------|
@@ -24,7 +24,7 @@ http_url — write to HTTP client or string output stream with URL escapes
 |                       | in `tag ` varchar ,   |
 |                       | in `stream ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ http_url — write to HTTP client or string output stream with URL escapes
 
 </div>
 
-<div id="desc_http_url" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ escapes for special characters.
 
 </div>
 
-<div id="params_http_url" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93678" class="refsect2">
+<div>
 
 ### val_expr
 
@@ -59,7 +59,7 @@ internal representation of parsed XML data.
 
 </div>
 
-<div id="id93683" class="refsect2">
+<div>
 
 ### tag
 
@@ -69,7 +69,7 @@ evaluates to 0 or null, it will be ignored.
 
 </div>
 
-<div id="id93687" class="refsect2">
+<div>
 
 ### stream
 
@@ -85,7 +85,7 @@ class="function">string_output </code></a>
 
 </div>
 
-<div id="ret_http_url" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -93,15 +93,15 @@ None
 
 </div>
 
-<div id="errors_http_url" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id93699" class="table">
+<div>
 
-**Table 24.46. Errors signalled by `http_url `**
+**Table 24.45. Errors signalled by `http_url `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                               | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -116,15 +116,15 @@ None
 
 </div>
 
-<div id="examples_http_url" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_url" class="example">
+<div>
 
 **Example 24.182. HTTP output**
 
-<div class="example-contents">
+<div>
 
 Output of various flavours of `http ` . See
 <a href="fn_string_output.html" class="link" title="string_output"><code
@@ -149,7 +149,7 @@ http_value (12, 'li')  <li>12</li>
 
 </div>
 
-<div id="seealso_http_url" class="refsect1">
+<div>
 
 ## See Also
 

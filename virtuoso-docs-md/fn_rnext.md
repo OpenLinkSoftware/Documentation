@@ -1,10 +1,10 @@
-<div id="fn_rnext" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ rnext — Get next result from a remote result set
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rnext" class="funcsynopsis">
+<div>
 
 |                                   |                               |
 |-----------------------------------|-------------------------------|
@@ -25,7 +25,7 @@ rnext — Get next result from a remote result set
 |                                   | out `sql_state ` varchar ,    |
 |                                   | out `sql_error ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ rnext — Get next result from a remote result set
 
 </div>
 
-<div id="desc_rnext" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ class="function">rexecute </code></a> .
 
 </div>
 
-<div id="params_rnext_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109003" class="refsect2">
+<div>
 
 ### cursor_handle
 
@@ -68,7 +68,7 @@ rexecute.
 
 </div>
 
-<div id="id109007" class="refsect2">
+<div>
 
 ### row_array
 
@@ -77,7 +77,7 @@ columns.
 
 </div>
 
-<div id="id109011" class="refsect2">
+<div>
 
 ### sql_state
 
@@ -86,7 +86,7 @@ state.
 
 </div>
 
-<div id="id109015" class="refsect2">
+<div>
 
 ### sql_error
 
@@ -97,7 +97,7 @@ error message.
 
 </div>
 
-<div id="ret_rnext" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -105,7 +105,7 @@ All data is returned in output parameters.
 
 </div>
 
-<div id="seealso_rnext" class="refsect1">
+<div>
 
 ## See Also
 

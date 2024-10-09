@@ -1,10 +1,10 @@
-<div id="fn_vt_drop_ftt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ VT_DROP_FTT — drop free text trigger
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vt_drop_ftt_01" class="funcsynopsis">
+<div>
 
 |                                 |                                            |
 |---------------------------------|--------------------------------------------|
 | `DB.DBA. `**`VT_DROP_FTT`**` (` | in `target_table_name ` varchar ,          |
 |                                 | in `opt_data_column or NULL ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ VT_DROP_FTT — drop free text trigger
 
 </div>
 
-<div id="desc_vt_drop_ftt_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Drops free text trigger.
 
 </div>
 
-<div id="params_vt_drop_ftt_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119129" class="refsect2">
+<div>
 
 ### DATA_COLUMN
 
@@ -53,7 +53,7 @@ column where content is stored
 
 </div>
 
-<div id="id119132" class="refsect2">
+<div>
 
 ### target_table_name
 
@@ -63,7 +63,7 @@ the table containing the trigger
 
 </div>
 
-<div id="seealso_vt_drop_ftt_01" class="refsect1">
+<div>
 
 ## See Also
 

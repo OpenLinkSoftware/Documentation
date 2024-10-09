@@ -1,10 +1,10 @@
-<div id="fn_rdf_graph_security_audit" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ DB.DBA.RDF_GRAPH_SECURITY_AUDIT — Fix graph-level security errors.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_graph_security_audit" class="funcsynopsis">
+<div>
 
 |                                              |                             |
 |----------------------------------------------|-----------------------------|
 | ` `**`DB.DBA.RDF_GRAPH_SECURITY_AUDIT`**` (` | in `recovery ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ DB.DBA.RDF_GRAPH_SECURITY_AUDIT — Fix graph-level security errors.
 
 </div>
 
-<div id="desc_rdf_graph_security_audit" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ the configuration of the graph-level security.
 
 </div>
 
-<div id="params_rdf_graph_security_audit" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100183" class="refsect2">
+<div>
 
 ### recovery
 
@@ -53,7 +53,7 @@ the configuration of the graph-level security.
 +recovery, and makes a result-set of messages (such as found errors).
 The result set consists of 6 columns:
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*SEVERITY*</span> -- empty string for
     information messages, 'WARNING', 'ERROR' or 'FATAL' for found
@@ -88,15 +88,15 @@ The result set consists of 6 columns:
 
 </div>
 
-<div id="examples_rdf_graph_security_audit" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_graph_security_audit" class="example">
+<div>
 
 **Example 24.255. Simple example**
 
-<div class="example-contents">
+<div>
 
 Automatically fix the corrupted metadata:
 
@@ -125,7 +125,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_rdf_graph_security_audit" class="refsect1">
+<div>
 
 ## See Also
 

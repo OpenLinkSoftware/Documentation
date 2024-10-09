@@ -1,10 +1,10 @@
-<div id="fn_ap_add_phrases" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ AP_ADD_PHRASES — Adds phrases to given set.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ap_add_phrases" class="funcsynopsis">
+<div>
 
 |                             |                                       |
 |-----------------------------|---------------------------------------|
 | ` `**`AP_ADD_PHRASES`**` (` | in `phrase_id ` integer ,             |
 |                             | in `description_phrases ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ AP_ADD_PHRASES — Adds phrases to given set.
 
 </div>
 
-<div id="desc_ap_add_phrases" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ roll of dice because the vector is reordered for faster processing.
 
 </div>
 
-<div id="params_ap_add_phrases" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103187" class="refsect2">
+<div>
 
 ### phrase_id
 
@@ -63,7 +63,7 @@ integer ID of the annotation phrase set
 
 </div>
 
-<div id="id103190" class="refsect2">
+<div>
 
 ### description_phrases
 
@@ -74,15 +74,15 @@ set
 
 </div>
 
-<div id="examples_ap_add_phrases" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ap_add_phrases" class="example">
+<div>
 
 **Example 24.295. Simple Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>insert replacing DB.DBA.SYS_ANN_PHRASE_SET (APS_ID, APS_NAME, APS_OWNER_UID, APS_READER_GID, APS_APC_ID, APS_LANG_NAME, APS_APP_ENV, APS_SIZE, APS_LOAD_AT_BOOT)
@@ -116,7 +116,7 @@ title="9.33.4. Example">here</a> .
 
 </div>
 
-<div id="seealso_ap_add_phrases" class="refsect1">
+<div>
 
 ## See Also
 

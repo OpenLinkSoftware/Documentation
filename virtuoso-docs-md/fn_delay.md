@@ -1,10 +1,10 @@
-<div id="fn_delay" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ delay — sleep for n seconds
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_delay" class="funcsynopsis">
+<div>
 
 |                    |                              |
 |--------------------|------------------------------|
 | ` `**`delay`**` (` | in `n_seconds ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ delay — sleep for n seconds
 
 </div>
 
-<div id="desc_delay" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ seconds.
 
 </div>
 
-<div id="params_delay" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86141" class="refsect2">
+<div>
 
 ### n_seconds
 
@@ -55,7 +55,7 @@ seconds.
 
 </div>
 
-<div id="ret_delay" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ None
 
 </div>
 
-<div id="examples_delay" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_delay" class="example">
+<div>
 
 **Example 24.89. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure

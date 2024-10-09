@@ -1,10 +1,10 @@
-<div id="xpf_system_property" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ the name
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_system_property" class="funcsynopsis">
+<div>
 
 |                                    |                                |
 |------------------------------------|--------------------------------|
 | `object `**`system-property`**` (` | `property_qname ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ the name
 
 </div>
 
-<div id="xpf_desc_system_property" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ the empty string is returned.
 
 </div>
 
-<div id="xpf_params_system_property" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129405" class="refsect2">
+<div>
 
 ### property_qname
 
@@ -58,7 +58,7 @@ namespace declarations in scope for the expression.
 
 </div>
 
-<div id="xpf_ret_system_property" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,15 +66,15 @@ String or double precision number.
 
 </div>
 
-<div id="xpf_examples_system_property" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_system_property_1" class="example">
+<div>
 
 **Example 24.627. xsl:version**
 
-<div class="example-contents">
+<div>
 
 xsl:version is a number giving the version of XSLT implemented by the
 processor; this version returns 1.0.
@@ -89,11 +89,11 @@ processor; this version returns 1.0.
 
   
 
-<div id="xpf_ex_system_property_2" class="example">
+<div>
 
 **Example 24.628. xsl:vendor**
 
-<div class="example-contents">
+<div>
 
 xsl:vendor is a string identifying the vendor of the XSLT processor;
 this version returns 'OpenLink Software'.
@@ -108,11 +108,11 @@ this version returns 'OpenLink Software'.
 
   
 
-<div id="xpf_ex_system_property_3" class="example">
+<div>
 
 **Example 24.629. xsl:vendor-url**
 
-<div class="example-contents">
+<div>
 
 xsl:vendor-url is a string containing a URL identifying the vendor of
 the XSLT processor; this version returns 'http://www.openlinksw.com'.
@@ -127,11 +127,11 @@ the XSLT processor; this version returns 'http://www.openlinksw.com'.
 
   
 
-<div id="xpf_ex_system_property_4" class="example">
+<div>
 
 **Example 24.630. xsl:product-name**
 
-<div class="example-contents">
+<div>
 
 xsl:product-name is a string containing a name of XSLT processor; this
 version returns 'OpenLink Virtuoso Server'.
@@ -146,11 +146,11 @@ version returns 'OpenLink Virtuoso Server'.
 
   
 
-<div id="xpf_ex_system_property_5" class="example">
+<div>
 
 **Example 24.631. xsl:product-version**
 
-<div class="example-contents">
+<div>
 
 xsl:product-version is a string containing a version of XSLT processor
 implementation; the returned string may depend on OS, hardware and other
@@ -168,7 +168,7 @@ parameters of installation.
 
 </div>
 
-<div id="xpf_seealso_system_property" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_group_digest" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ passed to it.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_group_digest" class="funcsynopsis">
+<div>
 
 |                                  |                         |
 |----------------------------------|-------------------------|
@@ -26,7 +26,7 @@ passed to it.
 |                                  | in `maxlen ` integer ,  |
 |                                  | in `mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ passed to it.
 
 </div>
 
-<div id="desc_group_digest" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ SPARQL queries. In SQL queries the prefix is "DB.DBA".
 
 </div>
 
-<div id="params_group_digest" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102801" class="refsect2">
+<div>
 
 ### token
 
@@ -64,7 +64,7 @@ An item that should be added to a delimited list.
 
 </div>
 
-<div id="id102804" class="refsect2">
+<div>
 
 ### delim
 
@@ -72,7 +72,7 @@ The delimeter character to be used in the concatenation.
 
 </div>
 
-<div id="id102807" class="refsect2">
+<div>
 
 ### maxlen
 
@@ -83,7 +83,7 @@ resulting string.
 
 </div>
 
-<div id="id102810" class="refsect2">
+<div>
 
 ### mode
 
@@ -96,7 +96,7 @@ sql:GROUP_CONCAT ().
 
 </div>
 
-<div id="ret_group_digest" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -104,15 +104,15 @@ any
 
 </div>
 
-<div id="examples_group_digest" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_group_digest" class="example">
+<div>
 
 **Example 24.289. Get all ?assets as a list with delimiters.**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SPARQL
@@ -135,7 +135,7 @@ WHERE
 
 </div>
 
-<div id="seealso_group_digest" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="views_information_schema" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ The INFORMATION_SCHEMA views are described in the SQL200n standard.
 These views are defined in every qualifier and describe the objects in
 that qualifier.
 
-<div id="views_information_schema_tables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -58,9 +58,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_columns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -113,9 +113,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_schemata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -139,9 +139,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_check_constraints" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -170,9 +170,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_check_constraints_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -201,9 +201,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_column_domain_usage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -231,9 +231,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_column_privileges" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -268,9 +268,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_key_column_usage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -301,9 +301,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_routines" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -374,9 +374,9 @@ that qualifier.
 
 </div>
 
-<div id="views_information_schema_parameters" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -429,7 +429,7 @@ that qualifier.
 <div id="views_information_schema_referential_constraints"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -460,9 +460,9 @@ class="section">
 
 </div>
 
-<div id="views_information_schema_table_constraints" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -492,9 +492,9 @@ class="section">
 
 </div>
 
-<div id="views_information_schema_table_privileges" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -526,9 +526,9 @@ class="section">
 
 </div>
 
-<div id="views_information_schema_views" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="r2rmlcondwiz" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ The Virtuoso Conductor can be used for importing existing R2RML scripts
 into Virtuoso and generate the necessary RDF Linked Data Views for
 Virtuoso hosting and deployment.
 
-<div id="r2rmlcondwizex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ Virtuoso hosting and deployment.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure the R2RML <a
     href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/rdb2rdf_dav.vad"
@@ -111,15 +111,15 @@ Virtuoso hosting and deployment.
 
 5.  Got to the Linked Data -\> R2RML tab of the Virtuoso Conductor:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport01" class="figure">
+    <div>
 
     **Figure 16.66. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport01.png)
@@ -136,15 +136,15 @@ Virtuoso hosting and deployment.
 
 6.  Select the Choose File button and select the R2RML file to load:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport02" class="figure">
+    <div>
 
     **Figure 16.67. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport02.png)
@@ -161,15 +161,15 @@ Virtuoso hosting and deployment.
 
 7.  Select the Validate button to verify the R2RML mapping script:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport03" class="figure">
+    <div>
 
     **Figure 16.68. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport03.png)
@@ -187,15 +187,15 @@ Virtuoso hosting and deployment.
 8.  Select the Generate button to generate the RDF Linked Data Views
     mappings for the R2RML mapping script:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport04" class="figure">
+    <div>
 
     **Figure 16.69. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport04.png)
@@ -213,15 +213,15 @@ Virtuoso hosting and deployment.
 9.  Select the Execute button to create the RDF Linked Data Views
     mapping the the Quad Store:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport05" class="figure">
+    <div>
 
     **Figure 16.70. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport05.png)
@@ -239,15 +239,15 @@ Virtuoso hosting and deployment.
 10. The RDF Linked Data View creation is complete and status is
     displayed:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport06" class="figure">
+    <div>
 
     **Figure 16.71. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport06.png)
@@ -272,15 +272,15 @@ Virtuoso hosting and deployment.
     urn:demo.openlinksw.com/r2rml# can be used to run a SPARQL query
     against the materialized triples in the Quad Store.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport07" class="figure">
+    <div>
 
     **Figure 16.72. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport07.png)
@@ -297,15 +297,15 @@ Virtuoso hosting and deployment.
 
 12. The results set for the Linked Data View graph are displayed:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtconductorr2rmlimport08" class="figure">
+    <div>
 
     **Figure 16.73. Conductor R2RML Import Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor R2RML Import
     Wizard](images/ui/VirtConductorR2RMLImport08.png)

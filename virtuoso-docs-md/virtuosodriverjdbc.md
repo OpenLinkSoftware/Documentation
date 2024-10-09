@@ -1,6 +1,6 @@
-<div id="virtuosodriverjdbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,9 +27,9 @@ number of different database types that have been linked into Virtuoso.
 The JDBC 2 and JDBC 3 drivers also incorporate SSL encryption to enable
 very secure connections to the Virtuoso database.
 
-<div id="virtuosodriverpackaging" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,11 +47,11 @@ These drivers are installed alongside the Virtuoso Server or as part of
 a Virtuoso Client components only installation. They are packaged as
 follows:
 
-<div id="javacompatibilitytable" class="decimalstyle">
+<div>
 
 **Table 7.14. Features Comparison**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Driver Name                                          | Java Package   | "jar" File Archive | Default Location                          | Java Version |
 |:-----------------------------------------------------|----------------|--------------------|-------------------------------------------|--------------|

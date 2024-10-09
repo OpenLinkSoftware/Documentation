@@ -1,10 +1,10 @@
-<div id="fn_rdf_repl_sync" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ subscription
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_repl_sync" class="funcsynopsis">
+<div>
 
 |                            |                             |
 |----------------------------|-----------------------------|
@@ -25,7 +25,7 @@ subscription
 |                            | in `user ` varchar ,        |
 |                            | in `user_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ subscription
 
 </div>
 
-<div id="desc_rdf_repl_sync" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ order that differs from the original one.
 
 </div>
 
-<div id="params_repl_sync_02" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108194" class="refsect2">
+<div>
 
 ### publisher
 
@@ -59,7 +59,7 @@ The server name of the publisher.
 
 </div>
 
-<div id="id108197" class="refsect2">
+<div>
 
 ### user
 
@@ -68,7 +68,7 @@ credentials will be required.
 
 </div>
 
-<div id="id108200" class="refsect2">
+<div>
 
 ### user_pwd
 
@@ -78,15 +78,15 @@ SQL account password.
 
 </div>
 
-<div id="examples_rdf_repl_sync" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_rdf_repl_sync" class="example">
+<div>
 
 **Example 24.354. Enable RDF Publication**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.RDF_REPL_SYNC ('demo-rdf-srv', 'repl_user', 'repl_passwd');
@@ -100,7 +100,7 @@ SQL> DB.DBA.RDF_REPL_SYNC ('demo-rdf-srv', 'repl_user', 'repl_passwd');
 
 </div>
 
-<div id="seealso_rdf_repl_sync" class="refsect1">
+<div>
 
 ## See Also
 

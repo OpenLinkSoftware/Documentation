@@ -1,10 +1,10 @@
-<div id="fn_repl_text" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ repl_text — adds a SQL statement to the log of the replication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_text" class="funcsynopsis">
+<div>
 
 |                        |                             |
 |------------------------|-----------------------------|
@@ -25,7 +25,7 @@ repl_text — adds a SQL statement to the log of the replication
 |                        | in `a-1 ` any ,             |
 |                        | `... ` `)`;                 |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ repl_text — adds a SQL statement to the log of the replication
 
 </div>
 
-<div id="desc_repl_text" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ number of parameters.
 
 </div>
 
-<div id="params_repl_text" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id106803" class="refsect2">
+<div>
 
 ### publication
 
@@ -59,7 +59,7 @@ The name of the target publication
 
 </div>
 
-<div id="id106806" class="refsect2">
+<div>
 
 ### sqltext
 
@@ -67,13 +67,13 @@ sql expression with unnamed parameters if needed.
 
 </div>
 
-<div id="id106809" class="refsect2">
+<div>
 
 ### a-1 ... a-n
 
 parameter value, in order as in sqltext parameter.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                   |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------|
@@ -86,15 +86,15 @@ parameter value, in order as in sqltext parameter.
 
 </div>
 
-<div id="examples_repl_text" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_text_1" class="example">
+<div>
 
 **Example 24.336. Logging a SQL statement into a publication**
 
-<div class="example-contents">
+<div>
 
 Suppose on subscriber side we have a table 'foo' with two columns
 (integer and varchar). This statement will send a replication message to
@@ -112,7 +112,7 @@ SQL> repl_text ('demo-publication', 'insert into foo values (?, ?)', 1, 'this is
 
 </div>
 
-<div id="seealso_repl_text" class="refsect1">
+<div>
 
 ## See Also
 

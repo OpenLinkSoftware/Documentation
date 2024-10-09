@@ -1,10 +1,10 @@
-<div id="fn_composite_ref" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ composite_ref — get member of a composite object
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_composite_ref" class="funcsynopsis">
+<div>
 
 |                                   |                        |
 |-----------------------------------|------------------------|
 | `integer `**`composite_ref`**` (` | in `c ` any ,          |
 |                                   | in `nth ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ composite_ref — get member of a composite object
 
 </div>
 
-<div id="desc_composite_ref" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ index is 0 based.
 
 </div>
 
-<div id="params_composite_ref" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82545" class="refsect2">
+<div>
 
 ### nth
 
@@ -56,7 +56,7 @@ index is 0 based.
 
 </div>
 
-<div id="rettypes_composite_ref" class="refsect1">
+<div>
 
 ## Return types
 
@@ -64,15 +64,15 @@ The type returned is the type of the composite member referred to.
 
 </div>
 
-<div id="err_composite_ref" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id82554" class="table">
+<div>
 
 **Table 24.13. Errors signalled by `composite_ref `**
 
-<div class="table-contents">
+<div>
 
 |                                       |                                       |
 |---------------------------------------|---------------------------------------|
@@ -87,15 +87,15 @@ The type returned is the type of the composite member referred to.
 
 </div>
 
-<div id="examples_composite_ref" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_composite_ref_1" class="example">
+<div>
 
 **Example 24.46. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get first member of a composite consisting of <span class="type">VARCHAR
 </span> values.
@@ -119,7 +119,7 @@ Miles
 
 </div>
 
-<div id="seealso_composite_ref" class="refsect1">
+<div>
 
 ## See Also
 

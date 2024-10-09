@@ -1,10 +1,10 @@
-<div id="fn_udt_instance_of" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ input types.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_udt_instance_of" class="funcsynopsis">
+<div>
 
 |                                     |                    |
 |-------------------------------------|--------------------|
 | `varchar `**`udt_instance_of`**` (` | in `udt ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -31,14 +31,14 @@ input types.
 
 </div>
 
-<div id="fsyn_udt_instance_of1" class="funcsynopsis">
+<div>
 
 |                                     |                     |
 |-------------------------------------|---------------------|
 | `integer `**`udt_instance_of`**` (` | in `udt1 ` any ,    |
 |                                     | in `udt2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -48,7 +48,7 @@ input types.
 
 </div>
 
-<div id="desc_udt_instance_of" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ not defined.
 
 </div>
 
-<div id="params_udt_instance_of" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116042" class="refsect2">
+<div>
 
 ### udt, udt1, udt2
 
@@ -74,7 +74,7 @@ Varchar or type instance.
 
 </div>
 
-<div id="ret_udt_instance_of" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -86,15 +86,15 @@ type or a subtype of udt2. Otherwise it returns o (false).
 
 </div>
 
-<div id="examples_udt_instance_of" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_udt_instance_of" class="example">
+<div>
 
 **Example 24.428. Using udt_instance_of()**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select udt_instance_of ('SER_UDT')
@@ -130,7 +130,7 @@ Returns 0;
 
 </div>
 
-<div id="seealso_udt_instance_of" class="refsect1">
+<div>
 
 ## See Also
 

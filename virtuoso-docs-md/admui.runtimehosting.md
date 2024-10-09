@@ -1,6 +1,6 @@
-<div id="admui.runtimehosting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 The runtime hosting interfaces require Mono/CLR and Java extension
 servers.
 
-<div id="admui.loadedmodules" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,15 +36,15 @@ servers.
 You can view Loaded Modules list and each Module you can "Unload". Also
 you can browse for Module and examine its content.
 
-<div class="figure-float">
+<div>
 
-<div id="rth001" class="figure">
+<div>
 
 **Figure 6.10. Loaded Modules**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Loaded Modules](images/ui/rth001.png)
 
@@ -60,9 +60,9 @@ you can browse for Module and examine its content.
 
 </div>
 
-<div id="admui.importfiles" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,15 +79,15 @@ you can browse for Module and examine its content.
 To import files click the "Browse" button and select the class you want
 to import. Then click the "Add to list" button.
 
-<div class="figure-float">
+<div>
 
-<div id="rth002" class="figure">
+<div>
 
 **Figure 6.11. Import Files**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Import Files](images/ui/rth002.png)
 
@@ -103,9 +103,9 @@ to import. Then click the "Add to list" button.
 
 </div>
 
-<div id="admui.loadodules" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -122,15 +122,15 @@ to import. Then click the "Add to list" button.
 In order to change grants to a particular Module, select the desired
 grant value from the "Grant to" list and click the "Add" button.
 
-<div class="figure-float">
+<div>
 
-<div id="rth003" class="figure">
+<div>
 
 **Figure 6.12. Modules Grants**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Modules Grants](images/ui/rth003.png)
 
