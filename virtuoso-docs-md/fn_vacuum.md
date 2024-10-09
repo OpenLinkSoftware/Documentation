@@ -43,7 +43,7 @@ since v6)
 |                              |                                                                              |
 |:----------------------------:|:-----------------------------------------------------------------------------|
 | ![\[Note\]](images/note.png) | Deprecated!                                                                  |
-|                              | This functionality happens automatically in Virtuoso versions 6 and greater. |
+|                              | This index compaction is automatic in Virtuoso version 6 and later.          |
 
 </div>
 
@@ -74,7 +74,7 @@ indices.
 The vacuum operation may run out of disk space even if it makes net
 gains because the modified pages will not be final until the next
 checkpoint and the originals will not be free until this same
-checkpoint. Thus manually running a checkpoint after vacuum runs out of
+checkpoint. Manually running a checkpoint after vacuum runs out of
 space will free the space and vacuum may be rerun.
 
 </div>
@@ -97,7 +97,7 @@ APP.USER.DATA
 
 ### index_name
 
-This allows specifying an individual index to compact. The specified
+This specifies an individual index to compact. The specified
 table(s) must have this index. The index name is a LIKE pattern and if
 given should match the case and spelling of index names as returned by
 the ODBC call SQLStatistics or equivalent, which is also the KEY_NAME
