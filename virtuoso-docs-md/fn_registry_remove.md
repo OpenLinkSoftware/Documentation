@@ -1,10 +1,10 @@
-<div id="fn_registry_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ registry_remove — Remove a variable from registry
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_registry_remove" class="funcsynopsis">
+<div>
 
 |                              |                         |
 |------------------------------|-------------------------|
 | ` `**`registry_remove`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ registry_remove — Remove a variable from registry
 
 </div>
 
-<div id="desc_registry_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ they should not be changed by any application. Nobody can remove such a
 
 </div>
 
-<div id="params_registry_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104817" class="refsect2">
+<div>
 
 ### name
 
@@ -59,7 +59,7 @@ Name of variable to be removed.
 
 </div>
 
-<div id="ret_registry_remove" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -68,15 +68,15 @@ specified variable does not exists.
 
 </div>
 
-<div id="errors_registry_remove" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id104825" class="table">
+<div>
 
-**Table 24.75. Errors signalled by registry_set**
+**Table 24.74. Errors signalled by registry_set**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                        | Description |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------------------|-------------|
@@ -91,15 +91,15 @@ specified variable does not exists.
 
 </div>
 
-<div id="examples_registry_remove" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_registry_remove" class="example">
+<div>
 
 **Example 24.316. Creation and Removal of a Registry Variable**
 
-<div class="example-contents">
+<div>
 
 This sequence of operations demonstrates that `registry_remove ` reverts
 the effect of `registry_set ` .
@@ -129,7 +129,7 @@ my_value
 
 </div>
 
-<div id="seealso_registry_remove" class="refsect1">
+<div>
 
 ## See Also
 

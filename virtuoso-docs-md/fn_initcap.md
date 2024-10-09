@@ -1,10 +1,10 @@
-<div id="fn_initcap" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ initcap — returns its argument with the first letter capitalized
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_initcap" class="funcsynopsis">
+<div>
 
 |                      |                    |
 |----------------------|--------------------|
 | ` `**`initcap`**` (` | `str ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ initcap — returns its argument with the first letter capitalized
 
 </div>
 
-<div id="desc_initcap" class="refsect1">
+<div>
 
 ## Description
 

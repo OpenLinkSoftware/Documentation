@@ -1,6 +1,6 @@
-<div id="rdfconnvarsiniriclasses" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,7 +55,7 @@ title="connection_set"><code class="function">connection_set</code></a>
 and some of them have default values that are used if not overridden by
 application:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*URIQADefaultHost*</span>
 
@@ -99,7 +99,7 @@ in format strings that is expanded either to
 <span class="emphasis">*DefaultHost*</span> parameter of
 <span class="emphasis">*URIQA*</span> section of configuration file.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                   |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

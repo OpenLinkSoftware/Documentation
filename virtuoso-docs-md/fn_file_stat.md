@@ -1,10 +1,10 @@
-<div id="fn_file_stat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ file_stat — get various OS statistics about a file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_stat" class="funcsynopsis">
+<div>
 
 |                        |                         |
 |------------------------|-------------------------|
 | ` `**`file_stat`**` (` | in `path ` varchar ,    |
 |                        | in `what ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ file_stat — get various OS statistics about a file
 
 </div>
 
-<div id="desc" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ control disk access.
 
 </div>
 
-<div id="params_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88888" class="refsect2">
+<div>
 
 ### path
 
@@ -62,7 +62,7 @@ control disk access.
 
 </div>
 
-<div id="id88892" class="refsect2">
+<div>
 
 ### what
 
@@ -81,15 +81,15 @@ control disk access.
 
 </div>
 
-<div id="examples_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_file_stat" class="example">
+<div>
 
 **Example 24.116. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get the size of the virtuoso INI file
 
@@ -110,7 +110,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_03" class="refsect1">
+<div>
 
 ## See Also
 

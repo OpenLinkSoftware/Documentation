@@ -1,6 +1,6 @@
-<div id="procedures_transactions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="newssrvcmds" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,7 +32,7 @@ The server supports the following commands:
 | xover \[range\]               |
 | stat \[MessageID\|Number\]    |
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                            |
 |:--------------------------:|:-----------------------------------------------------------|

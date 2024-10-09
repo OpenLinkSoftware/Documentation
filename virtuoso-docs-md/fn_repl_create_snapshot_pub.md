@@ -1,10 +1,10 @@
-<div id="fn_repl_create_snapshot_pub" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ REPL_CREATE_SNAPSHOT_PUB — Create bi-directional snapshot publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_create_snapshot_pub" class="funcsynopsis">
+<div>
 
 |                                           |                         |
 |-------------------------------------------|-------------------------|
 | `None `**`REPL_CREATE_SNAPSHOT_PUB`**` (` | in `item ` varchar ,    |
 |                                           | in `type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ REPL_CREATE_SNAPSHOT_PUB — Create bi-directional snapshot publication
 
 </div>
 
-<div id="desc_repl_create_snapshot_pub" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ creates an updateable snapshot log and generates an updating procedure.
 
 </div>
 
-<div id="params_repl_create_snapshot_pub" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107245" class="refsect2">
+<div>
 
 ### item
 
@@ -55,7 +55,7 @@ Item is a DAV collection or table name.
 
 </div>
 
-<div id="id107248" class="refsect2">
+<div>
 
 ### type
 
@@ -66,7 +66,7 @@ or 2 if item is a table name.
 
 </div>
 
-<div id="ret_repl_create_snapshot_pub" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ None.
 
 </div>
 
-<div id="examples_repl_create_snapshot_pub" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_repl_create_snapshot_pub" class="example">
+<div>
 
 **Example 24.341. Creating bi-directional snapshot publication**
 
-<div class="example-contents">
+<div>
 
 The following statement creates bi-directional snapshot publication of
 table 'Demo.demo.Shippers':
@@ -107,7 +107,7 @@ SQL> DB.DBA.REPL_CREATE_SNAPSHOT_PUB ('/DAV/doc', 1);
 
 </div>
 
-<div id="seealso_repl_create_snapshot_pub" class="refsect1">
+<div>
 
 ## See Also
 

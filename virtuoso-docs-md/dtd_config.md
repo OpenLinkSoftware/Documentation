@@ -1,6 +1,6 @@
-<div id="dtd_config" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,11 +40,11 @@ report only those errors which are relevant to the application. Using
 configuration parameters, one may specify "importance levels" for every
 group of problems. There are 5 "importance levels":
 
-<div id="id46691" class="table">
+<div>
 
 **Table 15.1. Error Catch Levels**
 
-<div class="table-contents">
+<div>
 
 | Error Level                            | Description                                                                                                                                                                                                                          |
 |----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

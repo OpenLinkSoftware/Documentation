@@ -1,6 +1,6 @@
-<div id="insertreplacing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

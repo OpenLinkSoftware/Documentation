@@ -1,6 +1,6 @@
-<div id="vwsssupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 The following terms are used in this section in the following meanings:
 
-<div class="itemizedlist">
+<div>
 
 - **encryption . ** The process of making data unreadable using some
   secret (see 'key')
@@ -121,9 +121,9 @@ keys. Furthermore if a user account is removed all associated keys will
 also be removed if they were stored in the database. If the keys were on
 the file-system only the in-memory cache will be deleted.
 
-<div id="vwsssrvclisidecerts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -145,7 +145,7 @@ certificates loaded in the memory cache of the user. The same applies to
 server keys and certificates. Therefore we will refer to these as client
 or server security tokens that are kept on server-side.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                         |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------|
@@ -154,9 +154,9 @@ or server security tokens that are kept on server-side.
 
 </div>
 
-<div id="vwsskeydefpersist" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -179,9 +179,9 @@ class="function">USER_KEY_LOAD() </code></a>
 
 </div>
 
-<div id="vwsskeyenc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -207,11 +207,11 @@ foreground mode. If the server is started as background process and the
 key needs a password to decrypt and load, an error will be logged in the
 virtuoso log file and that particular key will not be loaded.
 
-<div id="vwsspasslog" class="example">
+<div>
 
 **Example 17.25. An example of a password prompt and log on success**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 Enter a password for key "wss.pfx":
@@ -226,9 +226,9 @@ Enter a password for key "wss.pfx":
 
 </div>
 
-<div id="vwssreferencingkeys" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -249,11 +249,11 @@ title="xenc_key_inst_create"><code
 class="function">xenc_key_inst_create (in key_name varchar[, super key inst])</code></a>
 function can be used.
 
-<div id="vwssrefkeyex" class="example">
+<div>
 
 **Example 17.26. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure
@@ -284,9 +284,9 @@ DB.DBA.WS_SOAP_GET_KEY ()
 
 </div>
 
-<div id="vwsskeyremoval" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

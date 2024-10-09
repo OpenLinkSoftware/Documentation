@@ -1,10 +1,10 @@
-<div id="fn_repl_pub_add" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_PUB_ADD — add item to a publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_pub_add" class="funcsynopsis">
+<div>
 
 |                           |                                                  |
 |---------------------------|--------------------------------------------------|
@@ -26,7 +26,7 @@ REPL_PUB_ADD — add item to a publication
 |                           | in `mode ` integer ,                             |
 |                           | in `procedure_replication_options ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ REPL_PUB_ADD — add item to a publication
 
 </div>
 
-<div id="desc_repl_pub_add" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ definition to existing subscribers.
 
 </div>
 
-<div id="params_repl_pub_add" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105525" class="refsect2">
+<div>
 
 ### publication
 
@@ -60,7 +60,7 @@ publication account name.
 
 </div>
 
-<div id="id105528" class="refsect2">
+<div>
 
 ### item
 
@@ -74,7 +74,7 @@ dependent on <span class="emphasis">*type* </span> should be:
 
 </div>
 
-<div id="id105536" class="refsect2">
+<div>
 
 ### type
 
@@ -88,7 +88,7 @@ type of item, can accept following types:
 
 </div>
 
-<div id="id105543" class="refsect2">
+<div>
 
 ### mode
 
@@ -101,7 +101,7 @@ mode of remote copy:
 
 </div>
 
-<div id="id105549" class="refsect2">
+<div>
 
 ### procedure_replication_options
 
@@ -117,15 +117,15 @@ valid only in case of Virtuoso/PL procedure:
 
 </div>
 
-<div id="examples_repl_pub_add" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_pub_add_1" class="example">
+<div>
 
 **Example 24.324. Adding a table to the publication**
 
-<div class="example-contents">
+<div>
 
 This is to add a table Demo.demo.Orders (available in the demo DataBase)
 to the an existing publication named table_publication. The default flag
@@ -144,7 +144,7 @@ SQL> DB.DBA.REPL_PUB_ADD ('table_publication', 'Demo.demo.Orders', 2, 0, NULL);
 
 </div>
 
-<div id="seealso_repl_pub_add" class="refsect1">
+<div>
 
 ## See Also
 

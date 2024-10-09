@@ -1,6 +1,6 @@
-<div id="linkeddata3simplesteps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ Injecting Linked Data into the Web has been a major pain point for those
 who seek personal, service, or organization-specific variants of
 DBpedia. Basically, the sequence goes something like this:
 
-<div class="orderedlist">
+<div>
 
 1.  You encounter DBpedia or the LOD Cloud Pictorial.
 
@@ -32,7 +32,7 @@ DBpedia. Basically, the sequence goes something like this:
 
 The problems typically take the following form:
 
-<div class="orderedlist">
+<div>
 
 1.  Functionality confusion about the complementary Name and Address
     functionality of a single URI abstraction.
@@ -49,9 +49,9 @@ The problems typically take the following form:
 To start addressing these problems, here is a simple guide for
 generating and publishing Linked Data using Virtuoso.
 
-<div id="linkeddata3simplesteps1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -71,7 +71,7 @@ variety of built-in data loader utilities.
 Many options allow you to easily and quickly generate RDF data from
 other data sources:
 
-<div class="itemizedlist">
+<div>
 
 - Install the Sponger Bookmarklet for the URIBurner service. Bind this
   to your own SPARQL-compliant backend RDF database (in this scenario,
@@ -83,7 +83,7 @@ other data sources:
 
 - Starting with CSV files, you can:
 
-  <div class="itemizedlist">
+  <div>
 
   - Place them at an HTTP-accessible location, and use the Virtuoso
     Sponger to convert them to RDF or;
@@ -96,7 +96,7 @@ other data sources:
 
 - Starting from XML files, you can:
 
-  <div class="itemizedlist">
+  <div>
 
   - Use Virtuoso's inbuilt XSLT-Processor for manual XML to RDF/XML
     transformation or;
@@ -113,9 +113,9 @@ other data sources:
 
 </div>
 
-<div id="linkeddata3simplesteps2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -132,13 +132,13 @@ other data sources:
 Install the Faceted Browser VAD package (fct_dav.vad) which delivers the
 following:
 
-<div class="orderedlist">
+<div>
 
 1.  Faceted Browser Engine UI
 
 2.  Dynamic Hypermedia Resource Generator:
 
-    <div class="itemizedlist">
+    <div>
 
     - delivers descriptor resources for every entity (data object) in
       the Native or Virtual Quad Stores
@@ -153,9 +153,9 @@ following:
 
 </div>
 
-<div id="linkeddata3simplesteps3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -172,12 +172,12 @@ following:
 Three simple steps allow you, your enterprise, and your customers to
 consume and exploit your newly deployed Linked Data --
 
-<div class="orderedlist">
+<div>
 
 1.  Load a page like this in your browser:
     http://\<cname\>\[:\<port\>\]/describe/?uri=\<entity-uri\>
 
-    <div class="itemizedlist">
+    <div>
 
     - \<cname\>\[:\<port\>\] gets replaced by the host and port of your
       Virtuoso instance

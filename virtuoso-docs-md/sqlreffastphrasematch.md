@@ -1,6 +1,6 @@
-<div id="sqlreffastphrasematch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ appropriate tags and keywords. Virtuoso has built-in phrase match
 processor that is fast enough to deal with long documents and big phrase
 sets in interactive applications.
 
-<div id="sqlreffastphrasematchscl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

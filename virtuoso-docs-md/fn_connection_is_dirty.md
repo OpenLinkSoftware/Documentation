@@ -1,10 +1,10 @@
-<div id="fn_connection_is_dirty" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ been altered
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_connection_is_dirty" class="funcsynopsis">
+<div>
 
 |                                         |      |
 |-----------------------------------------|------|
 | `integer `**`connection_is_dirty`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ been altered
 
 </div>
 
-<div id="desc_connection_is_dirty" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ conditional storage of session variables in a database table.
 
 </div>
 
-<div id="ret_connection_is_dirty" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -58,15 +58,15 @@ An <span class="type">INTEGER </span> indicating true (1) or false (0).
 
 </div>
 
-<div id="examples_connection_is_dirty" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_connection_is_dirty_1" class="example">
+<div>
 
 **Example 24.50. Checking Connection Variables**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp
@@ -86,7 +86,7 @@ An <span class="type">INTEGER </span> indicating true (1) or false (0).
 
 </div>
 
-<div id="seealso_connection_is_dirty" class="refsect1">
+<div>
 
 ## See Also
 

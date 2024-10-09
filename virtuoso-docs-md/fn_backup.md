@@ -1,10 +1,10 @@
-<div id="fn_backup" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ Write data into transaction log format for backup purposes. Deprecated.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_backup" class="funcsynopsis">
+<div>
 
 |                     |                         |
 |---------------------|-------------------------|
 | ` `**`backup`**` (` | in `file ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -31,13 +31,13 @@ Write data into transaction log format for backup purposes. Deprecated.
 
 </div>
 
-<div id="fsyn_backup_close" class="funcsynopsis">
+<div>
 
 |                           |      |
 |---------------------------|------|
 | ` `**`backup_close`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -45,13 +45,13 @@ Write data into transaction log format for backup purposes. Deprecated.
 
 </div>
 
-<div id="fsyn_backup_flush" class="funcsynopsis">
+<div>
 
 |                           |      |
 |---------------------------|------|
 | ` `**`backup_flush`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -59,13 +59,13 @@ Write data into transaction log format for backup purposes. Deprecated.
 
 </div>
 
-<div id="fsyn_backup_prepare" class="funcsynopsis">
+<div>
 
 |                             |                         |
 |-----------------------------|-------------------------|
 | ` `**`backup_prepare`**` (` | in `file ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -73,13 +73,13 @@ Write data into transaction log format for backup purposes. Deprecated.
 
 </div>
 
-<div id="fsyn_backup_row" class="funcsynopsis">
+<div>
 
 |                         |                    |
 |-------------------------|--------------------|
 | ` `**`backup_row`**` (` | in `row ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -89,11 +89,11 @@ Write data into transaction log format for backup purposes. Deprecated.
 
 </div>
 
-<div id="desc_backup" class="refsect1">
+<div>
 
 ## Description
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Important">
 <colgroup>
@@ -132,7 +132,7 @@ the executable command line.</p></td>
 
 This function requires dba privileges.
 
-<div id="id80724" class="refsect2">
+<div>
 
 ### Full backup
 
@@ -146,7 +146,7 @@ replays.
 
 </div>
 
-<div id="id80728" class="refsect2">
+<div>
 
 ### Partial backups
 
@@ -183,11 +183,11 @@ transaction should be committed or rolled back after `backup_close ` .
 
 </div>
 
-<div id="params_backup" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80765" class="refsect2">
+<div>
 
 ### *`file `*
 
@@ -196,7 +196,7 @@ log.
 
 </div>
 
-<div id="id80771" class="refsect2">
+<div>
 
 ### `backup_row `
 
@@ -207,7 +207,7 @@ log.
 
 </div>
 
-<div id="seealso_backup" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="pldcovfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

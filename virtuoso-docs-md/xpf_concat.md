@@ -1,10 +1,10 @@
-<div id="xpf_concat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ concat — Returns the concatenation of its arguments.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_concat" class="funcsynopsis">
+<div>
 
 |                           |                      |
 |---------------------------|----------------------|
@@ -25,7 +25,7 @@ concat — Returns the concatenation of its arguments.
 |                           | `... ` ,             |
 |                           | `strgN ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ concat — Returns the concatenation of its arguments.
 
 </div>
 
-<div id="xpf_desc_concat" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ application.
 
 </div>
 
-<div id="xpf_params_concat" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126349" class="refsect2">
+<div>
 
 ### strgI
 
@@ -66,21 +66,21 @@ String or a value of any type which may be converted into a string.
 
 </div>
 
-<div id="xpf_ret_concat" class="refsect1">
+<div>
 
 ## Return Types
 
 </div>
 
-<div id="xpf_examples_concat" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_concat" class="example">
+<div>
 
 **Example 24.571. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 concat('Order ', @orderno, ' dated ', @issuedate)
@@ -94,7 +94,7 @@ concat('Order ', @orderno, ' dated ', @issuedate)
 
 </div>
 
-<div id="xpf_seealso_concat" class="refsect1">
+<div>
 
 ## See Also
 

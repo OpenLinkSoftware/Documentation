@@ -1,6 +1,6 @@
-<div id="accessrequestinfo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,11 +41,11 @@ is equivalent to `get_keyword (`*`'param_name'`*` , `*`'params'`*` );`
 Since `get_keyword()` returns only strings, you will find that `cast`
 ing or conversion functions such as `atoi()` are very useful here.
 
-<div id="ex_usingparamsvector" class="example">
+<div>
 
 **Example 14.8. Reading the params Vector**
 
-<div class="example-contents">
+<div>
 
 Consider retrieving the following page by means of the URL:
 
@@ -81,7 +81,7 @@ http://myvirtuoso/test.vsp?arg1=1&arg2=test
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -96,15 +96,15 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;" data-valign="top"><p><a
-href="fn_get_keyword.html" class="link" shape="rect"
-title="get_keyword"><code class="function">get_keyword()</code></a></p>
-<p><a href="fn_atoi.html" class="link" shape="rect" title="atoi"><code
+href="fn_get_keyword.html" class="link" title="get_keyword"><code
+class="function">get_keyword()</code></a></p>
+<p><a href="fn_atoi.html" class="link" title="atoi"><code
 class="function">atoi()</code></a></p>
-<p><a href="fn_aref.html" class="link" shape="rect" title="aref"><code
+<p><a href="fn_aref.html" class="link" title="aref"><code
 class="function">aref()</code></a></p>
-<p><a href="fn_aset.html" class="link" shape="rect" title="aset"><code
+<p><a href="fn_aset.html" class="link" title="aset"><code
 class="function">aset()</code></a></p>
-<p><a href="ch-sqlreference.html#dtcasting" class="link" shape="rect"
+<p><a href="ch-sqlreference.html#dtcasting" class="link"
 title="9.1.2. Casting">cast</a></p></td>
 </tr>
 </tbody>
@@ -112,7 +112,7 @@ title="9.1.2. Casting">cast</a></p></td>
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

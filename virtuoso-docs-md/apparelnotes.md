@@ -1,6 +1,6 @@
-<div id="apparelnotes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="feat30" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,14 +30,14 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*SOAP 1.1 Implementation*</span> - this new
   release includes a wide range of new SOAP features, bringing it up to
   date with the most recent developments of this rapidly evolving
   technology :
 
-- <div class="itemizedlist">
+- <div>
 
   - Flexibility in configuring SOAP access points using a WEB based user
     interface allowing exposure of selected stored procedures as SOAP

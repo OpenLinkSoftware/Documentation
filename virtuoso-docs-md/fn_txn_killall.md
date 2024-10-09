@@ -1,10 +1,10 @@
-<div id="fn_txn_killall" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ txn_killall — kill all pending transactions
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_txn_killall" class="funcsynopsis">
+<div>
 
 |                          |                         |
 |--------------------------|-------------------------|
 | ` `**`txn_killall`**` (` | in `code ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ txn_killall — kill all pending transactions
 
 </div>
 
-<div id="desc_46" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,7 +52,7 @@ ultimately to the client.
 
 </div>
 
-<div id="examples_09_01" class="refsect1">
+<div>
 
 ## Examples
 

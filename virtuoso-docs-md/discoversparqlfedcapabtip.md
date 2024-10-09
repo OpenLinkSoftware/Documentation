@@ -1,6 +1,6 @@
-<div id="discoversparqlfedcapabtip" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="discoversparqlfedcapabtipwhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,9 +35,9 @@ enhancing SPARQL-FED usage from Virtuoso instances.
 
 </div>
 
-<div id="discoversparqlfedcapabtipwhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,9 +59,9 @@ functionality.
 
 </div>
 
-<div id="discoversparqlfedcapabtiphow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -82,9 +82,9 @@ SPARQL endpoint:
 SPARQL LOAD SERVICE <{sparql-endpoint-iri> DATA
 ```
 
-<div id="discoversparqlfedcapabtiphowex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -98,7 +98,7 @@ SPARQL LOAD SERVICE <{sparql-endpoint-iri> DATA
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Run:
 

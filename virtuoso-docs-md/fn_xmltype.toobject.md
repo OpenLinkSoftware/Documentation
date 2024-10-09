@@ -1,10 +1,10 @@
-<div id="fn_xmltype.toobject" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ XMLType.toObject
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.toobject" class="funcsynopsis">
+<div>
 
 |                               |                            |
 |-------------------------------|----------------------------|
 | ` `**`XMLType.toObject`**` (` | in `schema ` varchar ,     |
 |                               | in `element ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ XMLType.toObject
 
 </div>
 
-<div id="desc_xmltype.toobject" class="refsect1">
+<div>
 
 ## Description
 

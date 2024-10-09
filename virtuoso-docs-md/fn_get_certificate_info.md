@@ -1,10 +1,10 @@
-<div id="fn_get_certificate_info" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ certificate
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_get_certificate_info" class="funcsynopsis">
+<div>
 
 |                                                    |                                  |
 |----------------------------------------------------|----------------------------------|
@@ -27,7 +27,7 @@ certificate
 |                                                    | in `passwd ` varchar ,           |
 |                                                    | in `ext_oid ` varchar `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ certificate
 
 </div>
 
-<div id="desc_get_certificate_info" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,11 +57,11 @@ registered in the current user's key store by name contained in
 
 </div>
 
-<div id="params_get_certificate_info" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89997" class="refsect2">
+<div>
 
 ### type
 
@@ -83,7 +83,7 @@ type must be an integer. It can be one of the following values:
 
 </div>
 
-<div id="id90012" class="refsect2">
+<div>
 
 ### cert_or_key_name
 
@@ -92,7 +92,7 @@ current user store.
 
 </div>
 
-<div id="id90015" class="refsect2">
+<div>
 
 ### in_format
 
@@ -107,7 +107,7 @@ This is to designate encoding type of the value 'cert_or_key_name'
 
 </div>
 
-<div id="id90023" class="refsect2">
+<div>
 
 ### passwd
 
@@ -115,7 +115,7 @@ Password to unlock PKCS#12 encoded certificate
 
 </div>
 
-<div id="id90026" class="refsect2">
+<div>
 
 ### ext_oid
 
@@ -125,7 +125,7 @@ X.509 extension object identifier
 
 </div>
 
-<div id="ret_get_certificate_info" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -134,15 +134,15 @@ invalid.
 
 </div>
 
-<div id="examples_get_certificate_info" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_get_certificate_info" class="example">
+<div>
 
 **Example 24.132. Simple examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE PROCEDURE get_mail_example (in cert any := null, in cert_type int := 0)

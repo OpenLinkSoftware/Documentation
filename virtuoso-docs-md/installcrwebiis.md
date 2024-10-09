@@ -1,6 +1,6 @@
-<div id="installcrwebiis" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ To create and test this simple Web Service we have used the Visual
 Studio Development Server. This section describes how to deploy the
 service using IIS.
 
-<div id="installcrwebiiswebs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,7 +36,7 @@ service using IIS.
 
 To deploy the service using IIS:
 
-<div class="itemizedlist">
+<div>
 
 - Open the RDFWebDemo project in Visual Studio, go to the
 
@@ -84,9 +84,9 @@ RDFWebDemo project.
 
 </div>
 
-<div id="installcrwebiisweba" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -104,7 +104,7 @@ You will now need to modify RDFWebApp to access the service at the new
 address. At the same time we will also change RDFWebApp so that it too
 is deployed using IIS
 
-<div class="itemizedlist">
+<div>
 
 - Open The RDFWebApp project in Visual Studio.
 
@@ -160,15 +160,15 @@ http://example.com/RDFWebApp/Default.aspx and can also be accessed using
 the hostname or IP address of you server e.g.
 http://192.168.7.129/RDFWebApp/Default.aspx
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf31" class="figure">
+<div>
 
 **Figure 2.166. Default.aspx**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Default.aspx](images/ui/sparqlwinf31.png)
 
@@ -184,9 +184,9 @@ http://192.168.7.129/RDFWebApp/Default.aspx
 
 </div>
 
-<div id="id1320" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

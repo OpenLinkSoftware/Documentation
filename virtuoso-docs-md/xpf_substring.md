@@ -1,10 +1,10 @@
-<div id="xpf_substring" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ third argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_substring" class="funcsynopsis">
+<div>
 
 |                              |                        |
 |------------------------------|------------------------|
@@ -26,7 +26,7 @@ third argument.
 |                              | `start ` integer ,     |
 |                              | `length ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ third argument.
 
 </div>
 
-<div id="xpf_desc_substring" class="refsect1">
+<div>
 
 ## Description
 
@@ -71,11 +71,11 @@ string, the empty string is returned.
 
 </div>
 
-<div id="xpf_params_substring" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129226" class="refsect2">
+<div>
 
 ### strg
 
@@ -84,7 +84,7 @@ string first.
 
 </div>
 
-<div id="id129229" class="refsect2">
+<div>
 
 ### start
 
@@ -92,7 +92,7 @@ Position of first character of the substring in the source string.
 
 </div>
 
-<div id="id129232" class="refsect2">
+<div>
 
 ### length
 
@@ -102,7 +102,7 @@ Number of characters in the substring, if specified.
 
 </div>
 
-<div id="xpf_ret_substring" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -110,15 +110,15 @@ String
 
 </div>
 
-<div id="xpf_examples_substring" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_substring" class="example">
+<div>
 
 **Example 24.623. **
 
-<div class="example-contents">
+<div>
 
 The following expressions are all true:
 
@@ -139,7 +139,7 @@ substring("12345", -2) = "12345"
 
 </div>
 
-<div id="xpf_seealso_substring" class="refsect1">
+<div>
 
 ## See Also
 

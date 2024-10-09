@@ -1,6 +1,6 @@
-<div id="virtuosospongerusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 The Sponger can be invoked via the following mechanisms:
 
-<div class="orderedlist">
+<div>
 
 1.  <a href="virtuosospongerusage.html#virtuosospongerusageprocessor"
     class="link" title="SPARQL Query Processor IRI Dereferencing">Virtuoso
@@ -42,9 +42,9 @@ The Sponger can be invoked via the following mechanisms:
 
 </div>
 
-<div id="virtuosospongerusageprocessor" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -84,9 +84,9 @@ sections implies an HTTP URI/IRI, where IRI is an internationalized URI.
 Similarly, in the context of the Sponger, the term IRI in the Virtuoso
 reference documentation should be taken to mean an HTTP IRI.
 
-<div id="virtuosospongerusageprocessor_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -195,7 +195,7 @@ limit 10;
 
 A list of the input:grab pragmas is given below:
 
-<div class="itemizedlist">
+<div>
 
 - input:grab-var specifies the name of the SPARQL variable whose values
   should be used as IRIs of resources that should be downloaded.
@@ -236,9 +236,9 @@ A list of the input:grab pragmas is given below:
 
 </div>
 
-<div id="virtuosospongerusageprocessorex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -282,9 +282,9 @@ select * from <http://mygraph> where {?s ?p ?o}
 
 </div>
 
-<div id="virtuosospongerusageproxy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -316,9 +316,9 @@ cartridges package is not installed, then the service uses the path
 Note: The old Sponger Proxy URI Service pattern '/proxy/' is now
 deprecated.
 
-<div id="virtuosospongerusageproxyex1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -337,7 +337,7 @@ from the MusicBrainz music metadatabase, rendered as RDF or HTML
 respectively. (The Network Resource fetched data is available in the
 HTML rendering through the foaf:primaryTopic property.)
 
-<div class="itemizedlist">
+<div>
 
 - http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html
 
@@ -347,9 +347,9 @@ HTML rendering through the foaf:primaryTopic property.)
 
 </div>
 
-<div id="virtuosospongerusageproxyex2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -389,9 +389,9 @@ provide a more polished means to extract and view fetched RDF data.
 
 </div>
 
-<div id="virtuosospongerusageproxyurlist" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -412,11 +412,11 @@ as a proxy.
 
 The following table presents list of the supported URL parameters:
 
-<div id="id52398" class="table">
+<div>
 
 **Table 16.9. **
 
-<div class="table-contents">
+<div>
 
 | Parameter                                   | Value   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Example                                                                                                                                                       |
 |---------------------------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -447,9 +447,9 @@ The following table presents list of the supported URL parameters:
 
 </div>
 
-<div id="virtuosospongerusageclapp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -465,7 +465,7 @@ The following table presents list of the supported URL parameters:
 
 OpenLink currently provides two main RDF client applications:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://ode.openlinksw.com/" class="ulink"
   target="_top">OpenLink Data Explorer</a> (ODE)
@@ -488,15 +488,15 @@ rendered as HTML through ODE's 'View Page Metadata' option. The
 screenshots below show ODE's RDF browser being launched through the
 'View Linked Data Sources' popup menu.
 
-<div class="figure-float">
+<div>
 
-<div id="odebrowser" class="figure">
+<div>
 
 **Figure 16.98. Launching ODE's RDF browser**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Launching ODE's RDF browser](images/twitter_home.png)
 
@@ -513,16 +513,16 @@ screenshots below show ODE's RDF browser being launched through the
 The RDF browser then displays RDF data fetched via the Crunchbase
 cartridge.
 
-<div class="figure-float">
+<div>
 
-<div id="odebrowserrdf" class="figure">
+<div>
 
 **Figure 16.99. ODE RDF browser displaying Crunchbase network resource
 fetched data**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ODE RDF browser displaying Crunchbase network resource fetched
 data](images/twitter_ode_rdf.png)
@@ -545,11 +545,11 @@ The iSPARQL sponger settings are appended to SPARQL queries through the
 'should-sponge' query parameter. These are translated to IRI
 dereferencing pragmas on the server as follows:
 
-<div id="id52468" class="table">
+<div>
 
 **Table 16.10. **
 
-<div class="table-contents">
+<div>
 
 | iSPARQL sponging setting                                                               | /sparql endpoint: "should-sponge" query parameter value | SPARQL processor directives                                                                                                                                                                                                                                       |
 |----------------------------------------------------------------------------------------|---------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -567,9 +567,9 @@ dereferencing pragmas on the server as follows:
 
 </div>
 
-<div id="virtuosospongerusagebrief" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -595,7 +595,7 @@ repository.
 ODS-Briefcase offers file-sharing functionality that includes the
 following features:
 
-<div class="itemizedlist">
+<div>
 
 - Web brower-based interactions
 
@@ -632,9 +632,9 @@ raw HTTP. The properties of the special folder control whether sponging
 across all Virtuoso and ODS installations (with an ODS-Briefcase Data
 Space instance enabled).
 
-<div id="virtuosospongerusagebriefex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -666,9 +666,9 @@ disable Sponging as depicted below.
 
 </div>
 
-<div id="virtuosospongerusagebriefint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -693,15 +693,15 @@ available Sponger cartridges are able to extract metadata and produce
 RDF structured data, the Sponger calls upon the Briefcase extractor as
 the last resort in the RDF structured data generation pipeline.
 
-<div class="figure-float">
+<div>
 
-<div id="cninp1" class="figure">
+<div>
 
 **Figure 16.100. Conductor's content import configuration panel**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Conductor's content import configuration panel](images/fig2_top.png)
 
@@ -715,15 +715,15 @@ the last resort in the RDF structured data generation pipeline.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="cninp2" class="figure">
+<div>
 
 **Figure 16.101. Conductor's content import configuration panel**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Conductor's content import configuration
 panel](images/fig2_bottom.png)
@@ -738,15 +738,15 @@ panel](images/fig2_bottom.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="cninp2_01" class="figure">
+<div>
 
 **Figure 16.102. Conductor's content import configuration panel**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Conductor's content import configuration
 panel](images/fig2_bottom2.png)
@@ -761,15 +761,15 @@ panel](images/fig2_bottom2.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="cninp2_02" class="figure">
+<div>
 
 **Figure 16.103. Conductor's content import configuration panel**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Conductor's content import configuration
 panel](images/fig2_bottom3.png)
@@ -788,9 +788,9 @@ panel](images/fig2_bottom3.png)
 
 </div>
 
-<div id="virtuosospongerusagedirect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

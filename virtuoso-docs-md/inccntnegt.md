@@ -1,6 +1,6 @@
-<div id="inccntnegt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 The examples from below demonstrate how to incorporate Content
 Negotiation into RDF bulk loaders:
 
-<div class="itemizedlist">
+<div>
 
 - Using the <a href="fn_rdf_load_rdfxml.html" class="link"
   title="DB.DBA.RDF_LOAD_RDFXML"><code

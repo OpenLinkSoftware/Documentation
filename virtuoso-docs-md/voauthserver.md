@@ -1,6 +1,6 @@
-<div id="voauthserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 Virtuoso implements the OAuth Core 1.0 specification, and exposes the
 following API endpoints:
 
-<div id="voauthserverreqtok" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,7 +41,7 @@ http://server-cname/OAuth/request_token
 
 Parameters:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*oauth_consumer_key* </span> : The Consumer
   Key.
@@ -63,9 +63,9 @@ Parameters:
 
 </div>
 
-<div id="voauthserverreqtokexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -102,9 +102,9 @@ oauth_token=b4e22daa117b0bebf60ab6ba6e401edc7addd78c&oauth_token_secret
 
 </div>
 
-<div id="voauthserverauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -126,7 +126,7 @@ http://server-cname/OAuth/authorize
 
 Parameters:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*oauth_token* </span> : The Request Token
   obtained in the previous step. The current implementation of the
@@ -139,9 +139,9 @@ Parameters:
 
 </div>
 
-<div id="voauthserverauthexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -173,9 +173,9 @@ The User will be asked via web page to accept or decline the token.
 
 </div>
 
-<div id="voauthserveract" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -197,7 +197,7 @@ http://server-cname/OAuth/access_token
 
 Parameters:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*oauth_consumer_key* </span> : The Consumer
   Key.
@@ -222,9 +222,9 @@ Parameters:
 
 </div>
 
-<div id="voauthserveractexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -262,9 +262,9 @@ authentication:
 
 </div>
 
-<div id="voauthserverav" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -284,7 +284,7 @@ OAUTH.DBA.check_authentication (in params any, in lines any)
 
 Parameters:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*params* </span> : an array of strings
   representing the HTTP parameters
@@ -296,7 +296,7 @@ Parameters:
 
 Result:
 
-<div class="itemizedlist">
+<div>
 
 - on success it returns integer 1,
 
@@ -304,9 +304,9 @@ Result:
 
 </div>
 
-<div id="voauthserveravsc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -335,9 +335,9 @@ An OAuth testing page
 
 </div>
 
-<div id="voauthserveravsr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -361,9 +361,9 @@ ature=X3K4lr9bJVz5YLnnyJDkykQZivY%3D
 
 </div>
 
-<div id="voauthserveravsr_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -387,9 +387,9 @@ ature=X3K4lr9bJVz5YLnnyJDkykQZivY%3D
 
 </div>
 
-<div id="voauthserveravsr_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

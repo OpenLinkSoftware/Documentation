@@ -1,10 +1,10 @@
-<div id="xpf_lang" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ language name.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_lang" class="funcsynopsis">
+<div>
 
 |                          |                          |
 |--------------------------|--------------------------|
 | `boolean `**`lang`**` (` | `lang_name ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ language name.
 
 </div>
 
-<div id="xpf_desc_lang" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ suffix of the attribute value and ignoring case.
 
 </div>
 
-<div id="xpf_params_lang" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127909" class="refsect2">
+<div>
 
 ### lang_name
 
@@ -66,7 +66,7 @@ Name of the language
 
 </div>
 
-<div id="xpf_ret_lang" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_lang" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_lang" class="example">
+<div>
 
 **Example 24.596. **
 
-<div class="example-contents">
+<div>
 
 The expression lang("en") would return true if the context node is any
 of these five elements:
@@ -102,7 +102,7 @@ of these five elements:
 
 </div>
 
-<div id="xpf_seealso_lang" class="refsect1">
+<div>
 
 ## See Also
 

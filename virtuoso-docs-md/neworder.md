@@ -1,6 +1,6 @@
-<div id="neworder" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Passing parameters
 
@@ -104,7 +104,7 @@ This procedure first reads the I_PRICE from ITEM and update the
 S_QUANTITY in STOCK. The price of the order line is returned as output
 parameter amount.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note">
 <colgroup>

@@ -1,6 +1,6 @@
-<div id="textexprsyntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,7 +43,7 @@ A word is a sequence of word characters. A phrase is a sequence of words
 separated by white spaces and enclosed in double quotes. If a word
 contains a wildcard character it must be quoted with double quotes.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>
@@ -68,11 +68,11 @@ terms. It can be used to combine words or phrases.</p></td>
 
 </div>
 
-<div id="ex_qryfti" class="example">
+<div>
 
 **Example 20.4. Querying Free Text Indexed Columns**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select count (*) from docs

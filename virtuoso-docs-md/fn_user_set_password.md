@@ -1,10 +1,10 @@
-<div id="fn_user_set_password" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ user_set_password — Allows dba to change a user's password.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_set_password" class="funcsynopsis">
+<div>
 
 |                                |                                |
 |--------------------------------|--------------------------------|
 | ` `**`user_set_password`**` (` | in `user_name ` string ,       |
 |                                | in `new_password ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ user_set_password — Allows dba to change a user's password.
 
 </div>
 
-<div id="desc_49" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ confirmation, so the DBA must be sure of the new password.
 
 </div>
 
-<div id="params_16" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116919" class="refsect2">
+<div>
 
 ### user_name
 
@@ -57,7 +57,7 @@ SQL user account name to change.
 
 </div>
 
-<div id="id116922" class="refsect2">
+<div>
 
 ### new_password
 
@@ -67,18 +67,18 @@ New password for the user as plain text.
 
 </div>
 
-<div id="errors_user_set_password" class="refsect1">
+<div>
 
 ## Errors
 
 <a href="datatypeerror.html" class="link"
 title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
-<div id="id116929" class="table">
+<div>
 
-**Table 24.106. Errors signalled by `user_set_password() `**
+**Table 24.105. Errors signalled by `user_set_password() `**
 
-<div class="table-contents">
+<div>
 
 | SQL Code                              | Error Message                                      | Virtuoso Code |
 |---------------------------------------|----------------------------------------------------|---------------|

@@ -1,10 +1,10 @@
-<div id="fn_rdf_graph_user_perms_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ graph.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_graph_user_perms_set" class="funcsynopsis">
+<div>
 
 |                                              |                           |
 |----------------------------------------------|---------------------------|
@@ -25,7 +25,7 @@ graph.
 |                                              | in `uname ` varchar ,     |
 |                                              | in `perms ` integer `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ graph.
 
 </div>
 
-<div id="desc_rdf_graph_user_perms_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ to the value specified by perms.
 
 </div>
 
-<div id="params_rdf_graph_user_perms_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101620" class="refsect2">
+<div>
 
 ### graph_iri
 
@@ -56,7 +56,7 @@ Graph IRI.
 
 </div>
 
-<div id="id101623" class="refsect2">
+<div>
 
 ### uname
 
@@ -64,7 +64,7 @@ User name.
 
 </div>
 
-<div id="id101626" class="refsect2">
+<div>
 
 ### perms
 
@@ -79,7 +79,7 @@ be an active SQL user or "nobody".
 Four sorts of access are specified by four bits of an integer
 "permission bit-mask", plain old UNIX style:
 
-<div class="itemizedlist">
+<div>
 
 - Bit 1 permits read access.
 
@@ -104,15 +104,15 @@ Permissions"</a>
 
 </div>
 
-<div id="examples_rdf_graph_user_perms_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_graph_user_perms_set" class="example">
+<div>
 
 **Example 24.276. Example**
 
-<div class="example-contents">
+<div>
 
 See <a href="rdfgraphsecurityintconfsec.html#rdfgraphsecurityintex"
 class="link" title="Example: Blogs and Resource Sharing">Example for
@@ -126,7 +126,7 @@ Blogs and Resource Sharing</a>
 
 </div>
 
-<div id="seealso_rdf_graph_user_perms_set" class="refsect1">
+<div>
 
 ## See Also
 

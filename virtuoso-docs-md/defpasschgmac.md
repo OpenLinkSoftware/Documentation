@@ -1,6 +1,6 @@
-<div id="defpasschgmac" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

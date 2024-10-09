@@ -1,10 +1,10 @@
-<div id="fn_xmltype.getnumval" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ current node like XPATH function 'number()'.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.getnumval" class="funcsynopsis">
+<div>
 
 |                                |      |
 |--------------------------------|------|
 | ` `**`XMLType.getNumVal`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ current node like XPATH function 'number()'.
 
 </div>
 
-<div id="desc_xmltype.getnumval" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ similar to the XPATH function 'number()'.
 
 </div>
 
-<div id="ret_xmltype.getnumval" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -50,15 +50,15 @@ The member function returns integer.
 
 </div>
 
-<div id="examples_xmltype.getnumval" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.getnumval" class="example">
+<div>
 
 **Example 24.551. A table with an XMLType column**
 
-<div class="example-contents">
+<div>
 
 This populates a table with XML data and then selects the numeric value
 of an 'empno' element from the appropriate record.
@@ -90,7 +90,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.getnumval" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="createindex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,7 +55,7 @@ The CLUSTERED attribute is not recommended. It will cause keys to be
 unprefixed by key id, thus causing the key entries to be intermixed with
 entries of other CLUSTERED indices with adjacent values of key parts.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                 |
 |:--------------------------:|:--------------------------------------------------------------------------------|

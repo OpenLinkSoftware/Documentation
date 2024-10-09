@@ -1,10 +1,10 @@
-<div id="fn_cfg_item_value" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ cfg_item_value — returns the value of an item from the ini file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cfg_item_value" class="funcsynopsis">
+<div>
 
 |                             |                              |
 |-----------------------------|------------------------------|
@@ -24,7 +24,7 @@ cfg_item_value — returns the value of an item from the ini file
 |                             | in `section ` varchar ,      |
 |                             | in `item_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ cfg_item_value — returns the value of an item from the ini file
 
 </div>
 
-<div id="desc_item_value" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ parameters from the specified INI file.
 
 </div>
 
-<div id="params_item_value" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81787" class="refsect2">
+<div>
 
 ### path
 
@@ -55,7 +55,7 @@ Name of the INI file.
 
 </div>
 
-<div id="id81790" class="refsect2">
+<div>
 
 ### section
 
@@ -63,7 +63,7 @@ Name of the section in the INI file.
 
 </div>
 
-<div id="id81793" class="refsect2">
+<div>
 
 ### item_name
 
@@ -73,7 +73,7 @@ Name of the item in the section.
 
 </div>
 
-<div id="ret_item_value" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -82,15 +82,15 @@ zero if section or item_name is invalid.
 
 </div>
 
-<div id="examples_item_value" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_cfg_item_value" class="example">
+<div>
 
 **Example 24.33. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Read the value of the ServerPort item from the \[Parameters\] section of
 the current virtuoso.ini file.
@@ -112,7 +112,7 @@ __________________________________________________________________________
 
 </div>
 
-<div id="seealso_item_value" class="refsect1">
+<div>
 
 ## See Also
 

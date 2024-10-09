@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_exists" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ repository
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_exists" class="funcsynopsis">
+<div>
 
 |                                 |                         |
 |---------------------------------|-------------------------|
 | `int `**`xenc_key_exists`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ repository
 
 </div>
 
-<div id="desc_xenc_key_exists" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ The function checks if key with given name exists in the user's keys.
 
 </div>
 
-<div id="params_xenc_key_exists" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120629" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ The name of the key
 
 </div>
 
-<div id="ret_xenc_key_exists" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ or not
 
 </div>
 
-<div id="examples_xenc_key_exists" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_key_exists" class="example">
+<div>
 
 **Example 24.473. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select xenc_key_exists ('MyKey');
@@ -92,7 +92,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xenc_key_exists" class="refsect1">
+<div>
 
 ## See Also
 

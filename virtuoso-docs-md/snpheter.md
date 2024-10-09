@@ -1,6 +1,6 @@
-<div id="snpheter" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,7 +38,7 @@ replication:
 
 DBMS-specific notes:
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*SQL Server 2000 and later* </span>
     Bi-directional snapshot triggers for SQL Server require "nested
@@ -46,7 +46,7 @@ DBMS-specific notes:
 
 2.  <span class="emphasis">*Oracle 8i* </span>
 
-    <div class="orderedlist">
+    <div>
 
     1.  Oracle 8i does not have support for "localtimestamp" data type
         out of box. Required functionality can be enabled by editing
@@ -97,7 +97,7 @@ DBMS-specific notes:
 
 3.  <span class="emphasis">*DB2 8.1 ESE* </span>
 
-    <div class="orderedlist">
+    <div>
 
     1.  FixPak 3 is recommended because ODBC driver from earlier DB2 8
         versions may cause Virtuoso server to crash when BLOB columns

@@ -1,6 +1,6 @@
-<div id="scopeofdeclaration" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

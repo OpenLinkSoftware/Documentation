@@ -1,10 +1,10 @@
-<div id="fn_var_samp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAR_SAMP — Returns the sample variance.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_var_samp" class="funcsynopsis">
+<div>
 
 |                              |                     |
 |------------------------------|---------------------|
 | `numeric `**`VAR_SAMP`**` (` | in `expr ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ VAR_SAMP — Returns the sample variance.
 
 </div>
 
-<div id="desc_var_samp" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ element, VAR returns 0 and VAR_SAMP returns null.
 
 </div>
 
-<div id="params_var_samp" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78008" class="refsect2">
+<div>
 
 ### expr
 
@@ -65,7 +65,7 @@ Number expression.
 
 </div>
 
-<div id="ret_var_samp" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,7 +74,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_var_samp" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_st_numinteriorrings" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ polygon, NULL if shape is not a polygon.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_numinteriorrings" class="funcsynopsis">
+<div>
 
 |                                  |                        |
 |----------------------------------|------------------------|
 | ` `**`ST_NumInteriorRings`**` (` | in `poligon ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ polygon, NULL if shape is not a polygon.
 
 </div>
 
-<div id="desc_st_numinteriorrings" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ not a polygon.
 
 </div>
 
-<div id="params_st_numinteriorrings" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131845" class="refsect2">
+<div>
 
 ### poligon
 
@@ -56,7 +56,7 @@ Given polygon.
 
 </div>
 
-<div id="ret_st_numinteriorrings" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Returns int.
 
 </div>
 
-<div id="examples_st_numinteriorrings" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_numinteriorrings" class="example">
+<div>
 
 **Example 24.671. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.TTLP ('
@@ -115,7 +115,7 @@ http://geo-api-demo/polygon3      1
 
 </div>
 
-<div id="seealso_st_numinteriorrings" class="refsect1">
+<div>
 
 ## See Also
 

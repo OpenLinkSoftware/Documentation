@@ -1,6 +1,6 @@
-<div id="virtwhydoi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

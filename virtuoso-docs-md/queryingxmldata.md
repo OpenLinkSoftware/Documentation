@@ -1,6 +1,6 @@
-<div id="queryingxmldata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="xpathcontainssqlpred" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -68,7 +68,7 @@ with the context node set to the root node of the XML tree represented
 by the value of the column that is the first argument of xpath_contains.
 This node is the only element of the context node set.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                              |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

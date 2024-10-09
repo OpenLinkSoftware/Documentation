@@ -1,6 +1,6 @@
-<div id="serverphpinc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ to enable PHP processing.
 
 **PHP Server Handler. **
 
-<div id="fsyn_http_handler_php" class="funcsynopsis">
+<div>
 
 |                             |                                                              |
 |-----------------------------|--------------------------------------------------------------|
@@ -28,7 +28,7 @@ to enable PHP processing.
 |                             | in `lines` vector (opt, value\[,...\] ),                     |
 |                             | inout `what` any `)`;                                        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ This function will be detected and called automatically by the Virtuoso
 HTTP/WebDAV server when a request for a file with extension .php is
 made.
 
-<div class="itemizedlist">
+<div>
 
 - The
 
@@ -76,14 +76,14 @@ made.
 
 **PHP Processor. **
 
-<div id="fsyn_php_str" class="funcsynopsis">
+<div>
 
 |                         |                                                        |
 |-------------------------|--------------------------------------------------------|
 | **`__http_php_str`**`(` | in `string` varchar,                                   |
 |                         | in `params` vector (opt1, val1 \[,...\]) , varchar`)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -96,7 +96,7 @@ supplied in the params array and returns the result from the PHP engine
 as a string. This can be useful for performing PHP transformations in PL
 or VSP code.
 
-<div class="itemizedlist">
+<div>
 
 - the
 

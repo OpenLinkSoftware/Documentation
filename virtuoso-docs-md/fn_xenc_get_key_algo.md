@@ -1,10 +1,10 @@
-<div id="fn_xenc_get_key_algo" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xenc_get_key_algo — Determine XML signature algorithm of a key
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_get_key_algo" class="funcsynopsis">
+<div>
 
 |                                       |                             |
 |---------------------------------------|-----------------------------|
 | `varchar `**`xenc_get_key_algo`**` (` | in `key_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xenc_get_key_algo — Determine XML signature algorithm of a key
 
 </div>
 
-<div id="desc_xenc_get_key_algo" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ key.
 
 </div>
 
-<div id="params_xenc_get_key_algo" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119991" class="refsect2">
+<div>
 
 ### key_name
 
@@ -55,7 +55,7 @@ Name of a key from user's space.
 
 </div>
 
-<div id="ret_xenc_get_key_algo" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,15 +65,15 @@ target="_top">http://www.w3.org/TR/xmldsig-core</a> .
 
 </div>
 
-<div id="examples_xenc_get_key_algo" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_get_key_algo" class="example">
+<div>
 
 **Example 24.462. Determine signing algorithm of a key**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select xenc_get_key_algo ('myKey');
@@ -92,7 +92,7 @@ http://www.w3.org/2000/09/xmldsig#dsa-sha1
 
 </div>
 
-<div id="seealso_xenc_get_key_algo" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="rdfsparqlruleexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfsparqlruleexamples1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -162,9 +162,9 @@ http://example.com/dataspace/test2/weblog/test2tWeblog  http://www.w3.org/1999/0
 
 </div>
 
-<div id="rdfsparqlruleexamples2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -285,9 +285,9 @@ http://dbpedia.org/resource/Chiara_Costazza
 
 </div>
 
-<div id="rdfsparqlruleexamples3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -452,9 +452,9 @@ http://dbpedia.org/resource/Jimmie_Dodd                                         
 
 </div>
 
-<div id="rdfsparqlruleexamples4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -497,9 +497,9 @@ http://dbpedia.org/resource/The_Lord_of_the_Rings
 
 </div>
 
-<div id="rdfsparqlruleexamples5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -589,9 +589,9 @@ http://dbpedia.org/resource/BMW_R75
 
 </div>
 
-<div id="rdfsparqlruleexamples6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

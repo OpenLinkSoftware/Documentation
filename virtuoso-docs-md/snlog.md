@@ -1,6 +1,6 @@
-<div id="snlog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

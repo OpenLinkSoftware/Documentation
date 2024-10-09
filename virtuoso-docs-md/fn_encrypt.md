@@ -1,10 +1,10 @@
-<div id="fn_encrypt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ encrypt — Encrypt content in base64 encoding
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_encrypt" class="funcsynopsis">
+<div>
 
 |                             |                             |
 |-----------------------------|-----------------------------|
 | `varchar `**`encrypt`**` (` | in `string_session ` any ,  |
 |                             | in `key_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ encrypt — Encrypt content in base64 encoding
 
 </div>
 
-<div id="desc_encrypt" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ generated with xenc_key_3DES_rand_create ().
 
 </div>
 
-<div id="params_encrypt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119826" class="refsect2">
+<div>
 
 ### string_session
 
@@ -57,7 +57,7 @@ A content to be encrypted.
 
 </div>
 
-<div id="id119829" class="refsect2">
+<div>
 
 ### key_name
 
@@ -67,7 +67,7 @@ The key name keeping secret.
 
 </div>
 
-<div id="ret_encrypt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -76,15 +76,15 @@ encoding.
 
 </div>
 
-<div id="examples_encrypt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_encrypt" class="example">
+<div>
 
 **Example 24.459. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 -- The 'ses' is a function which print the string into a string session:
@@ -100,7 +100,7 @@ decrypt (encrypt (ses ('data to encrypt'), 'kaes'), 'kaes');
 
 </div>
 
-<div id="seealso_encrypt" class="refsect1">
+<div>
 
 ## See Also
 

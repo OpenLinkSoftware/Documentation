@@ -1,10 +1,10 @@
-<div id="fn_prof_enable" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ prof_enable — Control virtuoso profiling
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_prof_enable" class="funcsynopsis">
+<div>
 
 |                          |                         |
 |--------------------------|-------------------------|
 | ` `**`prof_enable`**` (` | in `flag ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ prof_enable — Control virtuoso profiling
 
 </div>
 
-<div id="desc_prof_enable" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ Virtuoso documentation.
 
 </div>
 
-<div id="params_prof_enable" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99674" class="refsect2">
+<div>
 
 ### flag
 
@@ -66,7 +66,7 @@ An <span class="type">INTEGER </span> . Valid values are 1 or 0.
 
 </div>
 
-<div id="ret_prof_enable" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,7 +74,7 @@ None.
 
 </div>
 
-<div id="errors_prof_enable" class="refsect1">
+<div>
 
 ## Errors
 
@@ -82,15 +82,15 @@ No errors are signalled by `prof_enable `
 
 </div>
 
-<div id="examples_prof_enable" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_prof_enable" class="example">
+<div>
 
 **Example 24.247. Simple example**
 
-<div class="example-contents">
+<div>
 
 Enable profiling.
 
@@ -106,7 +106,7 @@ SQL> prof_enable(1);
 
 </div>
 
-<div id="seealso_prof_enable" class="refsect1">
+<div>
 
 ## See Also
 

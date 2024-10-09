@@ -1,10 +1,10 @@
-<div id="fn_ttlp_mt_local_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ places its triples into DB.DBA.RDF_QUAD on multiple threads.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ttlp_mt_local_file" class="funcsynopsis">
+<div>
 
 |                                        |                            |
 |----------------------------------------|----------------------------|
@@ -28,7 +28,7 @@ places its triples into DB.DBA.RDF_QUAD on multiple threads.
 |                                        | in `log_mode ` integer ,   |
 |                                        | in `threads ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ places its triples into DB.DBA.RDF_QUAD on multiple threads.
 
 </div>
 
-<div id="desc_ttlp_mt_local_file" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ a server restart does not wipe out the results.
 
 </div>
 
-<div id="params_ttlp_mt_local_file" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101137" class="refsect2">
+<div>
 
 ### path
 
@@ -64,7 +64,7 @@ path to the file in the local filesystem
 
 </div>
 
-<div id="id101140" class="refsect2">
+<div>
 
 ### base
 
@@ -72,7 +72,7 @@ base IRI to resolve relative IRIs to absolute
 
 </div>
 
-<div id="id101143" class="refsect2">
+<div>
 
 ### graph
 
@@ -80,7 +80,7 @@ target graph IRI, parsed triples will appear in that graph.
 
 </div>
 
-<div id="id101146" class="refsect2">
+<div>
 
 ### flags
 
@@ -104,7 +104,7 @@ Other supported bits are:
 
 </div>
 
-<div id="id101150" class="refsect2">
+<div>
 
 ### log_mode
 
@@ -123,7 +123,7 @@ backup right before the loading.
 
 </div>
 
-<div id="id101153" class="refsect2">
+<div>
 
 ### threads
 
@@ -138,7 +138,7 @@ happen at the same time.
 
 </div>
 
-<div id="ret_ttlp_mt_local_file" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -146,15 +146,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_ttlp_mt_local_file" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ttlp_mt_local_file" class="example">
+<div>
 
 **Example 24.268. **
 
-<div class="example-contents">
+<div>
 
 <span class="emphasis">*Sample Example 1* </span>
 
@@ -232,7 +232,7 @@ http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openli
 
 </div>
 
-<div id="seealso_ttlp_mt_local_file" class="refsect1">
+<div>
 
 ## See Also
 

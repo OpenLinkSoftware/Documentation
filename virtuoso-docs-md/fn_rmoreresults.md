@@ -1,10 +1,10 @@
-<div id="fn_rmoreresults" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ rmoreresults — move to next result set of rexecute()
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rmoreresults" class="funcsynopsis">
+<div>
 
 |                           |                              |
 |---------------------------|------------------------------|
@@ -26,7 +26,7 @@ rmoreresults — move to next result set of rexecute()
 |                           | out `num_cols ` integer ,    |
 |                           | out `stmt_meta ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ rmoreresults — move to next result set of rexecute()
 
 </div>
 
-<div id="desc_rmoreresults" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ returned by statement executed with rexecute.
 
 </div>
 
-<div id="params_rmoreresults" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108919" class="refsect2">
+<div>
 
 ### cursor_handle
 
@@ -59,7 +59,7 @@ class="function">rexecute </code></a>
 
 </div>
 
-<div id="id108924" class="refsect2">
+<div>
 
 ### sql_state
 
@@ -67,7 +67,7 @@ Output parameter for returning SQL state.
 
 </div>
 
-<div id="id108927" class="refsect2">
+<div>
 
 ### sql_error
 
@@ -75,7 +75,7 @@ Output parameter for returning an error message.
 
 </div>
 
-<div id="id108930" class="refsect2">
+<div>
 
 ### num_cols
 
@@ -83,7 +83,7 @@ Output parameter for returning number of columns in a result row.
 
 </div>
 
-<div id="id108933" class="refsect2">
+<div>
 
 ### stmt_meta
 
@@ -96,7 +96,7 @@ class="function">rexecute </code></a> .
 
 </div>
 
-<div id="seealso_rmoreresults" class="refsect1">
+<div>
 
 ## See Also
 

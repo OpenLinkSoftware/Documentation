@@ -1,10 +1,10 @@
-<div id="fn_st_interiorringn" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,18 +14,18 @@ NULL is returned.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_interiorringn" class="funcsynopsis">
+<div>
 
 |                               |                     |
 |-------------------------------|---------------------|
 | ` `**`ST_InteriorRingN`**` (` | in `poligon ` any , |
 |                               | in `idx ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ NULL is returned.
 
 </div>
 
-<div id="desc_st_interiorringn" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ ring. Wrong index is not reported as an error and NULL is returned.
 
 </div>
 
-<div id="params_st_interiorringn" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131353" class="refsect2">
+<div>
 
 ### poligon
 
@@ -56,7 +56,7 @@ A given poligon of a type shape.
 
 </div>
 
-<div id="id131356" class="refsect2">
+<div>
 
 ### idx
 
@@ -66,7 +66,7 @@ Index.
 
 </div>
 
-<div id="ret_st_interiorringn" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_interiorringn" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_interiorringn" class="example">
+<div>
 
 **Example 24.664. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select ST_InteriorRingN (st_ewkt_read ('POLYGON((1 3,2 4,1 5,0 4,1 3),(1 3.5,1.5 4,1 4.5,0.5 4,1 3.5))'), 1)
@@ -128,7 +128,7 @@ http://geo-api-demo/polygon3  RING(1.0 3.500000,1.500000 4.0,1.0 4.500000,0.5000
 
 </div>
 
-<div id="seealso_st_interiorringn" class="refsect1">
+<div>
 
 ## See Also
 

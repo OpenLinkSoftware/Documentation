@@ -1,6 +1,6 @@
-<div id="rdfsparqlinline" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -183,9 +183,9 @@ _______________________________________________________________________________
 YES
 ```
 
-<div id="rdfcontrollingsparqloutputtypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

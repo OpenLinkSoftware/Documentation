@@ -1,6 +1,6 @@
-<div id="clusterprogrammingsqlopt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,9 +42,9 @@ cluster, this is indicated in the output.
 
 All other SQL options work as with single server databases.
 
-<div id="clusterprogrammingsqloptparinsert" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

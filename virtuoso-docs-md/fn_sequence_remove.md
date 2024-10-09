@@ -1,10 +1,10 @@
-<div id="fn_sequence_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sequence_remove — Removes a sequence object
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sequence_remove" class="funcsynopsis">
+<div>
 
 |                              |                         |
 |------------------------------|-------------------------|
 | ` `**`sequence_remove`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sequence_remove — Removes a sequence object
 
 </div>
 
-<div id="desc_sequence_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ or `sequence_next ` .
 
 </div>
 
-<div id="params_sequence_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109319" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ The name of the sequence object to be deleted.
 
 </div>
 
-<div id="ret_sequence_remove" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ if there was no object with the specified name.
 
 </div>
 
-<div id="examples_sequence_remove" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sequence_remove" class="example">
+<div>
 
 **Example 24.367. Creation and Removal of a Sequence Object**
 
-<div class="example-contents">
+<div>
 
 This sequence of operations demonstrates how `sequence_remove ` reverts
 the effect of `sequence_next ` .
@@ -102,7 +102,7 @@ the effect of `sequence_next ` .
 
 </div>
 
-<div id="seealso_sequence_remove" class="refsect1">
+<div>
 
 ## See Also
 

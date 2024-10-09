@@ -1,10 +1,10 @@
-<div id="vc_script" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ script — A (redundant) wrapper for SQL code, can be omitted.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_script" class="funcsynopsis">
+<div>
 
 |                        |                              |
 |------------------------|------------------------------|
@@ -25,7 +25,7 @@ script — A (redundant) wrapper for SQL code, can be omitted.
 |                        | `debug-srcline` (optional) , |
 |                        | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ script — A (redundant) wrapper for SQL code, can be omitted.
 
 </div>
 
-<div id="vc_desc_script" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,7 +48,7 @@ but it does not affect the generated Virtuoso/PL code of the page.
 
 </div>
 
-<div id="vc_attrs_script" class="refsect1">
+<div>
 
 ## Attributes
 

@@ -1,10 +1,10 @@
-<div id="fn_ldap_modify" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ldap_modify — Modifies an existing LDAP directory.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ldap_modify" class="funcsynopsis">
+<div>
 
 |                             |                             |
 |-----------------------------|-----------------------------|
@@ -26,7 +26,7 @@ ldap_modify — Modifies an existing LDAP directory.
 |                             | in `username ` varchar ,    |
 |                             | in `password ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ ldap_modify — Modifies an existing LDAP directory.
 
 </div>
 
-<div id="desc_ldap_modify" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ This function modifies an existing LDAP directory entry.
 
 </div>
 
-<div id="params_ldap_modify" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95458" class="refsect2">
+<div>
 
 ### server_url
 
@@ -63,7 +63,7 @@ Missing parameters will be defaulted to:
 
 </div>
 
-<div id="id95462" class="refsect2">
+<div>
 
 ### try_tls
 
@@ -73,7 +73,7 @@ the ldap:// protocol and not ldaps://.
 
 </div>
 
-<div id="id95466" class="refsect2">
+<div>
 
 ### data
 
@@ -82,7 +82,7 @@ modified entry.
 
 </div>
 
-<div id="id95470" class="refsect2">
+<div>
 
 ### username
 
@@ -90,7 +90,7 @@ username authorization credential
 
 </div>
 
-<div id="id95473" class="refsect2">
+<div>
 
 ### password
 
@@ -100,7 +100,7 @@ password authorization credential
 
 </div>
 
-<div id="ret_ldap_modify" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -114,15 +114,15 @@ The reserved prefix for internal errors is 'LD'.
 
 </div>
 
-<div id="errors_ldap_modify" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id95483" class="table">
+<div>
 
-**Table 24.50. Errors signalled by `ldap_modify `**
+**Table 24.49. Errors signalled by `ldap_modify `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                               | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -141,15 +141,15 @@ The reserved prefix for internal errors is 'LD'.
 
 </div>
 
-<div id="examples_ldap_modify" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ldap_modify" class="example">
+<div>
 
 **Example 24.204. Using ldap_modify**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure
@@ -176,7 +176,7 @@ sam_ldap_modify (in s1 varchar, in s2 varchar)
 
 </div>
 
-<div id="seealso_ldap_modify" class="refsect1">
+<div>
 
 ## See Also
 

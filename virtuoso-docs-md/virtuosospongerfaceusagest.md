@@ -1,6 +1,6 @@
-<div id="virtuosospongerfaceusagest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,20 +14,20 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Use the Faceted Browser Search and Find User Interface to search for
     information on "Michael Jackson":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage1" class="figure">
+    <div>
 
     **Figure 16.138. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb24.png)
 
@@ -44,15 +44,15 @@
 2.  Results of the following form should be returned for the network
     resource data being fetched.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage2" class="figure">
+    <div>
 
     **Figure 16.139. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb25.png)
 
@@ -71,15 +71,15 @@
 4.  Results about "Michael Jackson" as Type/Label/Count list should be
     displayed:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage2_01" class="figure">
+    <div>
 
     **Figure 16.140. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb26.png)
 
@@ -96,15 +96,15 @@
 5.  You can navigate amongst the search results pages by using the
     "Prev" and "Next" buttons. Click for ex. "Next":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage2_02" class="figure">
+    <div>
 
     **Figure 16.141. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb27.png)
 
@@ -133,15 +133,15 @@
     Entity1 is a yago:Artist109812338 . Drop
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage9" class="figure">
+    <div>
 
     **Figure 16.142. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb28.png)
 
@@ -164,15 +164,15 @@
 9.  Results about "Michael Jackson" as Attribute/Value list should be
     presented:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage9_01" class="figure">
+    <div>
 
     **Figure 16.143. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb29.png)
 
@@ -186,15 +186,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage9_02" class="figure">
+    <div>
 
     **Figure 16.144. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb30.png)
 
@@ -208,15 +208,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage9_03" class="figure">
+    <div>
 
     **Figure 16.145. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb31.png)
 
@@ -230,15 +230,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage9_04" class="figure">
+    <div>
 
     **Figure 16.146. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb32.png)
 
@@ -255,15 +255,15 @@
 10. You can navigate amongst the search results pages by using the
     "First", "Prev", "Next" and "Last" buttons. Click for ex. "Last":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage10" class="figure">
+    <div>
 
     **Figure 16.147. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb33.png)
 
@@ -277,15 +277,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtfacetusage10_01" class="figure">
+    <div>
 
     **Figure 16.148. Usage Statistics**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Usage Statistics](images/ui/fb34.png)
 
@@ -304,7 +304,7 @@
 12. Results of usage statistics for "Michael Jackson" grouped in 4 tabs
     should be shown:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Referenced by Graphs: shows how many times the URI is found as
         subject in the relevant graph(s):
@@ -321,15 +321,15 @@
         limit 20
         ```
 
-        <div class="figure-float">
+        <div>
 
-        <div id="virtfacetusage4" class="figure">
+        <div>
 
         **Figure 16.149. Usage Statistics**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Usage Statistics](images/ui/fb35.png)
 
@@ -358,15 +358,15 @@
         limit 20
         ```
 
-        <div class="figure-float">
+        <div>
 
-        <div id="virtfacetusage5" class="figure">
+        <div>
 
         **Figure 16.150. Usage Statistics**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Usage Statistics](images/ui/fb36.png)
 
@@ -401,15 +401,15 @@
         limit 20
         ```
 
-        <div class="figure-float">
+        <div>
 
-        <div id="virtfacetusage6" class="figure">
+        <div>
 
         **Figure 16.151. Usage Statistics**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Usage Statistics](images/ui/fb37.png)
 
@@ -437,15 +437,15 @@
         limit 20
         ```
 
-        <div class="figure-float">
+        <div>
 
-        <div id="virtfacetusage7" class="figure">
+        <div>
 
         **Figure 16.152. Usage Statistics**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Usage Statistics](images/ui/fb38.png)
 

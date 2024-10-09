@@ -1,6 +1,6 @@
-<div id="sqlrefgeospatialinsdel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,7 +26,7 @@ These functions will typically be used from triggers on a geometry
 column. The functions are transactional and make a transaction log
 record of the action.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

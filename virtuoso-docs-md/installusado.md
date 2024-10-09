@@ -1,6 +1,6 @@
-<div id="installusado" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,9 +16,9 @@
 
 ### Using Microsoft ADO.Net Data Services with Virtuoso
 
-<div id="installusadointro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

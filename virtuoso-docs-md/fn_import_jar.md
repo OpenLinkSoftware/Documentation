@@ -1,10 +1,10 @@
-<div id="fn_import_jar" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ import_jar — Creates SQL wrapper types of selected Java classes
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_import_jar" class="funcsynopsis">
+<div>
 
 |                             |                                  |
 |-----------------------------|----------------------------------|
@@ -24,7 +24,7 @@ import_jar — Creates SQL wrapper types of selected Java classes
 |                             | in `classes ` any ,              |
 |                             | in `security_mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ import_jar — Creates SQL wrapper types of selected Java classes
 
 </div>
 
-<div id="desc_import_jar" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ for the specified Java classes.
 
 </div>
 
-<div id="params_import_jar" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93991" class="refsect2">
+<div>
 
 ### files
 
@@ -65,7 +65,7 @@ physical location.
 
 </div>
 
-<div id="id93994" class="refsect2">
+<div>
 
 ### classes
 
@@ -74,7 +74,7 @@ describe in the resulting XML.
 
 </div>
 
-<div id="id93997" class="refsect2">
+<div>
 
 ### security_mode
 
@@ -89,15 +89,15 @@ This optional parameter defines the access mode as follows:
 
 </div>
 
-<div id="examples_import_jar" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_import_jar" class="example">
+<div>
 
 **Example 24.187. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> import_jar (null, vector ('java.lang.System'));
@@ -117,7 +117,7 @@ Java HotSpot(TM) Client VM
 
 </div>
 
-<div id="seealso_import_jar" class="refsect1">
+<div>
 
 ## See Also
 

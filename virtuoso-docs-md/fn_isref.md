@@ -1,10 +1,10 @@
-<div id="fn_isref" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ IsRef — Returns true if non-blank IRI
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isref" class="funcsynopsis">
+<div>
 
 |                    |                    |
 |--------------------|--------------------|
 | ` `**`IsRef`**` (` | in `iri ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ IsRef — Returns true if non-blank IRI
 
 </div>
 
-<div id="desc_isref" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Returns true if non-blank IRI
 
 </div>
 
-<div id="params_isref" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102608" class="refsect2">
+<div>
 
 ### iri
 
@@ -54,7 +54,7 @@ IRI resource
 
 </div>
 
-<div id="ret_isref" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ Returns 1 if the IRI is non-blank IRI. Otherwise returns 0.
 
 </div>
 
-<div id="examples_isref" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_isref" class="example">
+<div>
 
 **Example 24.285. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SPARQL
@@ -94,7 +94,7 @@ callret-0
 
 </div>
 
-<div id="seealso_isref" class="refsect1">
+<div>
 
 ## See Also
 

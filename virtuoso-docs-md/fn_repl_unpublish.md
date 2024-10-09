@@ -1,10 +1,10 @@
-<div id="fn_repl_unpublish" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ REPL_UNPUBLISH — drop publication on publisher
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_unpublish" class="funcsynopsis">
+<div>
 
 |                             |                                |
 |-----------------------------|--------------------------------|
 | ` `**`REPL_UNPUBLISH`**` (` | in `publication ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ REPL_UNPUBLISH — drop publication on publisher
 
 </div>
 
-<div id="desc_repl_pub_add_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ the publication being dropped will be revoked.
 
 </div>
 
-<div id="params_repl_unpublish" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id106995" class="refsect2">
+<div>
 
 ### publication
 
@@ -60,15 +60,15 @@ publication account name.
 
 </div>
 
-<div id="examples_repl_unpublish" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_unpublish_1" class="example">
+<div>
 
 **Example 24.338. Dropping a publication**
 
-<div class="example-contents">
+<div>
 
 The following statement will remove the publication 'demo-publication'
 account from current replication set.
@@ -85,7 +85,7 @@ SQL> DB.DBA.REPL_UNPUBLISH ('demo-publication');
 
 </div>
 
-<div id="seealso_repl_unpublish" class="refsect1">
+<div>
 
 ## See Also
 

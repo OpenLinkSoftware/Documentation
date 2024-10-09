@@ -1,10 +1,10 @@
-<div id="xpf_boolean" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ boolean — Converts its argument to boolean
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_boolean" class="funcsynopsis">
+<div>
 
 |                             |                 |
 |-----------------------------|-----------------|
 | `boolean `**`boolean`**` (` | `obj ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,13 +32,13 @@ boolean — Converts its argument to boolean
 
 </div>
 
-<div id="xpf_desc_boolean" class="refsect1">
+<div>
 
 ## Description
 
 The function converts its argument to a boolean as follows:
 
-<div class="itemizedlist">
+<div>
 
 - A number is true if and only if it is neither zero nor NaN.
 
@@ -53,11 +53,11 @@ The function converts its argument to a boolean as follows:
 
 </div>
 
-<div id="xpf_params_boolean" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126153" class="refsect2">
+<div>
 
 ### obj
 
@@ -67,7 +67,7 @@ The object to be converted into boolean.
 
 </div>
 
-<div id="xpf_ret_boolean" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_boolean" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_boolean" class="example">
+<div>
 
 **Example 24.566. **
 
-<div class="example-contents">
+<div>
 
 The following expressions are true:
 
@@ -104,7 +104,7 @@ boolean(0) = false()
 
 </div>
 
-<div id="xpf_seealso_boolean" class="refsect1">
+<div>
 
 ## See Also
 

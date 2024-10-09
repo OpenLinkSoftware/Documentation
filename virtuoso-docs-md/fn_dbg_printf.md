@@ -1,10 +1,10 @@
-<div id="fn_dbg_printf" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ dbg_printf — print formatted output onto the system console
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dbg_printf" class="funcsynopsis">
+<div>
 
 |                         |                        |
 |-------------------------|------------------------|
@@ -25,7 +25,7 @@ dbg_printf — print formatted output onto the system console
 |                         | `... ` ,               |
 |                         | in `argn ` any `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ dbg_printf — print formatted output onto the system console
 
 </div>
 
-<div id="desc_dbg_printf" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ style, according to the format string specified in the first argument.
 
 </div>
 
-<div id="params_dbg_printf" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86067" class="refsect2">
+<div>
 
 ### format
 
@@ -57,7 +57,7 @@ a C sprintf -style format <span class="type">string </span>
 
 </div>
 
-<div id="id86071" class="refsect2">
+<div>
 
 ### argn
 
@@ -67,7 +67,7 @@ The arguments to format and print in any type
 
 </div>
 
-<div id="ret_dbg_printf" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -75,15 +75,15 @@ None
 
 </div>
 
-<div id="examples_dbg_printf" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dbg_printf_1" class="example">
+<div>
 
 **Example 24.87. Simple example**
 
-<div class="example-contents">
+<div>
 
 The frammitz just zilched!
 
@@ -122,7 +122,7 @@ Error: Frammitz status: 2.
 
 </div>
 
-<div id="seealso_dbg_printf" class="refsect1">
+<div>
 
 ## See Also
 

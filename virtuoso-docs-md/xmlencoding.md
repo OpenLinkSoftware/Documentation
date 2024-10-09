@@ -1,6 +1,6 @@
-<div id="xmlencoding" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,9 +22,9 @@ composed by third-party applications. Virtuoso provides various tools to
 support different types of encodings and to specify encodings to use if
 a given document has no XML prolog.
 
-<div id="encodingsvscharsets" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -69,7 +69,7 @@ table, as an output encoding of the built-in XSLT processor (it is for
 future versions). UTF-8 is an exception, it is supported in many places
 where other encodings are not.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                                                                                                                                                                                                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -78,9 +78,9 @@ where other encodings are not.
 
 </div>
 
-<div id="ucmencodings" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -113,11 +113,11 @@ load and a list of names that the encoding can be identified by the
 \<?xml ... encoding="..." ?\> XML preamble. A vertical bar character is
 used to delimit names in the list.
 
-<div id="ucmdefininifile" class="example">
+<div>
 
 **Example 15.16. Sample \[Ucms\] Section**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 [Ucms]
@@ -138,7 +138,7 @@ encoding (because these two names refers to the same encoding).
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                     |
 |:----------------------------:|:--------------------------------------------------------------------|
@@ -152,7 +152,7 @@ specified in the Virtuoso INI file. If a UCM file specified is not found
 or contains syntax errors, the error is logged, otherwise only the type
 and name(s) of the encoding are logged.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                        |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -161,7 +161,7 @@ and name(s) of the encoding are logged.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -198,9 +198,9 @@ code.</p></td>
 
 </div>
 
-<div id="encodingattr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -240,9 +240,9 @@ as the *`content_encoding`* argument of a built-in function you call.
 
 </div>
 
-<div id="encodingxpathexp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -263,11 +263,11 @@ hint to parse the pattern properly. In such cases you may wish to use
 the *`__enc`* XPath option to specify the encoding used for the rest of
 XPath string:
 
-<div id="id46318" class="example">
+<div>
 
 **Example 15.17. Specifying Search Encodings in XPath**
 
-<div class="example-contents">
+<div>
 
 Create a sample table and store an XML with non-Latin-1 characters
 
@@ -322,9 +322,9 @@ select ID from ENC_XML_SAMPLE where
 
 </div>
 
-<div id="encodinginfttsp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -351,11 +351,11 @@ encoding="..." ?\> (if the TEXT XML INDEX was created).
 The option *`__enc`* may be specified at the beginning of free text
 search pattern, even if the pattern is inside an XPath statement:
 
-<div id="id46331" class="example">
+<div>
 
 **Example 15.18. Specifying an Encoding for Free Text Searching**
 
-<div class="example-contents">
+<div>
 
 Create a sample table and store a sample of text with non-Latin-1
 characters (assuming that client encoding is Windows-1251)
@@ -417,7 +417,7 @@ select ID from ENC_XML_SAMPLE where
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                          |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

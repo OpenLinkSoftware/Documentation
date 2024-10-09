@@ -1,6 +1,6 @@
-<div id="qstpublishbifs_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,7 +43,7 @@ the above section.
 create procedure BIF_HELLO_WORLD () { return hello_world (); };
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|

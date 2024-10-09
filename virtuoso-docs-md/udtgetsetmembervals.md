@@ -1,6 +1,6 @@
-<div id="udtgetsetmembervals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 Let `T` be a user defined type that has a member `A` of type `AT` . Let
 `IT` be an instance of type `T` .
 
-<div id="udtmemobserv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,9 +63,9 @@ will be checked at runtime.
 
 </div>
 
-<div id="udtmemmutators" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -107,11 +107,11 @@ This will force the server to compile a reference to the member `A` in
 user defined type `T` . Whether the \<scalar_exp\> is indeed of type `T`
 will be checked at runtime.
 
-<div id="ex_usingconstructor" class="example">
+<div>
 
 **Example 9.8. Member Construction**
 
-<div class="example-contents">
+<div>
 
 This will make a new object of type `UDT_FR_BASE` by calling it's two
 int parameters constructor and will return the member `B` value of the

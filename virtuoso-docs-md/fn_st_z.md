@@ -1,10 +1,10 @@
-<div id="fn_st_z" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ST_Z — Retrieves the z coordinate of a geometry.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_z" class="funcsynopsis">
+<div>
 
 |                   |                  |
 |-------------------|------------------|
 | ` `**`ST_Z`**` (` | in `g ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ST_Z — Retrieves the z coordinate of a geometry.
 
 </div>
 
-<div id="desc_st_z" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Retrieves the x coordinate of a geometry.
 
 </div>
 
-<div id="params_st_z" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id132485" class="refsect2">
+<div>
 
 ### g
 
@@ -54,7 +54,7 @@ Geometry
 
 </div>
 
-<div id="ret_st_z" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ Returns double precision.
 
 </div>
 
-<div id="examples_st_z" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_z" class="example">
+<div>
 
 **Example 24.680. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SELECT st_z( st_point (10, 20, 30, 40));
@@ -86,7 +86,7 @@ DOUBLE PRECISION
 
 </div>
 
-<div id="seealso_st_z" class="refsect1">
+<div>
 
 ## See Also
 

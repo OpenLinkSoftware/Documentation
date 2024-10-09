@@ -1,10 +1,10 @@
-<div id="fn_disconnect_user" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ disconnect_user — Disconnect client connections of a given user
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_disconnect_user" class="funcsynopsis">
+<div>
 
 |                              |                                    |
 |------------------------------|------------------------------------|
 | ` `**`disconnect_user`**` (` | in `username_pattern ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ disconnect_user — Disconnect client connections of a given user
 
 </div>
 
-<div id="desc_disconnect_user" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ no open connections.
 
 </div>
 
-<div id="params_disconnect_user" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87329" class="refsect2">
+<div>
 
 ### username_pattern
 
@@ -65,7 +65,7 @@ including Virtuoso extensions may be used:
 
 </div>
 
-<div id="ret_disconnect_user" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -73,7 +73,7 @@ The number of clients disconnected is returned.
 
 </div>
 
-<div id="errors_disconnect_user" class="refsect1">
+<div>
 
 ## Errors
 
@@ -82,15 +82,15 @@ title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
 </div>
 
-<div id="examples_disconnect_user" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_disconnect_user_1" class="example">
+<div>
 
 **Example 24.95. Disconnect users**
 
-<div class="example-contents">
+<div>
 
 This is how the DBA can close all sessions for all users who name starts
 with db, including 'dba' which is the DBA itself.
@@ -111,7 +111,7 @@ bash$
 
 </div>
 
-<div id="seealso_disconnect_user" class="refsect1">
+<div>
 
 ## See Also:
 

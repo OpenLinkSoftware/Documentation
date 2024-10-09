@@ -1,6 +1,6 @@
-<div id="blognotifcomments" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

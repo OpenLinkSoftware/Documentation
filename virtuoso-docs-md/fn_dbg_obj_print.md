@@ -1,10 +1,10 @@
-<div id="fn_dbg_obj_print" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ dbg_obj_print — print to the Virtuoso system console
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dbg_obj_print" class="funcsynopsis">
+<div>
 
 |                            |                  |
 |----------------------------|------------------|
 | ` `**`dbg_obj_print`**` (` | in `arg1 ` any , |
 |                            | `... ` `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ dbg_obj_print — print to the Virtuoso system console
 
 </div>
 
-<div id="desc_dbg_obj_print" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ format, on the same line, which is followed by one newline.
 
 </div>
 
-<div id="params_dbg_obj_print" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -51,7 +51,7 @@ format, on the same line, which is followed by one newline.
 
 </div>
 
-<div id="ret_dbg_obj_print" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -59,15 +59,15 @@ None
 
 </div>
 
-<div id="errors_dbg_obj_print" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id86010" class="table">
+<div>
 
-**Table 24.24. Errors signalled by**
+**Table 24.23. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -81,15 +81,15 @@ None
 
 </div>
 
-<div id="examples_dbg_obj_print" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dbg_obj_print_1" class="example">
+<div>
 
 **Example 24.86. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ...
@@ -113,7 +113,7 @@ Would output this on the console:
 
 </div>
 
-<div id="seealso_dbg_obj_print" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="tipscasemode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ catalog will be correctly referenced. If names are not quoted, then the
 case of the object name will be determined by the value of the CaseMode
 property in the virtuoso.ini file:
 
-<div class="itemizedlist">
+<div>
 
 - The default files supplied with Virtuoso specify a CaseMode of 2,
   which is a case insensitive mode that preserves the declaration case
@@ -56,15 +56,15 @@ property in the virtuoso.ini file:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="image33" class="figure">
+<div>
 
 **Figure 3.59. Virtuoso.ini file in notepad**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso.ini file in notepad](images/virttour33.gif)
 

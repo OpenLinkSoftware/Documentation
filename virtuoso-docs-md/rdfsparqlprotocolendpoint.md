@@ -1,6 +1,6 @@
-<div id="rdfsparqlprotocolendpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfsparqlprotocolendpointintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,7 +42,7 @@ parameters.
 
 Supported features include:
 
-<div class="itemizedlist">
+<div>
 
 - Support for GET and POST requests
 
@@ -85,9 +85,9 @@ class="link" title="Authentication">SPARQL Authentication</a> section.
 
 </div>
 
-<div id="rdfsupportedprotocolendpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -116,9 +116,9 @@ text as the criterion. If the SPARQL endpoint is accessed without any
 URL and requisite SPARQL protocol parameters, an interactive HTML page
 for capturing SPARQL input will be presented.
 
-<div id="rdfsupportedprotocolendpointuricustm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -147,9 +147,9 @@ anything.
 
 </div>
 
-<div id="rdfrequestparamsextensions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -163,9 +163,9 @@ anything.
 
 </div>
 
-<div id="rdfrequestparamsofunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -179,11 +179,11 @@ anything.
 
 </div>
 
-<div id="id47688" class="decimalstyle">
+<div>
 
 **Table 16.1. Request Parameters List**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Parameter    | Notes                                                                                                                                          | Required? |
 |:-------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
@@ -206,9 +206,9 @@ anything.
 
 </div>
 
-<div id="rdfresponsecodeofprotocol" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -231,7 +231,7 @@ object. This disconnection does not disrupt the server, so the client
 may readily reconnect to the server, but the disconnected transaction
 will have been rolled back.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -261,9 +261,9 @@ extensions for SPASQL</a></p></li>
 
 </div>
 
-<div id="rdfsupportedmimesofprotocol" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -282,9 +282,9 @@ web service client. Moreover, SPARQL web service endpont supports
 additional MIME types and in some cases additional query types for
 standard MIME types.
 
-<div id="rdfsupportedmimesofprotocolserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -298,11 +298,11 @@ standard MIME types.
 
 </div>
 
-<div id="id47749" class="decimalstyle">
+<div>
 
 **Table 16.2. Server Response Formats**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Content-Type                      | SPARQL query type                | Description                                                                                                                                                                                                   |
 |:----------------------------------|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -353,9 +353,9 @@ standard MIME types.
 
 </div>
 
-<div id="rdfsupportedmimesofprotocolclient" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -369,11 +369,11 @@ standard MIME types.
 
 </div>
 
-<div id="id47911" class="decimalstyle">
+<div>
 
 **Table 16.3. Client Response Formats**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Content-Type                     | SPARQL query type   | Description                                     |
 |:---------------------------------|---------------------|-------------------------------------------------|
@@ -409,9 +409,9 @@ element containing an error message.
 
 </div>
 
-<div id="rdfsupportedmimesofprotocoladdselect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -428,11 +428,11 @@ element containing an error message.
 Use the format parameter to select one of the following alternate output
 formats:
 
-<div id="id47965" class="decimalstyle">
+<div>
 
 **Table 16.4. Additional Response formats list -- SELECT**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Format Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Mimetype                        |
 |:-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
@@ -452,9 +452,9 @@ formats:
 
 </div>
 
-<div id="rdfsupportedmimesofprotocoladdcons" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -471,7 +471,7 @@ formats:
 <span class="emphasis">*Example output of DESCRIBE in rdf+json
 serialization format*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the sparql endpoint at http://host:port/sparql, for ex. at
     http://dbpedia.org/sparql
@@ -540,7 +540,7 @@ serialization format*</span>
 <span class="emphasis">*Example output of CONSTRUCT in rdf+json
 serialization format*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the sparql endpoint at http://host:port/sparql, for ex. at
     http://dbpedia.org/sparql
@@ -593,9 +593,9 @@ variant, an obsolete variant is returned for interoperability.
 
 </div>
 
-<div id="viewresultspagesparqldebug" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -644,9 +644,9 @@ where
 
 </div>
 
-<div id="viewresultspagesparqlqex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -690,9 +690,9 @@ Protocol URL.
 
 </div>
 
-<div id="viewresultspagesparqlqed" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -745,9 +745,9 @@ with the SPARQL Query from above.
 
 </div>
 
-<div id="rdfsupportedmimesaddofprotocol" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -765,11 +765,11 @@ Virtuoso also provides SPARQL protocol client APIs in Virtuoso PL, so
 you can communicate with SPARQL Query Services from Virtuoso stored
 procedures. The APIs are as follows:
 
-<div id="id48075" class="decimalstyle">
+<div>
 
 **Table 16.5. Virtuoso/PL APIs**
 
-<div class="decimalstyle-contents">
+<div>
 
 | API                           | Notes                                                                                                                                                                                       |
 |:------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -785,9 +785,9 @@ procedures. The APIs are as follows:
 
 </div>
 
-<div id="anytimequeriessparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -821,9 +821,9 @@ Find more detailed information in the
 <a href="anytimequeries.html" class="link"
 title="9.25. Anytime Queries">Anytime Queries</a> section.
 
-<div id="anytimequeriessparqlex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -861,9 +861,9 @@ class="function">exec_close()</code></a> after it is out of data.
 
 </div>
 
-<div id="rdfsupportedprotocolendpointuri" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -893,7 +893,7 @@ Restricting a user's access to specific graphs can be done using
 Virtuoso Graph security functionality, via one of the Virtuoso Data
 Access APIs: ODBC, JDBC, ADO.Net or PL code.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -948,9 +948,9 @@ name.
 The effect of this policy is to restrict user 'user' to the graph
 http://cname/dataspace/user/private#
 
-<div id="rdfsupportedprotocolendpointurisparqlauthex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -970,7 +970,7 @@ accounts to perform SPARUL over the SPARQL protocol. To be allowed to
 login via SQL or ODBC and update physical triples, a user must be
 granted "SPARQL_UPDATE" privileges. To grant this role:
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the Virtuoso administration UI i.e. http://host:port/conductor
 
@@ -978,15 +978,15 @@ granted "SPARQL_UPDATE" privileges. To grant this role:
 
 3.  Go to System Admin-\>User Accounts-\>Users
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdf1" class="figure">
+    <div>
 
     **Figure 16.1. Conductor UI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor UI](images/ui/usr1.png)
 
@@ -1007,15 +1007,15 @@ granted "SPARQL_UPDATE" privileges. To grant this role:
 6.  Select from the list of available Account Roles "SPARQL_UPDATE" role
     and click the "\>\>" button so to add it to the right-hand list.
 
-7.  <div class="figure-float">
+7.  <div>
 
-    <div id="rdf2" class="figure">
+    <div>
 
     **Figure 16.2. Conductor UI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor UI](images/ui/usr2.png)
 
@@ -1044,9 +1044,9 @@ graphs.
 
 </div>
 
-<div id="sparqwebservicetbl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1085,9 +1085,9 @@ managing public web service endpoints.
 
 </div>
 
-<div id="sparqloauthendpointauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1110,7 +1110,7 @@ route require granting the SPARQL_UPDATE role.
 Virtuoso 5.0.11 onwards added three new methods for securing SPARQL
 endpoints that include:
 
-<div class="itemizedlist">
+<div>
 
 - SQL authentication
 
@@ -1123,7 +1123,7 @@ endpoints that include:
 Each of these authentication methods is associated with a purpose
 specific default SPARQL endpoint along the following lines:
 
-<div class="itemizedlist">
+<div>
 
 - http://\<cname\>/sparql-auth (SQL authentication)
 
@@ -1141,7 +1141,7 @@ Note: sparql-ssl is alias of sparql-webid.
 The Virtuoso Authentication Server offers a UI with options for
 managing:
 
-<div class="itemizedlist">
+<div>
 
 - Application keys and protected SPARQL endpoints: OAuth provides a
   secure data transmission level mechanism for your SPARQL endpoint. It
@@ -1163,9 +1163,9 @@ installing the conductor_dav.vad package.
 The Authentication UI is accessible from the Conductor UI -\> Linked
 Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
-<div id="sparqloauthendpointauthexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1179,7 +1179,7 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Download and install the <a
     href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/conductor_dav.vad"
@@ -1197,15 +1197,15 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 5.  Go to Linked Data -\> Access Controls -\> SPARQL-WebID:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlssl1" class="figure">
+    <div>
 
     **Figure 16.3. SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL-WebID](images/ui/auth1.png)
 
@@ -1227,15 +1227,15 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
     and select "SPARQL Role" for ex. "Sponge".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlssl2" class="figure">
+    <div>
 
     **Figure 16.4. SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL-WebID](images/ui/auth3.png)
 
@@ -1253,15 +1253,15 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 8.  As result the WebID Protocol ACLs will be created:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlssl3" class="figure">
+    <div>
 
     **Figure 16.5. SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL-WebID](images/ui/auth4.png)
 
@@ -1280,15 +1280,15 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 10. Select the user's certificate from above:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlssl4" class="figure">
+    <div>
 
     **Figure 16.6. SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL-WebID](images/ui/auth5.png)
 
@@ -1304,15 +1304,15 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 11. As result the SPARQL Query UI will be presented:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlssl5" class="figure">
+    <div>
 
     **Figure 16.7. SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL-WebID](images/ui/auth6.png)
 
@@ -1328,15 +1328,15 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 12. Execute sample query and view the results:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlssl7" class="figure">
+    <div>
 
     **Figure 16.8. SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL-WebID](images/ui/auth6a.png)
 
@@ -1356,9 +1356,9 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 </div>
 
-<div id="sparqloauthendpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1388,7 +1388,7 @@ statements.
 
 Here is a sample scenario:
 
-<div class="orderedlist">
+<div>
 
 1.  Download and install the <a
     href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/conductor_dav.vad"
@@ -1408,15 +1408,15 @@ Here is a sample scenario:
 
 5.  Go to System Admin-\>User Accounts:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint1" class="figure">
+    <div>
 
     **Figure 16.9. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so1.png)
 
@@ -1432,15 +1432,15 @@ Here is a sample scenario:
 
 6.  Click "Create New Account":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint2" class="figure">
+    <div>
 
     **Figure 16.10. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so2.png)
 
@@ -1456,7 +1456,7 @@ Here is a sample scenario:
 
 7.  In the presented form enter respectively:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Account name, for ex:demo1; a password and then confirm the
         password;
@@ -1465,15 +1465,15 @@ Here is a sample scenario:
 
     3.  Account role: SPARQL_UPDATE
 
-        <div class="figure-float">
+        <div>
 
-        <div id="sparqloauthendpoint3" class="figure">
+        <div>
 
         **Figure 16.11. SPARQL OAuth Endpoint**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![SPARQL OAuth Endpoint](images/ui/so3.png)
 
@@ -1493,15 +1493,15 @@ Here is a sample scenario:
 
 9.  The created user should be shown in the list of registered users:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint4" class="figure">
+    <div>
 
     **Figure 16.12. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so4.png)
 
@@ -1518,15 +1518,15 @@ Here is a sample scenario:
 10. Go to http://\<cname\>:\<port\>/oauth/, where \<cname\>:\<port\> are
     replaced by your local server values.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint5" class="figure">
+    <div>
 
     **Figure 16.13. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so5.png)
 
@@ -1542,15 +1542,15 @@ Here is a sample scenario:
 
 11. Click the "OAuth keys" link:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint6" class="figure">
+    <div>
 
     **Figure 16.14. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so6.png)
 
@@ -1566,15 +1566,15 @@ Here is a sample scenario:
 
 12. Log in as user demo1:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint7" class="figure">
+    <div>
 
     **Figure 16.15. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so7.png)
 
@@ -1590,15 +1590,15 @@ Here is a sample scenario:
 
 13. The OAuth application registration form will be shown.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint8" class="figure">
+    <div>
 
     **Figure 16.16. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so8.png)
 
@@ -1621,15 +1621,15 @@ Here is a sample scenario:
     90baa79108b1d972525bacc76c0279c02d6421e8
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint9" class="figure">
+    <div>
 
     **Figure 16.17. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so9.png)
 
@@ -1649,15 +1649,15 @@ Here is a sample scenario:
 
 18. The OpenLink Virtuoso SPARQL Query form will be displayed.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint11" class="figure">
+    <div>
 
     **Figure 16.18. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so11.png)
 
@@ -1671,15 +1671,15 @@ Here is a sample scenario:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint12" class="figure">
+    <div>
 
     **Figure 16.19. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so12.png)
 
@@ -1710,15 +1710,15 @@ Here is a sample scenario:
     90baa79108b1d972525bacc76c0279c02d6421e8
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint13" class="figure">
+    <div>
 
     **Figure 16.20. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so13.png)
 
@@ -1737,15 +1737,15 @@ Here is a sample scenario:
 22. In the OAuth Authorization Service form enter the password for user
     demo1 and click the "Login" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint14" class="figure">
+    <div>
 
     **Figure 16.21. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so16.png)
 
@@ -1761,15 +1761,15 @@ Here is a sample scenario:
 
 23. Next you should authorize the request:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint15" class="figure">
+    <div>
 
     **Figure 16.22. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so15.png)
 
@@ -1786,15 +1786,15 @@ Here is a sample scenario:
 24. On successful authentication and authorization, the query results
     should be shown:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqloauthendpoint14_01" class="figure">
+    <div>
 
     **Figure 16.23. SPARQL OAuth Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SPARQL OAuth Endpoint](images/ui/so14.png)
 
@@ -1812,9 +1812,9 @@ Here is a sample scenario:
 
 </div>
 
-<div id="sparqloauthendpointfoafssl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1840,15 +1840,15 @@ installed, to access the WebID Protocol ACLs UI, go to URL
 http://cname:port/conductor -\> Linked Data -\> Access Controls -\>
 SPARQL-WebID .
 
-<div class="figure-float">
+<div>
 
-<div id="sparqloauthendpoint1_01" class="figure">
+<div>
 
 **Figure 16.24. WebID**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![WebID](images/ui/auth4.png)
 
@@ -1875,7 +1875,7 @@ class="link" title="SPARQL-WebID Authentication Example">sample
 example</a> how to configure a sample WebID Protocol ACL are outlined
 below:
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                  |
 |:--------------------------:|:-----------------------------------------------------------------|
@@ -1887,9 +1887,9 @@ below:
 
 </div>
 
-<div id="sparqloauthendpointfoafsslsparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1910,7 +1910,7 @@ SPARQL endpoint creation and configuration. It also covers the use of
 cURL for exercising the newly generated SPARQL-SSL endpoint. Note:
 SPARQL-SSL is alias of SPARQL-WebID.
 
-<div class="orderedlist">
+<div>
 
 1.  <a href="vfoafsslst509issuer.html" class="link"
     title="17.3.9. Set Up X.509 certificate issuer, HTTPS listener and generate ODS user&#39;s certificates">Setup
@@ -1953,7 +1953,7 @@ SPARQL-SSL is alias of SPARQL-WebID.
     certificate from your Firefox browser or System's Key Manager into
     PEM (PKCS12) file
 
-    <div class="orderedlist">
+    <div>
 
     1.  If using Firefox use the menu path: Advanced -\> View
         Certificates, then click Backup for your certificate with name
@@ -1972,7 +1972,7 @@ SPARQL-SSL is alias of SPARQL-WebID.
 5.  Test the SPARQL-WebID endpoint with cURL: (listening on default
     HTTPS 443 port):
 
-    <div class="itemizedlist">
+    <div>
 
     - Note: In this example we use the "-k / --insecure" option with
       cURL since we are going to be using self-signed X.509 certificates
@@ -2033,19 +2033,19 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 6.  Import your key it via Conductor UI:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Go to Conductor -\> System Admin-\>User Accounts
 
-        <div class="figure-float">
+        <div>
 
-        <div id="foafsslsparql1" class="figure">
+        <div>
 
         **Figure 16.25. Import key it via Conductor UI**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Import key it via Conductor UI](images/ui/fsp1.png)
 
@@ -2061,15 +2061,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
     2.  Click "Edit" for your user
 
-        <div class="figure-float">
+        <div>
 
-        <div id="foafsslsparql2" class="figure">
+        <div>
 
         **Figure 16.26. Import key it via Conductor UI**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Import key it via Conductor UI](images/ui/fsp2.png)
 
@@ -2085,15 +2085,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
     3.  Change "User type" to: SQL/ODBC and WebDAV
 
-        <div class="figure-float">
+        <div>
 
-        <div id="foafsslsparql3" class="figure">
+        <div>
 
         **Figure 16.27. Import key it via Conductor UI**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Import key it via Conductor UI](images/ui/fsp3.png)
 
@@ -2113,15 +2113,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
         http://cname:port/dataspace/person/username#this
         ```
 
-        <div class="figure-float">
+        <div>
 
-        <div id="foafsslsparql4" class="figure">
+        <div>
 
         **Figure 16.28. Import key it via Conductor UI**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Import key it via Conductor UI](images/ui/fsp4.png)
 
@@ -2145,15 +2145,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
     9.  Enter key password
 
-        <div class="figure-float">
+        <div>
 
-        <div id="foafsslsparql5" class="figure">
+        <div>
 
         **Figure 16.29. Import key it via Conductor UI**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Import key it via Conductor UI](images/ui/fsp5.png)
 
@@ -2171,15 +2171,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
     11. As result the key will be stored with name for ex. cli_key
 
-        <div class="figure-float">
+        <div>
 
-        <div id="foafsslsparql6" class="figure">
+        <div>
 
         **Figure 16.30. Import key it via Conductor UI**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Import key it via Conductor UI](images/ui/fsp6.png)
 
@@ -2200,7 +2200,7 @@ SPARQL-SSL is alias of SPARQL-WebID.
 7.  Test the SPARQL-WebID endpoint with http_client (listening on
     default HTTPS 443 port):
 
-    <div class="orderedlist">
+    <div>
 
     1.  Log in at Virtuos ISQL with your user credentials:
 
@@ -2269,7 +2269,7 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                      |
 |:--------------------------:|:-----------------------------------------------------------------------------------------------------|
@@ -2281,9 +2281,9 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div id="sparqloauthendpointfoafsslsparqldisable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2297,9 +2297,9 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div id="sparqloauthendpointfoafsslsparqldisableisql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2313,7 +2313,7 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  To disable /sparql, execute:
 
@@ -2331,9 +2331,9 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div id="sparqloauthendpointfoafsslsparqldisablecond" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2347,7 +2347,7 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://cname:port/conductor .
 
@@ -2355,15 +2355,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 3.  Go to "Web Application Server" -\> "Virtual Domains & Directories".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="s1" class="figure">
+    <div>
 
     **Figure 16.31. Disable SPARQL Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Disable SPARQL Endpoint](images/ui/s1.png)
 
@@ -2379,15 +2379,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 4.  Find the logical path "/sparql".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="s2" class="figure">
+    <div>
 
     **Figure 16.32. Disable SPARQL Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Disable SPARQL Endpoint](images/ui/s2.png)
 
@@ -2403,15 +2403,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 5.  Click "Edit" from the "Action" column.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="s3" class="figure">
+    <div>
 
     **Figure 16.33. Disable SPARQL Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Disable SPARQL Endpoint](images/ui/s3.png)
 
@@ -2427,15 +2427,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 6.  Change "VSP User" to "nobody".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="s4" class="figure">
+    <div>
 
     **Figure 16.34. Disable SPARQL Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Disable SPARQL Endpoint](images/ui/s4.png)
 
@@ -2453,15 +2453,15 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 8.  As result the SPARQL Endpoint should be shown as disabled:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="s5" class="figure">
+    <div>
 
     **Figure 16.35. Disable SPARQL Endpoint**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Disable SPARQL Endpoint](images/ui/s5.png)
 
@@ -2483,9 +2483,9 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div id="rdfsupportedrequestmethodsofprotocol" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2499,11 +2499,11 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div id="id48574" class="decimalstyle">
+<div>
 
 **Table 16.6. Methods List**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Method | Supported? | Notes                                       |
 |:-------|------------|---------------------------------------------|
@@ -2520,9 +2520,9 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 </div>
 
-<div id="rdfsparqlclientfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2538,11 +2538,11 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 The SPARQL client can be invoked by three similar functions:
 
-<div id="id48603" class="decimalstyle">
+<div>
 
 **Table 16.7. Functions List**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Function                      | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |     |
 |:------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
@@ -2579,9 +2579,9 @@ create procedure DB.DBA.SPARQL_REXEC_WITH_META (
 
 </div>
 
-<div id="rdfsparqlendpointexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2608,9 +2608,9 @@ documentation is available at
 <a href="http://demo.openlinksw.com/sparql_demo" class="ulink"
 target="_top">Virtuoso Demo Server</a> .
 
-<div id="rdfsparqlendpointexamples1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2664,9 +2664,9 @@ The result should be:
 
 </div>
 
-<div id="rdfsparqlendpointexamples2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2700,9 +2700,9 @@ curl -F "query=SELECT DISTINCT ?Concept FROM <http://openlinksw.com/dataspace/or
 
 </div>
 
-<div id="rdfsparqlendpointexamples3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2941,9 +2941,9 @@ ns1:this        ns2:event       ns1:event .
 
 </div>
 
-<div id="rdfsparqlendpointexamples4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3177,9 +3177,9 @@ w9yJ2saU1vgHuFxWcughai5cZY%3D"
 
 </div>
 
-<div id="rdfsparqlendpointexamples5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3288,9 +3288,9 @@ Done
 
 </div>
 
-<div id="rdfsparqlendpointexamples6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3354,9 +3354,9 @@ ___________________________________
 
 </div>
 
-<div id="rdfsparqlendpointexamples7" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3378,9 +3378,9 @@ initialized from the contents of a given graph.
 
 </div>
 
-<div id="rdfsparqlendpointimplnotes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3400,9 +3400,9 @@ target="_top">Virtuoso Server</a> .
 
 </div>
 
-<div id="rdftables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3433,7 +3433,7 @@ communities. Here is a screen shot of one in action:
 
 A Semantic Bank allows you to:
 
-<div class="itemizedlist">
+<div>
 
 - Persist your information remotely on a server - This is useful, for
   example, if you want to share data between two of your computers or to
@@ -3456,7 +3456,7 @@ open participation and collaboration.
 
 There are several ways you can help:
 
-<div class="itemizedlist">
+<div>
 
 - Install a Semantic Bank and let us know about it, so that we can
   update the list of available Semantic Banks.
@@ -3493,7 +3493,7 @@ target="_top">"http://simile.mit.edu/dist/semantic-bank/</a>
 Before you can publish, you must register with one or more Semantic
 Banks:
 
-<div class="itemizedlist">
+<div>
 
 - Invoke the menu command Tools \> Piggy Bank \> My Semantic Bank
   Accounts ...
@@ -3526,9 +3526,9 @@ The piggybank-generated-name is a Virtuoso DAV user ID.
 
 </div>
 
-<div id="rdfsparqlexnpointnorthwindexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3556,7 +3556,7 @@ application's data by clicking on the subject link.
 
 To make RDF access complete, applications can do the following:
 
-<div class="orderedlist">
+<div>
 
 1.  Create a virtual directory
 
@@ -3639,7 +3639,7 @@ SQL>DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
     );
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -3766,9 +3766,9 @@ SQL>DB.DBA.XML_SET_NS_DECL ('northwind', 'http://demo.openlinksw.com/schemas/nor
 
 </div>
 
-<div id="rdfproxyservice" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3815,7 +3815,7 @@ grant execute permission on procedure RDF_SPONGE_UP.
 
 To enable SPARQL_UPDATE using the Conductor UI:
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the Virtuoso Administration Conductor i.e.
     http://host:port/conductor
@@ -3824,15 +3824,15 @@ To enable SPARQL_UPDATE using the Conductor UI:
 
 3.  Go to System Admin-\>User Accounts-\>Roles
 
-4.  <div class="figure-float">
+4.  <div>
 
-    <div id="rl1" class="figure">
+    <div>
 
     **Figure 16.36. Conductor UI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor UI](images/ui/cn1.png)
 
@@ -3851,15 +3851,15 @@ To enable SPARQL_UPDATE using the Conductor UI:
 6.  Select from the list of available user/groups "SPARQL" and click the
     "\>\>" button so to add it to the right-positioned list.
 
-7.  <div class="figure-float">
+7.  <div>
 
-    <div id="rl2" class="figure">
+    <div>
 
     **Figure 16.37. Conductor UI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor UI](images/ui/cn2.png)
 
@@ -3886,7 +3886,7 @@ grant execute on DB.DBA.RDF_SPONGE_UP to "SPARQL";
 When invoked with a URL of the form http://host:port/proxy?..., the
 Sponger Proxy URI Service accepts the following query string parameters:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*force*</span>
 
@@ -3954,9 +3954,9 @@ etc ...
 
 </div>
 
-<div id="sparqliniservice" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3994,9 +3994,9 @@ Example: http://demo.openlinksw.com/sparql?ini
 
 </div>
 
-<div id="sparqlexcel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4015,15 +4015,15 @@ The SPARQL endpoint offers an Excel MIME type output option.
 From http://cname:host/sparql, select "Spreadsheet" for the "Display
 Results As:" option and click the "Run Query" button.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlexcel1" class="figure">
+<div>
 
 **Figure 16.38. SPARQL Endpoint with Excel MIME type output**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SPARQL Endpoint with Excel MIME type output](images/ui/Excel1.png)
 
@@ -4044,15 +4044,15 @@ href="http://demo.openlinksw.com/sparql?default-graph-uri=http%3A%2F%2Fdemo.open
 class="ulink" target="_top">A URL such as this one</a> will be
 generated, and can be opened directly with Excel.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlexcel2" class="figure">
+<div>
 
 **Figure 16.39. SPARQL Endpoint with Excel MIME type output**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SPARQL Endpoint with Excel MIME type output](images/ui/Excel2.png)
 
@@ -4068,9 +4068,9 @@ generated, and can be opened directly with Excel.
 
 </div>
 
-<div id="sparqljson" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4089,15 +4089,15 @@ The SPARQL endpoint also offers a RDF+JSON output option.
 From http://cname:host/sparql select "JSON" for "Display Results As:"
 and click the "Run Query" button.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqljson1" class="figure">
+<div>
 
 **Figure 16.40. SPARQL Endpoint with RDF+JSON output**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SPARQL Endpoint with RDF+JSON output](images/ui/JSON1.png)
 
@@ -4115,15 +4115,15 @@ As result URL containing as parameter the format
 <span class="emphasis">*application/sparql-results+json*</span> will be
 generated and the content should look like:
 
-<div class="figure-float">
+<div>
 
-<div id="sparqljson2" class="figure">
+<div>
 
 **Figure 16.41. SPARQL Endpoint with JSON+RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SPARQL Endpoint with JSON+RDF](images/ui/JSON2.png)
 
@@ -4139,9 +4139,9 @@ generated and the content should look like:
 
 </div>
 
-<div id="sparqljsonp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

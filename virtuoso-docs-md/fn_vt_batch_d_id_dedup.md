@@ -1,6 +1,6 @@
-<div id="fn_vt_batch_d_id_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

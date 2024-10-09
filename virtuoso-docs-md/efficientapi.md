@@ -1,6 +1,6 @@
-<div id="efficientapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

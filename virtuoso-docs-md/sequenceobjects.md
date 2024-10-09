@@ -1,6 +1,6 @@
-<div id="sequenceobjects" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

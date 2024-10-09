@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksenableadonetvs2010" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ installers only create the necessary registry entries for Visual Studio
 registry settings need to be manually updated and manual addtions to
 some of the VS 2010 XML configuration files:
 
-<div class="orderedlist">
+<div>
 
 1.  Export following registry keys to .reg files and using a text
     editor, such as Wordpad, edit the Visual Studio version numbers from

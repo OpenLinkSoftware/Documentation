@@ -1,10 +1,10 @@
-<div id="fn_nm_max" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___max" class="funcsynopsis">
+<div>
 
 |                       |                  |
 |-----------------------|------------------|
@@ -25,7 +25,7 @@
 |                       | `... ` ,         |
 |                       | `argN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@
 
 </div>
 
-<div id="desc___max" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ arguments.
 
 </div>
 
-<div id="params___max" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94431" class="refsect2">
+<div>
 
 ### argI
 
@@ -58,15 +58,15 @@ Values which can be with type float, integer etc.
 
 </div>
 
-<div id="examples___max" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex___max" class="example">
+<div>
 
 **Example 24.192. **
 
-<div class="example-contents">
+<div>
 
 <span class="emphasis">*Example 1* </span>
 
@@ -123,7 +123,7 @@ No. of rows in result: 3
 
 </div>
 
-<div id="seealso___max" class="refsect1">
+<div>
 
 ## See Also
 

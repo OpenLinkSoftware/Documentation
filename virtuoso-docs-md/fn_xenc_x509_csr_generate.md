@@ -1,10 +1,10 @@
-<div id="fn_xenc_x509_csr_generate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xenc_x509_csr_generate — Generate Certificate Signing Request (CSR)
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_x509_csr_generate" class="funcsynopsis">
+<div>
 
 |                                            |                             |
 |--------------------------------------------|-----------------------------|
@@ -24,7 +24,7 @@ xenc_x509_csr_generate — Generate Certificate Signing Request (CSR)
 |                                            | in `subject ` array ,       |
 |                                            | in `extensions ` array `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ xenc_x509_csr_generate — Generate Certificate Signing Request (CSR)
 
 </div>
 
-<div id="desc_xenc_x509_csr_generate" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ This function generates Certificate Signing Request (CSR)
 
 </div>
 
-<div id="params_xenc_x509_csr_generate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121182" class="refsect2">
+<div>
 
 ### cli_pk_name
 
@@ -54,7 +54,7 @@ The user's private key name.
 
 </div>
 
-<div id="id121185" class="refsect2">
+<div>
 
 ### subject
 
@@ -67,7 +67,7 @@ for ex:
 
 </div>
 
-<div id="id121189" class="refsect2">
+<div>
 
 ### extensions
 
@@ -78,7 +78,7 @@ certificate.
 
 </div>
 
-<div id="ret_xenc_x509_csr_generate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -86,15 +86,15 @@ String
 
 </div>
 
-<div id="errors_xenc_x509_csr_generate" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121197" class="table">
+<div>
 
-**Table 24.119. Errors signalled by `xenc_x509_csr_generate `**
+**Table 24.118. Errors signalled by `xenc_x509_csr_generate `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                         | Description |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------------------|-------------|
@@ -117,15 +117,15 @@ String
 
 </div>
 
-<div id="examples_xenc_x509_csr_generate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_x509_csr_generate" class="example">
+<div>
 
 **Example 24.485. Create a new xenc_x509 CSR**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> create procedure csr_gen_demo()
@@ -175,7 +175,7 @@ T9OIp5FNOec13jXqVesymd+Kl+Vb9sRBaC1Xb1OSryU=
 
 </div>
 
-<div id="seealso_xenc_x509_csr_generate" class="refsect1">
+<div>
 
 ## See Also
 

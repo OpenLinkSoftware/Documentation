@@ -1,10 +1,10 @@
-<div id="fn_dav_exp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DAV_EXP — Export a retrieved Web site to another WebDAV enabled server
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dav_exp" class="funcsynopsis">
+<div>
 
 |                            |                        |
 |----------------------------|------------------------|
@@ -25,7 +25,7 @@ DAV_EXP — Export a retrieved Web site to another WebDAV enabled server
 |                            | in `root ` varchar ,   |
 |                            | in `dst ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ DAV_EXP — Export a retrieved Web site to another WebDAV enabled server
 
 </div>
 
-<div id="desc_dav_exp" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ Copy to the local file system.
 
 </div>
 
-<div id="params_dav_exp" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id85514" class="refsect2">
+<div>
 
 ### host
 
@@ -56,7 +56,7 @@ The target host name
 
 </div>
 
-<div id="id85517" class="refsect2">
+<div>
 
 ### url
 
@@ -64,7 +64,7 @@ start path on target
 
 </div>
 
-<div id="id85520" class="refsect2">
+<div>
 
 ### root
 
@@ -72,7 +72,7 @@ local WebDAV collection that contains the retrieved content
 
 </div>
 
-<div id="id85523" class="refsect2">
+<div>
 
 ### dst
 
@@ -82,7 +82,7 @@ absolute URL to the WebDAV folder to export content to
 
 </div>
 
-<div id="ret_dav_exp" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -91,15 +91,15 @@ an error occurred while exporting.
 
 </div>
 
-<div id="errors_dav_exp" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id85531" class="table">
+<div>
 
-**Table 24.23. Errors signalled by DAV\_\* functions**
+**Table 24.22. Errors signalled by DAV\_\* functions**
 
-<div class="table-contents">
+<div>
 
 | Error Code                           | Description                                                                                                              |
 |--------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
@@ -132,15 +132,15 @@ an error occurred while exporting.
 
 </div>
 
-<div id="examples_dav_exp" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dav_exp" class="example">
+<div>
 
 **Example 24.81. Exporting to the Filesystem**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 WS.WS.LFS_EXP ('www.foo.com', '/help/', 'sites/www_foo_com', '/tmp/');
@@ -156,7 +156,7 @@ WS.WS.DAV_EXP ('www.foo.com', '/help/', 'sites/www_foo_com',
 
 </div>
 
-<div id="seealso_dav_exp" class="refsect1">
+<div>
 
 ## See Also
 

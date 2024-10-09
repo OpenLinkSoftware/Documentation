@@ -1,6 +1,6 @@
-<div id="ch-runtimehosting" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -45,7 +45,7 @@ bolted on the side of Virtuoso and called as SQL functions.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -123,9 +123,9 @@ Virtuoso](langfuncapi.html)</span>
 
 </div>
 
-<div id="rthactivation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -167,7 +167,7 @@ customizations of Virtuoso on Windows must either be in the %PATH%;
 environment variable or be the same directory as the virtuoso .EXE file.
 Virtuoso will not be able to start otherwise.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -183,7 +183,7 @@ improve the efficiency of the system, keeping it all in-process, a
 special connection can be made with no alteration to the API used in the
 code for communication.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                            |
 |:--------------------------:|:---------------------------------------------------------------------------------------------------------------------------|

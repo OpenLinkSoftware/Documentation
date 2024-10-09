@@ -1,10 +1,10 @@
-<div id="fn_xml_add_system_path" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xml_add_system_path — Adds path to the internal list of system paths.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_add_system_path" class="funcsynopsis">
+<div>
 
 |                                  |                         |
 |----------------------------------|-------------------------|
 | ` `**`xml_add_system_path`**` (` | in `path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xml_add_system_path — Adds path to the internal list of system paths.
 
 </div>
 
-<div id="desc_67" class="refsect1">
+<div>
 
 ## Description
 

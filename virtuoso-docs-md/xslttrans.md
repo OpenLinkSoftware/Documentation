@@ -1,6 +1,6 @@
-<div id="xslttrans" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,9 +50,9 @@ old rule for 99% of real expressions. Specifically, it fully matches the
 standards' rules for all XPath expressions that are free of
 reverse-order axes and non-standard functions.
 
-<div id="namespaces" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

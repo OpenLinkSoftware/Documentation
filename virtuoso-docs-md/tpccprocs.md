@@ -1,6 +1,6 @@
-<div id="tpccprocs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="intro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,7 +38,7 @@ the procedures are written and which features of the language are used
 where. See the sample/tpcc.sql and sample/tpcctrx.c files along with
 this commentary.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                   |
 |:--------------------------:|:----------------------------------------------------------------------------------------------------------------------------------|

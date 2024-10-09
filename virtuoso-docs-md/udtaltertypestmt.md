@@ -1,6 +1,6 @@
-<div id="udtaltertypestmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -51,7 +51,7 @@ language_name : SQL | CLR | JAVA
 The ALTER TYPE statements modifies a user defined type. It can be used
 for adding or dropping methods and members of user defined types.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                |
 |:----------------------------:|:-----------------------------------------------|
@@ -60,11 +60,11 @@ for adding or dropping methods and members of user defined types.
 
 </div>
 
-<div id="ex_altertype" class="example">
+<div>
 
 **Example 9.4. Altering User Defined Types**
 
-<div class="example-contents">
+<div>
 
 This example uses a SQL implemented user defined type UDT_ALTER_TYPE
 with no supertype defined as follows:

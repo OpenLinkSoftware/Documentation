@@ -1,10 +1,10 @@
-<div id="fn_dayofmonth" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ dayofmonth — get day of month from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dayofmonth_01" class="funcsynopsis">
+<div>
 
 |                         |                        |
 |-------------------------|------------------------|
 | ` `**`dayofmonth`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ dayofmonth — get day of month from a datetime
 
 </div>
 
-<div id="desc_dayofmonth" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ represented by the datetime
 
 </div>
 
-<div id="params_dayofmonth" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id85815" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_dayofmonth" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ An <span class="type">INTEGER </span> containing the day of month.
 
 </div>
 
-<div id="examples_dayofmonth" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dayofmonth" class="example">
+<div>
 
 **Example 24.83. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current day of month.
 
@@ -87,7 +87,7 @@ Get current day of month.
 
 </div>
 
-<div id="seealso_dayofmonth" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="rdfperfgetallgraphs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

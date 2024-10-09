@@ -1,10 +1,10 @@
-<div id="fn_repl_sync_all" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ repl_sync_all — synchronize all subscriptions
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_sync_all" class="funcsynopsis">
+<div>
 
 |                            |      |
 |----------------------------|------|
 | ` `**`repl_sync_all`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ repl_sync_all — synchronize all subscriptions
 
 </div>
 
-<div id="desc_repl_sync_all" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,15 +43,15 @@ repl_stat() function.
 
 </div>
 
-<div id="examples_repl_sync_all" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_sync_all_1" class="example">
+<div>
 
 **Example 24.335. Synchronizing all subscriptions**
 
-<div class="example-contents">
+<div>
 
 This will start synchronization of all subscriptions.
 
@@ -67,7 +67,7 @@ SQL> repl_sync_all ();
 
 </div>
 
-<div id="seealso_repl_sync_all" class="refsect1">
+<div>
 
 ## See Also
 

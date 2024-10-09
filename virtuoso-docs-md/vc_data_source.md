@@ -1,10 +1,10 @@
-<div id="vc_data_source" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ data-source — Scrollable multi-row data bound source.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_data_source" class="funcsynopsis">
+<div>
 
 |                             |                                |
 |-----------------------------|--------------------------------|
@@ -38,7 +38,7 @@ data-source — Scrollable multi-row data bound source.
 |                             | `debug-srcline` (optional) ,   |
 |                             | `debug-log` (optional) `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -48,7 +48,7 @@ data-source — Scrollable multi-row data bound source.
 
 </div>
 
-<div id="vc_desc_data_source" class="refsect1">
+<div>
 
 ## Description
 
@@ -63,7 +63,7 @@ it.
 
 </div>
 
-<div id="vc_attrs_data_source" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -116,11 +116,11 @@ attribute will not be used when the resulting HTML is rendered.
 
 **expression-type. ** Denotes the type of 'expression'
 
-<div id="id40241" class="table">
+<div>
 
 **Table 14.5. Allowed values of the 'expression-type' attribute**
 
-<div class="table-contents">
+<div>
 
 |           |                                                                   |
 |-----------|-------------------------------------------------------------------|
@@ -187,7 +187,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_data_source" class="refsect1">
+<div>
 
 ## Declaration of type vspx_data_source
 
@@ -267,16 +267,16 @@ constructor method vspx_data_source (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_data_source" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_data_source__0" class="example">
+<div>
 
 **Example 14.29.  Simple navigation form using invisible data-source
 control**
 
-<div class="example-contents">
+<div>
 
 This example will show a cell of the customers table from the Northwind
 demo database. Allows to show different columns : name and phone.

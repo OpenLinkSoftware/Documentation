@@ -1,10 +1,10 @@
-<div id="fn_sys_stat_analyze" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ use in SQL optimization
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sys_stat_analyze" class="funcsynopsis">
+<div>
 
 |                               |                               |
 |-------------------------------|-------------------------------|
@@ -25,7 +25,7 @@ use in SQL optimization
 |                               | in `pcnt ` integer ,          |
 |                               | in `ignore_vdb ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ use in SQL optimization
 
 </div>
 
-<div id="desc_40" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ parameters, *`pcnt `* and *`ignore_vdb `* .
 
 </div>
 
-<div id="params_11" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112990" class="refsect2">
+<div>
 
 ### table_name
 
@@ -68,7 +68,7 @@ SYS_KEYS.
 
 </div>
 
-<div id="id112993" class="refsect2">
+<div>
 
 ### pcnt
 
@@ -78,7 +78,7 @@ percentsample of the table.
 
 </div>
 
-<div id="id112996" class="refsect2">
+<div>
 
 ### ignore_vdb
 
@@ -93,7 +93,7 @@ if it is of a supported type, see the sys_stat_vdb_mappers table.
 
 </div>
 
-<div id="seealso_19" class="refsect1">
+<div>
 
 ## See Also
 

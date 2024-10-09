@@ -1,6 +1,6 @@
-<div id="ftinternationalization" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,7 +28,7 @@ Non-ASCII Unicode values are converted to UTF8 before being stored into
 the word table as narrow strings. Narrow 8 bit strings are stored in the
 words table as is.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                     |
 |:--------------------------:|:------------------------------------------------------------------------------------|

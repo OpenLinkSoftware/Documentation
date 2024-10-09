@@ -1,6 +1,6 @@
-<div id="clusterprogrammingseqidenreg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

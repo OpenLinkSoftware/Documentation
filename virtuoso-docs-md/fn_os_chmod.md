@@ -1,10 +1,10 @@
-<div id="fn_os_chmod" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ os_chmod — changes the file access mode of a file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_os_chmod" class="funcsynopsis">
+<div>
 
 |                       |                            |
 |-----------------------|----------------------------|
 | ` `**`os_chmod`**` (` | in `path ` varchar ,       |
 |                       | in `new_mod ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ os_chmod — changes the file access mode of a file
 
 </div>
 
-<div id="desc_07" class="refsect1">
+<div>
 
 ## Description
 
@@ -73,11 +73,11 @@ control disk access.
 
 </div>
 
-<div id="params_03" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98627" class="refsect2">
+<div>
 
 ### path
 
@@ -85,7 +85,7 @@ control disk access.
 
 </div>
 
-<div id="id98631" class="refsect2">
+<div>
 
 ### new_mod
 
@@ -95,15 +95,15 @@ control disk access.
 
 </div>
 
-<div id="examples_03" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_os_chmod" class="example">
+<div>
 
 **Example 24.242. Simple example**
 
-<div class="example-contents">
+<div>
 
 Make the virtuoso INI file readable by the others
 
@@ -124,7 +124,7 @@ NULL
 
 </div>
 
-<div id="seealso_07" class="refsect1">
+<div>
 
 ## See Also
 

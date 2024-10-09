@@ -1,6 +1,6 @@
-<div id="replstatusfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_repl_stat.html" class="link" title="REPL_STAT"><code
   class="function">repl_stat()</code></a>

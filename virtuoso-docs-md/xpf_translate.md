@@ -1,10 +1,10 @@
-<div id="xpf_translate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ translate — Performs char-by-char translation of given string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_translate" class="funcsynopsis">
+<div>
 
 |                              |                             |
 |------------------------------|-----------------------------|
@@ -24,7 +24,7 @@ translate — Performs char-by-char translation of given string
 |                              | `search_list ` string ,     |
 |                              | `replace_list ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ translate — Performs char-by-char translation of given string
 
 </div>
 
-<div id="xpf_desc_translate" class="refsect1">
+<div>
 
 ## Description
 
@@ -63,11 +63,11 @@ corresponding characters from "collation string".
 
 </div>
 
-<div id="xpf_params_translate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129555" class="refsect2">
+<div>
 
 ### strg
 
@@ -75,7 +75,7 @@ String that must be translated.
 
 </div>
 
-<div id="id129558" class="refsect2">
+<div>
 
 ### search_list
 
@@ -83,7 +83,7 @@ String of characters that must be edited in the *`strg `* .
 
 </div>
 
-<div id="id129562" class="refsect2">
+<div>
 
 ### replace_list
 
@@ -93,7 +93,7 @@ String of characters that must be inserted in the *`strg `* .
 
 </div>
 
-<div id="xpf_ret_translate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -101,15 +101,15 @@ String
 
 </div>
 
-<div id="xpf_errors_translate" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id129571" class="table">
+<div>
 
-**Table 24.153. Errors signalled by translate()**
+**Table 24.152. Errors signalled by translate()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                                                | Description                                                                                                                                                                                                                                                                |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -123,15 +123,15 @@ String
 
 </div>
 
-<div id="xpf_examples_translate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_translate" class="example">
+<div>
 
 **Example 24.633. Trivial cases**
 
-<div class="example-contents">
+<div>
 
 The following expressions are true:
 
@@ -146,11 +146,11 @@ The following expressions are true:
 
   
 
-<div id="xpf_ex_translate_01" class="example">
+<div>
 
 **Example 24.634. Sorting with collation in XSL**
 
-<div class="example-contents">
+<div>
 
 The following \<xsl:sort\> will sort records by its titles, making no
 difference between spaces and punctuation marks. In addition, spaces
@@ -168,7 +168,7 @@ will be normalized after the collation processing.
 
 </div>
 
-<div id="xpf_seealso_translate" class="refsect1">
+<div>
 
 ## See Also
 

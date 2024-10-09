@@ -1,10 +1,10 @@
-<div id="fn_file_unlink" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ file_unlink — Delete a file from the file system
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_unlink" class="funcsynopsis">
+<div>
 
 |                          |                         |
 |--------------------------|-------------------------|
 | ` `**`file_unlink`**` (` | in `path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ file_unlink — Delete a file from the file system
 
 </div>
 
-<div id="desc_file_unlink" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ synonym of this function.
 
 </div>
 
-<div id="params_file_unlink" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89027" class="refsect2">
+<div>
 
 ### path
 
@@ -57,7 +57,7 @@ Path name of the file to delete.
 
 </div>
 
-<div id="ret_file_unlink" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,15 +65,15 @@ On success returns zero. Otherwise signals an error.
 
 </div>
 
-<div id="errors_set_row_count" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id89035" class="table">
+<div>
 
-**Table 24.36. Errors signalled by**
+**Table 24.35. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                                  | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -97,7 +97,7 @@ On success returns zero. Otherwise signals an error.
 
 </div>
 
-<div id="seealso_file_unlink" class="refsect1">
+<div>
 
 ## See Also
 

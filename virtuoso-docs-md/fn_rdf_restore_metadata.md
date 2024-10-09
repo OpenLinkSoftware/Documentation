@@ -1,10 +1,10 @@
-<div id="fn_rdf_restore_metadata" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ Linked Data Views and the like) from previously saved backup.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_restore_metadata" class="funcsynopsis">
+<div>
 
 |                                          |                                |
 |------------------------------------------|--------------------------------|
 | ` `**`DB.DBA.RDF_RESTORE_METADATA`**` (` | in `read_from_file ` integer , |
 |                                          | in `backup_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ Linked Data Views and the like) from previously saved backup.
 
 </div>
 
-<div id="desc_rdf_restore_metadata" class="refsect1">
+<div>
 
 ## Description
 
@@ -61,11 +61,11 @@ usual for changing database schema of an application.
 
 </div>
 
-<div id="params_rdf_restore_metadata" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100642" class="refsect2">
+<div>
 
 ### read_from_file
 
@@ -74,7 +74,7 @@ file, zero for graph.
 
 </div>
 
-<div id="id100645" class="refsect2">
+<div>
 
 ### backup_name
 
@@ -88,7 +88,7 @@ the backup.
 
 </div>
 
-<div id="ret_rdf_restore_metadata" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -96,7 +96,7 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="seealso_rdf_restore_metadata" class="refsect1">
+<div>
 
 ## See Also
 

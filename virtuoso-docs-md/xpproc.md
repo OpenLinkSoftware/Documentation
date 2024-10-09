@@ -1,6 +1,6 @@
-<div id="xpproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,11 +25,11 @@ text is presented as a string literal. Note that the tokenization rules
 are different for XPATH and SQL, so having XPATH as a string makes it
 clear which rules apply to parsing which part of the composite query.
 
-<div id="xp01" class="example">
+<div>
 
 **Example 15.7. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select * from (XPATH '[__* __view "cat"]
@@ -46,7 +46,7 @@ entity as defined in the view.
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                    |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -55,9 +55,9 @@ entity as defined in the view.
 
 </div>
 
-<div id="paramsinxp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -108,7 +108,7 @@ select * from "Demo".."Categories" C
 This example selects the categories of products that have been mentioned
 in the ord XML view.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                             |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

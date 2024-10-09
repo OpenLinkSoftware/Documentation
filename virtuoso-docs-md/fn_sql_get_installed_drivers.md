@@ -1,10 +1,10 @@
-<div id="fn_sql_get_installed_drivers" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ remote DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_get_installed_drivers" class="funcsynopsis">
+<div>
 
 |                                              |      |
 |----------------------------------------------|------|
 | `vector `**`sql_get_installed_drivers`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ remote DSN
 
 </div>
 
-<div id="desc_get_installed_drivers" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ data sources.
 
 </div>
 
-<div id="params_sql_get_installed_drivers" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -51,7 +51,7 @@ None
 
 </div>
 
-<div id="ret_sql_get_installed_drivers" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -61,15 +61,15 @@ This function returns an array of varchars.
 
 </div>
 
-<div id="examples_sql_get_installed_drivers" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sql_get_installed_drivers" class="example">
+<div>
 
 **Example 24.400. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 dbg_obj_print (sql_get_installed_drivers ());
@@ -87,7 +87,7 @@ dbg_obj_print (sql_get_installed_drivers ());
 
 </div>
 
-<div id="seealso_sql_get_installed_drivers" class="refsect1">
+<div>
 
 ## See Also
 

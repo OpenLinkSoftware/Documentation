@@ -1,10 +1,10 @@
-<div id="fn_current_charset" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ current_charset — Get name of current charset.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_current_charset" class="funcsynopsis">
+<div>
 
 |                              |      |
 |------------------------------|------|
 | ` `**`current_charset`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ current_charset — Get name of current charset.
 
 </div>
 
-<div id="desc_current_charset" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,7 +45,7 @@ current HTTP connection in the VSP or VSPX context.
 
 </div>
 
-<div id="params_current_charset" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -53,7 +53,7 @@ None.
 
 </div>
 
-<div id="ret_current_charset" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -61,7 +61,7 @@ A <span class="type">string </span> containing the name.
 
 </div>
 
-<div id="errors_current_charset" class="refsect1">
+<div>
 
 ## Errors
 
@@ -69,15 +69,15 @@ None signalled.
 
 </div>
 
-<div id="examples_current_charset" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_current_charset" class="example">
+<div>
 
 **Example 24.67. Get name of current charset**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select current_charset();
@@ -95,7 +95,7 @@ ISO-8859-1
 
 </div>
 
-<div id="seealso_current_charset" class="refsect1">
+<div>
 
 ## See Also
 

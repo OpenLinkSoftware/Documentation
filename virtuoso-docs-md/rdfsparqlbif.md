@@ -1,6 +1,6 @@
-<div id="rdfsparqlbif" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,12 +14,12 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*bif:\_\_rdf_long_from_batch_params(i_nt
   integer, st_value, st2_value)*</span>
 
-  <div class="itemizedlist">
+  <div>
 
   - For value URI, the params values should be: 1, value.stringValue(),
     NULL

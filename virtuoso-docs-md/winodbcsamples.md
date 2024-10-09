@@ -1,6 +1,6 @@
-<div id="winodbcsamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="cppdemo32" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,20 +30,20 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the Virtuoso "Start Menu" item, then click on the "C++ Demo 32
     Bit" menu item.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample001" class="figure">
+    <div>
 
     **Figure 4.1. C++ Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![C++ Demo](images/sampl001.gif)
 
@@ -62,15 +62,15 @@
     presenting you with a list of ODBC DSNs on your machine as depicted
     by the screen capture below:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample002" class="figure">
+    <div>
 
     **Figure 4.2. C++ Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![C++ Demo](images/sampl004.gif)
 
@@ -92,15 +92,15 @@
     for ODBC, enter a valid user name and password (default being user:
     demo and password: demo) into the appropriate fields.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample003" class="figure">
+    <div>
 
     **Figure 4.3. C++ Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![C++ Demo](images/sampl003.gif)
 
@@ -119,15 +119,15 @@
     up the Interactive SQL input dialog. Enter a valid SQL statement
     (see example in screen shot) and then click on the "OK" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample004" class="figure">
+    <div>
 
     **Figure 4.4. C++ Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![C++ Demo](images/sampl006.gif)
 
@@ -143,15 +143,15 @@
 
 6.  You will be presented with the results of your query.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample004_01" class="figure">
+    <div>
 
     **Figure 4.5. C++ Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![C++ Demo](images/sampl007.gif)
 
@@ -172,9 +172,9 @@
 
 </div>
 
-<div id="odbcbench32" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -188,21 +188,21 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the Virtuoso "Start Menu" item, then click on the "ODBC Bench
     Test 32 Bit" menu item. You will be presented with the "Bench Test"
     interface.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample005" class="figure">
+    <div>
 
     **Figure 4.6. ODBC Bench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODBC Bench](images/sampl008.gif)
 
@@ -224,15 +224,15 @@
     database engine that serves the ODBC Driver. Choose the "Local
     Virtuoso Demo" DSN if you want to benchmark Virtuoso.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample006" class="figure">
+    <div>
 
     **Figure 4.7. ODBC Bench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODBC Bench](images/sampl009.gif)
 
@@ -251,15 +251,15 @@
     user: demo and password: demo for the Demo database) into the
     appropriate fields.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample007" class="figure">
+    <div>
 
     **Figure 4.8. ODBC Bench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODBC Bench](images/sampl010.gif)
 
@@ -278,15 +278,15 @@
     of your benchmark. Click the "Execute" button to commence the
     process of setting up your database for the benchmark tests.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample008" class="figure">
+    <div>
 
     **Figure 4.9. ODBC Bench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODBC Bench](images/sampl011.gif)
 
@@ -304,15 +304,15 @@
     the benchmark program will provide status information into the
     benchmark output pane as shown below:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample010" class="figure">
+    <div>
 
     **Figure 4.10. ODBC Bench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODBC Bench](images/sampl012.gif)
 
@@ -333,15 +333,15 @@
     These benchmark parameters fall into 3 categories, Timing Options,
     SQL Options, and Execution Options.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample011" class="figure">
+    <div>
 
     **Figure 4.11. ODBC Bench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODBC Bench](images/sampl013.gif)
 
@@ -399,7 +399,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Click on the "Run All" button if you would like all the different
     benchmark type combinations to be performed.
@@ -407,15 +407,15 @@
 2.  When benchmark run complete benchmark data is written to the
     benchmark program's output pane.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sample012" class="figure">
+    <div>
 
     **Figure 4.12. ODBC Bench**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![ODBC Bench](images/sampl014.gif)
 

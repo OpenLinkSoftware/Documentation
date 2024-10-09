@@ -1,10 +1,10 @@
-<div id="fn_vhost_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ VHOST_REMOVE — remove a virtual host or virtual directory
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vhost_remove" class="funcsynopsis">
+<div>
 
 |                                       |                             |
 |---------------------------------------|-----------------------------|
@@ -25,7 +25,7 @@ VHOST_REMOVE — remove a virtual host or virtual directory
 |                                       | in `lpath ` varchar ,       |
 |                                       | in `del_vsps ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ VHOST_REMOVE — remove a virtual host or virtual directory
 
 </div>
 
-<div id="desc_vhost_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ hosting: IP-based and name-based.
 
 </div>
 
-<div id="params_vhost_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118547" class="refsect2">
+<div>
 
 ### *`vhost `*
 
@@ -61,7 +61,7 @@ file.
 
 </div>
 
-<div id="id118552" class="refsect2">
+<div>
 
 ### *`lhost `*
 
@@ -71,7 +71,7 @@ connections. Default value as defined in the Virtuoso INI file.
 
 </div>
 
-<div id="id118557" class="refsect2">
+<div>
 
 ### *`lpath `*
 
@@ -80,7 +80,7 @@ URI for the logical path.
 
 </div>
 
-<div id="id118562" class="refsect2">
+<div>
 
 ### *`del_vsps `*
 
@@ -91,7 +91,7 @@ compilations of VSP files in this domain. Default value is 0.
 
 </div>
 
-<div id="ret_vhost_remove" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -99,15 +99,15 @@ The return is VOID.
 
 </div>
 
-<div id="examples_vhost_remove" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vhost_remove" class="example">
+<div>
 
 **Example 24.443. Removing Virtual Host Definitions**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> VHOST_REMOVE (vhost=>'www.foo.com:8889',
@@ -125,7 +125,7 @@ Now, attempts to retrieve http://www.foo.com:8889/ will be rejected.
 
 </div>
 
-<div id="seealso_vhost_remove" class="refsect1">
+<div>
 
 ## See Also
 

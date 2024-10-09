@@ -1,6 +1,6 @@
-<div id="rdfrdfviewgnroneclick" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ The following steps provide a one-click guide for publishing ODBC- or
 JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
 & Publish" Conductor feature.
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://\<cname\>:port/conductor ;
 
@@ -26,15 +26,15 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
 
 3.  Follow menu path Linked Data -\> Views;
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rd1" class="figure">
+    <div>
 
     **Figure 16.52. Linked Data Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Linked Data Views](images/ui/rd1.png)
 
@@ -50,7 +50,7 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
 
 4.  In the form presented, perform the following steps:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Select the Database Name Qualifier (e.g., "Demo") that exposes
         the Tables / Views for this exercise
@@ -65,15 +65,15 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rd2" class="figure">
+    <div>
 
     **Figure 16.53. Linked Data Views Generate and Publish**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Linked Data Views Generate and Publish](images/ui/rd2.png)
 
@@ -96,16 +96,16 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
     and Linked Data publishing activities will have completed
     successfully.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rd13" class="figure">
+    <div>
 
     **Figure 16.54. Linked Data View declarations and Linked Data
     publishing activities**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Linked Data View declarations and Linked Data publishing
     activities](images/ui/rd13.png)
@@ -122,7 +122,7 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
 
 7.  Optionally, you could also perform one of the following tasks:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Save Data Mappings: when clicked, offers to save the generated
         Definitions to local file system

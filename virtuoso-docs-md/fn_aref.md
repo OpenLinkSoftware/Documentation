@@ -1,10 +1,10 @@
-<div id="fn_aref" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ aref — returns specific element of an array or string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_aref" class="funcsynopsis">
+<div>
 
 |                   |                     |
 |-------------------|---------------------|
 | ` `**`aref`**` (` | `arg ` any ,        |
 |                   | `nth ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ aref — returns specific element of an array or string
 
 </div>
 
-<div id="desc_aref" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ is returned. If the first argument is an array of <span class="type">any
 
 </div>
 
-<div id="params_aref" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80364" class="refsect2">
+<div>
 
 ### *`arg `*
 
@@ -61,7 +61,7 @@ is returned. If the first argument is an array of <span class="type">any
 
 </div>
 
-<div id="id80371" class="refsect2">
+<div>
 
 ### *`nth `*
 
@@ -71,7 +71,7 @@ is returned. If the first argument is an array of <span class="type">any
 
 </div>
 
-<div id="ret_aref" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -81,15 +81,15 @@ as whatever type the element is if *`arg `* is an array or vector
 
 </div>
 
-<div id="errors_aref" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id80384" class="table">
+<div>
 
 **Table 24.2. Errors signalled by aref**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                          | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------------|-------------|
@@ -104,15 +104,15 @@ as whatever type the element is if *`arg `* is an array or vector
 
 </div>
 
-<div id="examples_aref" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_aref_1" class="example">
+<div>
 
 **Example 24.13. Simple examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select aref ('Abacus', 0);
@@ -142,7 +142,7 @@ SQL>
 
 </div>
 
-<div id="seealso_aref" class="refsect1">
+<div>
 
 ## See Also
 

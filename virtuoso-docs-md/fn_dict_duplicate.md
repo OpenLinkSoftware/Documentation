@@ -1,10 +1,10 @@
-<div id="fn_dict_duplicate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ dict_duplicate — Creates a copy of the given dictionary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_duplicate" class="funcsynopsis">
+<div>
 
 |                                       |                            |
 |---------------------------------------|----------------------------|
 | `dictionary `**`dict_duplicate`**` (` | in `dict ` dictionary `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ dict_duplicate — Creates a copy of the given dictionary.
 
 </div>
 
-<div id="desc_dict_duplicate" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ dictionaries that may be stored in key-value pairs.
 
 </div>
 
-<div id="params_dict_duplicate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86306" class="refsect2">
+<div>
 
 ### dcit
 
@@ -63,7 +63,7 @@ The dictionary to be duplicated.
 
 </div>
 
-<div id="ret_dict_duplicate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,7 +71,7 @@ The function returns a new dictionary object.
 
 </div>
 
-<div id="seealso_dict_duplicate" class="refsect1">
+<div>
 
 ## See Also
 

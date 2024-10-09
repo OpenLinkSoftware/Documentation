@@ -1,10 +1,10 @@
-<div id="fn_position" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ position — returns the index of an element within an array or string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_position" class="funcsynopsis">
+<div>
 
 |                       |                                                |
 |-----------------------|------------------------------------------------|
@@ -25,7 +25,7 @@ position — returns the index of an element within an array or string
 |                       | `start_index ` integer (optional, default 1) , |
 |                       | `step ` integer (optional, default 1) `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ position — returns the index of an element within an array or string
 
 </div>
 
-<div id="desc_position" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ same type is expected as the first argument.
 
 </div>
 
-<div id="params_position" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99535" class="refsect2">
+<div>
 
 ### *`element `*
 
@@ -63,7 +63,7 @@ elements in second argument </span> .
 
 </div>
 
-<div id="id99541" class="refsect2">
+<div>
 
 ### *`array `*
 
@@ -72,7 +72,7 @@ elements in second argument </span> .
 
 </div>
 
-<div id="id99548" class="refsect2">
+<div>
 
 ### *`start_index `*
 
@@ -81,7 +81,7 @@ start search.
 
 </div>
 
-<div id="id99553" class="refsect2">
+<div>
 
 ### *`step `*
 
@@ -92,7 +92,7 @@ tested; default is 1 (every element)
 
 </div>
 
-<div id="ret_position" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -101,15 +101,15 @@ not found returns zero.
 
 </div>
 
-<div id="errors_position" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id99564" class="table">
+<div>
 
-**Table 24.72. Errors signalled by position**
+**Table 24.71. Errors signalled by position**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                                      | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -124,15 +124,15 @@ not found returns zero.
 
 </div>
 
-<div id="examples_position" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_position_1" class="example">
+<div>
 
 **Example 24.245. Simple examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select position ('b', 'Abacus');
@@ -171,7 +171,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_position" class="refsect1">
+<div>
 
 ## See Also
 

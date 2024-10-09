@@ -1,10 +1,10 @@
-<div id="fn_xmlagg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ XMLAGG — Produces a forest of elements from a collection of XML values
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlagg" class="funcsynopsis">
+<div>
 
 |                           |                              |
 |---------------------------|------------------------------|
 | `vector `**`XMLAGG`**` (` | `value_expression ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ XMLAGG — Produces a forest of elements from a collection of XML values
 
 </div>
 
-<div id="desc_xmlagg" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ of `XMLAGG` in any SQl statement is always replaced with the call of
 
 </div>
 
-<div id="params_xmlagg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121949" class="refsect2">
+<div>
 
 ### value_expression
 
@@ -71,7 +71,7 @@ the result of one of the following functions `XMLAGG ` , `XMLCONCAT ` ,
 
 </div>
 
-<div id="ret_xmlagg" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,15 +80,15 @@ The aggregate returns a vector that is a suitable input for functions
 
 </div>
 
-<div id="examples_xmlagg" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlagg_1" class="example">
+<div>
 
 **Example 24.494. XMLAGG() enclosed in XMLELEMENT()**
 
-<div class="example-contents">
+<div>
 
 The following example produces an 'Emp' element with attribute 'Title'
 and a list of all employees having the title 'Sales Representative' as
@@ -122,11 +122,11 @@ _______________________________________________________________________________
 
   
 
-<div id="ex_xmlagg_2" class="example">
+<div>
 
 **Example 24.495. XMLAGG() that produces a sorted document**
 
-<div class="example-contents">
+<div>
 
 The result of the previous example contains an unsorted list of names.
 This is because data rows were retrieved from "Demo"."demo"."Employees"
@@ -192,7 +192,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmlagg" class="refsect1">
+<div>
 
 ## See Also
 

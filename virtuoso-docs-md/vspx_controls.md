@@ -1,6 +1,6 @@
-<div id="vspx_controls" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

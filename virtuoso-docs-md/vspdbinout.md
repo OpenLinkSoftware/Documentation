@@ -1,6 +1,6 @@
-<div id="vspdbinout" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

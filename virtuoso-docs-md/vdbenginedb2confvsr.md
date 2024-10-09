@@ -1,6 +1,6 @@
-<div id="vdbenginedb2confvsr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="ch-accessinterfaces.html#virtclientrefinstallandconfigvirt"
   class="link"

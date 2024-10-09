@@ -1,6 +1,6 @@
-<div id="defaultqualifiers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

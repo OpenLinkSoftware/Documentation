@@ -1,10 +1,10 @@
-<div id="fn_vad_check_uninstallability" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAD_CHECK_UNINSTALLABILITY — Checks if the package can be uninstalled.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_check_uninstallability" class="funcsynopsis">
+<div>
 
 |                                                        |                                 |
 |--------------------------------------------------------|---------------------------------|
 | `varchar DB.DBA. `**`VAD_CHECK_UNINSTALLABILITY`**` (` | in `package_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ VAD_CHECK_UNINSTALLABILITY — Checks if the package can be uninstalled.
 
 </div>
 
-<div id="desc_53" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ error.
 
 </div>
 
-<div id="params_20" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117527" class="refsect2">
+<div>
 
 ### package_name
 
@@ -57,7 +57,7 @@ name of package '/' version e.g: 'virtodp/1.0'
 
 </div>
 
-<div id="seealso_25" class="refsect1">
+<div>
 
 ## See Also
 

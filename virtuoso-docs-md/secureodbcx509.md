@@ -1,6 +1,6 @@
-<div id="secureodbcx509" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ that does not conflict with existing OIDs (for example
 2.16.840.1.NNNNNN). It will be best to have one's own registered OID for
 that purpose.
 
-<div id="secureodbcx509foafsll" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,7 +55,7 @@ that purpose.
 Virtuoso supports WebID Protocol ODBC Login. Thus, the INI parameter
 X509ClientVerify can accept the following values:
 
-<div class="itemizedlist">
+<div>
 
 - 0 - do not require
 
@@ -90,9 +90,9 @@ registered to some sql user account via Conductor.
 
 </div>
 
-<div id="secureodbccertgen" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -114,7 +114,7 @@ we have to find the hexadecimal representation of the SQL Username. Then
 you can proceed the use the openssl to create and confirm the
 certificate. Follow the steps below:
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*Find the HEX representation of the SQL
     Username*</span>
@@ -197,9 +197,9 @@ certificate. Follow the steps below:
 
 </div>
 
-<div id="secureodbcclisrvsetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -247,7 +247,7 @@ the client to identify the server. The client can retrieve and verify
 this key and choose whether the server an be trusted depending on
 circumstances.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                 |
 |:----------------------------:|:------------------------------------------------------------------------------------------------|
@@ -272,7 +272,7 @@ connection will be rejected.
 All file paths above must be either absolute or relative to the server
 working directory.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                   |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -283,9 +283,9 @@ working directory.
 
 </div>
 
-<div id="secureodbcclisetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -345,9 +345,9 @@ registered it will be used for login. Otherwise login will be rejected.
 
 </div>
 
-<div id="secureodbcregkeys" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

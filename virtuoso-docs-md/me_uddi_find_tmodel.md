@@ -1,10 +1,10 @@
-<div id="me_uddi_find_tmodel" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ criteria
 
 </div>
 
-<div id="syntax_uddi_find_tmodel_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -30,7 +30,7 @@ criteria
 
 </div>
 
-<div id="desc_uddi_find_tmodel_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,13 +41,13 @@ abbreviated information about tModels that match the criteria
 
 </div>
 
-<div id="params_uddi_find_tmodel_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
 The arguments to this call are mutually exclusive except findQualifiers
 
-<div id="id115052" class="refsect2">
+<div>
 
 ### maxRows
 
@@ -56,7 +56,7 @@ number of results returned.
 
 </div>
 
-<div id="id115055" class="refsect2">
+<div>
 
 ### findQualifiers
 
@@ -65,7 +65,7 @@ default behavior of search functionality.
 
 </div>
 
-<div id="id115058" class="refsect2">
+<div>
 
 ### name
 
@@ -75,7 +75,7 @@ value passed (leftmost match).
 
 </div>
 
-<div id="id115061" class="refsect2">
+<div>
 
 ### IdentifierBag
 
@@ -85,7 +85,7 @@ identifiers passed (logical OR).
 
 </div>
 
-<div id="id115064" class="refsect2">
+<div>
 
 ### categoryBag
 
@@ -97,7 +97,7 @@ AND).
 
 </div>
 
-<div id="ret_uddi_find_tmodel_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -112,7 +112,7 @@ truncate the result set. If this occurs, the tModelList will contain the
 
 </div>
 
-<div id="errors_uddi_find_tmodel_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -120,11 +120,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id115076" class="table">
+<div>
 
-**Table 24.94. Errors signalled by uddi_find_tModel**
+**Table 24.93. Errors signalled by uddi_find_tModel**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                       | Description                                                                                                         |
 |--------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|

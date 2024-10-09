@@ -1,6 +1,6 @@
-<div id="commandsandexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,11 +19,11 @@ If the requested messages don't exist, `nttp_get()` returns NULL.
 Get a list of all groups from the server 'news.openlinksw.com', port
 119:
 
-<div id="id65961" class="example">
+<div>
 
 **Example 19.6. nntp_get()**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 nntp_get ('news.openlinksw.com:119', 'list');

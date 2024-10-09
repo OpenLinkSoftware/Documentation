@@ -1,10 +1,10 @@
-<div id="fn_totp_generate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ Generator (rfc6238)
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_totp_generate" class="funcsynopsis">
+<div>
 
 |                                   |                                |
 |-----------------------------------|--------------------------------|
@@ -28,7 +28,7 @@ Generator (rfc6238)
 |                                   | in `key_name ` varchar ,       |
 |                                   | in `digest_algo ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ Generator (rfc6238)
 
 </div>
 
-<div id="desc_totp_generate" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ Returns TOTP string Time-based One-time Password Generator (rfc6238).
 
 </div>
 
-<div id="params_totp_generate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119932" class="refsect2">
+<div>
 
 ### start_date
 
@@ -58,7 +58,7 @@ T0 (zero time, usually 1970-1-1) .
 
 </div>
 
-<div id="id119935" class="refsect2">
+<div>
 
 ### date
 
@@ -66,7 +66,7 @@ The current time ex. now () .
 
 </div>
 
-<div id="id119938" class="refsect2">
+<div>
 
 ### step
 
@@ -74,7 +74,7 @@ Time step in secconds, usually 30.
 
 </div>
 
-<div id="id119941" class="refsect2">
+<div>
 
 ### return_digits
 
@@ -82,7 +82,7 @@ How much digits to return, from 1 to 8.
 
 </div>
 
-<div id="id119944" class="refsect2">
+<div>
 
 ### key_name
 
@@ -92,7 +92,7 @@ are used for TOTP should have time synchronized.
 
 </div>
 
-<div id="id119947" class="refsect2">
+<div>
 
 ### digest_algo
 
@@ -102,7 +102,7 @@ string, one of hmac-sha1 or hmac-sha256 .
 
 </div>
 
-<div id="ret_totp_generate" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -111,15 +111,15 @@ Password Generator (rfc6238).
 
 </div>
 
-<div id="examples_totp_generate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_totp_generate" class="example">
+<div>
 
 **Example 24.461. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
  xenc_key_RAW_read ('k2', encode_base64 (cast (hex2bin ('3132333435363738393031323334353637383930313233343536373839303132') as varchar)));
@@ -134,7 +134,7 @@ Password Generator (rfc6238).
 
 </div>
 
-<div id="seealso_totp_generate" class="refsect1">
+<div>
 
 ## See Also
 

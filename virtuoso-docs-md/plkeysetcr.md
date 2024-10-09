@@ -1,6 +1,6 @@
-<div id="plkeysetcr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="id36124" class="example">
+<div>
 
 **Example 11.14. Procedure using keyset cursor**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure TEST_KEYSET ()

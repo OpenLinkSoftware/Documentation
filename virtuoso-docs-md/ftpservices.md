@@ -1,6 +1,6 @@
-<div id="ftpservices" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,9 +21,9 @@ Virtuoso FTP server provides FTP access to the Virtuoso WebDAV
 repository using the same authentication and permissions system as
 WebDAV, and an configurable anonymous user access.
 
-<div id="ftpservicesclient" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

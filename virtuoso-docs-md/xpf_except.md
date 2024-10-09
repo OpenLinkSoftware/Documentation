@@ -1,10 +1,10 @@
-<div id="xpf_except" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ except — Returns a difference of two sets
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_except" class="funcsynopsis">
+<div>
 
 |                             |                       |
 |-----------------------------|-----------------------|
 | `sequence `**`except`**` (` | `set1 ` sequence ,    |
 |                             | `set2 ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ except — Returns a difference of two sets
 
 </div>
 
-<div id="xpf_desc_except" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ class="function">distinct() </code></a> function.
 
 </div>
 
-<div id="xpf_params_except" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127212" class="refsect2">
+<div>
 
 ### set1
 
@@ -59,7 +59,7 @@ Sequence that contains items that can occur in the resulting set.
 
 </div>
 
-<div id="id127215" class="refsect2">
+<div>
 
 ### set2
 
@@ -69,7 +69,7 @@ Sequence that contains items that can not occur in the resulting set.
 
 </div>
 
-<div id="xpf_ret_except" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -77,7 +77,7 @@ The function returns an unordered sequence of distinct values.
 
 </div>
 
-<div id="xpf_seealso_except" class="refsect1">
+<div>
 
 ## See Also
 

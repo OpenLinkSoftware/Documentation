@@ -1,10 +1,10 @@
-<div id="fn_table_set_policy" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ table_set_policy — Sets policy function to table.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_table_set_policy" class="funcsynopsis">
+<div>
 
 |                               |                                 |
 |-------------------------------|---------------------------------|
@@ -24,7 +24,7 @@ table_set_policy — Sets policy function to table.
 |                               | in `policypl ` varchar ,        |
 |                               | in `policy_scope ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ table_set_policy — Sets policy function to table.
 
 </div>
 
-<div id="desc_table_set_policy" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ Sets policy function to table.
 
 </div>
 
-<div id="params_table_set_policy" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113075" class="refsect2">
+<div>
 
 ### tablename
 
@@ -54,7 +54,7 @@ is the table to which the policy applies
 
 </div>
 
-<div id="id113078" class="refsect2">
+<div>
 
 ### policypl
 
@@ -62,7 +62,7 @@ is the actual Virtuoso Stored Procedure based policy
 
 </div>
 
-<div id="id113081" class="refsect2">
+<div>
 
 ### policy_scope
 
@@ -74,13 +74,13 @@ Deletions), U (for Updates), S (for Selects).
 
 </div>
 
-<div id="ret_table_set_policy" class="refsect1">
+<div>
 
 ## Return Types
 
 varchar
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:
 ">
@@ -107,7 +107,7 @@ it's called by the Virtuoso SQL compiler to get the policy) :</p>
 
 </div>
 
-<div id="seealso_table_set_policy" class="refsect1">
+<div>
 
 ## See Also
 

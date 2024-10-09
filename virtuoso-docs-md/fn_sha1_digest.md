@@ -1,10 +1,10 @@
-<div id="fn_sha1_digest" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sha1_digest — returns string containing sha1 digest encoded in base64
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sha1_digest" class="funcsynopsis">
+<div>
 
 |                          |                        |
 |--------------------------|------------------------|
 | ` `**`sha1_digest`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sha1_digest — returns string containing sha1 digest encoded in base64
 
 </div>
 
-<div id="desc_sha1_digest" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ has an alias: xenc_sha1_digest ().
 
 </div>
 
-<div id="params_sha1_digest" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96956" class="refsect2">
+<div>
 
 ### *`str `*
 
@@ -55,7 +55,7 @@ A <span class="type">varchar </span> value.
 
 </div>
 
-<div id="ret_sha1_digest" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ sha1 digest encoded in base64.
 
 </div>
 
-<div id="examples_sha1_digest" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sha1_digest_1" class="example">
+<div>
 
 **Example 24.223. Simple Example**
 
-<div class="example-contents">
+<div>
 
 Base64-encode a string
 
@@ -95,7 +95,7 @@ WGPZ5MvfUi6qYuB0f86xxbJJuhM=
 
 </div>
 
-<div id="seealso_sha1_digest" class="refsect1">
+<div>
 
 ## See Also
 

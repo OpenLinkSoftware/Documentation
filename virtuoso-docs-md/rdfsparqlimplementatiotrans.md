@@ -1,6 +1,6 @@
-<div id="rdfsparqlimplementatiotrans" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -118,9 +118,9 @@ all the options have the same meaning.
 
 Some examples of the use of transitivity are:
 
-<div id="rdfsparqlimplementatiotransexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -134,9 +134,9 @@ Some examples of the use of transitivity are:
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -188,9 +188,9 @@ and so on.
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -236,9 +236,9 @@ is equivalent to the default connections list shown by LinkedIn.
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -284,9 +284,9 @@ is equivalent to the default connections list shown by LinkedIn.
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -344,9 +344,9 @@ step_no and path_id.
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -388,9 +388,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -422,9 +422,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples7" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -444,7 +444,7 @@ inference rule, and at the and execute sparql query with inference rule
 and transitivity option. The queries were executed against the LOD
 instance (http://lod.openlinksw.com):
 
-<div class="orderedlist">
+<div>
 
 1.  Make the Context graph, assuming you don't want to load entire SKOS
     vocabulary into our Quad Store:
@@ -503,15 +503,15 @@ instance (http://lod.openlinksw.com):
     comparison, if the option (transitive) is ommitted, then only 2 rows
     will be returned in our example query:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdftr" class="figure">
+    <div>
 
     **Figure 16.42. Transitive option**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Transitive option](images/ui/trs1.png)
 
@@ -529,9 +529,9 @@ instance (http://lod.openlinksw.com):
 
 </div>
 
-<div id="rdfsparqlimplementatiotransexamples8" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -553,7 +553,7 @@ with category: Protestant_churches combined with the use of the
 transitivitve closure, sets to a maximum of 3 steps down a SKOS based
 concept scheme hierarchy:
 
-<div class="orderedlist">
+<div>
 
 1.  Make sure the inference rule "skos-trans" is created as described in
     the previous <a
@@ -607,15 +607,15 @@ concept scheme hierarchy:
 
 4.  You will get 22 rows returned from the query.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdftr_01" class="figure">
+    <div>
 
     **Figure 16.43. Transitive option**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Transitive option](images/ui/trs2.png)
 

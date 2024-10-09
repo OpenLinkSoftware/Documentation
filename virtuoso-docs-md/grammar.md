@@ -1,6 +1,6 @@
-<div id="grammar" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

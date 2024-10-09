@@ -1,10 +1,10 @@
-<div id="fn_xml_set_ns_decl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ input value.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_set_ns_decl" class="funcsynopsis">
+<div>
 
 |                              |                         |
 |------------------------------|-------------------------|
@@ -26,7 +26,7 @@ input value.
 |                              | in `iri ` varchar ,     |
 |                              | in `bits ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ input value.
 
 </div>
 
-<div id="desc_73" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ client connection depending on the persistance bits input value.
 
 </div>
 
-<div id="params_37" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123792" class="refsect2">
+<div>
 
 ### prefix
 
@@ -57,7 +57,7 @@ namespace prefix
 
 </div>
 
-<div id="id123795" class="refsect2">
+<div>
 
 ### iri
 
@@ -65,7 +65,7 @@ namespace IRI
 
 </div>
 
-<div id="id123798" class="refsect2">
+<div>
 
 ### bits
 
@@ -80,15 +80,15 @@ startup time, visible from all connections
 
 </div>
 
-<div id="examples_25" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_set_ns_north" class="example">
+<div>
 
 **Example 24.523. Northwind**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 DB.DBA.XML_SET_NS_DECL ('northwind', 'http://demo.openlinksw.com/schemas/northwind#', 2);
@@ -102,7 +102,7 @@ DB.DBA.XML_SET_NS_DECL ('northwind', 'http://demo.openlinksw.com/schemas/northwi
 
 </div>
 
-<div id="seealso_46" class="refsect1">
+<div>
 
 ## See Also
 

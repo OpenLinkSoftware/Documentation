@@ -1,10 +1,10 @@
-<div id="fn_xmlstoragesystem.savemultiplefiles" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ Storage System directory.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlstoragesystem.savemultiplefiles" class="funcsynopsis">
+<div>
 
 |                                                          |                                |
 |----------------------------------------------------------|--------------------------------|
@@ -26,7 +26,7 @@ Storage System directory.
 |                                                          | in `relativepathList ` array , |
 |                                                          | in `fileTextList ` array `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ Storage System directory.
 
 </div>
 
-<div id="desc_xmlstoragesystem.savemultiplefiles" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ stored in WebDAV repository and will be accessible via HTTP.
 
 </div>
 
-<div id="params_xmlstoragesystem.savemultiplefiles" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125111" class="refsect2">
+<div>
 
 ### email
 
@@ -57,7 +57,7 @@ For user identification, this should be a valid email account.
 
 </div>
 
-<div id="id125114" class="refsect2">
+<div>
 
 ### password
 
@@ -65,7 +65,7 @@ The MD5 hash of the password.
 
 </div>
 
-<div id="id125117" class="refsect2">
+<div>
 
 ### relativepathList
 
@@ -74,7 +74,7 @@ folder in WebDAV.
 
 </div>
 
-<div id="id125121" class="refsect2">
+<div>
 
 ### fileTextList
 
@@ -86,7 +86,7 @@ relativepathList\[i\] is name for fileTextList\[i\].
 
 </div>
 
-<div id="ret_xmlstoragesystem.savemultiplefiles" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -101,15 +101,15 @@ This method returns a structure as follows:
 
 </div>
 
-<div id="examples_xmlstoragesystem.savemultiplefiles" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlstoragesystem.savemultiplefiles" class="example">
+<div>
 
 **Example 24.542. Using the XML Storage System to Save Multiple Files**
 
-<div class="example-contents">
+<div>
 
 Simple example of saving a file.
 
@@ -142,7 +142,7 @@ Simple example of saving a file.
 
 </div>
 
-<div id="seealso_xmlstoragesystem.savemultiplefiles" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_md5_update" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ md5_update — returns the updated md5 context serialized as varchar
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_md5_update" class="funcsynopsis">
+<div>
 
 |                                           |                         |
 |-------------------------------------------|-------------------------|
 | `md5 context update `**`md5_update`**` (` | in `ctx ` varchar ,     |
 |                                           | in `data ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ md5_update — returns the updated md5 context serialized as varchar
 
 </div>
 
-<div id="desc_05" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ This function updates MD5_CTX with data parameter and returns the
 
 </div>
 
-<div id="seealso_md5_update" class="refsect1">
+<div>
 
 ## See Also
 

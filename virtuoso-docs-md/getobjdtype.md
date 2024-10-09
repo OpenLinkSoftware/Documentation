@@ -1,6 +1,6 @@
-<div id="getobjdtype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

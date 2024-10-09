@@ -1,10 +1,10 @@
-<div id="fn_dist_from_point_to_line_segment" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ and a segment on a plane.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dist_from_point_to_line_segment" class="funcsynopsis">
+<div>
 
 |                                              |                          |
 |----------------------------------------------|--------------------------|
@@ -28,7 +28,7 @@ and a segment on a plane.
 |                                              | in `Xsegment2 ` any ,    |
 |                                              | in `Ysegment2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ and a segment on a plane.
 
 </div>
 
-<div id="desc_dist_from_point_to_line_segment" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ returns the distance between a point and a segment on a plane.
 
 </div>
 
-<div id="params_dist_from_point_to_line_segment" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130726" class="refsect2">
+<div>
 
 ### Xpoint
 
@@ -58,7 +58,7 @@ A X point
 
 </div>
 
-<div id="id130729" class="refsect2">
+<div>
 
 ### Ypoint
 
@@ -66,7 +66,7 @@ A Y point
 
 </div>
 
-<div id="id130732" class="refsect2">
+<div>
 
 ### Xsegment1
 
@@ -74,7 +74,7 @@ X Segment
 
 </div>
 
-<div id="id130735" class="refsect2">
+<div>
 
 ### Ysegment1
 
@@ -82,7 +82,7 @@ Y Segment
 
 </div>
 
-<div id="id130738" class="refsect2">
+<div>
 
 ### Xsegment2
 
@@ -90,7 +90,7 @@ X Segment
 
 </div>
 
-<div id="id130741" class="refsect2">
+<div>
 
 ### Ysegment2
 
@@ -100,7 +100,7 @@ Y Segment
 
 </div>
 
-<div id="ret_dist_from_point_to_line_segment" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -108,15 +108,15 @@ Returns any.
 
 </div>
 
-<div id="examples_dist_from_point_to_line_segment" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dist_from_point_to_line_segment" class="example">
+<div>
 
 **Example 24.657. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select dist_from_point_to_line_segment (5, 5, 0, 3, 4, 0)
@@ -144,7 +144,7 @@ SQL> select dist_from_point_to_line_segment (5, -5, 0, 3, 4, 0)
 
 </div>
 
-<div id="seealso_dist_from_point_to_line_segment" class="refsect1">
+<div>
 
 ## See Also
 

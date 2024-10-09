@@ -1,6 +1,6 @@
-<div id="vdbparallelopandrtables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

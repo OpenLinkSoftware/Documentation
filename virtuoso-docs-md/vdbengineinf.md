@@ -1,6 +1,6 @@
-<div id="vdbengineinf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -97,7 +97,7 @@ need to be redeclared.
 This is possible using dbaccess however care needs to be taken,
 particularly with the following
 
-<div class="itemizedlist">
+<div>
 
 - Amending a PK field to be not nullable can results in the primary key
   constraint being removed.
@@ -111,9 +111,9 @@ particularly with the following
 In both of the cases above the primary key and foreign key constraints
 that are removed will have to be manually recreated.
 
-<div id="vdbengineinfinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -137,7 +137,7 @@ any Informix ODBC Driver can be used.
 Installation instructions for the OpenLink ODBC Driver for Informix are
 available from:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC"

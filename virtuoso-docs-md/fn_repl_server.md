@@ -1,10 +1,10 @@
-<div id="fn_repl_server" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_SERVER — defines a server that will participate in replication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_server" class="funcsynopsis">
+<div>
 
 |                          |                                        |
 |--------------------------|----------------------------------------|
@@ -24,7 +24,7 @@ REPL_SERVER — defines a server that will participate in replication
 |                          | in `dsn ` varchar ,                    |
 |                          | in `replication_address ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ REPL_SERVER — defines a server that will participate in replication
 
 </div>
 
-<div id="desc_repl_server" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ has no effect.
 
 </div>
 
-<div id="params_repl_server" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id106066" class="refsect2">
+<div>
 
 ### server_name
 
@@ -68,7 +68,7 @@ unique replication server name of publisher (specified in
 
 </div>
 
-<div id="id106069" class="refsect2">
+<div>
 
 ### dsn
 
@@ -76,7 +76,7 @@ data source name of publisher.
 
 </div>
 
-<div id="id106072" class="refsect2">
+<div>
 
 ### replication_address
 
@@ -87,15 +87,15 @@ to.
 
 </div>
 
-<div id="examples_repl_server" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_server_1" class="example">
+<div>
 
 **Example 24.329. Adding a new publisher server**
 
-<div class="example-contents">
+<div>
 
 This is to define a new publisher server in the subscriber's Database.
 The DSN of publisher is named 'Virtuoso 1111', so it is started on the
@@ -113,7 +113,7 @@ SQL> DB.DBA.REPL_SERVER ('demo-pub', 'Virtuoso 1111', '127.0.0.1:1111');
 
 </div>
 
-<div id="seealso_repl_server" class="refsect1">
+<div>
 
 ## See Also
 

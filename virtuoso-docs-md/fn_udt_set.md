@@ -1,10 +1,10 @@
-<div id="fn_udt_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ udt_set
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_udt_set" class="funcsynopsis">
+<div>
 
 |                      |                             |
 |----------------------|-----------------------------|
@@ -24,7 +24,7 @@ udt_set
 |                      | in `member_name ` varchar , |
 |                      | in `new_value ` any `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ udt_set
 
 </div>
 
-<div id="desc_udt_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ instance copy. This is a functional equivalent of a member mutator.
 
 </div>
 
-<div id="params_udt_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116104" class="refsect2">
+<div>
 
 ### udt_inst
 
@@ -56,7 +56,7 @@ A user defined type instance
 
 </div>
 
-<div id="id116107" class="refsect2">
+<div>
 
 ### member_name
 
@@ -64,7 +64,7 @@ The name of the requested member
 
 </div>
 
-<div id="id116110" class="refsect2">
+<div>
 
 ### new_value
 
@@ -74,7 +74,7 @@ The new value to be set
 
 </div>
 
-<div id="ret_udt_set" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,15 +82,15 @@ A modified copy of udt_inst with the_value set for member_name.
 
 </div>
 
-<div id="examples_udt_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_udt_set" class="example">
+<div>
 
 **Example 24.429. Setting user defined type member values**
 
-<div class="example-contents">
+<div>
 
 This sample code block shows a user defined type member's value being
 set.
@@ -113,7 +113,7 @@ return inst.A;
 
 </div>
 
-<div id="seealso_udt_set" class="refsect1">
+<div>
 
 ## See Also
 

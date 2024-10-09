@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtrickbindnmgrprst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,7 +47,7 @@ Note: In case of using "FROM clause", it needs a constant in order to
 check at the compile time whether the IRI refers to a graph or a graph
 group:
 
-<div class="itemizedlist">
+<div>
 
 - Assume "FROM clause" is used as for ex:
 
@@ -63,7 +63,7 @@ group:
     }
   ```
 
-  <div class="itemizedlist">
+  <div>
 
   - In this case can be made security checks at the compile time (i.e.,
     once) and not waste time at the run time.
@@ -84,7 +84,7 @@ group:
     }
   ```
 
-  <div class="itemizedlist">
+  <div>
 
   - In this case a compile-time check, a run-time check or 50/50 mix of
     them can be performed, depending on the security policies.

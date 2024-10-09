@@ -1,6 +1,6 @@
-<div id="virtuosospongercartridgesextractorusecases" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ cartridges is needed i.e. keys account names etc.
 
 <span class="emphasis">*Service based:*</span>
 
-<div class="itemizedlist">
+<div>
 
 - amazon
 
@@ -102,7 +102,7 @@ cartridges is needed i.e. keys account names etc.
 
 <span class="emphasis">*GRDDL*</span>
 
-<div class="itemizedlist">
+<div>
 
 - Google Base (google)
 
@@ -140,11 +140,11 @@ cartridges is needed i.e. keys account names etc.
 
 <span class="emphasis">*URN handlers*</span>
 
-<div id="id52630" class="decimalstyle">
+<div>
 
 **Table 16.11. URN handlers List**
 
-<div class="decimalstyle-contents">
+<div>
 
 | URN handler | Sample URI                                | Resource Description                                                                   | Linked Data View                                                                          | Linked Data Graph                                                                    | Needs                                                                |
 |:------------|-------------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------|
@@ -173,9 +173,9 @@ cartridges is needed i.e. keys account names etc.
 
   
 
-<div id="virtuosospongerrdfmappers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -206,9 +206,9 @@ dereferencing process, it will look into a special registry (a table) to
 match either the MIME type or IRI using a regular expression, if match
 is found the mapper function will be called.
 
-<div id="virtuosospongerproxy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -235,9 +235,9 @@ title="Sponger Proxy URI Service">RDF Sponger Proxy service</a>
 
 </div>
 
-<div id="virtuosospongercache" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

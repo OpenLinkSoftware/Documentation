@@ -1,6 +1,6 @@
-<div id="rdfperfdumpintonquads" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfperfdumpintonquadswhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ How to export RDF model data from Virtuoso's Quad Store in NQuad format.
 
 </div>
 
-<div id="rdfperfdumpintonquadswhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -56,9 +56,9 @@ provide significant value to a variety of application profiles.
 
 </div>
 
-<div id="rdfperfdumpintonquadshow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -77,9 +77,9 @@ We have created stored procedures for the task. The dump procedure
 facilitate data dump(s) for all graphs excluding the predefined
 "virtrdf:" one.
 
-<div id="rdfperfdumpintonquadsprc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -93,9 +93,9 @@ facilitate data dump(s) for all graphs excluding the predefined
 
 </div>
 
-<div id="rdfperfdumpintonquadsprcparams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -112,7 +112,7 @@ facilitate data dump(s) for all graphs excluding the predefined
 The procedure <span class="emphasis">*dump_nquads*</span> has the
 following parameters:
 
-<div class="itemizedlist">
+<div>
 
 - IN
 
@@ -143,9 +143,9 @@ following parameters:
 
 </div>
 
-<div id="rdfperfdumpintonquadsprcsource" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -214,9 +214,9 @@ create procedure dump_nquads (in dir varchar := 'dumps', in start_from int := 1,
 
 </div>
 
-<div id="rdfperfdumpintonquadsprcex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

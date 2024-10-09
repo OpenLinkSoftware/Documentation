@@ -1,6 +1,6 @@
-<div id="xmlschema" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="dtd_intro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_hour" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ hour — get hour from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_hour_01" class="funcsynopsis">
+<div>
 
 |                   |                        |
 |-------------------|------------------------|
 | ` `**`hour`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ hour — get hour from a datetime
 
 </div>
 
-<div id="desc_hour" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ hour of the datetime.
 
 </div>
 
-<div id="params_hour" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91692" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_hour" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ An <span class="type">INTEGER </span> containing the hour.
 
 </div>
 
-<div id="examples_hour" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_hour" class="example">
+<div>
 
 **Example 24.150. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get current hour.
 
@@ -93,7 +93,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_hour" class="refsect1">
+<div>
 
 ## See Also
 

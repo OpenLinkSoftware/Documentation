@@ -1,10 +1,10 @@
-<div id="fn_user_get_option" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ USER_GET_OPTION — Retrieve a user option for a given user account.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_get_option" class="funcsynopsis">
+<div>
 
 |                              |                        |
 |------------------------------|------------------------|
 | ` `**`USER_GET_OPTION`**` (` | in `name ` varchar ,   |
 |                              | in `opt ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ USER_GET_OPTION — Retrieve a user option for a given user account.
 
 </div>
 
-<div id="desc_user_get_option" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ This function is used to retrieve an existing user option.
 
 </div>
 
-<div id="params_user_get_option" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116486" class="refsect2">
+<div>
 
 ### name
 
@@ -53,7 +53,7 @@ The name of the user account.
 
 </div>
 
-<div id="id116489" class="refsect2">
+<div>
 
 ### opt
 
@@ -63,7 +63,7 @@ Option name.
 
 </div>
 
-<div id="ret_user_get_option" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,7 +71,7 @@ any, depending on option
 
 </div>
 
-<div id="seealso_user_get_option" class="refsect1">
+<div>
 
 ## See Also
 

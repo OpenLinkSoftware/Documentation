@@ -1,10 +1,10 @@
-<div id="xpf_substring_before" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,18 +14,18 @@ first argument string.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_substring_before" class="funcsynopsis">
+<div>
 
 |                                     |                         |
 |-------------------------------------|-------------------------|
 | `string `**`substring-before`**` (` | `source_strg ` string , |
 |                                     | `sub_strg ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ first argument string.
 
 </div>
 
-<div id="xpf_desc_substring_before" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ using rules for string() XPATH function.
 
 </div>
 
-<div id="xpf_params_substring_before" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129320" class="refsect2">
+<div>
 
 ### source_strg
 
@@ -59,7 +59,7 @@ String where the search is performed
 
 </div>
 
-<div id="id129323" class="refsect2">
+<div>
 
 ### sub_strg
 
@@ -69,7 +69,7 @@ String to search
 
 </div>
 
-<div id="xpf_ret_substring_before" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -77,15 +77,15 @@ String
 
 </div>
 
-<div id="xpf_examples_substring_before" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_substring_before" class="example">
+<div>
 
 **Example 24.625. **
 
-<div class="example-contents">
+<div>
 
 Extract year ("1999" substring) from ISO date string
 
@@ -101,7 +101,7 @@ substring-before('1999-12-31','-')
 
 </div>
 
-<div id="xpf_seealso_substring_before" class="refsect1">
+<div>
 
 ## See Also
 

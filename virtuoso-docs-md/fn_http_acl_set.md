@@ -1,10 +1,10 @@
-<div id="fn_http_acl_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_acl_set — Set conditions against web server ACL's
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_acl_set" class="funcsynopsis">
+<div>
 
 |                                  |                                        |
 |----------------------------------|----------------------------------------|
@@ -29,7 +29,7 @@ http_acl_set — Set conditions against web server ACL's
 |                                  | in `read_write_flag ` integer ,        |
 |                                  | in `rate ` integer `)`;                |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ http_acl_set — Set conditions against web server ACL's
 
 </div>
 
-<div id="desc_http_acl_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ This function can be used within application logic to set ACLs rule.
 
 </div>
 
-<div id="params_http_acl_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91932" class="refsect2">
+<div>
 
 ### list_name
 
@@ -59,7 +59,7 @@ a string designating which list to be used for matching
 
 </div>
 
-<div id="id91935" class="refsect2">
+<div>
 
 ### order
 
@@ -67,7 +67,7 @@ a string designating order
 
 </div>
 
-<div id="id91938" class="refsect2">
+<div>
 
 ### client_ip
 
@@ -75,7 +75,7 @@ a string containing the IP number of client to set rules
 
 </div>
 
-<div id="id91941" class="refsect2">
+<div>
 
 ### flag
 
@@ -83,7 +83,7 @@ a string containing the IP number of client to set rules
 
 </div>
 
-<div id="id91944" class="refsect2">
+<div>
 
 ### destination_ip_or_host
 
@@ -91,7 +91,7 @@ a string containing the IP number of destination requested by client
 
 </div>
 
-<div id="id91947" class="refsect2">
+<div>
 
 ### object_id
 
@@ -99,7 +99,7 @@ is a integer designating a object to match
 
 </div>
 
-<div id="id91950" class="refsect2">
+<div>
 
 ### read_write_flag
 
@@ -107,7 +107,7 @@ an integer designating action to match: 0 - read, 1 - write
 
 </div>
 
-<div id="id91953" class="refsect2">
+<div>
 
 ### rate
 
@@ -119,7 +119,7 @@ Once per day the statistics will be reset.
 
 </div>
 
-<div id="ret_http_acl_set" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -128,7 +128,7 @@ rule. If no rule matches it returns -1.
 
 </div>
 
-<div id="seealso_http_acl_set" class="refsect1">
+<div>
 
 ## See Also
 

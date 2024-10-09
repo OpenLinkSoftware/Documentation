@@ -1,10 +1,10 @@
-<div id="fn_rexecute" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ rexecute — execute a SQL statement on a remote DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rexecute" class="funcsynopsis">
+<div>
 
 |                       |                                |
 |-----------------------|--------------------------------|
@@ -30,7 +30,7 @@ rexecute — execute a SQL statement on a remote DSN
 |                       | out `result_set ` vector ,     |
 |                       | out `cursor_handle ` long `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ rexecute — execute a SQL statement on a remote DSN
 
 </div>
 
-<div id="desc_rexecute" class="refsect1">
+<div>
 
 ## Description
 
@@ -87,7 +87,7 @@ GRANT REXECUTE ON '<attached_dsn_name>' TO <user_name>
 REVOKE REXECUTE ON '<attached_dsn_name>' FROM <user_name>
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                  |
 |:----------------------------:|:---------------------------------------------------------------------------------|
@@ -99,11 +99,11 @@ REVOKE REXECUTE ON '<attached_dsn_name>' FROM <user_name>
 
 </div>
 
-<div id="params_rexecute" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108649" class="refsect2">
+<div>
 
 ### dsn
 
@@ -116,7 +116,7 @@ attaching tables from it.
 
 </div>
 
-<div id="id108654" class="refsect2">
+<div>
 
 ### sql_stmt
 
@@ -124,7 +124,7 @@ the SQL statement to execute.
 
 </div>
 
-<div id="id108657" class="refsect2">
+<div>
 
 ### sql_state
 
@@ -133,7 +133,7 @@ from the remote data source.
 
 </div>
 
-<div id="id108661" class="refsect2">
+<div>
 
 ### error_message
 
@@ -142,7 +142,7 @@ returned from the remote.
 
 </div>
 
-<div id="id108665" class="refsect2">
+<div>
 
 ### in_params
 
@@ -163,7 +163,7 @@ considered IN parameters, so the rexecute remains backwards compatible.
 
 </div>
 
-<div id="id108675" class="refsect2">
+<div>
 
 ### num_cols
 
@@ -171,17 +171,17 @@ Number of columns in the result set if the statement returned one.
 
 </div>
 
-<div id="id108678" class="refsect2">
+<div>
 
 ### stmt_meta
 
 A <span class="type">vector </span> containing result metadata, etc.
 
-<div id="id108682" class="table">
+<div>
 
-**Table 24.77. The stmt_meta array**
+**Table 24.76. The stmt_meta array**
 
-<div class="table-contents">
+<div>
 
 | Element | Name      | Description                                                                                     |
 |---------|-----------|-------------------------------------------------------------------------------------------------|
@@ -196,11 +196,11 @@ A <span class="type">vector </span> containing result metadata, etc.
 
   
 
-<div id="id108708" class="table">
+<div>
 
-**Table 24.78. Columns array of stmt_meta**
+**Table 24.77. Columns array of stmt_meta**
 
-<div class="table-contents">
+<div>
 
 | Element | Name       | Description                                                                               |
 |---------|------------|-------------------------------------------------------------------------------------------|
@@ -220,7 +220,7 @@ A <span class="type">vector </span> containing result metadata, etc.
 
 </div>
 
-<div id="id108745" class="refsect2">
+<div>
 
 ### result_set
 
@@ -229,7 +229,7 @@ the result set.
 
 </div>
 
-<div id="id108749" class="refsect2">
+<div>
 
 ### cursor_handle
 
@@ -239,15 +239,15 @@ The cursor handle ( <span class="type">long </span> ).
 
 </div>
 
-<div id="examples_rexecute" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rexecute_1" class="example">
+<div>
 
 **Example 24.359. Remote execute example 1**
 
-<div class="example-contents">
+<div>
 
 Remote execute, retrieving the whole result from remote at once.
 
@@ -312,11 +312,11 @@ Around the Horn           Thomas Hardy
 
   
 
-<div id="ex_rexecute_1_01" class="example">
+<div>
 
 **Example 24.360. Remote execute example 2**
 
-<div class="example-contents">
+<div>
 
 Remote execute, retrieving the result using returned cursor handle.
 
@@ -387,11 +387,11 @@ Bottom-Dollar Markets     Elizabeth Lincoln
 
   
 
-<div id="ex_rexecute_4" class="example">
+<div>
 
 **Example 24.361. Remote execute example 3**
 
-<div class="example-contents">
+<div>
 
 Remote DBMS native SQL execution
 
@@ -450,11 +450,11 @@ create procedure test_rexecute_3 (in remote_dsn varchar, in max_results integer)
 
   
 
-<div id="ex_rexecute_2" class="example">
+<div>
 
 **Example 24.362. Remote procedures with OUT params.**
 
-<div class="example-contents">
+<div>
 
 The following example demonstrates the use of OUT params using a sample
 remote procedure stored in another Virtuoso server, although this can be
@@ -499,11 +499,11 @@ abcOut
 
   
 
-<div id="ex_rexecute_3" class="example">
+<div>
 
 **Example 24.363. Remote procedures with INOUT params.**
 
-<div class="example-contents">
+<div>
 
 As well as OUT parameters INOUT parameters can be used. Consider the
 following variation of the above example:
@@ -546,7 +546,7 @@ abcInOut
 
 </div>
 
-<div id="seealso_rexecute" class="refsect1">
+<div>
 
 ## See Also
 

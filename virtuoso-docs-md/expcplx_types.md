@@ -1,6 +1,6 @@
-<div id="expcplx_types" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,12 +21,12 @@ generated every time WSDL URL is accessed. Also the XMLSchema datatypes
 will be generated following the default encoding rules forced via 'Use'
 SOAP option to the given virtual directory.
 
-<div id="ex_expcplx_types_1" class="example">
+<div>
 
 **Example 17.24. Exposing a PL Stored procedures containing complex
 datatypes**
 
-<div class="example-contents">
+<div>
 
 The following example will create a virtual directory '/soap-lit' on
 default HTTP listener and will expose a single method accepting a array

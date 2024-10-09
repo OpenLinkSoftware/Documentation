@@ -1,6 +1,6 @@
-<div id="rdfgraphsecurityintconfsec" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 It is convenient to configure the RDF storage security by adding
 restrictions in the order inverse to the order of checks:
 
-<div class="orderedlist">
+<div>
 
 1.  Step 1: Set public permissions on all graphs to the most restricted
     level of any application that will be installed. So if any single
@@ -40,9 +40,9 @@ restrictions in the order inverse to the order of checks:
 Note that there's no need to permit something to DBA itself, because
 DBA's default permissions are set automatically.
 
-<div id="rdfgraphsecurityintconfsecuser" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -56,7 +56,7 @@ DBA's default permissions are set automatically.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Step 1: Grant SPARQL_SELECT, SPARQL_SPONGE or SPARQL_UPDATE to the
     user.
@@ -69,9 +69,9 @@ DBA's default permissions are set automatically.
 
 </div>
 
-<div id="rdfgraphsecurityintex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -87,7 +87,7 @@ DBA's default permissions are set automatically.
 
 The following example demonstrates usage of the following functions:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_rdf_default_user_perms_set.html" class="link"
   title="DB.DBA.RDF_DEFAULT_USER_PERMS_SET"><code

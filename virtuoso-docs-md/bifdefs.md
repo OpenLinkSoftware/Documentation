@@ -1,6 +1,6 @@
-<div id="bifdefs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="gecodedata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,9 +35,9 @@ SQL> rdf_geo_fill ();
 Done. -- 282 msec.
 ```
 
-<div id="gecodedata_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -51,7 +51,7 @@ Done. -- 282 msec.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://lod.openlinksw.com/b3s/search.vsp?q=20&amp;sc=http%3A%2F%2Fdbpedia.org%2Fresource%2FOxford&amp;sc2=5&amp;sc3=http%3A%2F%2Fdbpedia.org%2Fproperty%2Festablished&amp;sc4=en&amp;fa=Execute"
@@ -91,9 +91,9 @@ Done. -- 282 msec.
 
 </div>
 
-<div id="id1319" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -107,7 +107,7 @@ Done. -- 282 msec.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip">
 <colgroup>

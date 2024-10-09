@@ -1,10 +1,10 @@
-<div id="fn_repl_publish" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_PUBLISH — create publication on publisher
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_publish" class="funcsynopsis">
+<div>
 
 |                           |                               |
 |---------------------------|-------------------------------|
@@ -25,7 +25,7 @@ REPL_PUBLISH — create publication on publisher
 |                           | in `is_updateable ` integer , |
 |                           | in `sync_user ` varchar `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ REPL_PUBLISH — create publication on publisher
 
 </div>
 
-<div id="desc_repl_publish" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ date and time of their creation.
 
 </div>
 
-<div id="params_repl_publish" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105415" class="refsect2">
+<div>
 
 ### publication
 
@@ -60,7 +60,7 @@ Publication name. It must not contain spaces or special symbols.
 
 </div>
 
-<div id="id105418" class="refsect2">
+<div>
 
 ### log_path
 
@@ -69,7 +69,7 @@ will be stored.
 
 </div>
 
-<div id="id105421" class="refsect2">
+<div>
 
 ### is_updateable
 
@@ -78,7 +78,7 @@ publication is created.
 
 </div>
 
-<div id="id105424" class="refsect2">
+<div>
 
 ### sync_user
 
@@ -89,15 +89,15 @@ publication is updateable).
 
 </div>
 
-<div id="examples_repl_publish" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_publish_1" class="example">
+<div>
 
 **Example 24.323. Creating an updateable publication**
 
-<div class="example-contents">
+<div>
 
 This will create an updateable publication'demo-publication' with log
 'demo-publication.log'. Replication feeds from subscribers will be
@@ -115,7 +115,7 @@ SQL> DB.DBA.REPL_PUBLISH ('demo-publication', 'demo-publication.log', 1, 'demo')
 
 </div>
 
-<div id="seealso_repl_publish" class="refsect1">
+<div>
 
 ## See Also
 

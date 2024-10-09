@@ -1,10 +1,10 @@
-<div id="fn_rdf_audit_metadata" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.RDF_AUDIT_METADATA — Fix RDF metadata corruption.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_audit_metadata" class="funcsynopsis">
+<div>
 
 |                                        |                              |
 |----------------------------------------|------------------------------|
@@ -24,7 +24,7 @@ DB.DBA.RDF_AUDIT_METADATA — Fix RDF metadata corruption.
 |                                        | in `str_value ` varchar ,    |
 |                                        | in `graph_iri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ DB.DBA.RDF_AUDIT_METADATA — Fix RDF metadata corruption.
 
 </div>
 
-<div id="desc_rdf_audit_metadata" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ metadata corruption.
 
 </div>
 
-<div id="params_rdf_audit_metadata" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100136" class="refsect2">
+<div>
 
 ### audit_mode
 
@@ -60,7 +60,7 @@ metadata changed if needed for the fix.
 
 </div>
 
-<div id="id100139" class="refsect2">
+<div>
 
 ### str_value
 
@@ -73,7 +73,7 @@ Other values will be suggested by the error dump when appropriate.
 
 </div>
 
-<div id="id100144" class="refsect2">
+<div>
 
 ### graph_iri
 
@@ -97,15 +97,15 @@ makes a backup to fix it then it's worth to make and keep another
 
 </div>
 
-<div id="examples_rdf_audit_metadata" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_audit_metadata" class="example">
+<div>
 
 **Example 24.254. Simple example**
 
-<div class="example-contents">
+<div>
 
 Automatically fix the corrupted metadata:
 
@@ -121,7 +121,7 @@ Automatically fix the corrupted metadata:
 
 </div>
 
-<div id="seealso_rdf_audit_metadata" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="rdfgraphsecurityspongeprivate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,7 +33,7 @@ graph_group_IRI.
 
 The exact rules are as following:
 
-<div class="itemizedlist">
+<div>
 
 - If graph is virtrdf: then an error is signaled.
 
@@ -59,7 +59,7 @@ The exact rules are as following:
 
 - If the value of get:private is an IRI then:
 
-  <div class="itemizedlist">
+  <div>
 
   - The IRI is supposed to be an IRI of "plain" graph group, error is
     signaled in case of nonexising graph group, group of private graphs
@@ -75,9 +75,9 @@ The exact rules are as following:
 
 </div>
 
-<div id="rdfgraphsecurityspongeprivateconfdb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -98,7 +98,7 @@ get:private pragma works for entirely confidential database.
 steps from below will change the security of any existing database, thus
 the example scenario should be performed on a empty db.
 
-<div class="orderedlist">
+<div>
 
 1.  Create few users in alphabetical order:
 
@@ -148,7 +148,7 @@ the example scenario should be performed on a empty db.
     four bits of an integer "permission bit-mask", following plain old
     UNIX style:
 
-    <div class="itemizedlist">
+    <div>
 
     - Bit 1 permits read access.
 
@@ -165,7 +165,7 @@ the example scenario should be performed on a empty db.
 
     - In the statements from below should be considered:
 
-      <div class="itemizedlist">
+      <div>
 
       - "15 = 8+4+2+1" -- i.e. combining all the four sorts of access
         FROM above
@@ -199,7 +199,7 @@ the example scenario should be performed on a empty db.
 
 6.  Examples with invalid graph group names:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example with Non-existing Graph Group:
 
@@ -253,7 +253,7 @@ the example scenario should be performed on a empty db.
 7.  Examples to check Anna's sponging permissions on different graph
     groups:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example for adding graph to Anna's graph group
         \<urn:Anna:Sponged:Data\>:
@@ -312,7 +312,7 @@ the example scenario should be performed on a empty db.
 8.  Examples check Brad's sponging permissions on different graph
     groups:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example for adding graph to Anna's graph group
         \<urn:Anna:Sponged:Data\>:
@@ -370,7 +370,7 @@ the example scenario should be performed on a empty db.
 9.  Examples check Carl's sponging permissions on different graph
     groups:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example for adding graph to Anna's graph group
         \<urn:Anna:Sponged:Data\>:
@@ -500,9 +500,9 @@ the example scenario should be performed on a empty db.
 
 </div>
 
-<div id="rdfgraphsecurityspongeprivategraphs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -519,7 +519,7 @@ the example scenario should be performed on a empty db.
 The following example demonstrates how private sponging using
 get:private pragma works for database with private graphs.
 
-<div class="orderedlist">
+<div>
 
 1.  Create few users in alphabetical order:
 
@@ -569,7 +569,7 @@ get:private pragma works for database with private graphs.
     four bits of an integer "permission bit-mask", following plain old
     UNIX style:
 
-    <div class="itemizedlist">
+    <div>
 
     - Bit 1 permits read access.
 
@@ -586,7 +586,7 @@ get:private pragma works for database with private graphs.
 
     - In the statements from below should be considered:
 
-      <div class="itemizedlist">
+      <div>
 
       - "15 = 8+4+2+1" -- i.e. combining all the four sorts of access
         FROM above
@@ -625,7 +625,7 @@ get:private pragma works for database with private graphs.
 
 5.  Examples with invalid graph group names:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example with Non-existing Graph Group:
 
@@ -679,7 +679,7 @@ get:private pragma works for database with private graphs.
 6.  Examples to check Anna's sponging permissions on different graph
     groups:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example for adding graph to Anna's graph group
         \<urn:Anna:Sponged:Data\>:
@@ -738,7 +738,7 @@ get:private pragma works for database with private graphs.
 7.  Examples check Brad's sponging permissions on different graph
     groups:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example for adding graph to Anna's graph group
         \<urn:Anna:Sponged:Data\>:
@@ -796,7 +796,7 @@ get:private pragma works for database with private graphs.
 8.  Examples check Carl's sponging permissions on different graph
     groups:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Example for adding graph to Anna's graph group
         \<urn:Anna:Sponged:Data\>:

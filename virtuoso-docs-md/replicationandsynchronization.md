@@ -1,6 +1,6 @@
-<div id="replicationandsynchronization" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="snapshotreplication" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,13 +30,13 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 Conductor "Replication" offers manage Virtuoso Replication. You are
 offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 "Transactional" sub-tabs.
 
-<div class="itemizedlist">
+<div>
 
 - From
 
@@ -78,15 +78,15 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
 </div>
 
-- <div class="figure-float">
+- <div>
 
-  <div id="id15070" class="figure">
+  <div>
 
   **Figure 6.102. Snapshot Replication**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Snapshot Replication](images/ui/replt_ss_01.png)
 
@@ -100,15 +100,15 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
   </div>
 
-- <div class="figure-float">
+- <div>
 
-  <div id="id15076" class="figure">
+  <div>
 
   **Figure 6.103. Snapshot Replication**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Snapshot Replication](images/ui/replt_ss_add_01.png)
 
@@ -122,15 +122,15 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
   </div>
 
-- <div class="figure-float">
+- <div>
 
-  <div id="id15082" class="figure">
+  <div>
 
   **Figure 6.104. Snapshot Replication**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Snapshot Replication](images/ui/replt_ss_add_02.png)
 
@@ -144,15 +144,15 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
   </div>
 
-- <div class="figure-float">
+- <div>
 
-  <div id="id15088" class="figure">
+  <div>
 
   **Figure 6.105. Snapshot Replication**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Snapshot Replication](images/ui/replt_ss_add_03.png)
 
@@ -166,15 +166,15 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
   </div>
 
-- <div class="figure-float">
+- <div>
 
-  <div id="id15094" class="figure">
+  <div>
 
   **Figure 6.106. Snapshot Replication**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Snapshot Replication](images/ui/replt_ss_add_05.png)
 
@@ -188,15 +188,15 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
   </div>
 
-- <div class="figure-float">
+- <div>
 
-  <div id="id15100" class="figure">
+  <div>
 
   **Figure 6.107. Snapshot Replication**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Snapshot Replication](images/ui/replt_ss_add_06.png)
 
@@ -214,9 +214,9 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
 </div>
 
-<div id="transactionalreplication" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -230,9 +230,9 @@ offered with "Basic", "Incremental", "Bidirectional Snapshot" and
 
 </div>
 
-<div id="publications" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -250,15 +250,15 @@ The Transaction Publication screen lists publications. You can add, edit
 or remove publications as necessary, each time using the guide-lines of
 the wizard.
 
-<div class="figure-float">
+<div>
 
-<div id="id15110" class="figure">
+<div>
 
 **Figure 6.108. Transaction Replication - Publications**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication - Publications](images/ui/repltranspub001.png)
 
@@ -286,15 +286,15 @@ Transactional Replication</a> section for more details - which allows
 updates to come from subscribers rather than being limited to
 originating from the publisher only.
 
-<div class="figure-float">
+<div>
 
-<div id="id15123" class="figure">
+<div>
 
 **Figure 6.109. Transaction Replication - New Publication**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication - New
 Publication](images/ui/repltranspub002.png)
@@ -309,15 +309,15 @@ Publication](images/ui/repltranspub002.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15128" class="figure">
+<div>
 
 **Figure 6.110. Transaction Replication - List of Publications**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication - List of
 Publications](images/ui/repltranspub002a.png)
@@ -341,16 +341,16 @@ publication click on <span class="emphasis">*Add Table/Procedure*</span>
 clicking on its name, you will then be presented with the tables within
 it.
 
-<div class="figure-float">
+<div>
 
-<div id="id15137" class="figure">
+<div>
 
 **Figure 6.111. Transaction Replication - Publish Tables and
 Procedures**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication - Publish Tables and
 Procedures](images/ui/repltranspub003.png)
@@ -374,15 +374,15 @@ listed. Updatable publication will need conflict resolvers in case of
 conflicting data arriving from a subscriber. Click on the table name to
 manage the resolvers list.
 
-<div class="figure-float">
+<div>
 
-<div id="id15145" class="figure">
+<div>
 
 **Figure 6.112. Transaction Replication - Published Items**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication - Published
 Items](images/ui/repltranspub004.png)
@@ -405,7 +405,7 @@ Click on Publication Item -\> <span class="emphasis">*New
 Resolver*</span> to add a new resolver. You have the following details
 to contend with:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Name Suffix*</span>
 
@@ -441,15 +441,15 @@ to contend with:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15194" class="figure">
+<div>
 
 **Figure 6.113. Transaction Replication - Resolvers**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication - Resolvers](images/ui/repltranspub006.png)
 
@@ -467,15 +467,15 @@ Click on Publication -\> <span class="emphasis">*Advanced
 Options*</span> to set additional settings such as split size, default
 copy mode of publication item, etc.
 
-<div class="figure-float">
+<div>
 
-<div id="id15201" class="figure">
+<div>
 
 **Figure 6.114. Transaction Replication - Advanced**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication - Advanced](images/ui/repltranspub005.png)
 
@@ -491,9 +491,9 @@ copy mode of publication item, etc.
 
 </div>
 
-<div id="subscriptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -507,7 +507,7 @@ copy mode of publication item, etc.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - To add new subscription click at New Subscription and follow the
   wizard.
@@ -524,15 +524,15 @@ copy mode of publication item, etc.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15221" class="figure">
+<div>
 
 **Figure 6.115. Transaction Replication - Subscription**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication -
 Subscription](images/ui/replt_trans_sub_01.png)
@@ -547,15 +547,15 @@ Subscription](images/ui/replt_trans_sub_01.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15226" class="figure">
+<div>
 
 **Figure 6.116. Transaction Replication - Subscription**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Transaction Replication -
 Subscription](images/ui/replt_trans_sub_02.png)

@@ -1,10 +1,10 @@
-<div id="fn_mts_connect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ mts_connect — connects Virtuoso server to MS DTC.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mts_connect" class="funcsynopsis">
+<div>
 
 |                          |                              |
 |--------------------------|------------------------------|
 | ` `**`mts_connect`**` (` | in `reconnect ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ mts_connect — connects Virtuoso server to MS DTC.
 
 </div>
 
-<div id="desc_mts_connect" class="refsect1">
+<div>
 
 ## Description
 

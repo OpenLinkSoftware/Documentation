@@ -1,10 +1,10 @@
-<div id="xpf_let" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ these variables
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_let" class="funcsynopsis">
+<div>
 
 |                     |                         |
 |---------------------|-------------------------|
@@ -30,7 +30,7 @@ these variables
 |                     | `varNvalue ` sequence , |
 |                     | `retval ` any `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ these variables
 
 </div>
 
-<div id="xpf_desc_let" class="refsect1">
+<div>
 
 ## Description
 
@@ -64,11 +64,11 @@ functions.
 
 </div>
 
-<div id="xpf_params_let" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127989" class="refsect2">
+<div>
 
 ### varIname
 
@@ -76,7 +76,7 @@ Expression for the name for the I-th temporary variable
 
 </div>
 
-<div id="id127992" class="refsect2">
+<div>
 
 ### varIvalue
 
@@ -84,7 +84,7 @@ Expression for the value for the I-th temporary variable
 
 </div>
 
-<div id="id127995" class="refsect2">
+<div>
 
 ### retval
 
@@ -94,7 +94,7 @@ Expression for the value to be returned
 
 </div>
 
-<div id="xpf_ret_let" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -102,15 +102,15 @@ Any, depending on the type of *`retval `* expression.
 
 </div>
 
-<div id="xpf_errors_let" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id128004" class="table">
+<div>
 
-**Table 24.147. Errors signalled by let()**
+**Table 24.146. Errors signalled by let()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                      | Description                                                                                                                              |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -124,15 +124,15 @@ Any, depending on the type of *`retval `* expression.
 
 </div>
 
-<div id="xpf_examples_let" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_let" class="example">
+<div>
 
 **Example 24.598. **
 
-<div class="example-contents">
+<div>
 
 These two expressions are equivalent, but first may be used in any XPATH
 while second is written in XQUERY syntax
@@ -150,7 +150,7 @@ LET  $baseprice := /item/price, $discount := 0.20 RETURN $baseprice * (1.0 - $di
 
 </div>
 
-<div id="xpf_seealso_let" class="refsect1">
+<div>
 
 ## See Also
 

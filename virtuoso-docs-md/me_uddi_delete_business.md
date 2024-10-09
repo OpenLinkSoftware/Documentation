@@ -1,10 +1,10 @@
-<div id="me_uddi_delete_business" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ structures.
 
 </div>
 
-<div id="syntax_uddi_delete_business_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -29,11 +29,11 @@ structures.
 
 </div>
 
-<div id="params_uddi_delete_business_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id114491" class="refsect2">
+<div>
 
 ### authInfo
 
@@ -42,7 +42,7 @@ token obtained using the *`get_authToken `* call.
 
 </div>
 
-<div id="id114495" class="refsect2">
+<div>
 
 ### businessKey
 
@@ -53,7 +53,7 @@ known *`businessEntity `* data.
 
 </div>
 
-<div id="ret_uddi_delete_business_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,7 +62,7 @@ returned with a single success indicator.
 
 </div>
 
-<div id="errors_uddi_delete_business_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -70,11 +70,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id114508" class="table">
+<div>
 
-**Table 24.87. Errors signalled by uddi_delete_business**
+**Table 24.86. Errors signalled by uddi_delete_business**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                          | Description                                                                                                                                                                                                                       |
 |-----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

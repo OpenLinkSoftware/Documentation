@@ -1,10 +1,10 @@
-<div id="fn_dict_size" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ dict_size — Returns the number of items in the given dictionary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_size" class="funcsynopsis">
+<div>
 
 |                        |                               |
 |------------------------|-------------------------------|
 | ` `**`dict_size`**` (` | inout `dict ` dictionary `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ dict_size — Returns the number of items in the given dictionary.
 
 </div>
 
-<div id="desc_dict_size" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ For NULL value of *`dict `* , zero is returned.
 
 </div>
 
-<div id="params_dict_size" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87110" class="refsect2">
+<div>
 
 ### dict
 
@@ -55,7 +55,7 @@ Reference to the dictionary in question.
 
 </div>
 
-<div id="ret_dict_size" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,7 +63,7 @@ The function returns an interger.
 
 </div>
 
-<div id="seealso_dict_size" class="refsect1">
+<div>
 
 ## See Also
 

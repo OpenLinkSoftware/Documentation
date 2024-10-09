@@ -1,10 +1,10 @@
-<div id="fn_file_mkpath" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ file_mkpath — Make a directory chain
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_mkpath" class="funcsynopsis">
+<div>
 
 |                          |                              |
 |--------------------------|------------------------------|
 | ` `**`file_mkpath`**` (` | in `path ` varchar ,         |
 |                          | inout `istest ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ file_mkpath — Make a directory chain
 
 </div>
 
-<div id="desc_file_mkpath" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ elements in the path may not exist.
 
 </div>
 
-<div id="params_file_mkpath" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88806" class="refsect2">
+<div>
 
 ### path
 
@@ -56,7 +56,7 @@ string containing file system path to be crated as directory chain
 
 </div>
 
-<div id="id88809" class="refsect2">
+<div>
 
 ### istest
 
@@ -67,7 +67,7 @@ signalled.
 
 </div>
 
-<div id="ret_file_mkpath" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ On success returns zero.
 
 </div>
 
-<div id="errors_file_mkpath" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id88817" class="table">
+<div>
 
-**Table 24.35. Errors signalled by**
+**Table 24.34. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                 | Description |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------|-------------|
@@ -99,7 +99,7 @@ On success returns zero.
 
 </div>
 
-<div id="seealso_file_mkpath" class="refsect1">
+<div>
 
 ## See Also
 

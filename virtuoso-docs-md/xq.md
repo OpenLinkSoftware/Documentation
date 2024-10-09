@@ -1,6 +1,6 @@
-<div id="xq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,9 +38,9 @@ The most important deviation from the standard is that Virtuoso does not
 provide full type information about data values. As a consequence,
 "typeswitch" and automatic type conversions are not implemented.
 
-<div id="xq_supported_expns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -56,7 +56,7 @@ provide full type information about data values. As a consequence,
 
 The current draft of XQuery lists 10 groups of XQuery expressions:
 
-<div class="itemizedlist">
+<div>
 
 - Primary expressions, including literals, variable references and
   function calls.
@@ -93,7 +93,7 @@ kinds of clauses are implemented.
 In addition to the standard, Virtuoso supports special cases of FLWR
 expressions to deal with XML views:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="xq.html#xq_supported_xmlview" class="link"
   title="FOR Clause Expressions With xmlview() Function">FOR Clause
@@ -101,9 +101,9 @@ expressions to deal with XML views:
 
 </div>
 
-<div id="xq_supported_primary" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -127,9 +127,9 @@ XQuery and the string "Ben "amp; Jerry"apos;s" in XPath.
 
 </div>
 
-<div id="xq_supported_path" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -202,9 +202,9 @@ namespace-uri whose local-name is equal to sample-tag".
 
 </div>
 
-<div id="xq_supported_seq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -245,9 +245,9 @@ class="function">except()</code></a> .
 
 </div>
 
-<div id="xq_supported_opers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -273,9 +273,9 @@ class="function">is_after()</code></a> built-in functions.
 
 </div>
 
-<div id="xq_supported_el_ctors" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -353,9 +353,9 @@ for dynamic constructors.
 
 </div>
 
-<div id="xq_supported_flowr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -415,9 +415,9 @@ instead of portable
 
 </div>
 
-<div id="xq_supported_ordered" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -439,9 +439,9 @@ appropriate comments but not hints.
 
 </div>
 
-<div id="xq_supported_ctrl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -467,9 +467,9 @@ calculation of some results.
 
 </div>
 
-<div id="xq_supported_quan" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -492,9 +492,9 @@ make this functionality available in XPath and XSLT.
 
 </div>
 
-<div id="xq_supported_metadatatype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -513,9 +513,9 @@ The operators *`IS`* , *`CASTABLE`* , *`CAST`* , *`TREAT`* ,
 
 </div>
 
-<div id="xq_supported_xmlview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

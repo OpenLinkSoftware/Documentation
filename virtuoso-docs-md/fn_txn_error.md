@@ -1,10 +1,10 @@
-<div id="fn_txn_error" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ txn_error — poison current transaction forcing rollback
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_txn_error" class="funcsynopsis">
+<div>
 
 |                        |                         |
 |------------------------|-------------------------|
 | ` `**`txn_error`**` (` | in `code ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ txn_error — poison current transaction forcing rollback
 
 </div>
 
-<div id="desc_45" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ the transaction will not commit.
 In most cases the code should be the constant 6, resulting the in the
 'transaction rolled back due to previous SQL Error'.
 
-<div id="id114240" class="table">
+<div>
 
-**Table 24.85. Transaction error codes**
+**Table 24.84. Transaction error codes**
 
-<div class="table-contents">
+<div>
 
 | code          | SQL state | Error ID | SQL message                                                                                                                                                                                     | Description                               |
 |---------------|-----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|

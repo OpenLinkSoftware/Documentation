@@ -1,10 +1,10 @@
-<div id="fn_bag_of_nonnulls_or_null_agg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ ingoring NULL arguments.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bag_of_nonnulls_or_null_agg" class="funcsynopsis">
+<div>
 
 |                                                       |                              |
 |-------------------------------------------------------|------------------------------|
 | `vector `**`DB.DBA.BAG_OF_NONNULLS_OR_NULL_AGG`**` (` | `value_expression ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ ingoring NULL arguments.
 
 </div>
 
-<div id="desc_bag_of_nonnulls_or_null_agg" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ to run.
 
 </div>
 
-<div id="params_bag_of_nonnulls_or_null_agg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80142" class="refsect2">
+<div>
 
 ### value_expression
 
@@ -62,7 +62,7 @@ Value of item for aggregation.
 
 </div>
 
-<div id="ret_bag_of_nonnulls_or_null_agg" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,15 +71,15 @@ or only NULLs were passed.
 
 </div>
 
-<div id="examples_bag_of_nonnulls_or_null_agg" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_bag_of_nonnulls_or_null_agg_1" class="example">
+<div>
 
 **Example 24.9. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SELECT DB.DBA.BAG_OF_NONNULLS_OR_NULL_AGG (subquery.X)
@@ -94,7 +94,7 @@ FROM (SELECT X FROM ... ORDER BY X) as subquery
 
 </div>
 
-<div id="seealso_bag_of_nonnulls_or_null_agg" class="refsect1">
+<div>
 
 ## See Also
 

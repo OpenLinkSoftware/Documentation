@@ -1,6 +1,6 @@
-<div id="rdfsparqlrulesubclassandsubprop" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -193,7 +193,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E%0D%0ADESCRIBE+%3Chttp%3A%2F%2Fexample.com%2Fe%2Fs1%3E%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E&amp;should-sponge=&amp;format=application%2Frdf%2Bxml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"
@@ -227,7 +227,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E%0D%0ADESCRIBE+%3Chttp%3A%2F%2Fexample.com%2Fe%2Fs2%3E+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E&amp;should-sponge=&amp;format=application%2Frdf%2Bxml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"
@@ -271,7 +271,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E+%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+a+e%3Ac1or2+%3B+%0D%0A++++++++++e%3Ap1+%3Fo+%0D%0A++%7D&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"
@@ -309,7 +309,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+FROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+a+e%3Ac1+%3B+%0D%0A+++++++e%3Ap1+%3Fo+%0D%0A++%7D&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"
@@ -364,7 +364,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+FROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+a+%3Ft+%3B+%0D%0A+++++e%3Ap1+%3Fo+%0D%0A++%7D&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"
@@ -412,7 +412,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fitem+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++%7B%0D%0A++++%7B+%0D%0A++++++%3Flists+rdf%3A_1+%3Fnode+%0D%0A++++%7D%0D%0A++++UNION%0D%0A++++%7B+%0D%0A++++++%3Flists+rdf%3A_1+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+option+%28transitive%29+.+%0D%0A++++%7D%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+%0D%0A++%7D&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"
@@ -461,7 +461,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fp+%3Fo+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++%7B%0D%0A++++%7B+%0D%0A++++++%3Flists+rdf%3A_2+%3Fnode+%0D%0A++++%7D%0D%0A++++UNION%0D%0A++++%7B+%0D%0A++++++%3Flists+rdf%3A_2+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+option+%28transitive%29+.+%0D%0A++++%7D%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+.%0D%0A++++%3Fitem+%3Fp+%3Fo+%0D%0A++%7D&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"
@@ -517,7 +517,7 @@ Example links against
 target="_top">Virtuoso Demo Server SPARQL Endpoint</a> with SPARQL
 Protocol URLs:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fp+%3Fo+bif%3Acoalesce%28%3Fstep_no%2C+0%29+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++%7B%0D%0A++++%7B+%0D%0A++++++%3Flists+rdf%3A_2+%3Fnode+%0D%0A++++%7D%0D%0A++++UNION%0D%0A++++%7B+%0D%0A++++++%3Flists+rdf%3A_2+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+OPTION+%28transitive%2C+t_direction+1%2C+t_step%28%22step_no%22%29+as+%3Fstep_no%29+.+%0D%0A++++%7D%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+.%0D%0A++++%3Fitem+%3Fp+%3Fo+%0D%0A++%7D+%0D%0AORDER+BY+ASC+%28%3Fstep_no%29%0D%0A&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on"

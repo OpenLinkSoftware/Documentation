@@ -1,6 +1,6 @@
-<div id="wsrmrcvrapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ appropriate answers to the sender.
 
 The following is the list of WS-RM receiver wrappers:
 
-<div class="orderedlist">
+<div>
 
 1.  **WSRMSequence . ** accept and store a Sequence requests. This is
     used to accept Sequence requests from sender and will perform the

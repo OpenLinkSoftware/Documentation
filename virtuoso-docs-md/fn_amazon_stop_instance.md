@@ -1,10 +1,10 @@
-<div id="fn_amazon_stop_instance" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.AMAZON_STOP_INSTANCE — Stops an existing AMI instance.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_amazon_stop_instance" class="funcsynopsis">
+<div>
 
 |                                          |                                              |
 |------------------------------------------|----------------------------------------------|
@@ -25,7 +25,7 @@ DB.DBA.AMAZON_STOP_INSTANCE — Stops an existing AMI instance.
 |                                          | in `secret_key ` varchar ,                   |
 |                                          | in `http_proxy ` varchar (default null) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ DB.DBA.AMAZON_STOP_INSTANCE — Stops an existing AMI instance.
 
 </div>
 
-<div id="desc_amazon_stop_instance" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ transitions happen multiple times within a single hour.
 
 </div>
 
-<div id="params_amazon_stop_instance" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97692" class="refsect2">
+<div>
 
 ### aws_access_key
 
@@ -59,7 +59,7 @@ Amazon Access Key ID.
 
 </div>
 
-<div id="id97695" class="refsect2">
+<div>
 
 ### instance_id
 
@@ -67,7 +67,7 @@ Image instance ID (check Amazon list of instances).
 
 </div>
 
-<div id="id97698" class="refsect2">
+<div>
 
 ### secret_key
 
@@ -75,7 +75,7 @@ AWS Security Token.
 
 </div>
 
-<div id="id97701" class="refsect2">
+<div>
 
 ### http_proxy
 
@@ -85,15 +85,15 @@ Proxy server, can be null or empty.
 
 </div>
 
-<div id="examples_amazon_stop_instance" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_amazon_stop_instance" class="example">
+<div>
 
 **Example 24.231. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure simple_test()
@@ -118,7 +118,7 @@ create procedure simple_test()
 
 </div>
 
-<div id="seealso_amazon_stop_instance" class="refsect1">
+<div>
 
 ## See Also
 

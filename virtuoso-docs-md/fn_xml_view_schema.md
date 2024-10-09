@@ -1,10 +1,10 @@
-<div id="fn_xml_view_schema" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xml_view_schema — returns an XML schema for the output of given XML VIEW
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_view_schema" class="funcsynopsis">
+<div>
 
 |                                     |                                 |
 |-------------------------------------|---------------------------------|
 | `varchar `**`xml_view_schema`**` (` | in `query ` varchar ,           |
 |                                     | in `root_element ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xml_view_schema — returns an XML schema for the output of given XML VIEW
 
 </div>
 
-<div id="desc_74" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ into the specified root element.
 
 </div>
 
-<div id="params_38" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123830" class="refsect2">
+<div>
 
 ### query
 
@@ -55,7 +55,7 @@ a string which contains a name of XML view
 
 </div>
 
-<div id="id123833" class="refsect2">
+<div>
 
 ### root_element
 
@@ -66,7 +66,7 @@ wrapped
 
 </div>
 
-<div id="ret_12_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ XML Schema
 
 </div>
 
-<div id="errors_xml_view_schema" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id123841" class="table">
+<div>
 
-**Table 24.133. Errors signalled by**
+**Table 24.132. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                      | Error Text                                                | Description |
 |---------------------------------------|---------------------------------|-----------------------------------------------------------|-------------|
@@ -96,15 +96,15 @@ XML Schema
 
 </div>
 
-<div id="examples_20_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_view_schema" class="example">
+<div>
 
 **Example 24.524. Creating an XML Schema**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 
@@ -152,7 +152,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_47" class="refsect1">
+<div>
 
 ## See Also
 

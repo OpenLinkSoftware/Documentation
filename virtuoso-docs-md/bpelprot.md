@@ -1,6 +1,6 @@
-<div id="bpelprot" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,9 +23,9 @@ The Partner link options are stored in XML format in the
 'BPEL.BPEL.partner_link_init' table in 'bpl_opts' column. See the
 document format and table description below in this chapter.
 
-<div id="bpelprotwsa" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,9 +65,9 @@ retrieve the value of the wsOptions/addressing.
 
 </div>
 
-<div id="bpelprotwss" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -96,7 +96,7 @@ properties).
 
 It is important to know the following basics:
 
-<div class="itemizedlist">
+<div>
 
 - The private key is needed in order to decrypt or sign messages.
 
@@ -118,7 +118,7 @@ change the value of them.
 The encryption and signing is independently configurable for outbound or
 inbound messages. This is settable via the following options:
 
-<div class="itemizedlist">
+<div>
 
 - wsOptions/security/in/encrypt - 'Optional': inbound message MAY be
   encrypted, 'Mandatory': inbound message MUST be encrypted
@@ -156,9 +156,9 @@ inbound messages. This is settable via the following options:
 
 </div>
 
-<div id="bpelprotwsrm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -180,7 +180,7 @@ wsOptions/delivery/in or wsOptions/delivery/out ('wsrm-in-type' and
 <a href="bpelprot.html#bpelplinkconf" class="link"
 title="Configuring the Partner link options">in API</a> ) respectively.
 
-<div class="itemizedlist">
+<div>
 
 - ExactlyOnce - message will be delivered only once to the destination.
 
@@ -191,9 +191,9 @@ title="Configuring the Partner link options">in API</a> ) respectively.
 
 </div>
 
-<div id="bpelprothttpauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -268,9 +268,9 @@ Partner link options format
 
 </div>
 
-<div id="bpelplinkconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -298,9 +298,9 @@ functions is recommended.
 
 </div>
 
-<div id="bpeldynpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

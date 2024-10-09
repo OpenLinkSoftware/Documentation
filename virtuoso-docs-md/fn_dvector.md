@@ -1,10 +1,10 @@
-<div id="fn_dvector" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ double
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_lvector" class="funcsynopsis">
+<div>
 
 |                           |               |
 |---------------------------|---------------|
@@ -25,7 +25,7 @@ double
 |                           | `.... ` ,     |
 |                           | `elt-n ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ double
 
 </div>
 
-<div id="fsyn_fvector" class="funcsynopsis">
+<div>
 
 |                           |               |
 |---------------------------|---------------|
@@ -41,7 +41,7 @@ double
 |                           | `.... ` ,     |
 |                           | `elt-n ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -49,7 +49,7 @@ double
 
 </div>
 
-<div id="fsyn_dvector" class="funcsynopsis">
+<div>
 
 |                           |               |
 |---------------------------|---------------|
@@ -57,7 +57,7 @@ double
 |                           | `.... ` ,     |
 |                           | `elt-n ` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -67,18 +67,18 @@ double
 
 </div>
 
-<div id="desc_dvector" class="refsect1">
+<div>
 
 ## Description
 
 These functions are like vector but return an array of either long,
 float or double whereas vector returns a generic, untyped array.
 
-<div id="ex_dvector" class="example">
+<div>
 
 **Example 24.96. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 aref (lvector (1, 2), 1) = 1    is true.

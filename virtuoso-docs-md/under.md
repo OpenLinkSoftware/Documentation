@@ -1,6 +1,6 @@
-<div id="under" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,11 +25,11 @@ directly into the super-table will not be visible to sub-tables.
 The primary key option may not coexist with UNDER, since a subtable
 always inherits the supertable's primary key.
 
-<div id="ex_under" class="example">
+<div>
 
 **Example 9.21. Creating sub-tables using UNDER**
 
-<div class="example-contents">
+<div>
 
 Here a subtable will be created for the demo_table defined earlier. Both
 definitions are listed for convenience. Notice that the select over the

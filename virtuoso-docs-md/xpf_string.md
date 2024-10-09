@@ -1,10 +1,10 @@
-<div id="xpf_string" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ string — Returns a string value of its argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_string" class="funcsynopsis">
+<div>
 
 |                           |                 |
 |---------------------------|-----------------|
 | `string `**`string`**` (` | `obj ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,13 +32,13 @@ string — Returns a string value of its argument.
 
 </div>
 
-<div id="xpf_desc_string" class="refsect1">
+<div>
 
 ## Description
 
 The string() function converts an object to a string as follows:
 
-<div class="itemizedlist">
+<div>
 
 - An empty sequence is converted to an empty string.
 
@@ -89,11 +89,11 @@ is a node-set of one element.
 
 </div>
 
-<div id="xpf_params_string" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129126" class="refsect2">
+<div>
 
 ### obj
 
@@ -103,7 +103,7 @@ Value to be converted into the string
 
 </div>
 
-<div id="xpf_ret_string" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -111,15 +111,15 @@ String
 
 </div>
 
-<div id="xpf_examples_string" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_string" class="example">
+<div>
 
 **Example 24.621. Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select xpath_eval ('string (//*)', xtree_doc ('<a>abc</a>')) ;
@@ -159,7 +159,7 @@ VARCHAR
 
 </div>
 
-<div id="xpf_seealso_string" class="refsect1">
+<div>
 
 ## See Also
 

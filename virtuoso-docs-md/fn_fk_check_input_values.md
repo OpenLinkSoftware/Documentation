@@ -1,10 +1,10 @@
-<div id="fn_fk_check_input_values" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ fk_check_input_values — alter default foreign key checking behavior
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_fk_check_input_values" class="funcsynopsis">
+<div>
 
 |                                           |                         |
 |-------------------------------------------|-------------------------|
 | `DB.DBA. `**`fk_check_input_values`**` (` | in `mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ fk_check_input_values — alter default foreign key checking behavior
 
 </div>
 
-<div id="desc_fk_check_input_values" class="refsect1">
+<div>
 
 ## Description
 

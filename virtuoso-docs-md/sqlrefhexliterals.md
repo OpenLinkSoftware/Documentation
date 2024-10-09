@@ -1,6 +1,6 @@
-<div id="sqlrefhexliterals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

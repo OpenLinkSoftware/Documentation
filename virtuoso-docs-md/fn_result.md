@@ -1,10 +1,10 @@
-<div id="fn_result" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ result — Sends one row of results to the calling client.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_result" class="funcsynopsis">
+<div>
 
 |                     |                      |
 |---------------------|----------------------|
@@ -24,7 +24,7 @@ result — Sends one row of results to the calling client.
 |                     | `.. ` ,              |
 |                     | in `col_n ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ result — Sends one row of results to the calling client.
 
 </div>
 
-<div id="desc_result" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ knows what columns and their types are to be returned.
 
 </div>
 
-<div id="params_result" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108527" class="refsect2">
+<div>
 
 ### col_1, ..., col_n
 
@@ -66,15 +66,15 @@ The data to be sent to the client.
 
 </div>
 
-<div id="examples_result" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_result" class="example">
+<div>
 
 **Example 24.358. **
 
-<div class="example-contents">
+<div>
 
 This example demonstrates outputting multiple result sets from a stored
 procedure. This procedure can be entered using ISQL but ISQL does not
@@ -118,7 +118,7 @@ CREATE PROCEDURE RES (IN I INTEGER)
 
 </div>
 
-<div id="seealso_result" class="refsect1">
+<div>
 
 ## See Also
 

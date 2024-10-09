@@ -1,6 +1,6 @@
-<div id="vfoafsslst509issuer" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ The following Step-by-Step guide walks you through set up of an X.509
 certificate issuer and HTTPS listener, and generation of ODS user
 certificates.
 
-<div class="orderedlist">
+<div>
 
 1.  Install <a
     href="http://download.openlinksw.com/packages/5.0/virtuoso/ods_framework_dav.vad"
@@ -26,15 +26,15 @@ certificates.
     href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/conductor_dav.vad"
     class="ulink" target="_top">Virtuoso Conductor</a> VAD packages.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl6" class="figure">
+    <div>
 
     **Figure 17.7. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl6.png)
 
@@ -51,15 +51,15 @@ certificates.
 2.  Go to the http://cname:port/identity_manager URL, enter the DBA user
     credentials in the dialog presented.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl7" class="figure">
+    <div>
 
     **Figure 17.8. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl7.png)
 
@@ -75,15 +75,15 @@ certificates.
 
 3.  Enter the Issuer details and click generate.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl8" class="figure">
+    <div>
 
     **Figure 17.9. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl8.png)
 
@@ -100,15 +100,15 @@ certificates.
 4.  Go to Conductor -\> Web Application Server -\> Virtual Domains &
     Directories, and add a new listener.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl9" class="figure">
+    <div>
 
     **Figure 17.10. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl9.png)
 
@@ -124,15 +124,15 @@ certificates.
 
 5.  Edit the new listener, and generate new key.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl10" class="figure">
+    <div>
 
     **Figure 17.11. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl10.png)
 
@@ -148,15 +148,15 @@ certificates.
 
 6.  Go to Packages list and select Configure for ODS Framework.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl11" class="figure">
+    <div>
 
     **Figure 17.12. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl11.png)
 
@@ -172,15 +172,15 @@ certificates.
 
 7.  Select Create New Endpoint.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl12" class="figure">
+    <div>
 
     **Figure 17.13. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl12.png)
 
@@ -196,15 +196,15 @@ certificates.
 
 8.  Enter the home path for ODS, and save.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl13" class="figure">
+    <div>
 
     **Figure 17.14. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl13.png)
 
@@ -220,15 +220,15 @@ certificates.
 
 9.  The new endpoint should now appear in the endpoint list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl14" class="figure">
+    <div>
 
     **Figure 17.15. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl14.png)
 
@@ -247,15 +247,15 @@ certificates.
     that the certificate is not valid, so we must register the site's
     certificate.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl15" class="figure">
+    <div>
 
     **Figure 17.16. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl15.png)
 
@@ -272,15 +272,15 @@ certificates.
 11. In Firefox certificate manager, in Site's certificates, add an
     exception.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl16" class="figure">
+    <div>
 
     **Figure 17.17. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl16.png)
 
@@ -296,15 +296,15 @@ certificates.
 
 12. Confirm exception.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl17" class="figure">
+    <div>
 
     **Figure 17.18. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl17.png)
 
@@ -320,15 +320,15 @@ certificates.
 
 13. Return to ODS site, and register new user.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl18" class="figure">
+    <div>
 
     **Figure 17.19. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl18.png)
 
@@ -345,15 +345,15 @@ certificates.
 14. Edit the user's profile and enter his/her name(s). If this step is
     skipped, the certificate will not have a human readable name.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl19" class="figure">
+    <div>
 
     **Figure 17.20. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl19.png)
 
@@ -370,15 +370,15 @@ certificates.
 15. Open the Security tab in the Profile Editor, and generate the client
     key.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl20" class="figure">
+    <div>
 
     **Figure 17.21. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl20.png)
 
@@ -396,15 +396,15 @@ certificates.
     Firefox has the private key, and has obtained a new certificate from
     the server.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl21" class="figure">
+    <div>
 
     **Figure 17.22. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl21.png)
 
@@ -420,15 +420,15 @@ certificates.
 
 17. Refresh the Security tab by clicking on same tab.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl22" class="figure">
+    <div>
 
     **Figure 17.23. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl22.png)
 
@@ -444,15 +444,15 @@ certificates.
 
 18. Select automatic login option, and save.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl23" class="figure">
+    <div>
 
     **Figure 17.24. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl23.png)
 
@@ -470,15 +470,15 @@ certificates.
     site. The browser will ask for a certificate; select the one
     generated in the steps above.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl24" class="figure">
+    <div>
 
     **Figure 17.25. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl24.png)
 
@@ -495,15 +495,15 @@ certificates.
 20. ODS presents your card, and asks to login with certificate. Confirm
     it.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl25" class="figure">
+    <div>
 
     **Figure 17.26. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl25.png)
 
@@ -519,15 +519,15 @@ certificates.
 
 21. You should now be logged in to ODS via WebID Protocol.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl26" class="figure">
+    <div>
 
     **Figure 17.27. Setting-Up issuer CA**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting-Up issuer CA](images/ui/foafssl26.png)
 

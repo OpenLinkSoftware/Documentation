@@ -1,6 +1,6 @@
-<div id="rdfgraphreplicationsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfgraphreplicationsqlex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,15 +33,15 @@
 The following example shows how to use SQL procedures to set up Virtuoso
 RDF Graph Replication in a Chain Topology.
 
-<div class="figure-float">
+<div>
 
-<div id="chain1_01" class="figure">
+<div>
 
 **Figure 16.310. Chain Replication Topology**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Chain Replication Topology](images/ui/topo-chain.png)
 
@@ -60,9 +60,9 @@ This can also be done
 class="link" title="Chain Replication Topology Example">through the
 HTTP-based Virtuoso Conductor</a> .
 
-<div id="rdfgraphreplicationsqlexprx" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -76,9 +76,9 @@ HTTP-based Virtuoso Conductor</a> .
 
 </div>
 
-<div id="rdfgraphreplicationsqlexprxini" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -110,7 +110,7 @@ example also sets separate names for the database and related files.
 This results in the following ini parameters values (only changes are
 shown, the rest can remain default):
 
-<div class="orderedlist">
+<div>
 
 1.  repl1/virtuoso.ini:
 
@@ -189,9 +189,9 @@ shown, the rest can remain default):
 
 </div>
 
-<div id="rdfgraphreplicationsqlexprxdsn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -215,9 +215,9 @@ with names db1, db2 and db3, respectively.
 
 </div>
 
-<div id="rdfgraphreplicationsqlcrb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -231,7 +231,7 @@ with names db1, db2 and db3, respectively.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Run the databases by starting start.sh, which has the following
     content:

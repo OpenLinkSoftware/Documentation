@@ -1,6 +1,6 @@
-<div id="xmlstoragesystem" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ via HTTP. xmlStorageSystem has methods that allow users to register with
 the service; upload a set of files; query the server to find out its
 capabilities; and to register a notification request.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                    |
 |:--------------------------:|:---------------------------------------------------|
@@ -51,9 +51,9 @@ The API methods are:
  class="function">xmlStorageSystem.saveMultipleFiles()</code></a>       |
 | `xmlStorageSystem.requestNotification()`                              |
 
-<div id="xssreltodav" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -95,9 +95,9 @@ of RSS file see reference at
 
 </div>
 
-<div id="xssenabledvirtdir" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -115,11 +115,11 @@ The XML Storage System can be enabled by creating a virtual directory as
 a SOAP enabled directory, where the SOAP users is set to DBA or any
 other user granted execute permissions to the xmlStorageSystem methods.
 
-<div id="ex_xssvirtdir" class="example">
+<div>
 
 **Example 14.63. Enabling an xmlStorageSystem Virtual Directory**
 
-<div class="example-contents">
+<div>
 
 via ISQL tool:
 

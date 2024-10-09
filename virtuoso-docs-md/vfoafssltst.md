@@ -1,6 +1,6 @@
-<div id="vfoafssltst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,22 +23,22 @@ set to ask for RDF, as instructed in the
 <a href="http://dig.csail.mit.edu/2007/tab/" class="ulink"
 target="_top">Tabulator documentation</a> .
 
-<div class="orderedlist">
+<div>
 
 1.  Enter an ODS user's URI in the address bar.
 
 2.  You should see a protected document's URI. Note that there is no
     specific "address" data seen:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl3" class="figure">
+    <div>
 
     **Figure 17.3. Testing the setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Testing the setup](images/ui/foafssl3.png)
 
@@ -55,15 +55,15 @@ target="_top">Tabulator documentation</a> .
 3.  When clicked, the browser will ask the user to select a certificate
     (note: certificate details are erased in the picture below).
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl4" class="figure">
+    <div>
 
     **Figure 17.4. Testing the setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Testing the setup](images/ui/foafssl4.png)
 
@@ -80,15 +80,15 @@ target="_top">Tabulator documentation</a> .
 4.  Now the protected document includes the private address data
     alongside the previously visible public data!
 
-    <div class="figure-float">
+    <div>
 
-    <div id="foafssl5" class="figure">
+    <div>
 
     **Figure 17.5. Testing the setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Testing the setup](images/ui/foafssl5.png)
 

@@ -1,6 +1,6 @@
-<div id="maildelivstore" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="smtpclient" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@
 
 </div>
 
-<div id="fn_smtp_send_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

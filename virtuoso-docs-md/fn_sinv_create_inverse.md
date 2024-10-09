@@ -1,10 +1,10 @@
-<div id="fn_sinv_create_inverse" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ functions.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sinv_create_inverse" class="funcsynopsis">
+<div>
 
 |                                  |                                 |
 |----------------------------------|---------------------------------|
@@ -25,7 +25,7 @@ functions.
 |                                  | in `_SINV_INVERSE ` any ,       |
 |                                  | in `_SINVM_FLAGS ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ functions.
 
 </div>
 
-<div id="desc_sinv_create_inverse" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ title="9.29. SQL Inverse Functions">SQL Inverse Functions</a> )
 
 </div>
 
-<div id="params_sinv_create_inverse" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109950" class="refsect2">
+<div>
 
 ### \_SINVM_NAME_IN
 
@@ -57,7 +57,7 @@ the name of the forward function
 
 </div>
 
-<div id="id109953" class="refsect2">
+<div>
 
 ### \_SINV_INVERSE
 
@@ -65,7 +65,7 @@ an array of the names of the inverse functions (for each part).
 
 </div>
 
-<div id="id109956" class="refsect2">
+<div>
 
 ### \_SINVM_FLAGS
 
@@ -81,7 +81,7 @@ set, the function calls may only be removed in the case of equality.
 
 </div>
 
-<div id="seealso_sinv_create_inverse" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="funcsbycat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="genboxfuncs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -70,9 +70,9 @@ The most important types are:
 
 </div>
 
-<div id="boxfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -86,14 +86,14 @@ The most important types are:
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                                |                  |
 |--------------------------------|------------------|
 | `box_t `**`dk_alloc_box`**` (` | uint32 `bytes` , |
 |                                | int `tag` `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -104,13 +104,13 @@ The most important types are:
 `dk_alloc_box()` allocates a box of the given size and type. The initial
 contents are undefined.
 
-<div class="funcsynopsis">
+<div>
 
 |                             |                  |
 |-----------------------------|------------------|
 | `int `**`dk_free_box`**` (` | box_t `box` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -121,13 +121,13 @@ contents are undefined.
 `dk_free_box()` frees a box allocated by `dk_alloc_box()` . The argument
 may not be any other pointer.
 
-<div class="funcsynopsis">
+<div>
 
 |                              |                  |
 |------------------------------|------------------|
 | `int `**`dk_free_tree`**` (` | box_t `box` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -138,13 +138,13 @@ may not be any other pointer.
 `dk_free_tree()` is like `dk_free_box()` but will free recursively,
 following through DV_ARRAY_OF_POINTER boxes.
 
-<div class="funcsynopsis">
+<div>
 
 |                               |                   |
 |-------------------------------|-------------------|
 | `uint32 `**`box_length`**` (` | box_t `box2` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -159,13 +159,13 @@ following through DV_ARRAY_OF_POINTER boxes.
 
 These return the length and the tag of a box.
 
-<div class="funcsynopsis">
+<div>
 
 |                        |                |
 |------------------------|----------------|
 | `long `**`unbox`**` (` | box_t `n` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -173,13 +173,13 @@ These return the length and the tag of a box.
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                           |               |
 |---------------------------|---------------|
 | `box_t `**`box_num`**` (` | long `n` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -187,13 +187,13 @@ These return the length and the tag of a box.
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                                       |                      |
 |---------------------------------------|----------------------|
 | `box_t `**`box_dv_short_string`**` (` | char \*`string` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -201,13 +201,13 @@ These return the length and the tag of a box.
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                              |                 |
 |------------------------------|-----------------|
 | `box_t `**`box_double`**` (` | double `d` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -215,13 +215,13 @@ These return the length and the tag of a box.
 
 </div>
 
-<div class="funcsynopsis">
+<div>
 
 |                             |                |
 |-----------------------------|----------------|
 | `box_t `**`box_float`**` (` | float `f` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -242,13 +242,13 @@ and allocates a string box of appropriate size. This itself looks like a
 null terminated string but has the box header with the run time length
 and type under the pointer.
 
-<div class="funcsynopsis">
+<div>
 
 |                            |                  |
 |----------------------------|------------------|
 | `box_t `**`box_copy`**` (` | box_t `box` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -259,13 +259,13 @@ and type under the pointer.
 `box_copy()` returns an identical size box with the same type and
 contents.
 
-<div class="funcsynopsis">
+<div>
 
 |                                 |                  |
 |---------------------------------|------------------|
 | `box_t `**`box_copy_tree`**` (` | box_t `box` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -276,14 +276,14 @@ contents.
 `box_copy_tree()` performs a recursive copy, traversing
 `DV_ARRAY_OF_POINTER` references.
 
-<div class="funcsynopsis">
+<div>
 
 |                           |                 |
 |---------------------------|-----------------|
 | `int `**`box_equal`**` (` | box_t `b1` ,    |
 |                           | box_t `b2` `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -293,11 +293,11 @@ contents.
 
 Given two arbitrary boxes, returns true if they are recursively equal.
 
-<div id="boxexamples" class="example">
+<div>
 
 **Example 18.2. Box Examples**
 
-<div class="example-contents">
+<div>
 
 Below is the code for box_copy_tree:
 
@@ -351,7 +351,7 @@ box_copy_tree (box_t box)
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>
@@ -381,7 +381,7 @@ arrays.</p></td>
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                      |
 |:--------------------------:|:---------------------|

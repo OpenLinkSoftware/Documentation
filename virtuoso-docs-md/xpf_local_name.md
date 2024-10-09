@@ -1,10 +1,10 @@
-<div id="xpf_local_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_local_name" class="funcsynopsis">
+<div>
 
 |                               |                      |
 |-------------------------------|----------------------|
 | `string `**`local-name`**` (` | `node_obj ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ argument.
 
 </div>
 
-<div id="xpf_desc_local_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ node-set of one element.
 
 </div>
 
-<div id="xpf_params_local_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128096" class="refsect2">
+<div>
 
 ### node_obj
 
@@ -62,7 +62,7 @@ Node whose name is to be returned
 
 </div>
 
-<div id="xpf_ret_local_name" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -70,15 +70,15 @@ String
 
 </div>
 
-<div id="xpf_examples_local_name" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_local_name" class="example">
+<div>
 
 **Example 24.600. **
 
-<div class="example-contents">
+<div>
 
 Find all elements whose names start with "ref..." prefix
 
@@ -94,7 +94,7 @@ Find all elements whose names start with "ref..." prefix
 
 </div>
 
-<div id="xpf_seealso_local_name" class="refsect1">
+<div>
 
 ## See Also
 

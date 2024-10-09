@@ -1,6 +1,6 @@
-<div id="createaggrsam" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="createaggruri" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -203,9 +203,9 @@ t3       ?key8=val8
 
 </div>
 
-<div id="createaggrxml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

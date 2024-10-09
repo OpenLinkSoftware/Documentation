@@ -1,10 +1,10 @@
-<div id="xpf_key" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ of Virtuoso.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_key" class="funcsynopsis">
+<div>
 
 |                        |                       |
 |------------------------|-----------------------|
 | `string `**`key`**` (` | `keyname ` string ,   |
 |                        | `keyvalues ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ of Virtuoso.
 
 </div>
 
-<div id="id127887" class="refsection">
+<div>
 
 ## 
 

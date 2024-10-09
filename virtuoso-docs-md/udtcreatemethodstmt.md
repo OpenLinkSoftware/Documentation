@@ -1,6 +1,6 @@
-<div id="udtcreatemethodstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -44,11 +44,11 @@ representing the current type instance.
 The method members and other methods are not in scope in the method's
 compound statement. They should be accessed through the `SELF` variable.
 
-<div id="ex_methodcreation" class="example">
+<div>
 
 **Example 9.6. Simple method demonstration**
 
-<div class="example-contents">
+<div>
 
 This example defines the two parameter constructor for the UDT_TEST
 type. It sets the values for the type members A and B to the values of

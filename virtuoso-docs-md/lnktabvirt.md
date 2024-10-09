@@ -1,6 +1,6 @@
-<div id="lnktabvirt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,15 +21,15 @@ Conductor, for ex. http://example.com:8890/conductor/. Go to tab
 Specify the remote datasource that you wish to link to Virtuoso. For
 example, click the link "connect" for DSN "VirtuosoDemoTest".
 
-<div class="figure-float">
+<div>
 
-<div id="conndsn1a" class="figure">
+<div>
 
 **Figure 3.17. Enter login name and password.**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Enter login name and password.](images/conndsn1a.png)
 
@@ -47,15 +47,15 @@ As result should be shown for DSN "VirtuosoDemoTest" the links "Link
 objects", "Change Credentials", "Disconnect". Click the "Link objects"
 link.
 
-<div class="figure-float">
+<div>
 
-<div id="conndsn1b" class="figure">
+<div>
 
 **Figure 3.18. Connected to datasource.**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Connected to datasource.](images/conndsn1b.png)
 
@@ -71,15 +71,15 @@ link.
 
 Pick the tables to be linked, and define the names to use.
 
-<div class="figure-float">
+<div>
 
-<div id="rmtadd" class="figure">
+<div>
 
 **Figure 3.19. Define tables to link**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Define tables to link](images/rmtadd.png)
 

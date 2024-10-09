@@ -1,6 +1,6 @@
-<div id="xmlviews1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ The XML view mechanism allows generating XML content from relational
 data and to query relational data as if it were XML without first
 converting it to XML.
 
-<div id="createxmlview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -101,9 +101,9 @@ namespace name must not be 'xml', except for default namespace with name
 
 </div>
 
-<div id="explicitxmlviews" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -131,7 +131,7 @@ can have more than one different element.
 
 Each element specifies:
 
-<div class="itemizedlist">
+<div>
 
 - SQL table
 
@@ -155,7 +155,7 @@ Each element specifies:
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                     |
 |:----------------------------:|:----------------------------------------------------|
@@ -180,7 +180,7 @@ interval. The interval is expressed in minutes.
 The path is expressed as an absolute path from the root collection of
 the DAV server.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                       |
 |:----------------------------:|:--------------------------------------------------------------------------------------|
@@ -235,11 +235,11 @@ create xml view tree. Further, the primary key columns of each table
 should be mentioned in the columns list for that table along with any
 foreign keys referenced in subsequent join conditions.
 
-<div id="vht01" class="example">
+<div>
 
 **Example 15.4. Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create xml view "cat" as
@@ -284,11 +284,11 @@ In the following example the function returns the selected items as an
 XML fragment. Consecutive elements are separated by new-lines for
 readability.
 
-<div id="vht02" class="example">
+<div>
 
 **Example 15.5. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> call "http_cat_category_C" (1, 1);
@@ -385,9 +385,9 @@ XPATH [__view 'schema']
 
 </div>
 
-<div id="xmlviewfromselect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -424,7 +424,7 @@ child elements of the element corresponding to the row. Note that even
 if the element switch is present, the values will appear like attributes
 in an XPATH query inside the view.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                 |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -433,9 +433,9 @@ in an XPATH query inside the view.
 
 </div>
 
-<div id="addtxt4xmlview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -456,7 +456,7 @@ can have more than one different element.
 
 Each element specifies:
 
-<div class="itemizedlist">
+<div>
 
 - SQL table
 
@@ -480,11 +480,11 @@ Each element specifies:
 
 </div>
 
-<div id="id45893" class="example">
+<div>
 
 **Example 15.6. Add to examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create xml view "cats_e" as
@@ -506,9 +506,9 @@ Add to text: after 'free text and xml'
 
 </div>
 
-<div id="xmlviewpublish" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

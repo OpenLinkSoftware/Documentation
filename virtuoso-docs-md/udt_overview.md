@@ -1,6 +1,6 @@
-<div id="udt_overview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -91,7 +91,7 @@ to be the minimal common supertype of a set of types `S` if `T` is a
 supertype of every type in `S` and a subtype of every type that is a
 supertype of every type in `S` .
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                            |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -104,9 +104,9 @@ A user-defined type is declared by a user-defined type
 <a href="udt_overview.html#udtcreatetypestmt" class="link"
 title="9.2.1. CREATE TYPE Statement">CREATE TYPE statement</a> .
 
-<div id="udtcreatetypestmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -209,7 +209,7 @@ type's instance when instantiating the type, as opposed to returning the
 instance itself. The references are explained in more detail in the
 `NEW` operator.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                 |
 |:----------------------------:|:------------------------------------------------|
@@ -218,11 +218,11 @@ instance itself. The references are explained in more detail in the
 
 </div>
 
-<div id="ex_createtype" class="example">
+<div>
 
 **Example 9.3. Creating User Defined Types**
 
-<div class="example-contents">
+<div>
 
 This example creates a SQL implemented user defined type UDT_TEST with
 no supertype. It has two members : A and B, two constructor methods, a

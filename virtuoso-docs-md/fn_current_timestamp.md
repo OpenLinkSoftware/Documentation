@@ -1,10 +1,10 @@
-<div id="fn_current_timestamp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ current_timestamp — returns the current transaction timestamp
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_current_timestamp" class="funcsynopsis">
+<div>
 
 |                                |      |
 |--------------------------------|------|
 | ` `**`current_timestamp`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ current_timestamp — returns the current transaction timestamp
 
 </div>
 
-<div id="desc_current_timestamp" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ last server start); otherwise it is timezoneless.
 
 </div>
 
-<div id="params_current_timestamp" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -58,7 +58,7 @@ last server start); otherwise it is timezoneless.
 
 </div>
 
-<div id="ret_current_timestamp" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,7 +66,7 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="errors_current_timestamp" class="refsect1">
+<div>
 
 ## Errors
 
@@ -74,15 +74,15 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="examples_current_timestamp" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_current_timestamp" class="example">
+<div>
 
 **Example 24.62. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>select current_timestamp ;
@@ -98,7 +98,7 @@ DATETIME
 
 </div>
 
-<div id="seealso_current_timestamp" class="refsect1">
+<div>
 
 ## See Also
 

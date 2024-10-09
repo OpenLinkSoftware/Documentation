@@ -1,10 +1,10 @@
-<div id="vc_page" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ page — Container of VSPX code.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_page" class="funcsynopsis">
+<div>
 
 |                      |                                   |
 |----------------------|-----------------------------------|
@@ -37,7 +37,7 @@ page — Container of VSPX code.
 |                      | `debug-srcline` (optional) ,      |
 |                      | `debug-log` (optional) `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ page — Container of VSPX code.
 
 </div>
 
-<div id="vc_desc_page" class="refsect1">
+<div>
 
 ## Description
 
@@ -71,7 +71,7 @@ any included or macro content.
 
 </div>
 
-<div id="vc_attrs_page" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -139,7 +139,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_page" class="refsect1">
+<div>
 
 ## Declaration of type vspx_page
 
@@ -166,15 +166,15 @@ as (
 
 </div>
 
-<div id="vc_ex_page" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_page__0" class="example">
+<div>
 
 **Example 14.38.  Sample VSPX page**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 <v:page name="page__0" xmlns:v="http://http://example.com/vspx/">
@@ -194,7 +194,7 @@ It does not even print traditional 'Hello world' phrase.</p>
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0"
 data-summary="Tip: See Also: Reference Material in the Tutorial:">

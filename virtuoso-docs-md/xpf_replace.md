@@ -1,10 +1,10 @@
-<div id="xpf_replace" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ other substring.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_replace" class="funcsynopsis">
+<div>
 
 |                            |                             |
 |----------------------------|-----------------------------|
@@ -25,7 +25,7 @@ other substring.
 |                            | `search_strg ` string ,     |
 |                            | `replace_strg ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ other substring.
 
 </div>
 
-<div id="xpf_desc_replace" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ is signalled if *`search_strg`* is empty.
 
 </div>
 
-<div id="xpf_params_replace" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128783" class="refsect2">
+<div>
 
 ### txt
 
@@ -57,7 +57,7 @@ Text to process.
 
 </div>
 
-<div id="id128786" class="refsect2">
+<div>
 
 ### search_strg
 
@@ -65,7 +65,7 @@ Substring to search for *`txt `* .
 
 </div>
 
-<div id="id128790" class="refsect2">
+<div>
 
 ### replace_strg
 
@@ -75,7 +75,7 @@ Substring to replace *`search_strg `* in *`txt `* .
 
 </div>
 
-<div id="xpf_ret_replace" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,15 +83,15 @@ String.
 
 </div>
 
-<div id="xpf_errors_replace" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id128800" class="table">
+<div>
 
-**Table 24.150. Errors signalled by**
+**Table 24.149. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                    | Description                                                                                                                        |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
@@ -106,15 +106,15 @@ String.
 
 </div>
 
-<div id="xpf_examples_replace" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_replace" class="example">
+<div>
 
 **Example 24.615. **
 
-<div class="example-contents">
+<div>
 
 Replace all occurrences of 'http://www.example.com/' with '/webrobot/'
 
@@ -132,7 +132,7 @@ replace(
 
 </div>
 
-<div id="xpf_seealso_replace" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="rdfadm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,9 +19,9 @@ SPARQL queries, to add/edit RDF Mapping, to perform statistics and
 manage graphs, to import schemas and define namespaces, to generated
 Linked Data Views and to upload to the Quad Store.
 
-<div id="rdfadmsparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,9 +35,9 @@ Linked Data Views and to upload to the Quad Store.
 
 </div>
 
-<div id="rdfadmsparqlex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -53,15 +53,15 @@ Linked Data Views and to upload to the Quad Store.
 
 "SPARQL -\> Query" offers form form SPARQL query execution:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf1" class="figure">
+<div>
 
 **Figure 6.155. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf.png)
 
@@ -77,15 +77,15 @@ Linked Data Views and to upload to the Quad Store.
 
 Also you can save the results in a query or load such:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf2" class="figure">
+<div>
 
 **Figure 6.156. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf1.png)
 
@@ -101,9 +101,9 @@ Also you can save the results in a query or load such:
 
 </div>
 
-<div id="rdfadmsparqlqr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -120,15 +120,15 @@ Also you can save the results in a query or load such:
 "SPARQL -\> Saved Queries" offers list of saved queries, which can be
 opened in the "Query" tab in order to be executed:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf3" class="figure">
+<div>
 
 **Figure 6.157. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf2.png)
 
@@ -146,9 +146,9 @@ opened in the "Query" tab in order to be executed:
 
 </div>
 
-<div id="rdfadmsponger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -162,9 +162,9 @@ opened in the "Query" tab in order to be executed:
 
 </div>
 
-<div id="rdfadmspongerexcatr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -181,15 +181,15 @@ opened in the "Query" tab in order to be executed:
 Shows list of available extractor cartridges. They can be re-ordered by
 place of appearance, edit or deleted:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf4" class="figure">
+<div>
 
 **Figure 6.158. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf3.png)
 
@@ -205,15 +205,15 @@ place of appearance, edit or deleted:
 
 You can also add a new extractor cartridge:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf5" class="figure">
+<div>
 
 **Figure 6.159. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf4.png)
 
@@ -229,9 +229,9 @@ You can also add a new extractor cartridge:
 
 </div>
 
-<div id="rdfadmspongermtcatr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -248,15 +248,15 @@ You can also add a new extractor cartridge:
 Shows list of available meta cartridges. They can be re-ordered by place
 of appearance, edit or deleted:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf6" class="figure">
+<div>
 
 **Figure 6.160. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf5.png)
 
@@ -272,15 +272,15 @@ of appearance, edit or deleted:
 
 You can also add a new meta cartridge:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf7" class="figure">
+<div>
 
 **Figure 6.161. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf6.png)
 
@@ -296,9 +296,9 @@ You can also add a new meta cartridge:
 
 </div>
 
-<div id="rdfadmspongerstsh" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -316,15 +316,15 @@ Shows list of available stylesheets for processing cartridges. From here
 you can manage these stylesheets by adding new, editing existing ones or
 deleting them:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf8" class="figure">
+<div>
 
 **Figure 6.162. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf7.png)
 
@@ -340,9 +340,9 @@ deleting them:
 
 </div>
 
-<div id="rdfadmspongercons" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -359,15 +359,15 @@ deleting them:
 Offers tracking cartridges exection. By default is off. When enabled,
 shows list of sessions per cartridge:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf9" class="figure">
+<div>
 
 **Figure 6.163. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf8.png)
 
@@ -383,9 +383,9 @@ shows list of sessions per cartridge:
 
 </div>
 
-<div id="rdfadmspongerconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -401,15 +401,15 @@ shows list of sessions per cartridge:
 
 Offers creation of secure endpoints for pre-defiend vitual host:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf10" class="figure">
+<div>
 
 **Figure 6.164. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf9.png)
 
@@ -427,9 +427,9 @@ Offers creation of secure endpoints for pre-defiend vitual host:
 
 </div>
 
-<div id="rdfadmstatst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -449,15 +449,15 @@ class="function">DB.DBA.RDF_VOID_STORE(graph, to_graph)</code></a> . In
 the new graph ( field "Publish to") will be saved the VoID statistics
 data when generated:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf11" class="figure">
+<div>
 
 **Figure 6.165. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf14.png)
 
@@ -471,15 +471,15 @@ data when generated:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf12" class="figure">
+<div>
 
 **Figure 6.166. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf15.png)
 
@@ -495,9 +495,9 @@ data when generated:
 
 </div>
 
-<div id="rdfadmgraphs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -514,15 +514,15 @@ data when generated:
 "Graphs" tab shows list of current graphs in the RDF Quad Store. From
 here day can be renamed or deleted:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf13" class="figure">
+<div>
 
 **Figure 6.167. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf10.png)
 
@@ -538,9 +538,9 @@ here day can be renamed or deleted:
 
 </div>
 
-<div id="rdfadmschemas" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -557,15 +557,15 @@ here day can be renamed or deleted:
 Shows list of available schemas IRI-s and offers a new schema IRI to be
 imported:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf14" class="figure">
+<div>
 
 **Figure 6.168. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf11.png)
 
@@ -581,9 +581,9 @@ imported:
 
 </div>
 
-<div id="rdfadmnamesp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -600,15 +600,15 @@ imported:
 Shows list of namespace prefixes and offers a new namespace prefix to be
 imported:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf15" class="figure">
+<div>
 
 **Figure 6.169. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf12.png)
 
@@ -624,9 +624,9 @@ imported:
 
 </div>
 
-<div id="rdfadmacl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -640,9 +640,9 @@ imported:
 
 </div>
 
-<div id="rdfadmaclsponger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -662,15 +662,15 @@ This tab is available only when the <a
 href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.3/virtuoso/cartridges_dav.vad"
 class="ulink" target="_top">cartridges_dav.vad</a> is installed.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf15_01" class="figure">
+<div>
 
 **Figure 6.170. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf19.png)
 
@@ -686,9 +686,9 @@ class="ulink" target="_top">cartridges_dav.vad</a> is installed.
 
 </div>
 
-<div id="rdfadmaclsparqlssl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -709,15 +709,15 @@ This tab is available only when the <a
 href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.3/virtuoso/policy_manager_dav.vad"
 class="ulink" target="_top">policy__manager_dav.vad</a> is installed.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf15_02" class="figure">
+<div>
 
 **Figure 6.171. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf18.png)
 
@@ -731,7 +731,7 @@ class="ulink" target="_top">policy__manager_dav.vad</a> is installed.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -769,9 +769,9 @@ with curl and SPARQL-WebID endpoint</a></p></td>
 
 </div>
 
-<div id="rdfadmviews" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -798,15 +798,15 @@ or "Object" position of a SPARQL graph pattern, en route to building a
 set of SQL compiler rules and optimizations for translating SPARQL
 queries into SQL on the fly.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf16" class="figure">
+<div>
 
 **Figure 6.172. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf13.png)
 
@@ -820,7 +820,7 @@ queries into SQL on the fly.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -855,9 +855,9 @@ over Relational Data Sources with Virtuoso.</a></p></td>
 
 </div>
 
-<div id="rdfadm_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -873,15 +873,15 @@ over Relational Data Sources with Virtuoso.</a></p></td>
 
 Offers upload to Quad Store from file or Resource URL:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf17" class="figure">
+<div>
 
 **Figure 6.173. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf16.png)
 
@@ -897,9 +897,9 @@ Offers upload to Quad Store from file or Resource URL:
 
 </div>
 
-<div id="rdfadm_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -922,15 +922,15 @@ href="http://pubsubhubbub.googlecode.com/svn/trunk/pubsubhubbub-core-0.3.html"
 class="ulink" target="_top">PubSubHubBub Protocol</a> to handle Linked
 Data by subscribing to Linked Data resource URIs.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf17_01" class="figure">
+<div>
 
 **Figure 6.174. Subscriptions (PHSB)**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Subscriptions (PHSB)](images/rdf17.png)
 
@@ -947,7 +947,7 @@ Data by subscribing to Linked Data resource URIs.
 Note: the Hub endpoint should be defined ACL in System Admin -\>
 Security -\> Access Control -\> PSH-SLL
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

@@ -1,10 +1,10 @@
-<div id="fn_charset_recode" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ charset_recode — Translate a string to another character set
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_charset_recode" class="funcsynopsis">
+<div>
 
 |                                |                                     |
 |--------------------------------|-------------------------------------|
@@ -24,7 +24,7 @@ charset_recode — Translate a string to another character set
 |                                | in `src_charset ` varchar ,         |
 |                                | in `dst_charset ` varchar `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ charset_recode — Translate a string to another character set
 
 </div>
 
-<div id="desc_charset_recode" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ string </span> ( <span class="type">NVARCHAR </span> ).
 
 </div>
 
-<div id="params_charset_recode" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82109" class="refsect2">
+<div>
 
 ### *`src_string `*
 
@@ -71,7 +71,7 @@ The input data to be converted. <span class="type">String </span> or
 
 </div>
 
-<div id="id82115" class="refsect2">
+<div>
 
 ### *`src_charset `*
 
@@ -79,7 +79,7 @@ Input data character set, <span class="type">string </span> .
 
 </div>
 
-<div id="id82120" class="refsect2">
+<div>
 
 ### dst_charset
 
@@ -89,15 +89,15 @@ The charset to convert to, <span class="type">string </span> .
 
 </div>
 
-<div id="examples_charset_recode" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_charset_define_01" class="example">
+<div>
 
 **Example 24.38. Recoding a narrow ISO-8859-1 string as UTF-8**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select cast (charset_recode ('\xA9', 'ISO-8859-1', 'UTF-8') as varbinary)
@@ -119,7 +119,7 @@ select charset_recode (N'\x410', '_WIDE_', 'ISO-8859-1')
 
 </div>
 
-<div id="seealso_charset_recode" class="refsect1">
+<div>
 
 ## See Also
 

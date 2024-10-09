@@ -1,10 +1,10 @@
-<div id="fn_http_rewrite" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_rewrite — Clears output written to a string output or to an HTTP
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_rewrite" class="funcsynopsis">
+<div>
 
 |                           |                       |
 |---------------------------|-----------------------|
 | ` `**`http_rewrite`**` (` | in `stream ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_rewrite — Clears output written to a string output or to an HTTP
 
 </div>
 
-<div id="desc_http_rewrite" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ required content length and to allow recovery from errors.
 
 </div>
 
-<div id="params_http_rewrite" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93460" class="refsect2">
+<div>
 
 ### stream
 
@@ -60,15 +60,15 @@ client stream.
 
 </div>
 
-<div id="examples_http_rewrite" class="refsect1">
+<div>
 
 ## Using http_rewrite()
 
-<div id="ex_http_rewrite" class="example">
+<div>
 
 **Example 24.178. A VSP page excerpt.**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <p>Nope. You won't see this.</p>
@@ -88,7 +88,7 @@ http ('<p>Now THIS is what you wanted to see, isn't it?</p>');
 
 </div>
 
-<div id="seealso_http_rewrite" class="refsect1">
+<div>
 
 ## See Also
 

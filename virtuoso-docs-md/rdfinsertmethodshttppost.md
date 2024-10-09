@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodshttppost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -100,7 +100,7 @@ Content-Length: 0
 Now let's check the inserted triples. Go to the sparql endpoint, i.e.
 http://example.com/sparql and:
 
-<div class="orderedlist">
+<div>
 
 1.  Enter for Default Graph URI:
 

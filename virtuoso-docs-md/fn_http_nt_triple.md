@@ -1,10 +1,10 @@
-<div id="fn_http_nt_triple" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_nt_triple — outputs next triple to ses in NT serialization.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_nt_triple" class="funcsynopsis">
+<div>
 
 |                             |                    |
 |-----------------------------|--------------------|
@@ -26,7 +26,7 @@ http_nt_triple — outputs next triple to ses in NT serialization.
 |                             | in `arg3 ` any ,   |
 |                             | in `ses ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ http_nt_triple — outputs next triple to ses in NT serialization.
 
 </div>
 
-<div id="desc_http_nt_triple" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ Outputs next triple to ses in NT serialization.
 
 </div>
 
-<div id="params_http_nt_triple" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102861" class="refsect2">
+<div>
 
 ### env
 
@@ -63,7 +63,7 @@ by the interpreter in case of any error.
 
 </div>
 
-<div id="id102866" class="refsect2">
+<div>
 
 ### arg1
 
@@ -71,7 +71,7 @@ Triple subject.
 
 </div>
 
-<div id="id102869" class="refsect2">
+<div>
 
 ### arg2
 
@@ -79,7 +79,7 @@ Triple predicate.
 
 </div>
 
-<div id="id102872" class="refsect2">
+<div>
 
 ### arg3
 
@@ -87,7 +87,7 @@ Triple object.
 
 </div>
 
-<div id="id102875" class="refsect2">
+<div>
 
 ### ses
 
@@ -97,7 +97,7 @@ Session output.
 
 </div>
 
-<div id="ret_http_nt_triple" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -105,15 +105,15 @@ Any
 
 </div>
 
-<div id="examples_http_nt_triple" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_nt_triple" class="example">
+<div>
 
 **Example 24.290. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure dump_rdftriples_to_nt(inout triples any, inout ses any)
@@ -143,7 +143,7 @@ create procedure dump_rdftriples_to_nt(inout triples any, inout ses any)
 
 </div>
 
-<div id="seealso_http_nt_triple" class="refsect1">
+<div>
 
 ## See Also
 

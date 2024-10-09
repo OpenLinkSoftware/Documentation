@@ -1,10 +1,10 @@
-<div id="vc_before_render_container" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ before-render-container — This is identical to v:before-render.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_before_render_container" class="funcsynopsis">
+<div>
 
 |                                                                                         |      |
 |-----------------------------------------------------------------------------------------|------|
 | ` <`**`before-render-container`**` >(EventHandler)</`**`before-render-container`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ before-render-container — This is identical to v:before-render.
 
 </div>
 
-<div id="vc_desc_before_render_container" class="refsect1">
+<div>
 
 ## Description
 

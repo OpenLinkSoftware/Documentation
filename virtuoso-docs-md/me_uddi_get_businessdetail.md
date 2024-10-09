@@ -1,10 +1,10 @@
-<div id="me_uddi_get_businessdetail" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ information for one or more specified *`businessEntities `*
 
 </div>
 
-<div id="syntax_uddi_get_businessdetail_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -28,11 +28,11 @@ information for one or more specified *`businessEntities `*
 
 </div>
 
-<div id="params_uddi_get_businessdetail_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id115214" class="refsect2">
+<div>
 
 ### businessKey
 
@@ -43,7 +43,7 @@ known *`businessEntity `* data.
 
 </div>
 
-<div id="ret_uddi_get_businessdetail_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -59,7 +59,7 @@ to true.
 
 </div>
 
-<div id="errors_uddi_get_businessdetail_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -67,11 +67,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id115232" class="table">
+<div>
 
-**Table 24.97. Errors signalled by uddi_get_businessDetail**
+**Table 24.96. Errors signalled by uddi_get_businessDetail**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                         | Description                                                                                                                                                                                                                       |
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

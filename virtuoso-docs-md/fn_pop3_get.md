@@ -1,10 +1,10 @@
-<div id="fn_pop3_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ pop3_get — get messages from a POP3 server
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_pop3_get_01" class="funcsynopsis">
+<div>
 
 |                            |                                     |
 |----------------------------|-------------------------------------|
@@ -27,7 +27,7 @@ pop3_get — get messages from a POP3 server
 |                            | in `command ` varchar ,             |
 |                            | in `exclude_uidl_list ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ pop3_get — get messages from a POP3 server
 
 </div>
 
-<div id="desc_pop3_get_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,11 +65,11 @@ server after retrieval.
 
 </div>
 
-<div id="params_pop3_get_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98913" class="refsect2">
+<div>
 
 ### host
 
@@ -79,7 +79,7 @@ default for port, so to connect to the standard port for POP3, use
 
 </div>
 
-<div id="id98916" class="refsect2">
+<div>
 
 ### user
 
@@ -87,7 +87,7 @@ default for port, so to connect to the standard port for POP3, use
 
 </div>
 
-<div id="id98920" class="refsect2">
+<div>
 
 ### password
 
@@ -95,7 +95,7 @@ default for port, so to connect to the standard port for POP3, use
 
 </div>
 
-<div id="id98924" class="refsect2">
+<div>
 
 ### buffer_size
 
@@ -104,7 +104,7 @@ for messages/uidls to be retrieved.
 
 </div>
 
-<div id="id98928" class="refsect2">
+<div>
 
 ### command
 
@@ -113,7 +113,7 @@ Command <span class="type">string </span> . Valid values are empty,
 
 </div>
 
-<div id="id98932" class="refsect2">
+<div>
 
 ### exclude_uidl_list
 
@@ -124,7 +124,7 @@ UIDL appears in this list will not be retrieved or deleted.
 
 </div>
 
-<div id="ret_06" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -134,15 +134,15 @@ A vector of vectors containing UIDL/Message text
 
 </div>
 
-<div id="errors_pop3_get_01" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id98943" class="table">
+<div>
 
-**Table 24.62. Errors signalled by**
+**Table 24.61. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                  | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------|-------------|
@@ -169,15 +169,15 @@ A vector of vectors containing UIDL/Message text
 
 </div>
 
-<div id="examples_pop3_get_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_pop3_get_3_01" class="example">
+<div>
 
 **Example 24.244. Get messages from remote POP3**
 
-<div class="example-contents">
+<div>
 
 This example retrieves messages from a remote POP3 server and stores
 them in a table.
@@ -240,7 +240,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_09" class="refsect1">
+<div>
 
 ## See Also
 

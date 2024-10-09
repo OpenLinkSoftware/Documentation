@@ -1,6 +1,6 @@
-<div id="scheduler" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ There is a virtuoso.ini parameter "SchedulerInterval" under
 title="[Parameters]">Parameters</a> section which defines the scheduler
 wake-up interval. Set this to 0 (the default) to disable the scheduler.
 
-<div id="replschsystables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

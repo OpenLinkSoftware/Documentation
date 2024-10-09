@@ -1,6 +1,6 @@
-<div id="ch-xa" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -51,7 +51,7 @@ manager.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -77,9 +77,9 @@ Server](ch-xa.html#xabuildtms)</span>
 
 </div>
 
-<div id="xabuildtms" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

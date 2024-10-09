@@ -1,6 +1,6 @@
-<div id="rthclrmono" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -46,7 +46,7 @@ algebraic manipulation written in C#, that class can be reused from any
 other language that supports the CLI. You could create a class in C#,
 subclass it in C++ and instantiate it in an Eiffel program.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -73,9 +73,9 @@ PROCEDURE</a> Syntax</p></td>
 
 </div>
 
-<div id="rthclrenvsetmono" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -95,7 +95,7 @@ open source implementation of the .NET Development Framework.
 Follow the steps below to configure the CLR runtime environment with
 Virtuoso:
 
-<div class="orderedlist">
+<div>
 
 1.  **Install Mono. ** The Mono package is available from the
     <a href="http://www.go-mono.com/" class="ulink" target="_top">Mono

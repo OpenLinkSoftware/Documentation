@@ -1,10 +1,10 @@
-<div id="fn_user_grant_role" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ object.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_grant_role" class="funcsynopsis">
+<div>
 
 |                              |                          |
 |------------------------------|--------------------------|
@@ -25,7 +25,7 @@ object.
 |                              | in `role ` varchar ,     |
 |                              | in `grant_opt ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ object.
 
 </div>
 
-<div id="desc_user_grant_role" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ All roles assigned to the role object will be inherited.
 
 </div>
 
-<div id="params_user_grant_role" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116551" class="refsect2">
+<div>
 
 ### name
 
@@ -58,7 +58,7 @@ The name of the security object to affect.
 
 </div>
 
-<div id="id116554" class="refsect2">
+<div>
 
 ### role
 
@@ -66,7 +66,7 @@ The name of the role (group) to be assigned to the security object.
 
 </div>
 
-<div id="id116557" class="refsect2">
+<div>
 
 ### grant_option
 
@@ -77,7 +77,7 @@ other security objects.
 
 </div>
 
-<div id="ret_user_grant_role" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,7 +85,7 @@ None
 
 </div>
 
-<div id="seealso_user_grant_role" class="refsect1">
+<div>
 
 ## See Also
 

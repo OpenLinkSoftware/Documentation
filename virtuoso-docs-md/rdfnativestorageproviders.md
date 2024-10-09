@@ -1,6 +1,6 @@
-<div id="rdfnativestorageproviders" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfnativestorageprovidersjena" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@
 
 </div>
 
-<div id="rdfnativestorageprovidersjenawhatis" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -54,9 +54,9 @@ be queried through SPARQL and updated through SPARUL.
 
 </div>
 
-<div id="rdfnativestorageprovidersjenawhatisv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -77,15 +77,15 @@ the Virtuoso RDF Quad Store. Providers are available for the latest
 <a href="http://jena.sourceforge.net/" class="ulink"
 target="_top">Jena</a> 2.6.x and 2.10.x versions.
 
-<div class="figure-float">
+<div>
 
-<div id="rdfnativestorageprovidersjena1" class="figure">
+<div>
 
 **Figure 16.185. Virtuoso Jena RDF Data Provider**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso Jena RDF Data Provider](images/ui/VirtJenaProvider.png)
 
@@ -101,9 +101,9 @@ target="_top">Jena</a> 2.6.x and 2.10.x versions.
 
 </div>
 
-<div id="rdfnativestorageprovidersjenasetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -117,9 +117,9 @@ target="_top">Jena</a> 2.6.x and 2.10.x versions.
 
 </div>
 
-<div id="rdfnativestorageprovidersjenareqfiles" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -139,7 +139,7 @@ class="ulink" target="_top">Download the latest</a> Virtuoso Jena
 Provider for your Jena framework version, Virtuoso JDBC 3 Driver, Jena
 Framework, and associated classes and sample programs.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Note:*</span>
 
@@ -170,7 +170,7 @@ Framework, and associated classes and sample programs.
 
 - Downloads:
 
-  <div class="itemizedlist">
+  <div>
 
   - Virtuoso Jena Provider JAR file, <a
     href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSDownload/virt_jena.jar"
@@ -198,9 +198,9 @@ Framework, and associated classes and sample programs.
 
 </div>
 
-<div id="rdfnativestorageprovidersjenacmsmpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -214,7 +214,7 @@ Framework, and associated classes and sample programs.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Edit the sample programs VirtuosoSPARQLExampleX.java, where X = 1
     to 9. Set the JDBC connection strings within to point to a valid
@@ -224,7 +224,7 @@ Framework, and associated classes and sample programs.
     "jdbc:virtuoso://localhost:1111/charset=UTF-8/log_enable=2"
     ```
 
-    <div class="itemizedlist">
+    <div>
 
     - charset=UTF-8 will be added by Jena provider, if it isn't in
       connection string. So now you don't need add "charset=UTF-8" to
@@ -259,9 +259,9 @@ Framework, and associated classes and sample programs.
 
 </div>
 
-<div id="rdfnativestorageprovidersjenatesting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -280,7 +280,7 @@ compiled, the Provider can be tested using the sample programs included.
 Ensure your active CLASSPATH includes full paths to all of the following
 files, before executing the example commands:
 
-<div class="itemizedlist">
+<div>
 
 - icu4j_3_4.jar
 
@@ -302,7 +302,7 @@ files, before executing the example commands:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  <a
     href="rdfnativestorageproviders.html#rdfnativestorageprovidersjenaexamples1"
@@ -411,9 +411,9 @@ files, before executing the example commands:
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -427,9 +427,9 @@ files, before executing the example commands:
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -489,9 +489,9 @@ public class VirtuosoSPARQLExample1 {
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -567,9 +567,9 @@ public class VirtuosoSPARQLExample2 {
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -665,9 +665,9 @@ SQL>
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -740,9 +740,9 @@ public class VirtuosoSPARQLExample4
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -829,9 +829,9 @@ public class VirtuosoSPARQLExample5
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -937,9 +937,9 @@ public class VirtuosoSPARQLExample6
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples7" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1033,9 +1033,9 @@ public class VirtuosoSPARQLExample7
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples8" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1121,9 +1121,9 @@ System.out.println("\nexecute: SELECT * FROM <http://test1> WHERE { ?s ?p ?o }")
 
 </div>
 
-<div id="rdfnativestorageprovidersjenaexamples9" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1228,9 +1228,9 @@ public class VirtuosoSPARQLExample9 {
 
 </div>
 
-<div id="rdfnativestorageprovidersjenajavadoc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1247,7 +1247,7 @@ public class VirtuosoSPARQLExample9 {
 Javadocs covers the complete set of classes, interfaces, and methods
 implemented by the provider:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://docs.openlinksw.com/jena/" class="ulink"
   target="_top">Javadoc API Documentation for the Jena 2.6 Provider</a>

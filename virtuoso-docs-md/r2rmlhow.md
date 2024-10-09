@@ -1,6 +1,6 @@
-<div id="r2rmlhow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,9 +27,9 @@ basically translates R2RML syntax to Virtuoso's own Linked Data Views
 syntax, which can then be executed to create the Linked Data Views
 themselves.
 
-<div id="r2rmlhowinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -49,9 +49,9 @@ class="ulink" target="_top">rdb2rdf_dav.vad</a> ) installed.
 
 </div>
 
-<div id="r2rmlhowtest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -139,7 +139,7 @@ SELECT * FROM <http://example.com/>
 WHERE {?s ?p ?o .};
 ```
 
-<div class="orderedlist">
+<div>
 
 1.  First, copy basic.sql into:
 
@@ -189,9 +189,9 @@ However, the remainder of the script will execute fine.
 
 </div>
 
-<div id="r2rmlhowexam" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -205,7 +205,7 @@ However, the remainder of the script will execute fine.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  We start by creating and populating the test table:
 

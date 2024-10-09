@@ -1,6 +1,6 @@
-<div id="wordranges" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,11 +22,11 @@ positions, expressed as the ordinal number of the first and last word of
 each match of the term in question. The ordinal numbers are counted from
 0, skipping noise words.
 
-<div id="id66845" class="example">
+<div>
 
 **Example 20.2. Word Ranges**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select dbg_obj_print (r), * from ftt

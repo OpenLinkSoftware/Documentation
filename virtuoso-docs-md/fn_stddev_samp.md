@@ -1,10 +1,10 @@
-<div id="fn_stddev_samp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ STDDEV_SAMP — Returns the cumulative sample standard deviation.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_stddev_samp" class="funcsynopsis">
+<div>
 
 |                                 |                     |
 |---------------------------------|---------------------|
 | `numeric `**`STDDEV_SAMP`**` (` | in `expr ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ STDDEV_SAMP — Returns the cumulative sample standard deviation.
 
 </div>
 
-<div id="desc_stddev_samp" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ VAR_SAMP returns null, this function returns null.
 
 </div>
 
-<div id="params_stddev_samp" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78257" class="refsect2">
+<div>
 
 ### expr
 
@@ -58,7 +58,7 @@ Number expression.
 
 </div>
 
-<div id="ret_stddev_samp" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -67,7 +67,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_stddev_samp" class="refsect1">
+<div>
 
 ## See Also
 

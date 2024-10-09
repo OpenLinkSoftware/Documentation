@@ -1,10 +1,10 @@
-<div id="fn_ses_connect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ses_connect — Opens a TCP session and returns its handle.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ses_connect" class="funcsynopsis">
+<div>
 
 |                                        |                                  |
 |----------------------------------------|----------------------------------|
 | `session_handle `**`ses_connect`**` (` | in `host_and_port ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ses_connect — Opens a TCP session and returns its handle.
 
 </div>
 
-<div id="desc_ses_connect" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ host. It returns a special datatype which represents the session handle.
 
 </div>
 
-<div id="params_ses_connect" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109585" class="refsect2">
+<div>
 
 ### host_and_port
 
@@ -59,7 +59,7 @@ supplied.
 
 </div>
 
-<div id="ret_ses_connect" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -69,7 +69,7 @@ is an internal type it cannot be stored.
 
 </div>
 
-<div id="seealso_ses_connect" class="refsect1">
+<div>
 
 ## See Also
 

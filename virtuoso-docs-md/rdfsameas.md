@@ -1,6 +1,6 @@
-<div id="rdfsameas" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -99,9 +99,9 @@ the same-as expansion will take all synonyms into account.
 For getting the complete entailment of same-as, a forward chaining
 approach should be used, effectively asserting all the implied triples.
 
-<div id="rdfsameasexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

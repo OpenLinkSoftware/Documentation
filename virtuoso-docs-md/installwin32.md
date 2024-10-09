@@ -1,6 +1,6 @@
-<div id="installwin32" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="b4ustart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,9 +33,9 @@
 To ensure a smooth installation, please review the following checklist
 before you start the setup program.
 
-<div id="haveudld" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,7 +55,7 @@ Virtuoso from the OpenLink web site. The URL is
 target="_top">http://www.openlinksw.com</a> . When you visit the site,
 select "Download & Evaluation".
 
-<div class="orderedlist">
+<div>
 
 1.  Select product "OpenLink Virtuoso: Personal Edition "
 
@@ -81,9 +81,9 @@ select "Download & Evaluation".
 
 </div>
 
-<div id="douhavelic" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -104,9 +104,9 @@ file location.
 
 </div>
 
-<div id="reinstvirt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -136,7 +136,7 @@ virtuoso-odbc-t.exe +instance myinstance +service stop
 virtuoso-odbc-t.exe +instance anotherinstance +service stop
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                            |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -153,9 +153,9 @@ virtuoso +service list
 
 </div>
 
-<div id="allocoftcpports" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -171,11 +171,11 @@ virtuoso +service list
 
 The Default database have the following port allocations:
 
-<div id="id3858" class="table">
+<div>
 
 **Table 2.2. Port Usage**
 
-<div class="table-contents">
+<div>
 
 | Port | Used by                                                           |
 |------|-------------------------------------------------------------------|
@@ -207,9 +207,9 @@ netstat -an | more
 
 </div>
 
-<div id="prevworkodbcdsn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

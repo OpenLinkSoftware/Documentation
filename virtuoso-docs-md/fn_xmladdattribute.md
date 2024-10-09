@@ -1,10 +1,10 @@
-<div id="fn_xmladdattribute" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ document
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmladdattribute" class="funcsynopsis">
+<div>
 
 |                                     |                           |
 |-------------------------------------|---------------------------|
@@ -26,7 +26,7 @@ document
 |                                     | in `attr_name ` any ,     |
 |                                     | in `attr_value ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ document
 
 </div>
 
-<div id="desc_xmladdattribute" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ attribute.
 
 </div>
 
-<div id="params_xmladdattribute" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122064" class="refsect2">
+<div>
 
 ### source
 
@@ -72,7 +72,7 @@ The XML tree entity to change.
 
 </div>
 
-<div id="id122067" class="refsect2">
+<div>
 
 ### mode
 
@@ -80,7 +80,7 @@ The mode of resolving duplicate attribute names.
 
 </div>
 
-<div id="id122070" class="refsect2">
+<div>
 
 ### attr_name
 
@@ -89,7 +89,7 @@ both name and value of an attribute.
 
 </div>
 
-<div id="id122073" class="refsect2">
+<div>
 
 ### attr_value
 
@@ -99,7 +99,7 @@ The value of a new attribute
 
 </div>
 
-<div id="ret_xmladdattribute" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -111,15 +111,15 @@ replaced.
 
 </div>
 
-<div id="examples_xmladdattribute" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmladdattribute" class="example">
+<div>
 
 **Example 24.497. Different modes of calling XMLAddAttribute**
 
-<div class="example-contents">
+<div>
 
 The sample procedure contains three calls of `XMLAddAttribute ` with
 different values of `mode` , for "insert into", "insert soft" and
@@ -181,7 +181,7 @@ The document after modification:   <a><b attrX="xNEW" attrY="y" /></a>
 
 </div>
 
-<div id="seealso_xmladdattribute" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_http_pending_req" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_pending_req — return array describing running VSP threads
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_pending_req" class="funcsynopsis">
+<div>
 
 |                               |      |
 |-------------------------------|------|
 | ` `**`http_pending_req`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_pending_req — return array describing running VSP threads
 
 </div>
 
-<div id="desc_http_pending_req" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ Request ID. These values can be used with the `http_kill()` function.
 
 </div>
 
-<div id="ret_http_pending_req" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -56,15 +56,15 @@ The request ID's can be used to terminate requests with http_kill.
 
 </div>
 
-<div id="errors_http_pending_req" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id93225" class="table">
+<div>
 
-**Table 24.43. Errors signalled by `http_pending_req `**
+**Table 24.42. Errors signalled by `http_pending_req `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                        | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------|-------------|
@@ -78,15 +78,15 @@ The request ID's can be used to terminate requests with http_kill.
 
 </div>
 
-<div id="examples_http_pending_req" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_pending_req" class="example">
+<div>
 
 **Example 24.173. Retrieving a list of VSP processes**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare ps any;
@@ -104,7 +104,7 @@ ps := http_pending_req ();
 
 </div>
 
-<div id="seealso_http_pending_req" class="refsect1">
+<div>
 
 ## See Also
 

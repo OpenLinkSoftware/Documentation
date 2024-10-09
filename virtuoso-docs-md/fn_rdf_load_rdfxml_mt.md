@@ -1,10 +1,10 @@
-<div id="fn_rdf_load_rdfxml_mt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ a sequence of separate RDF triples.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_load_rdfxml_mt" class="funcsynopsis">
+<div>
 
 |                                        |                                  |
 |----------------------------------------|----------------------------------|
@@ -28,7 +28,7 @@ a sequence of separate RDF triples.
 |                                        | in `threads ` integer ,          |
 |                                        | in `transactional ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ a sequence of separate RDF triples.
 
 </div>
 
-<div id="desc_rdf_load_rdfxml_mt" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ does not wipe out the results.
 
 </div>
 
-<div id="params_rdf_load_rdfxml_mt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100691" class="refsect2">
+<div>
 
 ### strg
 
@@ -63,7 +63,7 @@ text of the resource.
 
 </div>
 
-<div id="id100694" class="refsect2">
+<div>
 
 ### base
 
@@ -71,7 +71,7 @@ base IRI to resolve relative IRIs to absolute.
 
 </div>
 
-<div id="id100697" class="refsect2">
+<div>
 
 ### graph
 
@@ -79,7 +79,7 @@ target graph IRI, parsed triples will appear in that graph.
 
 </div>
 
-<div id="id100700" class="refsect2">
+<div>
 
 ### log_mode
 
@@ -98,7 +98,7 @@ backup right before the loading.
 
 </div>
 
-<div id="id100703" class="refsect2">
+<div>
 
 ### threads
 
@@ -111,7 +111,7 @@ happen at the same time.
 
 </div>
 
-<div id="id100709" class="refsect2">
+<div>
 
 ### transactional
 
@@ -122,7 +122,7 @@ be turned on by setting it to "1".
 
 </div>
 
-<div id="ret_rdf_load_rdfxml_mt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -130,15 +130,15 @@ The return value is not specified and may be changed in future versions.
 
 </div>
 
-<div id="examples_rdf_load_rdfxml_mt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_load_rdfxml_mt" class="example">
+<div>
 
 **Example 24.262. Usage Example**
 
-<div class="example-contents">
+<div>
 
 The following example demonstrates importing data from the rdf file
 resource Kingsley_Idehen.rdf which can be downloaded from <a
@@ -256,7 +256,7 @@ http://www.w3.org/People/Berners-Lee/card#i   http://xmlns.com/foaf/0.1/knows   
 
 </div>
 
-<div id="seealso_rdf_load_rdfxml_mt" class="refsect1">
+<div>
 
 ## See Also
 

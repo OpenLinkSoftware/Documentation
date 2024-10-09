@@ -1,10 +1,10 @@
-<div id="fn_cfg_section_name" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ cfg_section_name — returns INI file section name
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cfg_section_name" class="funcsynopsis">
+<div>
 
 |                               |                          |
 |-------------------------------|--------------------------|
 | ` `**`cfg_section_name`**` (` | in `path ` varchar ,     |
 |                               | in `index ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ cfg_section_name — returns INI file section name
 
 </div>
 
-<div id="desc_section_name" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ otherwise returns zero on error.
 
 </div>
 
-<div id="params_section_name" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81889" class="refsect2">
+<div>
 
 ### path
 
@@ -55,7 +55,7 @@ Name of the INI file.
 
 </div>
 
-<div id="id81892" class="refsect2">
+<div>
 
 ### index
 
@@ -65,7 +65,7 @@ Zero based index that references a section.
 
 </div>
 
-<div id="ret_section_name" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -73,15 +73,15 @@ An <span class="type">varchar </span> containing the name of section.
 
 </div>
 
-<div id="examples_section_name" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_cfg_section_name" class="example">
+<div>
 
 **Example 24.35. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Get the second section name from the current virtuoso.ini file.
 
@@ -102,7 +102,7 @@ Parameters
 
 </div>
 
-<div id="seealso_section_name" class="refsect1">
+<div>
 
 ## See Also
 

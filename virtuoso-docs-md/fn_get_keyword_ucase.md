@@ -1,10 +1,10 @@
-<div id="fn_get_keyword_ucase" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ get_keyword_ucase — Find a value in keyword vector (search uppercase)
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_get_keyword_ucase" class="funcsynopsis">
+<div>
 
 |                                |                            |
 |--------------------------------|----------------------------|
@@ -25,7 +25,7 @@ get_keyword_ucase — Find a value in keyword vector (search uppercase)
 |                                | `default ` anything ,      |
 |                                | `no_copy ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ get_keyword_ucase — Find a value in keyword vector (search uppercase)
 
 </div>
 
-<div id="desc_get_keyword_ucase" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,7 +46,7 @@ performed case insensitively.
 
 </div>
 
-<div id="seealso_get_keyword_ucase" class="refsect1">
+<div>
 
 ## See Also
 

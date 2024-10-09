@@ -1,10 +1,10 @@
-<div id="fn_md5_init" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ md5_init — returns the string serialization of a new md5 context
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_md5_init" class="funcsynopsis">
+<div>
 
 |                                               |      |
 |-----------------------------------------------|------|
 | `new md5 checksum context `**`md5_init`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ md5_init — returns the string serialization of a new md5 context
 
 </div>
 
-<div id="desc_04" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,7 +41,7 @@ returns this representation. Should be used with md5_update/md5_final.
 
 </div>
 
-<div id="seealso_md5_init" class="refsect1">
+<div>
 
 ## See Also
 

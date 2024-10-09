@@ -1,10 +1,10 @@
-<div id="fn_serialize_to_utf8_xml" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ representation.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_serialize_to_utf8_xml" class="funcsynopsis">
+<div>
 
 |                                    |                      |
 |------------------------------------|----------------------|
 | ` `**`serialize_to_UTF8_xml`**` (` | in `value ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ representation.
 
 </div>
 
-<div id="desc_serialize_to_utf8_xml" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ UTF-8 and is returned.
 
 </div>
 
-<div id="params_serialize_to_utf8_xml" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109493" class="refsect2">
+<div>
 
 ### value
 
@@ -75,7 +75,7 @@ representation.
 
 </div>
 
-<div id="ret_serialize_to_utf8_xml" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,15 +83,15 @@ UTF-8 string or NULL.
 
 </div>
 
-<div id="examples_serialize_to_utf8_xml" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_serialize_to_utf8_xml" class="example">
+<div>
 
 **Example 24.369. UTF-8 encoding of non-ASCII characters**
 
-<div class="example-contents">
+<div>
 
 A sample document is parsed and the resulting entity is serialized to
 UTF-8 string.
@@ -113,7 +113,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_serialize_to_utf8_xml" class="refsect1">
+<div>
 
 ## See Also
 

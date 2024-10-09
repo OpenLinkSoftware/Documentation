@@ -1,6 +1,6 @@
-<div id="vdbengineing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -92,9 +92,9 @@ defined as not nullable in the Ingres database schema before attempting
 to generate an EDM. In the case of the Ingres database all tables are
 not nullable, thus this should not be an issue in this case.
 
-<div id="vdbengineinginst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -118,7 +118,7 @@ ODBC Driver can be used.
 Installation instructions for the OpenLink ODBC Driver for Ingres are
 available from:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC"

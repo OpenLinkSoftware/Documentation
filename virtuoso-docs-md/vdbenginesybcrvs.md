@@ -1,6 +1,6 @@
-<div id="vdbenginesybcrvs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the Sybase pubs2 database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora1" class="figure">
+    <div>
 
     **Figure 8.336. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the Sybase pubs2 database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_10" class="figure">
+    <div>
 
     **Figure 8.337. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the Sybase pubs2 database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora2" class="figure">
+    <div>
 
     **Figure 8.338. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/eora2.png)
 
@@ -137,15 +137,15 @@ the Sybase pubs2 database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora3" class="figure">
+    <div>
 
     **Figure 8.339. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/eora3.png)
 
@@ -161,15 +161,15 @@ the Sybase pubs2 database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora4" class="figure">
+    <div>
 
     **Figure 8.340. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the Sybase pubs2 database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora5" class="figure">
+    <div>
 
     **Figure 8.341. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/eora5.png)
 
@@ -241,15 +241,15 @@ the Sybase pubs2 database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora6" class="figure">
+    <div>
 
     **Figure 8.342. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the Sybase pubs2 database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora7" class="figure">
+    <div>
 
     **Figure 8.343. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the Sybase pubs2 database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora8" class="figure">
+    <div>
 
     **Figure 8.344. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the Sybase pubs2 database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora9" class="figure">
+    <div>
 
     **Figure 8.345. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the Sybase pubs2 database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora10" class="figure">
+    <div>
 
     **Figure 8.346. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/esora10.png)
 
@@ -405,15 +405,15 @@ the Sybase pubs2 database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora11" class="figure">
+    <div>
 
     **Figure 8.347. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -442,15 +442,15 @@ the Sybase pubs2 database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora12" class="figure">
+    <div>
 
     **Figure 8.348. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/esora12.png)
 
@@ -487,15 +487,15 @@ the Sybase pubs2 database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora13" class="figure">
+    <div>
 
     **Figure 8.349. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/esora13.png)
 
@@ -516,15 +516,15 @@ the Sybase pubs2 database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="esora14" class="figure">
+    <div>
 
     **Figure 8.350. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/esora14.png)
 

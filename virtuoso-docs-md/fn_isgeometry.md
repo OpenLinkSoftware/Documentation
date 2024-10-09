@@ -1,10 +1,10 @@
-<div id="fn_isgeometry" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isgeometry — Returns 1 if the argument is a geometry.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isgeometry" class="funcsynopsis">
+<div>
 
 |                         |                  |
 |-------------------------|------------------|
 | ` `**`isgeometry`**` (` | in `x ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isgeometry — Returns 1 if the argument is a geometry.
 
 </div>
 
-<div id="desc_isgeometry" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Returns 1 if the argument is a geometry.
 
 </div>
 
-<div id="params_isgeometry" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id91437" class="refsect2">
+<div>
 
 ### x
 
@@ -54,7 +54,7 @@ The geometry value.
 
 </div>
 
-<div id="ret_isgeometry" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ Returns int.
 
 </div>
 
-<div id="examples_isgeometry" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_isgeometry" class="example">
+<div>
 
 **Example 24.147. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SELECT isgeometry(st_point(0, 52));
@@ -113,7 +113,7 @@ No. of rows in result: 10
 
 </div>
 
-<div id="seealso_isgeometry" class="refsect1">
+<div>
 
 ## See Also
 

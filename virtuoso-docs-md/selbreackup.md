@@ -1,6 +1,6 @@
-<div id="selbreackup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,11 +59,11 @@ Breakup operates equally well on local and remote tables. Breakup is
 never passed on to a remote but the FROM of a breakup select can consist
 of tables from any source.
 
-<div id="id34048" class="example">
+<div>
 
 **Example 9.36. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select * from (select breakup (a.row_no, b.fi2) (b.row_no, a.fi3 where a.fi3 is not null)

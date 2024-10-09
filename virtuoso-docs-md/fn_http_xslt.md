@@ -1,10 +1,10 @@
-<div id="fn_http_xslt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ http_xslt — applies an XSLT stylesheet to the output of a VSP page
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_xslt" class="funcsynopsis">
+<div>
 
 |                        |                          |
 |------------------------|--------------------------|
 | ` `**`http_xslt`**` (` | in `xslt_uri ` varchar , |
 |                        | in `params ` any `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ http_xslt — applies an XSLT stylesheet to the output of a VSP page
 
 </div>
 
-<div id="desc_http_xslt" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,11 +57,11 @@ will control the Content-Type sent to the user agent.
 
 </div>
 
-<div id="params_http_xslt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93774" class="refsect2">
+<div>
 
 ### xslt_uri
 
@@ -69,7 +69,7 @@ Absolute URI of the XSL stylesheet
 
 </div>
 
-<div id="id93777" class="refsect2">
+<div>
 
 ### params
 
@@ -79,15 +79,15 @@ Even length array of name/value pairs.
 
 </div>
 
-<div id="examples_http_xslt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_xslt" class="example">
+<div>
 
 **Example 24.183. Performing XSLT Transformation of VSP Output**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp

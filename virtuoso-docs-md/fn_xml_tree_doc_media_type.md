@@ -1,10 +1,10 @@
-<div id="fn_xml_tree_doc_media_type" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xml_tree_doc_media_type
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_tree_doc_media_type" class="funcsynopsis">
+<div>
 
 |                                             |                           |
 |---------------------------------------------|---------------------------|
 | `varchar `**`xml_tree_doc_media_type`**` (` | in `xml_entity ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xml_tree_doc_media_type
 
 </div>
 
-<div id="desc_xml_tree_doc_media_type" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ return a string containing the media-type.
 
 </div>
 
-<div id="params_xml_tree_doc_media_type" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123487" class="refsect2">
+<div>
 
 ### xml_entity
 
@@ -58,7 +58,7 @@ An XML entity such as that returned by the xslt() function.
 
 </div>
 
-<div id="ret_xml_tree_doc_media_type" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -76,7 +76,7 @@ on the \<xsl:output "method" attribute are:
 
 </div>
 
-<div id="errors_xml_tree_doc_media_type" class="refsect1">
+<div>
 
 ## Errors
 
@@ -88,15 +88,15 @@ This function can generate the following errors:
 
 </div>
 
-<div id="examples_xml_tree_doc_media_type" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_tree_doc_media_type" class="example">
+<div>
 
 **Example 24.519. Assessing the media type**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 -- x.xsl --
@@ -129,7 +129,7 @@ text/plain
 
 </div>
 
-<div id="seealso_xml_tree_doc_media_type" class="refsect1">
+<div>
 
 ## See Also
 

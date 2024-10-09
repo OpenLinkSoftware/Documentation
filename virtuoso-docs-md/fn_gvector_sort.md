@@ -1,10 +1,10 @@
-<div id="fn_gvector_sort" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ gvector_sort — Performs quicksort of a given array.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_gvector_sort" class="funcsynopsis">
+<div>
 
 |                           |                                   |
 |---------------------------|-----------------------------------|
@@ -25,7 +25,7 @@ gvector_sort — Performs quicksort of a given array.
 |                           | in `key_idx_in_group ` integer ,  |
 |                           | in `sort_ascending ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ gvector_sort — Performs quicksort of a given array.
 
 </div>
 
-<div id="desc_gvector_sort" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,11 +65,11 @@ Similarly, *`elements_in_block `* is 2 for arrays like "lines" or
 
 </div>
 
-<div id="params_gvector_sort" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90225" class="refsect2">
+<div>
 
 ### data
 
@@ -77,7 +77,7 @@ A group vector (gvector) to sort.
 
 </div>
 
-<div id="id90228" class="refsect2">
+<div>
 
 ### elements_in_group
 
@@ -86,7 +86,7 @@ range 1 to 1024.
 
 </div>
 
-<div id="id90231" class="refsect2">
+<div>
 
 ### key_idx_in_group
 
@@ -95,7 +95,7 @@ less than *`elements_in_group `* .
 
 </div>
 
-<div id="id90235" class="refsect2">
+<div>
 
 ### sort_ascending
 
@@ -105,7 +105,7 @@ Direction of sorting, nonzero for ascending sort, zero for descending.
 
 </div>
 
-<div id="ret_gvector_sort" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -113,7 +113,7 @@ The function returns number of groups in the *`data `* vector .
 
 </div>
 
-<div id="seealso_gvector_sort" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="installnetriadd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ The second example shows how to display IRIs from the Linked Data Views
 of the demo data. The IRIs are used to create hyperlinks that are the
 starting point for exploring the linked data.
 
-<div id="installnetriaddpreq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,7 +42,7 @@ starting point for exploring the linked data.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  The example assumes that you have a local Virtuoso server with the
     Northwind demo database installed. If the demo database is not

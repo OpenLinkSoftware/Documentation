@@ -1,10 +1,10 @@
-<div id="fn_log10" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ log10 — Calculate 10-based logarithms
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_log10" class="funcsynopsis">
+<div>
 
 |                    |                               |
 |--------------------|-------------------------------|
 | ` `**`log10`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ log10 — Calculate 10-based logarithms
 
 </div>
 
-<div id="desc_log10" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ it as a IEEE 64-bit float.
 
 </div>
 
-<div id="params_log10" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95871" class="refsect2">
+<div>
 
 ### x
 
@@ -55,7 +55,7 @@ it as a IEEE 64-bit float.
 
 </div>
 
-<div id="ret_log10" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -63,15 +63,15 @@ Double precision.
 
 </div>
 
-<div id="examples_log10" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_log10" class="example">
+<div>
 
 **Example 24.208. Simple Examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select concat ('the LOG10 of 0.513513 is: ', cast (log10 (0.513513) as varchar));
@@ -92,7 +92,7 @@ the LOG10 of 0.513513 is: -0.289449
 
 </div>
 
-<div id="seealso_04" class="refsect1">
+<div>
 
 ## See Also
 

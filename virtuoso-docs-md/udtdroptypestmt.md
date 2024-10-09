@@ -1,6 +1,6 @@
-<div id="udtdroptypestmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,11 +25,11 @@ references cannot be dropped by a DROP TYPE.
 The DROP TYPE statement can be used only for dropping types that are not
 referenced in another type's UNDER statement.
 
-<div id="ex_udtdroptype" class="example">
+<div>
 
 **Example 9.5. Dropping a user-defined type**
 
-<div class="example-contents">
+<div>
 
 Dropping the subtype from the previous section.
 

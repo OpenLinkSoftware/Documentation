@@ -1,6 +1,6 @@
-<div id="vwssaccounting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

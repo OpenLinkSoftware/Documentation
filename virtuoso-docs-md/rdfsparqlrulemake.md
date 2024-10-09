@@ -1,6 +1,6 @@
-<div id="rdfsparqlrulemake" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

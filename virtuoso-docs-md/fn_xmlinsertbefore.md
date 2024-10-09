@@ -1,10 +1,10 @@
-<div id="fn_xmlinsertbefore" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ before the node specified by given entity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlinsertbefore" class="funcsynopsis">
+<div>
 
 |                              |                           |
 |------------------------------|---------------------------|
@@ -27,7 +27,7 @@ before the node specified by given entity.
 |                              | `... ` ,                  |
 |                              | in `insertionN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ before the node specified by given entity.
 
 </div>
 
-<div id="desc_xmlinsertbefore" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ be used in the rest of caller procedure.
 
 </div>
 
-<div id="params_xmlinsertbefore" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122530" class="refsect2">
+<div>
 
 ### source
 
@@ -75,7 +75,7 @@ in DOM Style</a> for details).
 
 </div>
 
-<div id="id122534" class="refsect2">
+<div>
 
 ### parameterI
 
@@ -85,7 +85,7 @@ The value to be added as as child node of *`source `* .
 
 </div>
 
-<div id="ret_xmlinsertbefore" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,15 +93,15 @@ The function returns NULL.
 
 </div>
 
-<div id="examples_xmlinsertbefore" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlinsertbefore" class="example">
+<div>
 
 **Example 24.505. XMLInsertBefore in a Virtuoso/PL procedure**
 
-<div class="example-contents">
+<div>
 
 The sample procedure contains two calls of `XMLInsertBefore ` . First
 call insert two new element nodes just before the given node; second
@@ -158,7 +158,7 @@ The original node is updated              Hello, world!
 
 </div>
 
-<div id="seealso_xmlinsertbefore" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="sqlreffastphraseexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

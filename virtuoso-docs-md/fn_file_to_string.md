@@ -1,10 +1,10 @@
-<div id="fn_file_to_string" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ file_to_string — returns the contents of a file as a varchar
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_to_string" class="funcsynopsis">
+<div>
 
 |                                    |                         |
 |------------------------------------|-------------------------|
 | `varchar `**`file_to_string`**` (` | in `path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ file_to_string — returns the contents of a file as a varchar
 
 </div>
 
-<div id="desc_file_to_string" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ database server.
 
 </div>
 
-<div id="params_file_to_string" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88943" class="refsect2">
+<div>
 
 ### path
 
@@ -58,7 +58,7 @@ Path name of the file to read.
 
 </div>
 
-<div id="errors_file_to_string" class="refsect1">
+<div>
 
 ## Errors
 

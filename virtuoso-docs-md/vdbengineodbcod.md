@@ -1,6 +1,6 @@
-<div id="vdbengineodbcod" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -98,9 +98,9 @@ before attempting to generate an EDM. In the case of the ODBC to ODBC
 Bridge Virtuoso Northwind Demo database all tables are not nullable,
 thus this should not be an issue in this case.
 
-<div id="vdbengineodbcodinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -127,9 +127,9 @@ href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigO
 class="ulink" target="_top">Product Installation &amp; Basic
 Configuration (ODBC)</a>
 
-<div id="vdbengineodbcodinstconfvsr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -143,7 +143,7 @@ Configuration (ODBC)</a>
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  <a href="ch-accessinterfaces.html#virtclientrefinstallandconfigvirt"
     class="link"

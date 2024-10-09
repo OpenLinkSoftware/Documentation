@@ -1,6 +1,6 @@
-<div id="installwfasgetstart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,15 +50,15 @@ ensured that the "SPARQL_SELECT" and "SPARQL_SPONGE" roles are assigned
 to this user, which can be done via the Virtuoso Conductor in the
 "System Admin" -\> "User Accounts" tab.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf1" class="figure">
+<div>
 
 **Figure 2.136. SPARQL_SPONGE**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SPARQL_SPONGE](images/ui/sparqlwinf1.png)
 
@@ -75,7 +75,7 @@ to this user, which can be done via the Virtuoso Conductor in the
 <span class="emphasis">*Step 2 - Create a simple grid form in Visual
 Studio*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Open
 
@@ -107,15 +107,15 @@ Studio*</span>
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf2" class="figure">
+    <div>
 
     **Figure 2.137. Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source](images/ui/sparqlwinf2.png)
 
@@ -146,15 +146,15 @@ Studio*</span>
 
     and select sparqlview.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf3" class="figure">
+    <div>
 
     **Figure 2.138. Data Source Configuration Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Configuration Wizard](images/ui/sparqlwinf3.png)
 
@@ -198,15 +198,15 @@ Studio*</span>
 
     to Blue.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf4" class="figure">
+    <div>
 
     **Figure 2.139. CellStyleBuilder**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![CellStyleBuilder](images/ui/sparqlwinf4.png)
 
@@ -295,7 +295,7 @@ at the top of the file.
 <span class="emphasis">*Step 5 - Create a class to handle exploring the
 RDF data.*</span>
 
-<div class="itemizedlist">
+<div>
 
 - Add a new C# class to the project called ExtendedStringHandler, by
   Right clicking on RDFDemo in the
@@ -477,7 +477,7 @@ the query results.
 <span class="emphasis">*Step 6 - Add a new DataSet to hold the query
 results.*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Right click RDFDemo in the
 
@@ -493,15 +493,15 @@ results.*</span>
 
     DescribeDataSet.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf5" class="figure">
+    <div>
 
     **Figure 2.140. Add a new DataSet**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add a new DataSet](images/ui/sparqlwinf5.png)
 
@@ -543,15 +543,15 @@ results.*</span>
 
     of each column to System.Object.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf6" class="figure">
+    <div>
 
     **Figure 2.141. Add two columns**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add two columns](images/ui/sparqlwinf6.png)
 
@@ -571,15 +571,15 @@ results.*</span>
 
 You should see a form displaying all the Northwind customers, like this.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf7" class="figure">
+<div>
 
 **Figure 2.142. Northwind customers**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Northwind customers](images/ui/sparqlwinf7.png)
 
@@ -596,15 +596,15 @@ You should see a form displaying all the Northwind customers, like this.
 When any customer is clicked it opens a new form showing customer
 details.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf8" class="figure">
+<div>
 
 **Figure 2.143. Customer details**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Customer details](images/ui/sparqlwinf8.png)
 
@@ -621,15 +621,15 @@ details.
 Clicking on the links in the new form allows you to drill down further
 to get order, product, location details etc.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf9" class="figure">
+<div>
 
 **Figure 2.144. Order, product, location details**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Order, product, location details](images/ui/sparqlwinf9.png)
 
@@ -645,15 +645,15 @@ to get order, product, location details etc.
 
 and
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf10" class="figure">
+<div>
 
 **Figure 2.145. Order, product, location details**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Order, product, location details](images/ui/sparqlwinf10.png)
 

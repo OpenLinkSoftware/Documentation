@@ -1,10 +1,10 @@
-<div id="xpf_number" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ number — Converts its argument to a number.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_number" class="funcsynopsis">
+<div>
 
 |                           |                 |
 |---------------------------|-----------------|
 | `number `**`number`**` (` | `obj ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,13 +32,13 @@ number — Converts its argument to a number.
 
 </div>
 
-<div id="xpf_desc_number" class="refsect1">
+<div>
 
 ## Description
 
 The number function converts its argument to a number as follows:
 
-<div class="itemizedlist">
+<div>
 
 - A string that consists of decimal number and optional whitespaces is
   converted to the number recorded. Any other string is converted to NaN
@@ -66,11 +66,11 @@ node as its only member.
 
 </div>
 
-<div id="xpf_params_number" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128410" class="refsect2">
+<div>
 
 ### obj
 
@@ -80,7 +80,7 @@ Value to be converted to a number.
 
 </div>
 
-<div id="xpf_ret_number" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -88,15 +88,15 @@ Number
 
 </div>
 
-<div id="xpf_examples_number" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_number" class="example">
+<div>
 
 **Example 24.607. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 number(' 3.1415926 ')
@@ -110,7 +110,7 @@ number(' 3.1415926 ')
 
 </div>
 
-<div id="xpf_seealso_number" class="refsect1">
+<div>
 
 ## See Also
 

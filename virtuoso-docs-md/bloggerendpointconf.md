@@ -1,6 +1,6 @@
-<div id="bloggerendpointconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,13 +20,13 @@ MoveableType, Atom) ability, which requires a mapping to the SOAP
 endpoint and grants to use the blogger API. This can be done in two
 ways:
 
-<div class="orderedlist">
+<div>
 
 1.  **Using the graphical Server Administration Interface. ** You can
     use your web browser to configure a virtual directory based on the
     "XML-RPC link" template and with bloggerAPI enabled:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Open a web browser on the Administration User Interface and
         navigate to: Internet Domains; HTTP Virtual Directories; Edit
@@ -46,7 +46,7 @@ ways:
 
     </div>
 
-    <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div>
 
     <table data-border="0" data-summary="Tip: See Also:">
     <colgroup>
@@ -62,11 +62,11 @@ ways:
     <tr class="even">
     <td style="text-align: left;" data-valign="top"><p><a
     href="admui.internetdomains.html#httpvirtualdirs" class="link"
-    shape="rect" title="HTTP Virtual Directories">Virtual Directory
-    Administration UI</a></p>
-    <p><a href="fn_vhost_define.html" class="link" shape="rect"
+    title="HTTP Virtual Directories">Virtual Directory Administration
+    UI</a></p>
+    <p><a href="fn_vhost_define.html" class="link"
     title="VHOST_DEFINE">vhost_define()</a></p>
-    <p><a href="fn_vhost_remove.html" class="link" shape="rect"
+    <p><a href="fn_vhost_remove.html" class="link"
     title="VHOST_REMOVE">vhost_remove()</a></p></td>
     </tr>
     </tbody>
@@ -123,7 +123,7 @@ ways:
     Where "\<SQL user for execution\>" is an existing SQL user account
     other than dba.
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div>
 
     |                              |                                                                                                                                                                                                                                                                                  |
     |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

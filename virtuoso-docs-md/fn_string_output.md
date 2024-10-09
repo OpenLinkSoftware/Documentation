@@ -1,10 +1,10 @@
-<div id="fn_string_output" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ string_output — make a string output stream
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_string_output" class="funcsynopsis">
+<div>
 
 |                            |                              |
 |----------------------------|------------------------------|
 | ` `**`string_output`**` (` | in `threshold ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ string_output — make a string output stream
 
 </div>
 
-<div id="desc_33" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,11 +65,11 @@ It can be passed by reference (OUT, INOUT parameter.)
 
 </div>
 
-<div id="params_string_output" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112338" class="refsect2">
+<div>
 
 ### threshold
 
@@ -80,15 +80,15 @@ temp directory specified by 'TempSesDir' INI parameter.
 
 </div>
 
-<div id="examples_05_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_string_output" class="example">
+<div>
 
 **Example 24.407. Handling string output streams**
 
-<div class="example-contents">
+<div>
 
 This example takes a string as an argument, creates a new string output
 stream, writes the string into the stream and inserts stream contents to
@@ -158,7 +158,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_15" class="refsect1">
+<div>
 
 ## See Also
 

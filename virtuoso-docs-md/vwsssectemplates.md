@@ -1,6 +1,6 @@
-<div id="vwsssectemplates" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ resolve the key automatically, so there is no need to specify how the
 key instance will be obtained, hence no relation to "WSS-Key" from SOAP
 options section (above).
 
-<div id="vwssdefaulttemplate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,11 +79,11 @@ In other words, the 'Body' of the SOAP message, part of the routing
 header elements ('action,'to','id') and, if it exists, Timestamp headers
 ('Created', 'Expires').
 
-<div id="vwssusingdefaulttemplate" class="example">
+<div>
 
 **Example 17.28. Using default templates**
 
-<div class="example-contents">
+<div>
 
 This example demonstrates the use of the default template mechanism and
 X.509 certificate with RSA key:

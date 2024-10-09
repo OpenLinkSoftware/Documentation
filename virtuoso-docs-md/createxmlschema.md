@@ -1,6 +1,6 @@
-<div id="createxmlschema" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,11 +47,11 @@ protocol names and host names and differs only in local path, and schema
 X imports Y using relative (not absolute!) URI that contain only
 relative path, (no protocol and no host).
 
-<div id="ex_createxmlschema" class="example">
+<div>
 
 **Example 9.29. Registering Sibling Schemas**
 
-<div class="example-contents">
+<div>
 
 Two sibling schemas are registered here. First statement registers an
 XMLSchema for "http://www.example.com/parts" target namespace. Second
@@ -132,7 +132,7 @@ xml:id="body_04"/>
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                     |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

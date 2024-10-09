@@ -1,10 +1,10 @@
-<div id="fn_gvector_digit_sort" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ gvector_digit_sort — Performs a stable "digit" sort of a given array.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_gvector_digit_sort" class="funcsynopsis">
+<div>
 
 |                                 |                                   |
 |---------------------------------|-----------------------------------|
@@ -25,7 +25,7 @@ gvector_digit_sort — Performs a stable "digit" sort of a given array.
 |                                 | in `key_idx_in_group ` integer ,  |
 |                                 | in `sort_ascending ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ gvector_digit_sort — Performs a stable "digit" sort of a given array.
 
 </div>
 
-<div id="desc_gvector_digit_sort" class="refsect1">
+<div>
 
 ## Description
 
@@ -77,11 +77,11 @@ similar functions, only gvector_digit_sort() is stable-sort.
 
 </div>
 
-<div id="params_gvector_digit_sort" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90294" class="refsect2">
+<div>
 
 ### data
 
@@ -89,7 +89,7 @@ A group vector (gvector) to sort.
 
 </div>
 
-<div id="id90297" class="refsect2">
+<div>
 
 ### elements_in_group
 
@@ -98,7 +98,7 @@ range 1 to 1024.
 
 </div>
 
-<div id="id90300" class="refsect2">
+<div>
 
 ### key_idx_in_group
 
@@ -107,7 +107,7 @@ less than *`elements_in_group `* .
 
 </div>
 
-<div id="id90304" class="refsect2">
+<div>
 
 ### sort_ascending
 
@@ -117,7 +117,7 @@ Direction of sorting, nonzero for ascending sort, zero for descending.
 
 </div>
 
-<div id="ret_gvector_digit_sort" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -125,7 +125,7 @@ The function returns number of groups in the *`data `* vector .
 
 </div>
 
-<div id="seealso_gvector_digit_sort" class="refsect1">
+<div>
 
 ## See Also
 

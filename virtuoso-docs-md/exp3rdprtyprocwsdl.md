@@ -1,6 +1,6 @@
-<div id="exp3rdprtyprocwsdl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ attached tables and procedures. All you have to do is make sure that the
 entry point exists as a stored procedure in the correct namespace with
 the appropriate grants, as before.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                |
 |:--------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------|

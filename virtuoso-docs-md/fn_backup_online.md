@@ -1,10 +1,10 @@
-<div id="fn_backup_online" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ backup_online — perform online backup of database
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_backup_online" class="funcsynopsis">
+<div>
 
 |                               |                             |
 |-------------------------------|-----------------------------|
@@ -25,7 +25,7 @@ backup_online — perform online backup of database
 |                               | in `timeout ` integer ,     |
 |                               | in `dirs ` any `)`;         |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ backup_online — perform online backup of database
 
 </div>
 
-<div id="desc_backup_online" class="refsect1">
+<div>
 
 ## Description
 
@@ -70,11 +70,11 @@ during the copy process.
 
 </div>
 
-<div id="params_backup_online" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80818" class="refsect2">
+<div>
 
 ### file_prefix
 
@@ -82,7 +82,7 @@ A string to prefix to the filename of the backup files.
 
 </div>
 
-<div id="id80821" class="refsect2">
+<div>
 
 ### pages
 
@@ -92,7 +92,7 @@ pages \< 100 an error will be returned.
 
 </div>
 
-<div id="id80824" class="refsect2">
+<div>
 
 ### timeout
 
@@ -100,7 +100,7 @@ This parameter has no effect.
 
 </div>
 
-<div id="id80827" class="refsect2">
+<div>
 
 ### dirs
 
@@ -115,7 +115,7 @@ deleted so as not to leave half made backups.
 
 </div>
 
-<div id="ret_backup_online" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -123,7 +123,7 @@ This function will return the number of 8k pages that were backed-up.
 
 </div>
 
-<div id="errors_backup_online" class="refsect1">
+<div>
 
 ## Errors
 
@@ -140,15 +140,15 @@ This function can generate the following errors:
 
 </div>
 
-<div id="examples_backup_online" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_fnbackup_online" class="example">
+<div>
 
 **Example 24.20. Performing an online backup**
 
-<div class="example-contents">
+<div>
 
 If there are 2010 new pages in the checkpoint space and user invokes:
 
@@ -176,11 +176,11 @@ the files will vary due to varying compression ratio.
 
   
 
-<div id="ex_fnanonlinebackuprestore" class="example">
+<div>
 
 **Example 24.21. Restoring an Online Backup**
 
-<div class="example-contents">
+<div>
 
 The following command could be used to restore the database from the
 backup files created:
@@ -203,7 +203,7 @@ virtuoso-odbc-t.exe +restore-backup dump-20011010_#
 
 </div>
 
-<div id="seealso_backup_online" class="refsect1">
+<div>
 
 ## See Also
 

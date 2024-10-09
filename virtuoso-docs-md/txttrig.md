@@ -1,6 +1,6 @@
-<div id="txttrig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,9 +32,9 @@ performance and scalability than repeatedly running a batch of queries
 over updated data and thus makes possible personalized information
 filtering applications that would be impractical with other approaches.
 
-<div id="createtxttrg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -70,11 +70,11 @@ indexed column. This may or may not be XML data.
 
 The \<table\> must be text indexed before creating text trigger on it.
 
-<div id="ex_txttrg" class="example">
+<div>
 
 **Example 20.5. Creating a Text Trigger**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create table ftt (id integer not null primary key, dt long varchar);

@@ -1,10 +1,10 @@
-<div id="fn_dict_iter_next" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ iterator and moves the iterator to the next pair.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_iter_next" class="funcsynopsis">
+<div>
 
 |                             |                            |
 |-----------------------------|----------------------------|
@@ -25,7 +25,7 @@ iterator and moves the iterator to the next pair.
 |                             | out `ret_key ` any ,       |
 |                             | out `ret_value ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ iterator and moves the iterator to the next pair.
 
 </div>
 
-<div id="desc_dict_iter_next" class="refsect1">
+<div>
 
 ## Description
 
@@ -63,11 +63,11 @@ filled in with NULLs or something like that.
 
 </div>
 
-<div id="params_dict_iter_next" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86560" class="refsect2">
+<div>
 
 ### dict
 
@@ -75,7 +75,7 @@ Dictionary iterator
 
 </div>
 
-<div id="id86563" class="refsect2">
+<div>
 
 ### ret_key
 
@@ -84,7 +84,7 @@ ignored if it is not a plain variable.
 
 </div>
 
-<div id="id86566" class="refsect2">
+<div>
 
 ### ret_value
 
@@ -95,7 +95,7 @@ item. The parameter is ignored if it is not a plain variable.
 
 </div>
 
-<div id="ret_dict_iter_next" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -104,17 +104,17 @@ fetched, zero otherwise
 
 </div>
 
-<div id="errors_dict_iter_next" class="refsect1">
+<div>
 
 ## Errors
 
 This function can generate the following errors:
 
-<div id="id86575" class="table">
+<div>
 
-**Table 24.25. **
+**Table 24.24. **
 
-<div class="table-contents">
+<div>
 
 | Error Code                            | Description                                                                                                                                                                                                                                                                                                                |
 |---------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -132,15 +132,15 @@ This function can generate the following errors:
 
 </div>
 
-<div id="examples_dict_iter_next" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_dict_iter_next" class="example">
+<div>
 
 **Example 24.92. Simplest read throughout the dictionary.**
 
-<div class="example-contents">
+<div>
 
 The procedure creates a dictionary, puts couple of items into it and
 then print them to the server's console
@@ -165,7 +165,7 @@ create function dict_iterator_test ()
 
 </div>
 
-<div id="seealso_dict_iter_next" class="refsect1">
+<div>
 
 ## See Also
 

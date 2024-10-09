@@ -1,10 +1,10 @@
-<div id="fn_xper_locate_words" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ text
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xper_doc_01" class="funcsynopsis">
+<div>
 
 |                                |                                |
 |--------------------------------|--------------------------------|
@@ -26,7 +26,7 @@ text
 |                                | in `starting_word ` integer ,  |
 |                                | in `ending_word ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ text
 
 </div>
 
-<div id="desc_77" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ error.
 
 </div>
 
-<div id="params_03_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124293" class="refsect2">
+<div>
 
 ### entity
 
@@ -57,7 +57,7 @@ A 'persistent XML' entity to be searched
 
 </div>
 
-<div id="id124296" class="refsect2">
+<div>
 
 ### starting_word
 
@@ -65,7 +65,7 @@ The number of the leftmost word which should be in the selected fragment
 
 </div>
 
-<div id="id124299" class="refsect2">
+<div>
 
 ### ending_word
 

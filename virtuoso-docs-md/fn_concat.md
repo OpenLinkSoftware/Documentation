@@ -1,10 +1,10 @@
-<div id="fn_concat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ concat — Concatenate strings
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_concat" class="funcsynopsis">
+<div>
 
 |                     |                      |
 |---------------------|----------------------|
@@ -25,7 +25,7 @@ concat — Concatenate strings
 |                     | `... ` ,             |
 |                     | `strn ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ concat — Concatenate strings
 
 </div>
 
-<div id="desc_concat" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,7 +57,7 @@ returns an empty <span class="type">string </span> .
 
 </div>
 
-<div id="params_concat" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -66,7 +66,7 @@ arguments.
 
 </div>
 
-<div id="ret_concat" class="refsect1">
+<div>
 
 ## Return types
 
@@ -76,19 +76,18 @@ the string returned will also be <span class="type">wide </span> .
 
 </div>
 
-<div id="err_concat" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id82640" class="table">
+<div>
 
-**Table 24.15. Errors signalled by concat()**
+**Table 24.14. Errors signalled by concat()**
 
-<div class="table-contents">
+<div>
 
-|                                       |                                       |                                                                                                                                               |
-|---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
 | sqlstate                              | error code                            | error text                                                                                                                                    |
+|---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
 | <span class="errorcode">22023 </span> | <span class="errorcode">SR007 </span> | <span class="errortext">Function concat needs a string or NULL as argument \<argument number\>, not an arg of type \<offending type\> </span> |
 
 </div>
@@ -99,15 +98,15 @@ the string returned will also be <span class="type">wide </span> .
 
 </div>
 
-<div id="examples_concat" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_concat_1" class="example">
+<div>
 
 **Example 24.47. Simple Example**
 
-<div class="example-contents">
+<div>
 
 Cross a mule with an ass.
 

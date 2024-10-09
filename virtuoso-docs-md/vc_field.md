@@ -1,10 +1,10 @@
-<div id="vc_field" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ window.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_field" class="funcsynopsis">
+<div>
 
 |                       |                               |
 |-----------------------|-------------------------------|
@@ -35,7 +35,7 @@ window.
 |                       | `debug-srcline` (optional) ,  |
 |                       | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -45,7 +45,7 @@ window.
 
 </div>
 
-<div id="vc_desc_field" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,7 +55,7 @@ window.
 
 </div>
 
-<div id="vc_attrs_field" class="refsect1">
+<div>
 
 ## Attributes
 

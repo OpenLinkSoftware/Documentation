@@ -1,10 +1,10 @@
-<div id="vc_error_summary" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ error-summary — Placeholder for error messages.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_error_summary" class="funcsynopsis">
+<div>
 
 |                               |                              |
 |-------------------------------|------------------------------|
@@ -25,7 +25,7 @@ error-summary — Placeholder for error messages.
 |                               | `debug-srcline` (optional) , |
 |                               | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ error-summary — Placeholder for error messages.
 
 </div>
 
-<div id="vc_desc_error_summary" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,7 +53,7 @@ failed and 'name' matches the pattern specified will be shown.
 
 </div>
 
-<div id="vc_attrs_error_summary" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -73,15 +73,15 @@ debugging log.
 
 </div>
 
-<div id="vc_ex_error_summary" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_error_summary__0" class="example">
+<div>
 
 **Example 14.30.  Validation of text area input**
 
-<div class="example-contents">
+<div>
 
 The form contains two v:textarea controls with v:validator elements
 inside. When the OK button is pressed data are posted back to the same
@@ -117,12 +117,12 @@ v:error-summary element.
 
   
 
-<div id="vc_ex_error_summary__1" class="example">
+<div>
 
 **Example 14.31.  Validation of text area input with separate error
 summaries place**
 
-<div class="example-contents">
+<div>
 
 The form contains two v:textarea controls with v:validator elements
 inside. When the OK button is pressed data are posted back to the same

@@ -1,6 +1,6 @@
-<div id="descrip" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,7 +38,7 @@ appear in the above order. All parts do not need to be specified, e.g.,
 SELECT A FROM T FOR UPDATE is valid but SELECT A FROM T ORDER BY a WHERE
 \< \< 10 is not.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>

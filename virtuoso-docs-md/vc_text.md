@@ -1,10 +1,10 @@
-<div id="vc_text" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ text — Scriptable, data-bindable input control.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_text" class="funcsynopsis">
+<div>
 
 |                      |                                      |
 |----------------------|--------------------------------------|
@@ -51,7 +51,7 @@ text — Scriptable, data-bindable input control.
 |                      | `debug-srcline` (optional) ,         |
 |                      | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -61,7 +61,7 @@ text — Scriptable, data-bindable input control.
 
 </div>
 
-<div id="vc_desc_text" class="refsect1">
+<div>
 
 ## Description
 
@@ -70,7 +70,7 @@ binding. String input of the HTML form.
 
 </div>
 
-<div id="vc_attrs_text" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -140,11 +140,11 @@ control is changed.
 
 **type. **
 
-<div id="id43149" class="table">
+<div>
 
 **Table 14.11. Allowed values of the 'type' attribute**
 
-<div class="table-contents">
+<div>
 
 |          |                                                                                                                  |
 |----------|------------------------------------------------------------------------------------------------------------------|
@@ -294,7 +294,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_text" class="refsect1">
+<div>
 
 ## Declaration of type vspx_text
 
@@ -316,15 +316,15 @@ as
 
 </div>
 
-<div id="vc_ex_text" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_text__0" class="example">
+<div>
 
 **Example 14.43.  Simple text input**
 
-<div class="example-contents">
+<div>
 
 The form contains text input control with 'Hello' string inside. User
 can edit the string and submit the changed value:

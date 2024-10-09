@@ -1,10 +1,10 @@
-<div id="fn_left" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ left — returns substring taken from left of string argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_left" class="funcsynopsis">
+<div>
 
 |                   |                       |
 |-------------------|-----------------------|
 | ` `**`left`**` (` | `str ` string ,       |
 |                   | `count ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ left — returns substring taken from left of string argument
 
 </div>
 
-<div id="desc_left" class="refsect1">
+<div>
 
 ## Description
 

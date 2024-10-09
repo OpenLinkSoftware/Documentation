@@ -1,10 +1,10 @@
-<div id="fn_exec_result" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ exec_result — Returns a result set row to the calling procedure context
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exec_result" class="funcsynopsis">
+<div>
 
 |                             |                                 |
 |-----------------------------|---------------------------------|
 | `any `**`exec_result`**` (` | in `res_values_array ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ exec_result — Returns a result set row to the calling procedure context
 
 </div>
 
-<div id="desc_exec_result" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ vector.
 
 </div>
 
-<div id="params_exec_result" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88000" class="refsect2">
+<div>
 
 ### res_values_array
 
@@ -62,7 +62,7 @@ This parameter can be one of two things:
 
 </div>
 
-<div id="ret_exec_result" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ but it uses an array instead of parameter list
 
 </div>
 
-<div id="examples_exec_result" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_exec_result_names" class="example">
+<div>
 
 **Example 24.103. Result set rows**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure XX1 ()
@@ -108,7 +108,7 @@ create procedure XX1 ()
 
 </div>
 
-<div id="seealso_exec_result" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_isstring" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isstring — returns true if its argument is of type varchar
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isstring" class="funcsynopsis">
+<div>
 
 |                              |                      |
 |------------------------------|----------------------|
 | `boolean `**`isstring`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isstring — returns true if its argument is of type varchar
 
 </div>
 
-<div id="desc_isstring" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ isstring returns one if its argument is of type VARCHAR, zero otherwise.
 
 </div>
 
-<div id="params_isstring" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94330" class="refsect2">
+<div>
 
 ### arg
 
@@ -54,15 +54,15 @@ Some variable to be assessed.
 
 </div>
 
-<div id="examples_isstring" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_isstring" class="example">
+<div>
 
 **Example 24.190. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>select isstring('Cadena de los patos amarillos')

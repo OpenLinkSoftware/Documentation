@@ -1,10 +1,10 @@
-<div id="me_uddi_discard_authtoken" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ token can be discarded.
 
 </div>
 
-<div id="syntax_uddi_discard_authtoken_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -28,7 +28,7 @@ token can be discarded.
 
 </div>
 
-<div id="desc_uddi_discard_authtoken_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ that do not support the *`get_authToken`* message.
 
 </div>
 
-<div id="params_uddi_discard_authtoken_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id114713" class="refsect2">
+<div>
 
 ### authInfo
 
@@ -56,7 +56,7 @@ message.
 
 </div>
 
-<div id="ret_uddi_discard_authtoken_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,7 +66,7 @@ is returned with a single success indicator. Discarding an expired
 
 </div>
 
-<div id="errors_uddi_discard_authtoken_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -74,11 +74,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id114726" class="table">
+<div>
 
-**Table 24.90. Errors signalled by get_authToken**
+**Table 24.89. Errors signalled by get_authToken**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                          | Description                                                                                                           |
 |-----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|

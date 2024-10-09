@@ -1,6 +1,6 @@
-<div id="isqlcommands" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,11 +37,11 @@ SET <ISQL_OPTION>( |=)<VALUE>
 sets the ISQL variable or associative array U value, if it is recognized
 as such. Otherwise passed to the server.
 
-<div id="id20448" class="example">
+<div>
 
 **Example 7.1. Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SET U{test} 5; sets the associative array U's 'test' to have value of 5
@@ -185,11 +185,11 @@ Parameters are specified as follows :
 | BETWEEN specifies integer set starting from n1 and ending on n2 |
 | FOLLOWING as as IN but skips the input till the END keyword     |
 
-<div id="id20495" class="example">
+<div>
 
 **Example 7.2. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 foreach integer between 1 10 insert into num_tb values (?);

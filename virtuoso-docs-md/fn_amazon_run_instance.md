@@ -1,10 +1,10 @@
-<div id="fn_amazon_run_instance" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.AMAZON_RUN_INSTANCE — Runs new AMI instance of image.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_amazon_run_instance" class="funcsynopsis">
+<div>
 
 |                                         |                                              |
 |-----------------------------------------|----------------------------------------------|
@@ -28,7 +28,7 @@ DB.DBA.AMAZON_RUN_INSTANCE — Runs new AMI instance of image.
 |                                         | in `MaxCount ` integer (default 1) ,         |
 |                                         | in `http_proxy ` varchar (default null) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ DB.DBA.AMAZON_RUN_INSTANCE — Runs new AMI instance of image.
 
 </div>
 
-<div id="desc_amazon_run_instance" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ Runs new AMI instance of image.
 
 </div>
 
-<div id="params_amazon_run_instance" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97600" class="refsect2">
+<div>
 
 ### aws_access_key
 
@@ -58,7 +58,7 @@ Amazon Access Key ID.
 
 </div>
 
-<div id="id97603" class="refsect2">
+<div>
 
 ### image_id
 
@@ -66,7 +66,7 @@ The Image ID of the AMI.
 
 </div>
 
-<div id="id97606" class="refsect2">
+<div>
 
 ### secret_key
 
@@ -74,7 +74,7 @@ AWS Security Token.
 
 </div>
 
-<div id="id97609" class="refsect2">
+<div>
 
 ### key_name
 
@@ -83,7 +83,7 @@ or null.
 
 </div>
 
-<div id="id97612" class="refsect2">
+<div>
 
 ### MinCount
 
@@ -92,7 +92,7 @@ Amazon EC2 can launch, no instances are launched at all. Default is 1.
 
 </div>
 
-<div id="id97615" class="refsect2">
+<div>
 
 ### MaxCount
 
@@ -102,7 +102,7 @@ be launched instead. Default is 1.
 
 </div>
 
-<div id="id97618" class="refsect2">
+<div>
 
 ### http_proxy
 
@@ -112,15 +112,15 @@ Proxy server, can be null or empty.
 
 </div>
 
-<div id="examples_amazon_run_instance" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_amazon_run_instance" class="example">
+<div>
 
 **Example 24.230. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure simple_test()
@@ -146,7 +146,7 @@ create procedure simple_test()
 
 </div>
 
-<div id="seealso_amazon_run_instance" class="refsect1">
+<div>
 
 ## See Also
 

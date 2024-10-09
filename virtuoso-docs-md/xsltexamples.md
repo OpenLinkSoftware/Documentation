@@ -1,6 +1,6 @@
-<div id="xsltexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,11 +17,11 @@
 This section covers some examples of applying XSLT to various stored
 data.
 
-<div id="id47120" class="example">
+<div>
 
 **Example 15.23. XSLT example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure xml_view_string (in _view varchar)
@@ -92,7 +92,7 @@ string output streams and the entity data type.
 
 The central points are:
 
-<div class="orderedlist">
+<div>
 
 1.  The XML entity object is a reference to a particular element of a
     parsed XML document, The underlying document is only visible through

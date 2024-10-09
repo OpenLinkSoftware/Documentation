@@ -1,6 +1,6 @@
-<div id="vfoafsslsethttps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ To enable the HTTPS listener, you will need another certificate.
 Existing certificates may not have Subject Alternate Name, so you may
 want to generate one as in the previous section.
 
-<div class="orderedlist">
+<div>
 
 1.  The next step is to move newcert.pem, newkey.pem, and cacert.pem
     into the server's working directory. In our test case, we put the

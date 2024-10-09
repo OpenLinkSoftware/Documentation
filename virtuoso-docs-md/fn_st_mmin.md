@@ -1,10 +1,10 @@
-<div id="fn_st_mmin" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ cordinates.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_mmin" class="funcsynopsis">
+<div>
 
 |                      |                      |
 |----------------------|----------------------|
 | ` `**`ST_MMin`**` (` | in `shape ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ cordinates.
 
 </div>
 
-<div id="desc_st_mmin" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ a half of full circle.
 
 </div>
 
-<div id="params_st_mmin" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131742" class="refsect2">
+<div>
 
 ### shape
 
@@ -57,7 +57,7 @@ A bounding box.
 
 </div>
 
-<div id="ret_st_mmin" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,15 +65,15 @@ Returns double precision.
 
 </div>
 
-<div id="examples_st_mmin" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_mmin" class="example">
+<div>
 
 **Example 24.669. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 DB.DBA.TTLP ('
@@ -110,7 +110,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_st_mmin" class="refsect1">
+<div>
 
 ## See Also
 

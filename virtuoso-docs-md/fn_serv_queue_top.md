@@ -1,10 +1,10 @@
-<div id="fn_serv_queue_top" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ SERV_QUEUE_TOP — Retrieve target website and store within Virtuoso
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_serv_queue_top" class="funcsynopsis">
+<div>
 
 |                                   |                                   |
 |-----------------------------------|-----------------------------------|
@@ -27,7 +27,7 @@ SERV_QUEUE_TOP — Retrieve target website and store within Virtuoso
 |                                   | in `function_hook ` varchar ,     |
 |                                   | in `data ` any `)`;               |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ SERV_QUEUE_TOP — Retrieve target website and store within Virtuoso
 
 </div>
 
-<div id="desc_serv_queue_top" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ and allowing the user agent to continue with other tasks.
 
 </div>
 
-<div id="params_serv_queue_top" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109542" class="refsect2">
+<div>
 
 ### target
 
@@ -67,7 +67,7 @@ URI to target site.
 
 </div>
 
-<div id="id109545" class="refsect2">
+<div>
 
 ### WebDAV_collection
 
@@ -75,7 +75,7 @@ Local WebDAV collection to copy the content to.
 
 </div>
 
-<div id="id109548" class="refsect2">
+<div>
 
 ### update
 
@@ -83,7 +83,7 @@ Flag to set updatable, can be 1 or 0 for on or off respectably.
 
 </div>
 
-<div id="id109551" class="refsect2">
+<div>
 
 ### debug
 
@@ -91,7 +91,7 @@ Debug flag, must be set to 0
 
 </div>
 
-<div id="id109554" class="refsect2">
+<div>
 
 ### function_hook.
 
@@ -100,7 +100,7 @@ default function will be used.
 
 </div>
 
-<div id="id109557" class="refsect2">
+<div>
 
 ### data
 
@@ -112,15 +112,15 @@ use an array with names of non-desired sites.
 
 </div>
 
-<div id="examples_serv_queue_top" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_serv_queue_top" class="example">
+<div>
 
 **Example 24.370. Retrieve External Sites**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 WS.WS.SERV_QUEUE_TOP (

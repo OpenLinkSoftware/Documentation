@@ -1,10 +1,10 @@
-<div id="fn_log" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ log — calculate natural logarithm of an expression
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_log" class="funcsynopsis">
+<div>
 
 |                  |                               |
 |------------------|-------------------------------|
 | ` `**`log`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ log — calculate natural logarithm of an expression
 
 </div>
 
-<div id="desc_log" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ as a IEEE 64-bit float.
 
 </div>
 
-<div id="params_log" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95827" class="refsect2">
+<div>
 
 ### x
 
@@ -55,7 +55,7 @@ as a IEEE 64-bit float.
 
 </div>
 
-<div id="ret_log" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -63,15 +63,15 @@ as a IEEE 64-bit float.
 
 </div>
 
-<div id="examples_log" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_log" class="example">
+<div>
 
 **Example 24.207. Simple Examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select concat ('the LOG of 0.513513 is: ', cast (log (0.513513) as varchar));
@@ -92,7 +92,7 @@ the LOG of 0.513513 is: -0.666480
 
 </div>
 
-<div id="seealso_log" class="refsect1">
+<div>
 
 ## See Also
 

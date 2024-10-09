@@ -1,10 +1,10 @@
-<div id="fn_st_ewkt_read" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ shape.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_ewkt_read" class="funcsynopsis">
+<div>
 
 |                           |                          |
 |---------------------------|--------------------------|
 | ` `**`st_ewkt_read`**` (` | in `ewkt_text ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ shape.
 
 </div>
 
-<div id="desc_st_ewkt_read" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Parses the given text as a EWKT and returns the parsed shape.
 
 </div>
 
-<div id="params_st_ewkt_read" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130661" class="refsect2">
+<div>
 
 ### ewkt_text
 
@@ -55,7 +55,7 @@ A given text to be parsed as EWKT.
 
 </div>
 
-<div id="ret_st_ewkt_read" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ This function returns shape.
 
 </div>
 
-<div id="examples_st_ewkt_read" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_ewkt_read" class="example">
+<div>
 
 **Example 24.656. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select st_translate (
@@ -93,7 +93,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_st_ewkt_read" class="refsect1">
+<div>
 
 ## See Also
 

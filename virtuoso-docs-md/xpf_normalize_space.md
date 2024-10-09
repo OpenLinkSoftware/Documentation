@@ -1,10 +1,10 @@
-<div id="xpf_normalize_space" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ normalized.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_normalize_space" class="funcsynopsis">
+<div>
 
 |                                    |                     |
 |------------------------------------|---------------------|
 | `string `**`normalize-space`**` (` | `strg ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ normalized.
 
 </div>
 
-<div id="xpf_desc_normalize_space" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ string, in other words the string-value of the context node.
 
 </div>
 
-<div id="xpf_params_normalize_space" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128330" class="refsect2">
+<div>
 
 ### strg
 
@@ -61,21 +61,21 @@ A string to be normalized
 
 </div>
 
-<div id="xpf_ret_normalize_space" class="refsect1">
+<div>
 
 ## Return Types
 
 </div>
 
-<div id="xpf_examples_normalize_space" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_normalize_space" class="example">
+<div>
 
 **Example 24.605. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 normalize-space('    too     many   spaces    ')
@@ -89,7 +89,7 @@ normalize-space('    too     many   spaces    ')
 
 </div>
 
-<div id="xpf_seealso_normalize_space" class="refsect1">
+<div>
 
 ## See Also
 

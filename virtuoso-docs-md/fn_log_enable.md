@@ -1,10 +1,10 @@
-<div id="fn_log_enable" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ log_enable — controls transaction logging and in-statement autocommit
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_log_enable" class="funcsynopsis">
+<div>
 
 |                         |                          |
 |-------------------------|--------------------------|
 | ` `**`log_enable`**` (` | in `bits ` integer ,     |
 |                         | in `quiet ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ log_enable — controls transaction logging and in-statement autocommit
 
 </div>
 
-<div id="desc_log_enable" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,7 +41,7 @@ The `log_enable` function allows enabling or disabling regular
 transaction logging or autocommit after every changed row. The parameter
 *`bits`* is a bitmask.
 
-<div id="id95915" class="refsect2">
+<div>
 
 ### Bit1
 
@@ -60,7 +60,7 @@ modifications to the database for all committed transactions.
 
 </div>
 
-<div id="id95920" class="refsect2">
+<div>
 
 ### Bit2
 
@@ -74,11 +74,11 @@ changes this session made since the last COMMIT.
 If the bit is 1 then the session is in autocommit mode and all updates
 to the database are immediately committed and written back.
 
-<div id="id95925" class="table">
+<div>
 
-**Table 24.53. Significance of bits in bitmask**
+**Table 24.52. Significance of bits in bitmask**
 
-<div class="table-contents">
+<div>
 
 | log_enable | bit2 | bit1 | Description                                       |
 |------------|------|------|---------------------------------------------------|
@@ -92,7 +92,7 @@ to the database are immediately committed and written back.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                                                                                                                                                                                                                                 |
 |:--------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -101,7 +101,7 @@ to the database are immediately committed and written back.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: Replication">
 <colgroup>
@@ -134,7 +134,7 @@ log_enable flag in the rdf_loader_run should be called like this:</p>
 
 </div>
 
-<div id="seealso_log_enable" class="refsect1">
+<div>
 
 ## See Also
 

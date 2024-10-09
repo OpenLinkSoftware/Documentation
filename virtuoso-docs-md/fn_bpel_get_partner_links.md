@@ -1,10 +1,10 @@
-<div id="fn_bpel_get_partner_links" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ the BPEL script
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_get_partner_links_01" class="funcsynopsis">
+<div>
 
 |                                          |                       |
 |------------------------------------------|-----------------------|
 | ` `**`BPEL.BPEL.get_partner_links`**` (` | in `scp_id ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,11 +33,11 @@ the BPEL script
 
 </div>
 
-<div id="params_get_partner_links_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129947" class="refsect2">
+<div>
 
 ### scp_id
 
@@ -47,7 +47,7 @@ the BPEL script
 
 </div>
 
-<div id="ret_get_partner_links_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -55,7 +55,7 @@ returns an XML document containing partner links
 
 </div>
 
-<div id="desc_get_partner_links_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,15 +65,15 @@ links.
 
 </div>
 
-<div id="examples_get_partner_links_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_get_partner_links_01" class="example">
+<div>
 
 **Example 24.640. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
       SQL> select BPEL.BPEL.get_partner_links (4);

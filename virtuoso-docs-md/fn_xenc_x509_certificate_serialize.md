@@ -1,10 +1,10 @@
-<div id="fn_xenc_x509_certificate_serialize" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ user's repository
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_x509_certificate_serialize" class="funcsynopsis">
+<div>
 
 |                                                     |                         |
 |-----------------------------------------------------|-------------------------|
 | `varchar `**`xenc_X509_certificate_serialize`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ user's repository
 
 </div>
 
-<div id="desc_xenc_x509_certificate_serialize" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ This function is used to export X.509 from user's space.
 
 </div>
 
-<div id="params_xenc_x509_certificate_serialize" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119611" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ The name of the key associated with X.509 certificate.
 
 </div>
 
-<div id="ret_xenc_x509_certificate_serialize" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,15 +65,15 @@ associated with it.
 
 </div>
 
-<div id="examples_xenc_x509_certificate_serialize" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_x509_certificate_serialize" class="example">
+<div>
 
 **Example 24.455. Exporting a X.509 certificate**
 
-<div class="example-contents">
+<div>
 
 The example exports a X.509 certificate associated with 'dsa-test' key
 from user's space.

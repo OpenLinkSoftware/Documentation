@@ -1,6 +1,6 @@
-<div id="ifsparqlbi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,15 +40,15 @@ SELECT ?team ( (bif:either( ?ew = 'W', -1, 1)) * (?d + (((?m * 60) + ?s) / 3600.
   }
 ```
 
-<div class="figure-float">
+<div>
 
-<div id="spbi1" class="figure">
+<div>
 
 **Figure 1.6. SPARQL IF operator for SPARQL-BI endpoint**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![SPARQL IF operator for SPARQL-BI endpoint](images/ui/spbi1.png)
 
@@ -62,7 +62,7 @@ SELECT ?team ( (bif:either( ?ew = 'W', -1, 1)) * (?d + (((?m * 60) + ?s) / 3600.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

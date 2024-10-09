@@ -1,6 +1,6 @@
-<div id="queryoptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -44,11 +44,11 @@ one chosen automatically).
 | INDEX PRIMARY KEY - selects the primary key                                                                                      |
 | INDEX TEXT KEY - selects the free-text index as a driving one if there's a free-text condition over that table in the statement. |
 
-<div id="ex_optclause" class="example">
+<div>
 
 **Example 9.46. Use of the OPTION & TABLE OPTION clauses**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select count (*) from t1 a, t1 b table option  (hash) where .row_no = b.row_no option(order)
@@ -63,11 +63,11 @@ hash join.
 
   
 
-<div id="ex_optinandjoin" class="example">
+<div>
 
 **Example 9.47. IN Predicate and Joins**
 
-<div class="example-contents">
+<div>
 
 Sometimes statements of the form
 

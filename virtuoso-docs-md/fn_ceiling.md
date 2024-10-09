@@ -1,10 +1,10 @@
-<div id="fn_ceiling" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ceiling — Round a number to positive infinity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ceiling" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
 | ` `**`ceiling`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ceiling — Round a number to positive infinity.
 
 </div>
 
-<div id="desc_ceiling" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ ceiling — Round a number to positive infinity.
 
 </div>
 
-<div id="params_ceiling" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81632" class="refsect2">
+<div>
 
 ### x
 
@@ -55,7 +55,7 @@ ceiling — Round a number to positive infinity.
 
 </div>
 
-<div id="ret_ceiling" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -63,15 +63,15 @@ ceiling — Round a number to positive infinity.
 
 </div>
 
-<div id="examples_ceiling" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ceiling" class="example">
+<div>
 
 **Example 24.30. Simple Examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select ceiling (12.3456), ceiling (-12.3456), ceiling (0.513513);
@@ -92,7 +92,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_ceiling" class="refsect1">
+<div>
 
 ## See Also
 

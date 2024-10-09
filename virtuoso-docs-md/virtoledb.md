@@ -1,6 +1,6 @@
-<div id="virtoledb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,9 +37,9 @@ and Microsoft OLE DB Provider for ODBC. However, VIRTOLEDB provides
 native OLE DB access which is more complete and more efficient.
 Therefore it is preferable for this purpose.
 
-<div id="oledbusing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -58,9 +58,9 @@ client computer. When VIRTOLEDB is properly installed it can be used by
 a host of existing applications thanks to the support of standard OLE DB
 interfaces.
 
-<div id="oledbrequirements" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -76,7 +76,7 @@ interfaces.
 
 VIRTOLEDB requires the following software:
 
-<div class="itemizedlist">
+<div>
 
 - Windows 98, ME, NT4.0, 2000, or XP.
 
@@ -93,9 +93,9 @@ VIRTOLEDB requires the following software:
 
 </div>
 
-<div id="oledbinstalling" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -113,11 +113,11 @@ VIRTOLEDB is installed as a part of Virtuoso installation on a Windows
 platform. The following files pertain to the OLE DB Provider for
 Virtuoso.
 
-<div id="id21881" class="table">
+<div>
 
 **Table 7.17. OLE DB Provider for Virtuoso Files**
 
-<div class="table-contents">
+<div>
 
 | File          | Description                                         |
 |---------------|-----------------------------------------------------|
@@ -137,9 +137,9 @@ enumerator object and the Data Links component.
 
 </div>
 
-<div id="oledbinvoking" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -157,9 +157,9 @@ Applications that utilize OLE DB Data Links component can use VIRTOLEDB
 without any specific measures. Applications that need to directly invoke
 VIRTOLEDB should follow examples provided in this section.
 
-<div id="datalinks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -181,15 +181,15 @@ applications including development environments like MS Visual Studio.
 VIRTOLEDB uses the extension mechanism of the Data Link API and provides
 a customized version of the Data Link connection page.
 
-<div class="figure-float">
+<div>
 
-<div id="datalinkprovider" class="figure">
+<div>
 
 **Figure 7.33. Data Link Provider Page**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Data Link Provider Page](images/datalinkprovider.jpg)
 
@@ -203,15 +203,15 @@ a customized version of the Data Link connection page.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="datalinkconnection" class="figure">
+<div>
 
 **Figure 7.34. Data Link Connection Page**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Data Link Connection Page](images/datalinkvirtuosoconnection.jpg)
 
@@ -227,9 +227,9 @@ a customized version of the Data Link connection page.
 
 </div>
 
-<div id="oledbcppapp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -247,7 +247,7 @@ Applications that utilize OLE DB Data Links component can use VIRTOLEDB
 without any specific measures. Applications that need to directly invoke
 VIRTOLEDB should follow examples provided in this section.
 
-<div class="informalexample">
+<div>
 
 ``` programlisting
 #define INITGUID
@@ -266,9 +266,9 @@ VIRTOLEDB should follow examples provided in this section.
 
 </div>
 
-<div id="oledbadoapp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -282,7 +282,7 @@ VIRTOLEDB should follow examples provided in this section.
 
 </div>
 
-<div class="informalexample">
+<div>
 
 ``` programlisting
 Dim strConn As String

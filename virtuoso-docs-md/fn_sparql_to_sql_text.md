@@ -1,10 +1,10 @@
-<div id="fn_sparql_to_sql_text" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sparql_to_sql_text — Converts a sparql query directly to SQL.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_to_sql_text" class="funcsynopsis">
+<div>
 
 |                                        |                           |
 |----------------------------------------|---------------------------|
 | `varchar `**`sparql_to_sql_text`**` (` | in `squery ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sparql_to_sql_text — Converts a sparql query directly to SQL.
 
 </div>
 
-<div id="desc_sparql_to_sql_text" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ query directly to the SQL it would be executed as.
 
 </div>
 
-<div id="params_sparql_to_sql_text" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84088" class="refsect2">
+<div>
 
 ### squery
 
@@ -55,7 +55,7 @@ The sparql query to be converted.
 
 </div>
 
-<div id="ret_sparql_to_sql_text" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ A string will be returned containing the converted sparql query.
 
 </div>
 
-<div id="examples_sparql_to_sql_text" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sparql_to_sql_text" class="example">
+<div>
 
 **Example 24.69. Using the sparql_to_sql_text() function**
 
-<div class="example-contents">
+<div>
 
 This simple example shows how to covert sparql query in SQL:
 
@@ -98,7 +98,7 @@ OPTION (QUIETCAST)
 
 </div>
 
-<div id="seealso_sparql_to_sql_text" class="refsect1">
+<div>
 
 ## See Also
 

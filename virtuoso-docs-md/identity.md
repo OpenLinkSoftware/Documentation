@@ -1,6 +1,6 @@
-<div id="identity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -44,11 +44,11 @@ statement. The syntax is:
       IDENTITY (START WITH <N>, INCREMENT BY <Y>)
 ```
 
-<div id="ex_identity" class="example">
+<div>
 
 **Example 9.16. Using the IDENTITY declaration**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE TABLE DB.DBA.AI (
@@ -74,11 +74,11 @@ equal to 11.
 
   
 
-<div id="ex_identity_01" class="example">
+<div>
 
 **Example 9.17. Using the IDENTITY (START WITH) declaration**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE TABLE DB.DBA.AI (
@@ -98,7 +98,7 @@ value will be 100 and will auto-increment from there upwards.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                     |
 |:--------------------------:|:----------------------------------------------------|

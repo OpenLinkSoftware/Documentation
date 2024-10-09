@@ -1,10 +1,10 @@
-<div id="fn_strcontains" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ strcontains — Performs substring search
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_strcontains" class="funcsynopsis">
+<div>
 
 |                          |                       |
 |--------------------------|-----------------------|
 | ` `**`strcontains`**` (` | in `str ` string ,    |
 |                          | in `sub ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ strcontains — Performs substring search
 
 </div>
 
-<div id="desc_strcontains" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ strcontains — Performs substring search
 
 </div>
 
-<div id="params_strcontains" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113156" class="refsect2">
+<div>
 
 ### str
 
@@ -53,7 +53,7 @@ String to search from.
 
 </div>
 
-<div id="id113159" class="refsect2">
+<div>
 
 ### sub
 
@@ -63,7 +63,7 @@ Substring to search for.
 
 </div>
 
-<div id="ret_strcontains" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,15 +71,15 @@ Substring to search for.
 
 </div>
 
-<div id="examples_strcontains" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_strcontains" class="example">
+<div>
 
 **Example 24.415. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select strcontains('AbracadabrA','abrA');
@@ -109,7 +109,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_strcontains" class="refsect1">
+<div>
 
 ## See Also
 

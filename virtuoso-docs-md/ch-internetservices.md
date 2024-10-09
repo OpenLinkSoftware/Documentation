@@ -1,6 +1,6 @@
-<div id="ch-internetservices" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -36,7 +36,7 @@ content for mail transit of HTTP output.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -153,9 +153,9 @@ Client](ldap_overview_01.html#vldapclient)</span>
 
 </div>
 
-<div id="webdavserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -236,11 +236,11 @@ arbitrary XML properties to be attached to resources.
 
 Virtuoso supports the following HTTP methods:
 
-<div id="id65318" class="decimalstyle">
+<div>
 
 **Table 19.1. Features List - Virtuoso Web DAV HTTP Method Support**
 
-<div class="decimalstyle-contents">
+<div>
 
 | HTTP Method                 | Description                                                                                                                                                                                                                                                                                                                                         |
 |:----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -261,7 +261,7 @@ Virtuoso supports the following HTTP methods:
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0"
 data-summary="Tip: See Also: External References">
@@ -287,9 +287,9 @@ target="_top">IETF RFC 2518 regarding WebDAV Specification</a></p></td>
 
 </div>
 
-<div id="davaccountsforwebuser" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -329,7 +329,7 @@ There are four predefined DAV accounts.
 | User "nobody" is a special account that acts as owner of all resources that have no real owner person or owner application. It is impossible to log on as "nobody" so it's impossible to use owner permissions of the resource.                                                                                           |
 | Group account "nogroup" always consists of only one user "nobody"; User "nobody" can not become a member of any other group. It is impossible to add other users to "nogroup" or add "nogroup" to some role.                                                                                                              |
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                      |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------|
@@ -338,7 +338,7 @@ There are four predefined DAV accounts.
 
 </div>
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                                        |                                                                                                                                                   |
 |:--------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -347,11 +347,11 @@ There are four predefined DAV accounts.
 
 </div>
 
-<div id="davusrsbyhand" class="example">
+<div>
 
 **Example 19.1. Manipulating WebDAV Users By Hand**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 USER_CREATE ('user', 'userpassword',
@@ -406,7 +406,7 @@ DAV access permissions can be revoked permanently:
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------|
@@ -419,9 +419,9 @@ DAV access permissions can be revoked permanently:
 
 </div>
 
-<div id="davauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -443,9 +443,9 @@ connecting clients abilities. These are:
 | <span class="emphasis">*Basic (Clear Text) Authentication*</span> - sends passwords over the connection in clear text. Clear text passwords can be intercepted and read so should be avoided or used only if you encrypt passwords through SSL. |
 | <span class="emphasis">*Digest Authentication*</span> - passwords are always transmitted in an MD5 hash.                                                                                                                                        |
 
-<div id="davbasicauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -463,7 +463,7 @@ Basic Authentication is a widely used, industry-standard method for
 collecting user name and password information. The following steps
 outline how a client is authenticated using Basic authentication:
 
-<div class="orderedlist">
+<div>
 
 1.  The client browser displays a dialog box for a user to enter a user
     name and password (his/her credentials).
@@ -488,7 +488,7 @@ Simple network monitoring can easily reveal your password. Basic
 authentication is not recommended unless you are confident that the
 connection between the user and Virtuoso is secure.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                 |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------|
@@ -499,9 +499,9 @@ connection between the user and Virtuoso is secure.
 
 </div>
 
-<div id="davdigestauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -525,15 +525,15 @@ be deciphered from the hash. Digest authentication relies on the HTTP
 The following steps outline how a client is authenticated using Digest
 authentication:
 
-<div class="figure-float">
+<div>
 
-<div id="figdavdigestauth" class="figure">
+<div>
 
 **Figure 19.1. Digest Authentication**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Digest Authentication](images/digestauth.jpg)
 
@@ -547,7 +547,7 @@ authentication:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  The client requests a file or connection from Virtuoso.
 
@@ -567,9 +567,9 @@ authentication:
 
 </div>
 
-<div id="davsymboliclinks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -619,11 +619,11 @@ enter the name of the link. Pressing the
 <span class="emphasis">*Add*</span> button will create the new link in
 the current WebDAV folder.
 
-<div id="ex_create_webdav_link" class="example">
+<div>
 
 **Example 19.2. WebDAV Links Programmatically**
 
-<div class="example-contents">
+<div>
 
 Assuming that we are creating the link as the administrator using the
 default WebDAV administrator username and password, creating a link from
@@ -644,7 +644,7 @@ be a resource on the same HTTP server.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                           |
 |:--------------------------:|:--------------------------------------------------------------------------------------------------------------------------|
@@ -665,9 +665,9 @@ content of the referenced target.
 
 </div>
 
-<div id="accesspermofwebres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -695,7 +695,7 @@ MUPDATE. The read permission applies to read operations as GET, POST,
 PROPFIND, HEAD, source URI in COPY and MGET; read permission is also
 required for any write operation.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|
@@ -730,7 +730,7 @@ particular resource or "recursively" add "implicit" ACEs to every
 resource and subcollection of some collection. The server checks
 permissions in the following order:
 
-<div class="orderedlist">
+<div>
 
 1.  match the user part of UNIX-style permissions to the specific
     operation, if user is the owner of the resource.
@@ -755,7 +755,7 @@ According to these rules, the order of records in ACL is important. ACEs
 are ordered following two rules: "deny" ACEs has higher priority than
 "allow" ACEs; "local" rules has higher priority that "global":
 
-<div class="orderedlist">
+<div>
 
 1.  All explicit ACEs are placed in a group before any inherited ACEs.
 
@@ -777,11 +777,11 @@ WebDAV Users Administration ). In the case of a resource created as
 public or a collection mask of '110110110' (equivalent of UNIX
 'rw-rw-rw'), then everybody can read and write it.
 
-<div id="id65502" class="example">
+<div>
 
 **Example 19.3. WebDAV Permissions**
 
-<div class="example-contents">
+<div>
 
 Consider a resource with the following permissions:
 
@@ -826,9 +826,9 @@ collection.
 
 </div>
 
-<div id="davrdfmetadata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -914,11 +914,11 @@ http://www.w3.org/1999/02/22-rdf-syntax-ns#type - The RDF schema for
 MIME-type of of the DAV resource. If the resource is not recognized as
 one of the below, this predicate will be omitted.
 
-<div id="id65530" class="decimalstyle">
+<div>
 
 **Table 19.2. RDF Schema by MIME-type**
 
-<div class="decimalstyle-contents">
+<div>
 
 | MIME- ype                         | RDF Schema                                      |
 |:----------------------------------|-------------------------------------------------|
@@ -963,9 +963,9 @@ metadata extraction.
 
 </div>
 
-<div id="customattofwebres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -988,7 +988,7 @@ format.
 
 The following special properties are supported:
 
-<div class="itemizedlist">
+<div>
 
 - **xml-stylesheet. ** must contain a valid URL to an XSLT style sheet.
   Upon request of an XML document with this property set, the WebDAV

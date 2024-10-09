@@ -1,6 +1,6 @@
-<div id="view4xmldifferences" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_table_drop_policy" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ table_drop_policy — Drops policy function from table.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_table_drop_policy" class="funcsynopsis">
+<div>
 
 |                                |                          |
 |--------------------------------|--------------------------|
 | ` `**`table_drop_policy`**` (` | in `_tb ` varchar ,      |
 |                                | in `_type ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ table_drop_policy — Drops policy function from table.
 
 </div>
 
-<div id="desc_table_drop_policy" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Drops policy function from table.
 
 </div>
 
-<div id="params_table_drop_policy" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113117" class="refsect2">
+<div>
 
 ### \_tb
 
@@ -53,7 +53,7 @@ is the table to which the policy applies
 
 </div>
 
-<div id="id113120" class="refsect2">
+<div>
 
 ### \_type
 
@@ -65,13 +65,13 @@ Deletions), U (for Updates), S (for Selects).
 
 </div>
 
-<div id="ret_table_drop_policy" class="refsect1">
+<div>
 
 ## Return Types
 
 None.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                             |
 |:----------------------------:|:--------------------------------------------------------------------------------------------|
@@ -82,7 +82,7 @@ None.
 
 </div>
 
-<div id="seealso_table_drop_policy" class="refsect1">
+<div>
 
 ## See Also
 

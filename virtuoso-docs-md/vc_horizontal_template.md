@@ -1,10 +1,10 @@
-<div id="vc_horizontal_template" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ horizontal-template
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_horizontal_template" class="funcsynopsis">
+<div>
 
 |                                     |                               |
 |-------------------------------------|-------------------------------|
@@ -33,7 +33,7 @@ horizontal-template
 |                                     | `debug-srcline` (optional) ,  |
 |                                     | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -43,13 +43,13 @@ horizontal-template
 
 </div>
 
-<div id="vc_desc_horizontal_template" class="refsect1">
+<div>
 
 ## Description
 
 </div>
 
-<div id="vc_attrs_horizontal_template" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -110,7 +110,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_horizontal_template" class="refsect1">
+<div>
 
 ## Declaration of type vspx_horizontal_template
 

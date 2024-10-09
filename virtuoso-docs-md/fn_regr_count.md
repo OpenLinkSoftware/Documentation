@@ -1,10 +1,10 @@
-<div id="fn_regr_count" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ regression line.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regr_count" class="funcsynopsis">
+<div>
 
 |                                |                      |
 |--------------------------------|----------------------|
 | `numeric `**`REGR_COUNT`**` (` | in `expr1 ` any ,    |
 |                                | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ regression line.
 
 </div>
 
-<div id="desc_regr_count" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ regression line.
 
 </div>
 
-<div id="params_regr_count" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78948" class="refsect2">
+<div>
 
 ### expr1
 
@@ -55,7 +55,7 @@ Number expression.
 
 </div>
 
-<div id="id78951" class="refsect2">
+<div>
 
 ### expr2
 
@@ -65,7 +65,7 @@ Number expression.
 
 </div>
 
-<div id="ret_regr_count" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,7 +73,7 @@ The function returns a value of type NUMERIC.
 
 </div>
 
-<div id="seealso_regr_count" class="refsect1">
+<div>
 
 ## See Also
 

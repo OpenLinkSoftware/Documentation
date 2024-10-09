@@ -1,6 +1,6 @@
-<div id="droptxttrig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,11 +23,11 @@ Syntax:
 DROP TEXT TRIGGER ON <table> [(<data_column>)]
 ```
 
-<div id="id67044" class="example">
+<div>
 
 **Example 20.7. Removing A Text Trigger**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 drop text trigger on ftt;
@@ -43,9 +43,9 @@ will drop the text trigger definition from table ftt.
 
 Or using the stored procedure:
 
-<div id="fn_vt_drop_ftt_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

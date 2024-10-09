@@ -1,10 +1,10 @@
-<div id="fn_xmltype.isschemavalid" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ arbitrary XML schema, returns 1 if successful, 0 if errors are detected.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.isschemavalid" class="funcsynopsis">
+<div>
 
 |                                    |                                     |
 |------------------------------------|-------------------------------------|
 | ` `**`XMLType.isSchemaValid`**` (` | in `schema_url ` varchar ,          |
 |                                    | in `top_element_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ arbitrary XML schema, returns 1 if successful, 0 if errors are detected.
 
 </div>
 
-<div id="desc_xmltype.isschemavalid" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ e.g. used by `XMLType.schemaValidate()` . It is true even if the given
 
 </div>
 
-<div id="params_xmltype.isschemavalid" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125713" class="refsect2">
+<div>
 
 ### schema_url
 
@@ -65,7 +65,7 @@ The URI of the schema to apply.
 
 </div>
 
-<div id="id125716" class="refsect2">
+<div>
 
 ### top_element_name
 
@@ -75,7 +75,7 @@ The allowed name of top level element of the instance.
 
 </div>
 
-<div id="ret_xmltype.isschemavalid" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,15 +83,15 @@ The function returns 1 if the validation is passed, 0 if it is failed.
 
 </div>
 
-<div id="examples_xmltype.isschemavalid" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.isschemavalid" class="example">
+<div>
 
 **Example 24.557. Failed schema validation**
 
-<div class="example-contents">
+<div>
 
 The example creates an XMLType instance that is a document with a single
 element node"bad" and tries to validate it against XMLschema
@@ -118,7 +118,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.isschemavalid" class="refsect1">
+<div>
 
 ## See Also
 

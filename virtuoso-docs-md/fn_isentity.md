@@ -1,10 +1,10 @@
-<div id="fn_isentity" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isentity — returns true if its argument is an XML entity
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isentity" class="funcsynopsis">
+<div>
 
 |                              |                  |
 |------------------------------|------------------|
 | `boolean `**`isentity`**` (` | in `x ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isentity — returns true if its argument is an XML entity
 
 </div>
 
-<div id="desc_isentity" class="refsect1">
+<div>
 
 ## Description
 

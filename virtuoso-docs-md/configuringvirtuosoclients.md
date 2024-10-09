@@ -1,6 +1,6 @@
-<div id="configuringvirtuosoclients" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ The Virtuoso client components set consists of the following:
 The sections that follow address the configuration and utilization of
 each one of these client components separately.
 
-<div id="virtuosodriverodbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -54,7 +54,7 @@ Virtuoso" provides a link to a local default Virtuoso database server
 instance, while the other named "Local Virtuoso Demo" provides a link to
 a local Virtuoso server for the Virtuoso demonstration database.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                               |
 |:--------------------------:|:----------------------------------------------------------------------------------------------|
@@ -67,9 +67,9 @@ a local Virtuoso server for the Virtuoso demonstration database.
 
 </div>
 
-<div id="virtuosodriverjdbc_clients" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -94,7 +94,7 @@ and External Virtuoso tables. Thus, you actually have a type 4 JDBC
 Driver for any number of different database types that have been linked
 into Virtuoso.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                 |
 |:--------------------------:|:------------------------------------------------------------------------------------------------|
@@ -106,9 +106,9 @@ into Virtuoso.
 
 </div>
 
-<div id="isql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -136,7 +136,7 @@ isql [<hostname>][:<port#>]
 The steps that follow guide you through the process of using ISQL to
 verify your Virtuoso installation:
 
-<div class="orderedlist">
+<div>
 
 1.  Open up a DOS shell
 
@@ -171,9 +171,9 @@ verify your Virtuoso installation:
 
 </div>
 
-<div id="isqlo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -192,7 +192,7 @@ includes an ODBC based version of "ISQL" called "ISQLO", this enable you
 to connect to ODBC DSN's rather than Virtuoso only. To use this program
 perform the following steps:
 
-<div class="orderedlist">
+<div>
 
 1.  Open up a DOS shell
 
@@ -204,7 +204,7 @@ perform the following steps:
     isqlo <enter a valid ODBC Data Source Name>
     ```
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div>
 
     |                              |                                                                                                                      |
     |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------|

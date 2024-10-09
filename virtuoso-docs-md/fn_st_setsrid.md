@@ -1,10 +1,10 @@
-<div id="fn_st_setsrid" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ shape or its coordinates from old SRID to a new one.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_setsrid" class="funcsynopsis">
+<div>
 
 |                         |                     |
 |-------------------------|---------------------|
 | ` `**`ST_SetSRID`**` (` | in `g ` any ,       |
 |                         | in `SRID ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ shape or its coordinates from old SRID to a new one.
 
 </div>
 
-<div id="desc_st_setsrid" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ and the modified geometry is returned.
 
 </div>
 
-<div id="params_st_setsrid" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90933" class="refsect2">
+<div>
 
 ### g
 
@@ -55,7 +55,7 @@ The geometry to be modified.
 
 </div>
 
-<div id="id90936" class="refsect2">
+<div>
 
 ### SRID
 
@@ -65,7 +65,7 @@ The specified SRID.
 
 </div>
 
-<div id="ret_st_setsrid" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_setsrid" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_setsrid" class="example">
+<div>
 
 **Example 24.141. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SELECT ST_SetSRID( st_point (10,2), 4335);
@@ -100,7 +100,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_st_setsrid" class="refsect1">
+<div>
 
 ## See Also
 

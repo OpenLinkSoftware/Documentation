@@ -1,10 +1,10 @@
-<div id="fn_sys_lockdown" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ sys_lockdown — Set virtuoso in lockdown state and back.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sys_lockdown" class="funcsynopsis">
+<div>
 
 |                           |                                   |
 |---------------------------|-----------------------------------|
 | ` `**`sys_lockdown`**` (` | in `lock_action ` integer ,       |
 |                           | in `listeners_mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ sys_lockdown — Set virtuoso in lockdown state and back.
 
 </div>
 
-<div id="desc_sys_lockdown" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ reverses the effect.
 
 </div>
 
-<div id="params_sys_lockdown" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112855" class="refsect2">
+<div>
 
 ### lock_action
 
@@ -60,7 +60,7 @@ reverses the effect.
 
 </div>
 
-<div id="id112858" class="refsect2">
+<div>
 
 ### listeners
 
@@ -71,7 +71,7 @@ listener sockets
 
 </div>
 
-<div id="ret_sys_lockdown" class="refsect1">
+<div>
 
 ## Return Types
 

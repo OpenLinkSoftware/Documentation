@@ -1,6 +1,6 @@
-<div id="uddiauthmech" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,9 +25,9 @@ UDDI-enabled servers will each provide a service description that
 exposes a *`bindingTemplate`* that makes use of HTTPS and SSL to secure
 the transmission of data.
 
-<div id="uddiauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -57,9 +57,9 @@ for obtaining this token are specific to each UDDI-enabled server.
 
 </div>
 
-<div id="uddiestcreds" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -100,9 +100,9 @@ implementation, and should not be expected to work across sites.
 
 </div>
 
-<div id="genauthtokens" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

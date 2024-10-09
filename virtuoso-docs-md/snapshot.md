@@ -1,6 +1,6 @@
-<div id="snapshot" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="noninc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -39,7 +39,7 @@ This makes a two party distributed transaction. Only one of the
 transaction branches is writing, hence this goes with a one phase
 commit.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                   |
 |:----------------------------:|:------------------------------------------------------------------|

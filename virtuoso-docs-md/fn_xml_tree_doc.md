@@ -1,10 +1,10 @@
-<div id="fn_xml_tree_doc" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xml_tree_doc — returns an entity object given a tree from xml_tree
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_tree_doc" class="funcsynopsis">
+<div>
 
 |                           |                             |
 |---------------------------|-----------------------------|
 | ` `**`xml_tree_doc`**` (` | in `tree ` any ,            |
 |                           | in `base_uri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xml_tree_doc — returns an entity object given a tree from xml_tree
 
 </div>
 
-<div id="desc_68" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ Any other type of argument is illegal, including XML persistent entity.
 
 </div>
 
-<div id="params_32" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123422" class="refsect2">
+<div>
 
 ### tree
 
@@ -75,7 +75,7 @@ string through xml_tree() first.
 
 </div>
 
-<div id="id123425" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -88,7 +88,7 @@ document passes as "tree" parameter.
 
 </div>
 
-<div id="ret_21" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -96,15 +96,15 @@ XML entity object
 
 </div>
 
-<div id="errors_xml_tree_doc" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id123433" class="table">
+<div>
 
-**Table 24.131. Errors signalled by**
+**Table 24.130. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQL State                       | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -118,15 +118,15 @@ XML entity object
 
 </div>
 
-<div id="examples_16_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_tree_doc" class="example">
+<div>
 
 **Example 24.518. Transforming an XML Document**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare doc_base varchar;
@@ -152,7 +152,7 @@ http_value(
 
 </div>
 
-<div id="seealso_41" class="refsect1">
+<div>
 
 ## See Also
 

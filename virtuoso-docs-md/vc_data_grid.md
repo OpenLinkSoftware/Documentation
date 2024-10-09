@@ -1,10 +1,10 @@
-<div id="vc_data_grid" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ data-grid — Scrollable databound multi-row control.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_data_grid" class="funcsynopsis">
+<div>
 
 |                           |                               |
 |---------------------------|-------------------------------|
@@ -40,7 +40,7 @@ data-grid — Scrollable databound multi-row control.
 |                           | `debug-srcline` (optional) ,  |
 |                           | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -50,7 +50,7 @@ data-grid — Scrollable databound multi-row control.
 
 </div>
 
-<div id="vc_desc_data_grid" class="refsect1">
+<div>
 
 ## Description
 
@@ -72,7 +72,7 @@ buttons - \[data-grid name\]'\_edit' and \[data-grid name\]'\_delete'.
 
 </div>
 
-<div id="vc_attrs_data_grid" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -173,11 +173,11 @@ scrollable as such.
 
 **cursor-type. **
 
-<div id="id39719" class="table">
+<div>
 
 **Table 14.3. Allowed values of the 'cursor-type' attribute**
 
-<div class="table-contents">
+<div>
 
 |         |                           |
 |---------|---------------------------|
@@ -205,7 +205,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_data_grid" class="refsect1">
+<div>
 
 ## Declaration of type vspx_data_grid
 
@@ -233,16 +233,16 @@ as (
 
 </div>
 
-<div id="vc_ex_data_grid" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_data_grid__0" class="example">
+<div>
 
 **Example 14.24.  Editable multi-row data grid based on data-grid
 control**
 
-<div class="example-contents">
+<div>
 
 This example will show a list of customers from the Northwind demo
 database. Allows editing, addtion and removal of existing records:

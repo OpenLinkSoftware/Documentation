@@ -1,10 +1,10 @@
-<div id="xpf_processxsql" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ processXSQL — Executes XSQL page and returns the result.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_processxsql_01" class="funcsynopsis">
+<div>
 
 |                                |                              |
 |--------------------------------|------------------------------|
 | `entity `**`processXSQL`**` (` | `xsql_page_uri ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ processXSQL — Executes XSQL page and returns the result.
 
 </div>
 
-<div id="xpf_desc_processxsql_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ For compatibility, the `processXSQL()` function can also be called as
 
 </div>
 
-<div id="xpf_params_processxsql_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128688" class="refsect2">
+<div>
 
 ### xsql_page_uri
 
@@ -76,7 +76,7 @@ URI like "file://...") or a DAV resource (with URI like
 
 </div>
 
-<div id="xpf_ret_processxsql_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,15 +85,15 @@ resulting document of an XSQL page.
 
 </div>
 
-<div id="xpf_examples_processxsql_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_processxsql_01" class="example">
+<div>
 
 **Example 24.613. Simple call**
 
-<div class="example-contents">
+<div>
 
 The query passes its argument to the XSQL page and returns its result.
 This is the simplest way of calling an XSQL page.
@@ -110,7 +110,7 @@ processXSQL ("file://sample.xsql")
 
 </div>
 
-<div id="xpf_seealso_processxsql_01" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="payment" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="spasviewsandtablespl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ When a procedure appears as a table, the procedure is called and its
 result set is inserted into a temporary space. Processing continues from
 that point on as if the data came from a table.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------|

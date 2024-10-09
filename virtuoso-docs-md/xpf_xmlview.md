@@ -1,10 +1,10 @@
-<div id="xpf_xmlview" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xmlview — Returns the xml document corresponding to given XML view
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_xmlview" class="funcsynopsis">
+<div>
 
 |                      |                              |
 |----------------------|------------------------------|
 | ` `**`xmlview`**` (` | in `view_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xmlview — Returns the xml document corresponding to given XML view
 
 </div>
 
-<div id="xpf_desc_xmlview" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ used that starts with the call of xmlview() function.
 
 </div>
 
-<div id="xpf_param_xmlview" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129814" class="refsect2">
+<div>
 
 ### view_name
 
@@ -63,15 +63,15 @@ The name of xml view
 
 </div>
 
-<div id="xpf_err_xmlview" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id129819" class="table">
+<div>
 
-**Table 24.154. Errors signalled by `xmlview `**
+**Table 24.153. Errors signalled by `xmlview `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                       | Error Text                                                                           | Description |
 |---------------------------------------|----------------------------------|--------------------------------------------------------------------------------------|-------------|
@@ -85,15 +85,15 @@ The name of xml view
 
 </div>
 
-<div id="xpf_example_xmlview" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_xmlview" class="example">
+<div>
 
 **Example 24.637. **
 
-<div class="example-contents">
+<div>
 
 The XQUERY expressions below are queries to the following XML view:
 

@@ -1,6 +1,6 @@
-<div id="queryingftcols" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="containspredicate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -79,7 +79,7 @@ offband with the CLUSTERED WITH option of the
 title="20.2.1. The CREATE TEXT INDEX statement">CREATE TEXT INDEX</a>
 statement.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

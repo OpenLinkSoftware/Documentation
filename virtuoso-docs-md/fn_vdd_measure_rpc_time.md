@@ -1,10 +1,10 @@
-<div id="fn_vdd_measure_rpc_time" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ milliseconds
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vdd_measure_rpc_time" class="funcsynopsis">
+<div>
 
 |                                        |                         |
 |----------------------------------------|-------------------------|
 | `float `**`vdd_measure_rpc_time`**` (` | in `_dsn ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ milliseconds
 
 </div>
 
-<div id="desc_vdd_measure_rpc_time" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ perform an RPC round trip on the DSN supplied.
 
 </div>
 
-<div id="params_vdd_measure_rpc_time" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118226" class="refsect2">
+<div>
 
 ### \_dsn
 
@@ -56,7 +56,7 @@ The name of the data source to estimate round-trip time for.
 
 </div>
 
-<div id="ret_vdd_measure_rpc_time" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,7 +64,7 @@ The length of time taken in milliseconds as a float type.
 
 </div>
 
-<div id="seealso_vdd_measure_rpc_time" class="refsect1">
+<div>
 
 ## See Also
 

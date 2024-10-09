@@ -1,6 +1,6 @@
-<div id="wsdlheadermessages" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="bpellifecycle" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

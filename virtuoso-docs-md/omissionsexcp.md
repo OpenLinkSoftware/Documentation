@@ -1,6 +1,6 @@
-<div id="omissionsexcp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,7 +41,7 @@ the previous one is completed. The correct behavior is to generate
 transactions at a basically constant rate, load being increased by
 adding clients and a new warehouse every 10 clients.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                            |
 |:--------------------------:|:---------------------------------------------------------------------------------------------------------------------------|

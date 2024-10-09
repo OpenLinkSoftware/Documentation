@@ -1,10 +1,10 @@
-<div id="fn_dsig_template_ext" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ XML document.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dsig_template_ext" class="funcsynopsis">
+<div>
 
 |                                       |                        |
 |---------------------------------------|------------------------|
@@ -28,7 +28,7 @@ XML document.
 |                                       | in `elm-n ` varchar ,  |
 |                                       | in `... ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ XML document.
 
 </div>
 
-<div id="desc_dsig_template_ext" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ template containing references to be signed.
 
 </div>
 
-<div id="params_dsig_template_ext" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119436" class="refsect2">
+<div>
 
 ### xdoc
 
@@ -59,7 +59,7 @@ input XML document
 
 </div>
 
-<div id="id119439" class="refsect2">
+<div>
 
 ### tmpl
 
@@ -67,7 +67,7 @@ a string containing base XML template
 
 </div>
 
-<div id="id119442" class="refsect2">
+<div>
 
 ### wss_ver
 
@@ -75,7 +75,7 @@ vector containing WS-Security and WS-Utility version URIs
 
 </div>
 
-<div id="id119445" class="refsect2">
+<div>
 
 ### ns-n
 
@@ -83,7 +83,7 @@ namespace to match
 
 </div>
 
-<div id="id119448" class="refsect2">
+<div>
 
 ### elm-n
 
@@ -93,7 +93,7 @@ element name to match
 
 </div>
 
-<div id="ret_dsig_template_ext" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -104,15 +104,15 @@ be included in the XML signature reference list.
 
 </div>
 
-<div id="examples_dsig_template_ext" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dsig_template_ext" class="example">
+<div>
 
 **Example 24.453. Making a XML signature template**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure XENC_TEMPLATE (in body varchar, in key_name varchar)

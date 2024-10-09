@@ -1,10 +1,10 @@
-<div id="fn_username" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ username — returns the login name of the current user
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_username" class="funcsynopsis">
+<div>
 
 |                       |      |
 |-----------------------|------|
 | ` `**`username`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ username — returns the login name of the current user
 
 </div>
 
-<div id="desc_50" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,7 +41,7 @@ is equivalent.
 
 </div>
 
-<div id="params_17" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -49,7 +49,7 @@ None
 
 </div>
 
-<div id="ret_04_01" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -58,15 +58,15 @@ user
 
 </div>
 
-<div id="examples_10_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_username_1" class="example">
+<div>
 
 **Example 24.432. Get current DB user**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select username();

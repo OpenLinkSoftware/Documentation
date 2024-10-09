@@ -1,6 +1,6 @@
-<div id="vdbenginefirebd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -92,9 +92,9 @@ attempting to generate an EDM. In the case of the Firebird employee
 database all tables are not nullable, thus this should not be an issue
 in this case.
 
-<div id="vdbenginefirebdinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

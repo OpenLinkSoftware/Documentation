@@ -1,10 +1,10 @@
-<div id="fn_vad_load_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAD_LOAD_FILE — executes statements of a SQL file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_load_file" class="funcsynopsis">
+<div>
 
 |                                   |                          |
 |-----------------------------------|--------------------------|
 | `DB.DBA. `**`VAD_LOAD_FILE`**` (` | in `fname ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ VAD_LOAD_FILE — executes statements of a SQL file
 
 </div>
 
-<div id="desc_56" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ VAD's repository.
 
 </div>
 
-<div id="params_22" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117690" class="refsect2">
+<div>
 
 ### fname
 
@@ -56,7 +56,7 @@ path to file to exec
 
 </div>
 
-<div id="seealso_28" class="refsect1">
+<div>
 
 ## See Also
 

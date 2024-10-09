@@ -1,6 +1,6 @@
-<div id="corsshare" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,9 +32,9 @@ target="_top">Cross-Origin Resource Sharing (CORS)</a> is a mechanism
 intended to enable safer client-side cross-origin requests, primarily
 focused on data.
 
-<div id="corssharewk" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -51,11 +51,11 @@ focused on data.
 Authentication and session-management information methods are extended
 in several ways:
 
-<div class="itemizedlist">
+<div>
 
 - Enforcement by User Agent
 
-  <div class="itemizedlist">
+  <div>
 
   - A server providing a resource can include an
 
@@ -77,7 +77,7 @@ in several ways:
 
 - Enforcement by Server-side Application
 
-  <div class="itemizedlist">
+  <div>
 
   - Server-side applications can refer to the
 
@@ -95,9 +95,9 @@ in several ways:
 
 </div>
 
-<div id="corssharesetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -119,9 +119,9 @@ When working with older versions of Virtuoso, CORS support cannot be
 configured at the server-level, but it may be enabled within application
 logic (scripting, PL, etc.).
 
-<div id="corssharesetupapplv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -165,9 +165,9 @@ and/or check relevent headers.
 
 </div>
 
-<div id="corssharesetupsrvlv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -188,7 +188,7 @@ later</a> , or
 <a href="http://download.openlinksw.com/virtwiz/" class="ulink"
 target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
-<div class="orderedlist">
+<div>
 
 1.  In the Virtuoso Conductor, go to
 
@@ -197,16 +197,16 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="oc1" class="figure">
+    <div>
 
     **Figure 19.3. Server-side Cross-Origin Resource Sharing (CORS)
     Example Setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Server-side Cross-Origin Resource Sharing (CORS) Example
     Setup](images/ui/oc1.png)
@@ -227,16 +227,16 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
     store.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="oc2" class="figure">
+    <div>
 
     **Figure 19.4. Server-side Cross-Origin Resource Sharing (CORS)
     Example Setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Server-side Cross-Origin Resource Sharing (CORS) Example
     Setup](images/ui/oc2.png)
@@ -263,16 +263,16 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
     , or choose an existing virtual directory to use as a template.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="oc3" class="figure">
+    <div>
 
     **Figure 19.5. Server-side Cross-Origin Resource Sharing (CORS)
     Example Setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Server-side Cross-Origin Resource Sharing (CORS) Example
     Setup](images/ui/oc3.png)
@@ -299,16 +299,16 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
     value.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="oc4" class="figure">
+    <div>
 
     **Figure 19.6. Server-side Cross-Origin Resource Sharing (CORS)
     Example Setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Server-side Cross-Origin Resource Sharing (CORS) Example
     Setup](images/ui/oc4.png)
@@ -329,16 +329,16 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
     options.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="oc5" class="figure">
+    <div>
 
     **Figure 19.7. Server-side Cross-Origin Resource Sharing (CORS)
     Example Setup**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Server-side Cross-Origin Resource Sharing (CORS) Example
     Setup](images/ui/oc5.png)
@@ -353,7 +353,7 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
     </div>
 
-    <div class="itemizedlist">
+    <div>
 
     - <span class="emphasis">*Cross-Origin Resource Sharing*</span>
 
@@ -389,9 +389,9 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div id="corssharewkspcurlexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -405,9 +405,9 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div id="corssharewkspcurlexmp1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -421,7 +421,7 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Suppose the example setup above is performed, and
     http://demo.openlinksw.com/ is in the CORS list.
@@ -443,9 +443,9 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div id="corssharewkspcurlexmp2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -459,7 +459,7 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Suppose the example Setup above is performed, and
     http://demo.openlinksw.com/ is in the CORS list.
@@ -489,9 +489,9 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div id="corssharewkspcurlexmp3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -505,7 +505,7 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Suppose the Example Setup above is performed, but reject is off
     (i.e., "Reject Unintended CORs" check-box is not ticked).
@@ -526,7 +526,7 @@ target="_top">Virtuoso Commercial Edition 6.2.3129 or later</a> .
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

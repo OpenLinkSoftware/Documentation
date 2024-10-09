@@ -1,6 +1,6 @@
-<div id="sparqlextensions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfsparqlrulefulltext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -70,9 +70,9 @@ conditions are applied first. In contrast to
 drives the query or makes use of an index, thus in practice regexps are
 checked after other conditions.
 
-<div id="rdfsparqlrulespecifywhatindex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -154,9 +154,9 @@ The above functions return one if the rule is added or deleted and zero
 if the call was redundant (the rule has been added before or there's no
 rule to delete).
 
-<div id="rdfsparqlrulespecifywhatindexexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -243,7 +243,7 @@ These may be useful in the future.
 SQL>SPARQL SELECT * FROM <people> WHERE { ?s ?p ?o . FILTER (bif:contains(?o,  '"Timo*"')) };
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                  |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -278,9 +278,9 @@ remove those rules as part of any uninstall routine.
 
 </div>
 
-<div id="rdfsparqlruletimeindexing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -332,9 +332,9 @@ re-inserting every existing free-text index rule.
 
 </div>
 
-<div id="rdfviewsandfreetext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -497,9 +497,9 @@ WHERE {
 
 </div>
 
-<div id="rdfsparqlrulescoreexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

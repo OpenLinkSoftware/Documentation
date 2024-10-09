@@ -1,6 +1,6 @@
-<div id="qsxmlcolumn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ always been possible with Virtuoso utilizing `xml_tree_doc()` and
 friends but now you can easily concentrate on what more important, the
 data, and not which datatype to convert it to next.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                  |
 |:--------------------------:|:-------------------------------------------------|

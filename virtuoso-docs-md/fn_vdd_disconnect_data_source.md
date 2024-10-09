@@ -1,10 +1,10 @@
-<div id="fn_vdd_disconnect_data_source" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ transactions are using resources from it.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vdd_disconnect_data_source" class="funcsynopsis">
+<div>
 
 |                                         |                        |
 |-----------------------------------------|------------------------|
 | ` `**`vdd_disconnect_data_source`**` (` | in `dsn ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ transactions are using resources from it.
 
 </div>
 
-<div id="desc_vdd_disconnect_data_source" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ using this datasource will open a new connection to it.
 
 </div>
 
-<div id="params_vdd_disconnect_data_source" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118196" class="refsect2">
+<div>
 
 ### dsn
 
@@ -64,7 +64,7 @@ The name of the remote datasource to disconnect.
 
 </div>
 
-<div id="seealso_vdd_disconnect_data_source" class="refsect1">
+<div>
 
 ## See Also
 

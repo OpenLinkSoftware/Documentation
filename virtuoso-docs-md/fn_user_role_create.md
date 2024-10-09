@@ -1,10 +1,10 @@
-<div id="fn_user_role_create" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ statement.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_role_create" class="funcsynopsis">
+<div>
 
 |                               |                         |
 |-------------------------------|-------------------------|
 | ` `**`USER_ROLE_CREATE`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ statement.
 
 </div>
 
-<div id="desc_user_role_create" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Creates a new SQL role.
 
 </div>
 
-<div id="params_user_role_create" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116675" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ A string containing the name of the new role.
 
 </div>
 
-<div id="ret_user_role_create" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,7 +63,7 @@ None
 
 </div>
 
-<div id="seealso_user_role_create" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="subscriberfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 These are the functions that are available to the subscribing Virtuoso
 server:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_repl_server.html" class="link" title="REPL_SERVER"><code
   class="function">repl_server()</code></a>

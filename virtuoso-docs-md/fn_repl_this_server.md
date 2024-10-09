@@ -1,10 +1,10 @@
-<div id="fn_repl_this_server" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ repl_this_server — returns calling servers name
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_this_server" class="funcsynopsis">
+<div>
 
 |                               |      |
 |-------------------------------|------|
 | ` `**`repl_this_server`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ repl_this_server — returns calling servers name
 
 </div>
 
-<div id="desc_repl_this_server" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,7 +40,7 @@ Returns calling servers name.
 
 </div>
 
-<div id="ret_repl_this_server" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -49,15 +49,15 @@ in the Replication section of its virtuoso.ini file.
 
 </div>
 
-<div id="examples_repl_this_server" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_this_server_1" class="example">
+<div>
 
 **Example 24.337. Local replication server name**
 
-<div class="example-contents">
+<div>
 
 The example statement shows name of the current replication server
 (defined in the INI file).
@@ -79,7 +79,7 @@ demo-srv
 
 </div>
 
-<div id="seealso_repl_this_server" class="refsect1">
+<div>
 
 ## See Also
 

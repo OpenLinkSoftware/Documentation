@@ -1,6 +1,6 @@
-<div id="installwfasxtendproplab" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ to a page describing that property.
 
 <span class="emphasis">*Pre-requisites*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  A working copy of the RDFDemo application created in
     <a href="installwfasxtendlongtext.html" class="link"
@@ -29,9 +29,9 @@ to a page describing that property.
 
 </div>
 
-<div id="installwfasxtendproplabmod" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,7 +50,7 @@ to a page describing that property.
 Making the property labels clickable is fairly straight forward. We will
 use basically the same code as is used to make the values clickable.
 
-<div class="orderedlist">
+<div>
 
 1.  First we need to add a new event handler. In the
     ExtendedStringHandler class modify displayData to add an event
@@ -142,15 +142,15 @@ use basically the same code as is used to make the values clickable.
     page. If you then select one of the Customers you will notice the
     property labels now look like hyperlinks.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf21" class="figure">
+    <div>
 
     **Figure 2.156. hyperlinks**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![hyperlinks](images/ui/sparqlwinf21.png)
 
@@ -168,15 +168,15 @@ use basically the same code as is used to make the values clickable.
     showing detailed information about the property which can itself be
     explored further by clicking on labels and values.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf22" class="figure">
+    <div>
 
     **Figure 2.157. labels and values**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![labels and values](images/ui/sparqlwinf22.png)
 
@@ -211,12 +211,12 @@ when the label is clicked.
 <span class="emphasis">*Using the Graph Where the Property Label was
 Found to Find the Property Details*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Create a new class, IRILabel, that inherits from
     System.Windows.Forms.Label.
 
-    <div class="itemizedlist">
+    <div>
 
     - In the
 
@@ -234,15 +234,15 @@ Found to Find the Property Details*</span>
 
     - Add a new class called IRILabel.cs.
 
-      <div class="figure-float">
+      <div>
 
-      <div id="sparqlwinf23" class="figure">
+      <div>
 
       **Figure 2.158. Add a new class**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Add a new class](images/ui/sparqlwinf23.png)
 
@@ -461,15 +461,15 @@ Found to Find the Property Details*</span>
     find descriptions of the properties used to describe the entities in
     the Northwind dataset:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf24" class="figure">
+    <div>
 
     **Figure 2.159. Northwind dataset**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Northwind dataset](images/ui/sparqlwinf24.png)
 

@@ -1,6 +1,6 @@
-<div id="sqlrefgeospatialgo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

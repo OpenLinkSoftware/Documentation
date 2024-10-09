@@ -1,10 +1,10 @@
-<div id="fn_repl_pub_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_PUB_REMOVE — remove item from publication.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_pub_remove" class="funcsynopsis">
+<div>
 
 |                              |                             |
 |------------------------------|-----------------------------|
@@ -25,7 +25,7 @@ REPL_PUB_REMOVE — remove item from publication.
 |                              | in `type ` integer ,        |
 |                              | in `flag ` integer `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ REPL_PUB_REMOVE — remove item from publication.
 
 </div>
 
-<div id="desc_repl_pub_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ replication message to subscribers to remove this from subscription.
 
 </div>
 
-<div id="params_repl_pub_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id105760" class="refsect2">
+<div>
 
 ### publication
 
@@ -57,7 +57,7 @@ publication account name.
 
 </div>
 
-<div id="id105763" class="refsect2">
+<div>
 
 ### item
 
@@ -71,7 +71,7 @@ dependent on <span class="emphasis">*type* </span> should be:
 
 </div>
 
-<div id="id105771" class="refsect2">
+<div>
 
 ### type
 
@@ -85,7 +85,7 @@ type of item, can accept following types:
 
 </div>
 
-<div id="id105778" class="refsect2">
+<div>
 
 ### flag
 
@@ -100,15 +100,15 @@ Behavior on the subscriber side
 
 </div>
 
-<div id="examples_repl_pub_remove" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_pub_remove_1" class="example">
+<div>
 
 **Example 24.326. Removal of an item from publication**
 
-<div class="example-contents">
+<div>
 
 This will remove the table Demo.demo.Products from publication.
 Furthermore issuing of the replication messages for this item will be
@@ -126,7 +126,7 @@ SQL> DB.DBA.REPL_PUB_REMOVE ('demo-publication', 'Demo.demo.Products', 2, 1);
 
 </div>
 
-<div id="seealso_repl_pub_remove" class="refsect1">
+<div>
 
 ## See Also
 

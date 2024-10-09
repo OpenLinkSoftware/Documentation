@@ -1,6 +1,6 @@
-<div id="plforwardonlycr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="id36114" class="example">
+<div>
 
 **Example 11.12. Procedure using forward only cursor**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure TEST_FW()

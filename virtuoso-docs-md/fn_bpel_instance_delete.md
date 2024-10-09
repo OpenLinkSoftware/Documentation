@@ -1,10 +1,10 @@
-<div id="fn_bpel_instance_delete" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ BPEL.BPEL.instance_delete — delete a BPEL process instance
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_instance_delete_01" class="funcsynopsis">
+<div>
 
 |                                        |                   |
 |----------------------------------------|-------------------|
 | ` `**`BPEL.BPEL.instance_delete`**` (` | in `id ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,11 +32,11 @@ BPEL.BPEL.instance_delete — delete a BPEL process instance
 
 </div>
 
-<div id="params_instance_delete_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129980" class="refsect2">
+<div>
 
 ### id
 
@@ -46,7 +46,7 @@ BPEL.BPEL.instance_delete — delete a BPEL process instance
 
 </div>
 
-<div id="ret_instance_delete_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -54,7 +54,7 @@ this function has no return value
 
 </div>
 
-<div id="desc_instance_delete_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -66,15 +66,15 @@ queue.
 
 </div>
 
-<div id="examples_instance_delete_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_instance_delete_01" class="example">
+<div>
 
 **Example 24.641. Simple example**
 
-<div class="example-contents">
+<div>
 
 The following will delete process instance with ID equal to 5
 

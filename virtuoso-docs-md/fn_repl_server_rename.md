@@ -1,10 +1,10 @@
-<div id="fn_repl_server_rename" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ repl_server_rename — rename the publishing server instance
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_server_rename" class="funcsynopsis">
+<div>
 
 |                                 |                             |
 |---------------------------------|-----------------------------|
 | ` `**`repl_server_rename`**` (` | in `old_name ` varchar ,    |
 |                                 | in `new_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ repl_server_rename — rename the publishing server instance
 
 </div>
 
-<div id="desc_repl_server_rename" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ server definitions) it will reject the operation.
 
 </div>
 
-<div id="params_repl_server_rename" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id106167" class="refsect2">
+<div>
 
 ### old_name
 
@@ -59,7 +59,7 @@ The old name of the publishing server.
 
 </div>
 
-<div id="id106170" class="refsect2">
+<div>
 
 ### new_name
 
@@ -70,15 +70,15 @@ from Replication section of INI file).
 
 </div>
 
-<div id="examples_repl_server_rename" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_server_rename_1" class="example">
+<div>
 
 **Example 24.330. Renaming of the existing publisher server**
 
-<div class="example-contents">
+<div>
 
 An existing publisher 'demo-pub' server is renamed to the 'working-pub'.
 In order to update the subscriber descriptions we MUST issue the
@@ -96,7 +96,7 @@ SQL> DB.DBA.REPL_SERVER_RENAME ('demo-pub', 'working-pub');
 
 </div>
 
-<div id="seealso_repl_server_rename" class="refsect1">
+<div>
 
 ## See Also
 

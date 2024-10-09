@@ -1,6 +1,6 @@
-<div id="howbackuprestoreind" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

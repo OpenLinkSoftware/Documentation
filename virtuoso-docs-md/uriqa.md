@@ -1,6 +1,6 @@
-<div id="uriqa" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -48,7 +48,7 @@ try three sorts of actions.
 | If the URI points to a resource that is outside the server, and URI is of sort 'http://...' then Virtuoso will send a URIQA web service request to the remote server specified in URI in hope that it will return at least something, the response is passed to the client unchange. |
 | Any other URI results in an error.                                                                                                                                                                                                                                                   |
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                           |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -57,7 +57,7 @@ try three sorts of actions.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                              |
 |:--------------------------:|:-------------------------------------------------------------|
@@ -67,9 +67,9 @@ try three sorts of actions.
 
 </div>
 
-<div id="uriqamethods" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -98,11 +98,11 @@ URIQA rules are very simple.
 | If the URIQA request header contains 'Host' parameter line then the URL from the first line of the request is patched to contain host name specified by 'Host' parameter, no matter whether the original URL contains host or what host name or network interface or port is user by client to connect to the server. |
 | If the URIQA request header does not contain 'URIQA-uri' or 'Host' line then the URL from the first line of the request is used 'as is', extended by host name from 'DefaultHost' URIQA configuration parameter if needed.                                                                                            |
 
-<div id="uriqamethodsuri" class="example">
+<div>
 
 **Example 19.4. Examples of MGET Requests**
 
-<div class="example-contents">
+<div>
 
 The following requests are all equivalent:
 
@@ -144,9 +144,9 @@ MGET /foo HTTP/1.1
 
   
 
-<div id="uriqamget" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -182,9 +182,9 @@ resource, because the resulting RDF is retrieved from
 
 </div>
 
-<div id="uriqamput" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -236,9 +236,9 @@ property of the resource is first retrieved and then updated.
 
 </div>
 
-<div id="uriqamdelete" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

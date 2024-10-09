@@ -1,6 +1,6 @@
-<div id="clusterprogrammingcallproc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -88,7 +88,7 @@ This function returns a result from one of the calls queued on the daq.
 
 The return value can be one of the following:
 
-<div class="itemizedlist">
+<div>
 
 - 0 - This means that all results have been returned and no more data is
   available.
@@ -99,7 +99,7 @@ The return value can be one of the following:
 
 The response is one of:
 
-<div class="itemizedlist">
+<div>
 
 - Vector with 1 as 0th element - The function returned a result set row.
   The row is a nested vector as next element.

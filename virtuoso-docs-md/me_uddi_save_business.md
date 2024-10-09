@@ -1,10 +1,10 @@
-<div id="me_uddi_save_business" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ uddi_save_business — Save or update information about a complete
 
 </div>
 
-<div id="syntax_uddi_save_business_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -30,7 +30,7 @@ uddi_save_business — Save or update information about a complete
 
 </div>
 
-<div id="desc_uddi_save_business_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ more *`businessEntity`* structures controlled by an identity.
 
 </div>
 
-<div id="params_uddi_save_business_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
@@ -52,7 +52,7 @@ number of *`businessEntity`* or *`uploadRegister`* values can be passed
 in a single save (up to a server-imposed limit), but the two types of
 parameters may not be mixed.
 
-<div id="id115590" class="refsect2">
+<div>
 
 ### authInfo
 
@@ -61,7 +61,7 @@ token obtained using the *`get_authToken `* call.
 
 </div>
 
-<div id="id115594" class="refsect2">
+<div>
 
 ### businessEntity
 
@@ -71,7 +71,7 @@ structures can be obtained in advance by using the
 
 </div>
 
-<div id="id115599" class="refsect2">
+<div>
 
 ### uploadRegister
 
@@ -85,7 +85,7 @@ protocol.
 
 </div>
 
-<div id="id115605" class="refsect2">
+<div>
 
 ### Behavior
 
@@ -134,7 +134,7 @@ present - to the *`discoveryURL`* 's collection automatically with a
 
 </div>
 
-<div id="ret_uddi_save_business_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -143,7 +143,7 @@ registered information for the *`businessEntity`* information provided.
 
 </div>
 
-<div id="errors_uddi_save_business_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -151,11 +151,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id115654" class="table">
+<div>
 
-**Table 24.103. Errors signalled by uddi_save_business**
+**Table 24.102. Errors signalled by uddi_save_business**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                             | Description                                                                                                                                                                                                                     |
 |--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

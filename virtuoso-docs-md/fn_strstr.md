@@ -1,10 +1,10 @@
-<div id="fn_strstr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ strstr — substring search
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_strstr" class="funcsynopsis">
+<div>
 
 |                     |                       |
 |---------------------|-----------------------|
 | ` `**`strstr`**` (` | in `str ` string ,    |
 |                     | in `sub ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ strstr — substring search
 
 </div>
 
-<div id="desc_strstr" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ found.
 
 </div>
 
-<div id="params_strstr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112574" class="refsect2">
+<div>
 
 ### str
 
@@ -55,7 +55,7 @@ String to search from.
 
 </div>
 
-<div id="id112577" class="refsect2">
+<div>
 
 ### sub
 
@@ -65,7 +65,7 @@ Substring to search for.
 
 </div>
 
-<div id="ret_strstr" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ occurrence of *`sub`* .
 
 </div>
 
-<div id="examples_strstr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_strstr_01" class="example">
+<div>
 
 **Example 24.412. Sample example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 strstr('AbracadabrA','abrA')
@@ -99,7 +99,7 @@ strcasestr('AbracadabrA','abrA')
 
 </div>
 
-<div id="seealso_strstr" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="wsaclpredefined" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -46,7 +46,7 @@ Proxy service is disabled by default and can be enabled with
 Additionally, the pattern in HA_DEST_PATTERN must match the destination
 server. In this way certain destinations can be restricted.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                     |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -55,11 +55,11 @@ server. In this way certain destinations can be restricted.
 
 </div>
 
-<div id="ex_wsacl" class="example">
+<div>
 
 **Example 14.5. Adding/removing ACL's**
 
-<div class="example-contents">
+<div>
 
 To allow access from localhost only:
 

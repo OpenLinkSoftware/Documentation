@@ -1,6 +1,6 @@
-<div id="loggingandrecording" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="loggingandrecordinglg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,7 +33,7 @@
 Virtuoso can keep http log with all the requests that are made to the
 HTTP endpoint. Here are the steps:
 
-<div class="orderedlist">
+<div>
 
 1.  Edit your virtuoso.ini and add the following setting:
 
@@ -67,9 +67,9 @@ target="_top">AWstats</a> to accurately measure site usage.
 
 </div>
 
-<div id="loggingandrecordingfr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -107,9 +107,9 @@ supported.
 
 </div>
 
-<div id="loggingandrecordingrc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -135,9 +135,9 @@ files in a single directory without slowing down the whole system.
 
 </div>
 
-<div id="loggingandrecordingrcexget" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -163,9 +163,9 @@ Accept-Encoding: gzip,deflate
 
 </div>
 
-<div id="loggingandrecordingrcexpost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -199,9 +199,9 @@ Content-Transfer-Encoding: binary
 
 </div>
 
-<div id="loggingandrecordingrcexenbr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -215,7 +215,7 @@ Content-Transfer-Encoding: binary
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the directory where the database is started from:
 
@@ -248,9 +248,9 @@ Content-Transfer-Encoding: binary
 
 </div>
 
-<div id="loggingandrecordingrcexdsbr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -264,7 +264,7 @@ Content-Transfer-Encoding: binary
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  To temporary disable the recordings, edit virtuoso.ini and set:
 

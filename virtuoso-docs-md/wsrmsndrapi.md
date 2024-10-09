@@ -1,6 +1,6 @@
-<div id="wsrmsndrapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,7 +27,7 @@ The WS-RM API allows for:
 
 The User Defined Types defined in support of WS-RM are as follows:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*soap_client () parameters wrapper* </span>
 
@@ -91,7 +91,7 @@ The User Defined Types defined in support of WS-RM are as follows:
   | <span class="emphasis">*fault_to* </span> - where to return the fault                                            |
   | <span class="emphasis">*reply_to* </span> - where to reply; if no such URL given the "to" will be used to reply. |
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                                                                                                                                                                                       |
   |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

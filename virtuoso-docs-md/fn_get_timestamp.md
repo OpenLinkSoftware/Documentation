@@ -1,10 +1,10 @@
-<div id="fn_get_timestamp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ get_timestamp — returns the timestamp of the current transaction
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_get_timestamp" class="funcsynopsis">
+<div>
 
 |                                     |      |
 |-------------------------------------|------|
 | `timestamp `**`get_timestamp`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ get_timestamp — returns the timestamp of the current transaction
 
 </div>
 
-<div id="desc_get_timestamp" class="refsect1">
+<div>
 
 ## Description
 

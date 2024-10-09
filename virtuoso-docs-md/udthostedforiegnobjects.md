@@ -1,6 +1,6 @@
-<div id="udthostedforiegnobjects" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="udtjvmhost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,11 +37,11 @@ In order to access the Java class instances they have to be defined as
 Virtuoso types using CREATE TYPE and specifying LANGUAGE JAVA. Java
 classes have to be in the CLASSPATH of the hosted Java VM.
 
-<div id="ex_jvmhostobj" class="example">
+<div>
 
 **Example 9.13. Hosted Java Objects**
 
-<div class="example-contents">
+<div>
 
 Java (Point.java):
 
@@ -102,11 +102,11 @@ Since Java has static members and the Virtuoso SQL types do not,
 Virtuoso allows read-only access to static members through static
 observer functions with EXTERNAL VARIABLE NAME instead of EXTERNAL NAME.
 
-<div id="ex_staticmembers" class="example">
+<div>
 
 **Example 9.14. Static Member Access**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 java (stat.java) :
@@ -156,11 +156,11 @@ class="function">import_jar()</code></a> takes the same parameters as
 `jvm_ref_import()` but will automatically create and execute the create
 type statements within the Virtuoso server.
 
-<div id="id33088" class="table">
+<div>
 
 **Table 9.2. Java Type to Virtuoso Type Conversions**
 
-<div class="table-contents">
+<div>
 
 | Java Type/Class  | Virtuoso Internal Type |
 |------------------|------------------------|
@@ -183,11 +183,11 @@ type statements within the Virtuoso server.
 
   
 
-<div id="id33132" class="table">
+<div>
 
 **Table 9.3. Virtuoso Type to Java Type Conversions**
 
-<div class="table-contents">
+<div>
 
 | Virtuoso Internal Type | Java Type/Class  |
 |------------------------|------------------|
@@ -237,9 +237,9 @@ class="function">java_vm_attach()</code></a>
 
 </div>
 
-<div id="udtclrhosted" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -272,7 +272,7 @@ class="function">import_clr()</code></a>
 
 There are three forms for specifying the EXTERNAL NAME of a CLR class:
 
-<div class="itemizedlist">
+<div>
 
 - a\) `<Assembly public name>/<namespace-prefixed-class-name>` Here the
   Virtuoso CLR host issues Assembly.Load with `<Assembly public name>`
@@ -311,7 +311,7 @@ loaded" by the Assembly.Load. The Virtuoso CLR is a CLR runtime host. As
 such it can use the normal CLR configuration files. It also is able of
 using private assemblies.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|
@@ -324,9 +324,9 @@ using private assemblies.
 
 </div>
 
-<div id="udtaspxhosting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -358,7 +358,7 @@ should have Execute WebDAV permission set them. The execution of ASPX is
 also controlled by the EnableDavVSP INI parameter in the \[HTTPServer\]
 as with any active content within WebDAV.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -385,9 +385,9 @@ Applications</a></p>
 
 </div>
 
-<div id="udtaspxhostexprsdeps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

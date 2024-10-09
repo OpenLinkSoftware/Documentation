@@ -1,10 +1,10 @@
-<div id="fn_regexp_replace" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ source_string with a specified replace_string.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regexp_replace" class="funcsynopsis">
+<div>
 
 |                                    |                                    |
 |------------------------------------|------------------------------------|
@@ -28,7 +28,7 @@ source_string with a specified replace_string.
 |                                    | in `occurrence ` any ,             |
 |                                    | in `match_parameter ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ source_string with a specified replace_string.
 
 </div>
 
-<div id="desc_10" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ not be the same everywhere in the text.
 
 </div>
 
-<div id="params_regexp_replace" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104307" class="refsect2">
+<div>
 
 ### source_string
 
@@ -65,7 +65,7 @@ Source string.
 
 </div>
 
-<div id="id104310" class="refsect2">
+<div>
 
 ### pattern
 
@@ -73,7 +73,7 @@ The regular expression to match.
 
 </div>
 
-<div id="id104313" class="refsect2">
+<div>
 
 ### replace_string
 
@@ -81,7 +81,7 @@ By default an empty string, ''.
 
 </div>
 
-<div id="id104316" class="refsect2">
+<div>
 
 ### position
 
@@ -89,7 +89,7 @@ By default this is set to 1.
 
 </div>
 
-<div id="id104319" class="refsect2">
+<div>
 
 ### occurrence
 
@@ -98,7 +98,7 @@ it will replace all the occurrences of the pattern in the string.
 
 </div>
 
-<div id="id104322" class="refsect2">
+<div>
 
 ### match_parameter
 
@@ -108,7 +108,7 @@ By default this is set to null.
 
 </div>
 
-<div id="ret_regexp_replace" class="refsect1">
+<div>
 
 ## Returns
 
@@ -116,15 +116,15 @@ This function returns the a substring matching the regular expression.
 
 </div>
 
-<div id="examples_regexp_replace" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_regexp_replace" class="example">
+<div>
 
 **Example 24.310. **
 
-<div class="example-contents">
+<div>
 
 This example has three spaces between Joe and Smith. The REPLACE
 function's parameter specifies that two spaces should be replaced with
@@ -149,7 +149,7 @@ Joe Smith                   Joe Smith
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Compatibility:">
 <colgroup>
@@ -166,7 +166,7 @@ width="25"><img src="images/note.png" alt="[Note]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The regular
 expressions supported here follow version 7.9 of the Perl Compatible
 Regular Expression (PCRE) syntax.</p>
-<div class="orderedlist">
+<div>
 <ol type="1">
 <li><p><a
 href="https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions"
@@ -183,7 +183,7 @@ target="_top">PCRE.org</a></p></li>
 
 </div>
 
-<div id="seealso_regexp_replace" class="refsect1">
+<div>
 
 ## See Also
 

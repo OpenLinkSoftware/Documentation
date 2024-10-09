@@ -1,6 +1,6 @@
-<div id="qstxmlqtemplates" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,7 +37,7 @@ providing an alternate stylesheet. The report can be refined on the fly
 by providing parameters for the query. The output is reachable via HTTP
 directly by providing the URL to the template.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                              |
 |:--------------------------:|:-----------------------------------------------------------------------------|
@@ -54,7 +54,7 @@ store procedure is published in the normal way.
 Stylesheets transformations with be inactive for published XML templates
 invoked from SOAP.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                       |
 |:--------------------------:|:------------------------------------------------------------------------------------------------------|

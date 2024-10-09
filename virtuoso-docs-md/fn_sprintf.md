@@ -1,10 +1,10 @@
-<div id="fn_sprintf" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sprintf — returns a formatted string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sprintf" class="funcsynopsis">
+<div>
 
 |                      |                    |
 |----------------------|--------------------|
@@ -25,7 +25,7 @@ sprintf — returns a formatted string
 |                      | `... ` ,           |
 |                      | `arg_x ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ sprintf — returns a formatted string
 
 </div>
 
-<div id="desc_24" class="refsect1">
+<div>
 
 ## Description
 

@@ -1,6 +1,6 @@
-<div id="ws-routing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,9 +28,9 @@ on the rules in message path.
 This implementation supports HTTP only. Message Id's generated are
 UUIDs.
 
-<div id="wsrconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -46,7 +46,7 @@ UUIDs.
 
 Setting-up the WS-Routing for a SOAP service requires you to:
 
-<div class="orderedlist">
+<div>
 
 1.  make a virtual directory bound to the SOAP endpoint processor
     (/SOAP)

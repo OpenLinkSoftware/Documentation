@@ -1,10 +1,10 @@
-<div id="fn_contains" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ contains — A text contains predicate
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_contains" class="funcsynopsis">
+<div>
 
 |                              |                           |     |
 |------------------------------|---------------------------|-----|
@@ -25,7 +25,7 @@ contains — A text contains predicate
 |                              | `opt_or_value ` integer , |     |
 |                              | ...`)`;                   |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ contains — A text contains predicate
 
 </div>
 
-<div id="desc_contains" class="refsect1">
+<div>
 
 ## Description
 
@@ -56,11 +56,11 @@ sensitive in all case modes.
 
 </div>
 
-<div id="params_contains" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82970" class="refsect2">
+<div>
 
 ### *`column `*
 
@@ -68,7 +68,7 @@ The table column whose contents are free text indexed
 
 </div>
 
-<div id="id82974" class="refsect2">
+<div>
 
 ### *`expression `*
 
@@ -77,13 +77,13 @@ search expression.
 
 </div>
 
-<div id="id82979" class="refsect2">
+<div>
 
 ### *`opt_or_value `*
 
 May be one or more of the following:
 
-<div class="variablelist">
+<div>
 
 <span class="term">DESCENDING </span>  
 specifies that the search will produce the hit with the greatest id
@@ -124,7 +124,7 @@ must have been declared as offband with the
 
 </div>
 
-<div id="ret_contains" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -133,17 +133,17 @@ The contains is a predicate, therefore returning a
 
 </div>
 
-<div id="examples_contains" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_contains" class="example">
+<div>
 
 **Example 24.55. Querying Free Text Indexed Columns using contains()**
 
-<div class="example-contents">
+<div>
 
-<div class="itemizedlist">
+<div>
 
 - Return the number of documents with one or more occurrences of
   "virtual" immediately followed by "database".
@@ -193,7 +193,7 @@ The contains is a predicate, therefore returning a
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>
@@ -220,7 +220,7 @@ terms. It can be used to combine words or phrases.</p></td>
 
 </div>
 
-<div id="seealso_contains" class="refsect1">
+<div>
 
 ## See Also
 

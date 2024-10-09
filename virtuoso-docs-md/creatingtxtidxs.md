@@ -1,6 +1,6 @@
-<div id="creatingtxtidxs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="createtxtidxstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -131,7 +131,7 @@ If large changes to data will be performed, the
 <a href="ftperformance.html" class="link"
 title="20.9. Performance">batch mode</a> is far more efficient.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------------------------------------------------------|

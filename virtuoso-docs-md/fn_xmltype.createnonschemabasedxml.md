@@ -1,10 +1,10 @@
-<div id="fn_xmltype.createnonschemabasedxml" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ with the schema reference removed.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.createnonschemabasedxml" class="funcsynopsis">
+<div>
 
 |                                              |      |
 |----------------------------------------------|------|
 | ` `**`XMLType.createNonSchemaBasedXML`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ with the schema reference removed.
 
 </div>
 
-<div id="desc_xmltype.createnonschemabasedxml" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ reference removed.
 
 </div>
 
-<div id="ret_xmltype.createnonschemabasedxml" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -50,16 +50,16 @@ The function returns a new instance of XMLType.
 
 </div>
 
-<div id="examples_xmltype.createnonschemabasedxml" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.createnonschemabasedxml" class="example">
+<div>
 
 **Example 24.544. Converting a schema-based instance to non
 schema-based**
 
-<div class="example-contents">
+<div>
 
 The procedure creates a non schema-based copy of a sample schema-based
 instance.
@@ -100,7 +100,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.createnonschemabasedxml" class="refsect1">
+<div>
 
 ## See Also
 

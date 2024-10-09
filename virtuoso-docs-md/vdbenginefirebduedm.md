@@ -1,6 +1,6 @@
-<div id="vdbenginefirebduedm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ Now that a Microsoft Entity Data Model has been created for the Firebird
 employee database, Entity Framework applications can be created to make
 use of it.
 
-<div id="vdbenginefirebduedmentf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,7 +40,7 @@ Entity Data Model created in the
 title="8.12.4. Creating EDM in Visual Studio 2008">Creating EDM in
 Visual Studio 2008 section</a> .
 
-<div class="orderedlist">
+<div>
 
 1.  Open the
 
@@ -54,15 +54,15 @@ Visual Studio 2008 section</a> .
 2.  Right click on the employee project name in the Solution Explorer
     pane, then select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbfora1" class="figure">
+    <div>
 
     **Figure 8.620. employee**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![employee](images/ui/fbfora1.png)
 
@@ -94,15 +94,15 @@ Visual Studio 2008 section</a> .
 
     to create the ADO.Net Data Service.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbfora2" class="figure">
+    <div>
 
     **Figure 8.621. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/fbfora2.png)
 
@@ -162,15 +162,15 @@ Visual Studio 2008 section</a> .
     }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbfora3" class="figure">
+    <div>
 
     **Figure 8.622. WebDataService1.svc.cs**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![WebDataService1.svc.cs](images/ui/fbfora3.png)
 
@@ -193,15 +193,15 @@ Visual Studio 2008 section</a> .
     displaying the list of available tables/entities for the employee
     database catalog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbfora4" class="figure">
+    <div>
 
     **Figure 8.623. Data Service test**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Service test](images/ui/fbfora4.png)
 
@@ -226,15 +226,15 @@ Visual Studio 2008 section</a> .
     record, use this convention
     http://host/vdir/WebDataService1.svc/EMPLOYEE(2) .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbfora5" class="figure">
+    <div>
 
     **Figure 8.624. EMPLOYEES**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![EMPLOYEES](images/ui/fbfora5.png)
 
@@ -252,7 +252,7 @@ Visual Studio 2008 section</a> .
 
 <span class="emphasis">*Notes:*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*Important*</span>
 
@@ -311,9 +311,9 @@ Visual Studio 2008 section</a> .
 
 </div>
 
-<div id="vdbenginefirebduedmvmw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -331,19 +331,19 @@ This section details the steps required to create a simple Visual Studio
 2008 Windows Form application, with associated DataGridView control for
 displaying data in selected tables from the target database.
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora1_03" class="figure">
+    <div>
 
     **Figure 8.625. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -371,15 +371,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_21" class="figure">
+    <div>
 
     **Figure 8.626. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -423,15 +423,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora2" class="figure">
+    <div>
 
     **Figure 8.627. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/fbdora2.png)
 
@@ -459,15 +459,15 @@ displaying data in selected tables from the target database.
 
     control onto the form.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora3_03" class="figure">
+    <div>
 
     **Figure 8.628. Toolbox**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Toolbox](images/ui/dora3.png)
 
@@ -495,15 +495,15 @@ displaying data in selected tables from the target database.
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora4_03" class="figure">
+    <div>
 
     **Figure 8.629. DataGridView Task**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView Task](images/ui/dora4.png)
 
@@ -523,15 +523,15 @@ displaying data in selected tables from the target database.
 
     list box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora5_03" class="figure">
+    <div>
 
     **Figure 8.630. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora5.png)
 
@@ -551,15 +551,15 @@ displaying data in selected tables from the target database.
 
     link to connect to a data source.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora6_03" class="figure">
+    <div>
 
     **Figure 8.631. Add Project Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Project Data Source](images/ui/dora6.png)
 
@@ -591,15 +591,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora7_04" class="figure">
+    <div>
 
     **Figure 8.632. Data Source Type**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Type](images/ui/dora7.png)
 
@@ -627,15 +627,15 @@ displaying data in selected tables from the target database.
 
     button
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora8_03" class="figure">
+    <div>
 
     **Figure 8.633. Data Source Configuration Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Configuration Wizard](images/ui/dora8.png)
 
@@ -663,15 +663,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora9_03" class="figure">
+    <div>
 
     **Figure 8.634. Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source](images/ui/dora9.png)
 
@@ -697,15 +697,15 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora10_09" class="figure">
+    <div>
 
     **Figure 8.635. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -729,15 +729,15 @@ displaying data in selected tables from the target database.
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora11_01" class="figure">
+    <div>
 
     **Figure 8.636. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/fbdora11.png)
 
@@ -759,15 +759,15 @@ displaying data in selected tables from the target database.
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora12_05" class="figure">
+    <div>
 
     **Figure 8.637. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -789,15 +789,15 @@ displaying data in selected tables from the target database.
 
     <span class="emphasis">*Next*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora13_01" class="figure">
+    <div>
 
     **Figure 8.638. employeeConnectionString**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![employeeConnectionString](images/ui/dora13.png)
 
@@ -822,15 +822,15 @@ displaying data in selected tables from the target database.
 
     control.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora14" class="figure">
+    <div>
 
     **Figure 8.639. employee database**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![employee database](images/ui/fbdora14.png)
 
@@ -846,15 +846,15 @@ displaying data in selected tables from the target database.
 
 19. A DataSet for the employee database object is created
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora15" class="figure">
+    <div>
 
     **Figure 8.640. DataSet**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataSet](images/ui/fbdora15.png)
 
@@ -871,15 +871,15 @@ displaying data in selected tables from the target database.
 20. From the drop down list box next to the COUNTRY table ensure the
     DataGridView item is selected
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora16" class="figure">
+    <div>
 
     **Figure 8.641. DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView](images/ui/fbdora16.png)
 
@@ -897,15 +897,15 @@ displaying data in selected tables from the target database.
     and editable association of the COUNTRY table object with the Data
     Grid View automatically.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora17" class="figure">
+    <div>
 
     **Figure 8.642. association**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![association](images/ui/fbdora17.png)
 
@@ -933,15 +933,15 @@ displaying data in selected tables from the target database.
 
     menu.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora17_04" class="figure">
+    <div>
 
     **Figure 8.643. Start Debugging**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Start Debugging](images/ui/dora17.png)
 
@@ -965,15 +965,15 @@ displaying data in selected tables from the target database.
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora18" class="figure">
+    <div>
 
     **Figure 8.644. DataGrid**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGrid](images/ui/fbdora18.png)
 
@@ -991,15 +991,15 @@ displaying data in selected tables from the target database.
     new "1111" record inserted below and the Save button clicked to save
     the change to the database.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora19" class="figure">
+    <div>
 
     **Figure 8.645. new row**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![new row](images/ui/fbdora19.png)
 
@@ -1016,15 +1016,15 @@ displaying data in selected tables from the target database.
 25. The Virtuoso Interactive SQL tab of the Conductor can be used to run
     the query select \* from "employee"."fire"."COUNTRY"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora20" class="figure">
+    <div>
 
     **Figure 8.646. Interactive SQL**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Interactive SQL](images/ui/fbdora20.png)
 
@@ -1040,15 +1040,15 @@ displaying data in selected tables from the target database.
 
 26. To verify the change has been successfully made in the database.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fbdora21" class="figure">
+    <div>
 
     **Figure 8.647. verify**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![verify](images/ui/fbdora21.png)
 

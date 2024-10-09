@@ -1,10 +1,10 @@
-<div id="vc_before_data_bind_container" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ before-data-bind-container — This is identical to v:before-data-bind.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_before_data_bind_container" class="funcsynopsis">
+<div>
 
 |                                                                                               |      |
 |-----------------------------------------------------------------------------------------------|------|
 | ` <`**`before-data-bind-container`**` >(EventHandler)</`**`before-data-bind-container`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ before-data-bind-container — This is identical to v:before-data-bind.
 
 </div>
 
-<div id="vc_desc_before_data_bind_container" class="refsect1">
+<div>
 
 ## Description
 

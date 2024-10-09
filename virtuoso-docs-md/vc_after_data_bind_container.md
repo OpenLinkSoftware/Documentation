@@ -1,10 +1,10 @@
-<div id="vc_after_data_bind_container" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ after-data-bind-container — This is identical to v:after-data-bind.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_after_data_bind_container" class="funcsynopsis">
+<div>
 
 |                                                                                             |      |
 |---------------------------------------------------------------------------------------------|------|
 | ` <`**`after-data-bind-container`**` >(EventHandler)</`**`after-data-bind-container`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ after-data-bind-container — This is identical to v:after-data-bind.
 
 </div>
 
-<div id="vc_desc_after_data_bind_container" class="refsect1">
+<div>
 
 ## Description
 

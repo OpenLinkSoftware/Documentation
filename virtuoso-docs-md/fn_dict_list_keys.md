@@ -1,10 +1,10 @@
-<div id="fn_dict_list_keys" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ dictionary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_list_keys" class="funcsynopsis">
+<div>
 
 |                                   |                            |
 |-----------------------------------|----------------------------|
 | `vector `**`dict_list_keys`**` (` | inout `dict ` dictionary , |
 |                                   | in `destructive ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ dictionary.
 
 </div>
 
-<div id="desc_dict_list_keys" class="refsect1">
+<div>
 
 ## Description
 
@@ -64,11 +64,11 @@ class="function">dict_destructive_list_rnd_keys</code></a> () instead.
 
 </div>
 
-<div id="params_dict_list_keys" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86741" class="refsect2">
+<div>
 
 ### dict
 
@@ -76,7 +76,7 @@ The dictionary to scan
 
 </div>
 
-<div id="id86744" class="refsect2">
+<div>
 
 ### destructive
 
@@ -88,7 +88,7 @@ clean unconditionally).
 
 </div>
 
-<div id="ret_dict_list_keys" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -96,7 +96,7 @@ The function returns a vector.
 
 </div>
 
-<div id="seealso_dict_list_keys" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_registry_name_is_protected" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ variable is read-only or protected from occasional changes.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_registry_name_is_protected" class="funcsynopsis">
+<div>
 
 |                                         |                         |
 |-----------------------------------------|-------------------------|
 | ` `**`registry_name_is_protected`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ variable is read-only or protected from occasional changes.
 
 </div>
 
-<div id="desc_registry_name_is_protected" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ versions of Virtuoso Server.
 
 </div>
 
-<div id="params_registry_name_is_protected" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104651" class="refsect2">
+<div>
 
 ### name
 
@@ -72,7 +72,7 @@ The name of registry variable to check.
 
 </div>
 
-<div id="ret_registry_name_is_protected" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,15 +80,15 @@ The function returns an integer
 
 </div>
 
-<div id="examples_registry_name_is_protected" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_registry_name_is_protected" class="example">
+<div>
 
 **Example 24.314. Two checks of variable names**
 
-<div class="example-contents">
+<div>
 
 One name can be used by any application, other is for internal use in
 the FTP server:
@@ -109,7 +109,7 @@ the FTP server:
 
 </div>
 
-<div id="seealso_registry_name_is_protected" class="refsect1">
+<div>
 
 ## See Also
 

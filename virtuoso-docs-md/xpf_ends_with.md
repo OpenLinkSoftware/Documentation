@@ -1,10 +1,10 @@
-<div id="xpf_ends_with" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ second argument string, and otherwise returns false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_ends_with" class="funcsynopsis">
+<div>
 
 |                               |                       |
 |-------------------------------|-----------------------|
 | `boolean `**`ends-with`**` (` | `strg ` string ,      |
 |                               | `suffix ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ second argument string, and otherwise returns false.
 
 </div>
 
-<div id="xpf_desc_ends_with" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ XPATH 1.0 standard. To write portable XPATH expression, use substring().
 
 </div>
 
-<div id="xpf_params_ends_with" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127113" class="refsect2">
+<div>
 
 ### strg
 
@@ -61,7 +61,7 @@ String whose first characters must be compared
 
 </div>
 
-<div id="id127116" class="refsect2">
+<div>
 
 ### prefix
 
@@ -72,7 +72,7 @@ String whose characters must be compared with first characters of
 
 </div>
 
-<div id="xpf_ret_ends_with" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,15 +80,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_ends_with" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_ends_with" class="example">
+<div>
 
 **Example 24.584. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ends-with('OpenLink Virtuoso', 'Virtuoso')
@@ -102,7 +102,7 @@ ends-with('OpenLink Virtuoso', 'Virtuoso')
 
 </div>
 
-<div id="xpf_seealso_ends_with" class="refsect1">
+<div>
 
 ## See Also
 

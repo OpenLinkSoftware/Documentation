@@ -1,10 +1,10 @@
-<div id="fn_sql_gettypeinfo" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ sql_gettypeinfo — return type information from a remote DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_gettypeinfo" class="funcsynopsis">
+<div>
 
 |                                    |                         |
 |------------------------------------|-------------------------|
 | `vector `**`sql_gettypeinfo`**` (` | in `dsn ` varchar ,     |
 |                                    | in `type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ sql_gettypeinfo — return type information from a remote DSN
 
 </div>
 
-<div id="desc_29" class="refsect1">
+<div>
 
 ## Description
 
@@ -87,7 +87,7 @@ dbg_obj_print (sql_gettypeinfo ('Local Virtuoso'));
 
 </div>
 
-<div id="seealso_sql_gettypeinfo" class="refsect1">
+<div>
 
 ## See Also
 

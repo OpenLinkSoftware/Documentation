@@ -1,6 +1,6 @@
-<div id="subclassofinferenceoptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ This section contains subClassOf oriented subsumption examples and
 examples for Transitive Options e.g., Scope the reasoning to layers in
 the hierarchy.
 
-<div id="subclassofinferenceoptionstranexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ the hierarchy.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://virtuoso.openlinksw.com/presentations/SPARQL_Tutorials/SPARQL_Tutorials_Part_5/SPARQL_Tutorials_Part_5.html#%2849%29"
@@ -60,9 +60,9 @@ the hierarchy.
 
 </div>
 
-<div id="subclassofinferenceoptionsinferexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -76,7 +76,7 @@ the hierarchy.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="rdfiridereferencingfacet.html#rdfiridereferencingfacetprlh"
   class="link" title="Processing Large Hierarchies in SPARQL">Processing

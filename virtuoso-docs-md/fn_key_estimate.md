@@ -1,10 +1,10 @@
-<div id="fn_key_estimate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ index key parts
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_key_estimate" class="funcsynopsis">
+<div>
 
 |                           |                            |
 |---------------------------|----------------------------|
@@ -26,7 +26,7 @@ index key parts
 |                           | in `k1 ` any ,             |
 |                           | `... ` `)`;                |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ index key parts
 
 </div>
 
-<div id="desc_key_estimate" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ less precise.
 
 </div>
 
-<div id="params_key_estimate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112137" class="refsect2">
+<div>
 
 ### table_name
 
@@ -67,7 +67,7 @@ The name of the table as appears in SYS_KEYS, case sensitive.
 
 </div>
 
-<div id="id112140" class="refsect2">
+<div>
 
 ### index_name
 
@@ -75,7 +75,7 @@ The name of the index as appears in sys_keys, case sensitive.
 
 </div>
 
-<div id="id112143" class="refsect2">
+<div>
 
 ### k1
 
@@ -86,7 +86,7 @@ number of key parts in the index in question may follow.
 
 </div>
 
-<div id="ret_key_estimate" class="refsect1">
+<div>
 
 ## Return
 
@@ -96,16 +96,16 @@ determined.
 
 </div>
 
-<div id="examples_key_estimate" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_key_estimate" class="example">
+<div>
 
 **Example 24.404. Returns the approximate count of entries in index STR1
 where the first key part is the string '123'.**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select key_estimate ('DB.DBA.T1', 'STR1', '123');

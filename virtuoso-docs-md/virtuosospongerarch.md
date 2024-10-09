@@ -1,6 +1,6 @@
-<div id="virtuosospongerarch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtuosospongerarchcr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ class="link" title="Cartridge Architecture">here</a>
 
 </div>
 
-<div id="virtuosospongercartridgesextr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -57,9 +57,9 @@ extracting RDF according to rules appropriate to that format. External
 data does not come into play; only the content of the Resource fed to
 the Sponger.
 
-<div id="virtuosospongercartridgesstand" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -76,11 +76,11 @@ the Sponger.
 These Cartridges handle open formats - typically community-developed,
 openly-documented, and freely-licensed data structures.
 
-<div id="id52698" class="table">
+<div>
 
 **Table 16.12. **
 
-<div class="table-contents">
+<div>
 
 | Cartridge                        | Sample URI                                                                                                                                              | Resource Description                                                                                                                                                                             | Linked Data Graph                                                                                                                                                                     |
 |----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -316,9 +316,9 @@ openly-documented, and freely-licensed data structures.
 
 </div>
 
-<div id="virtuosospongercartridgesnonstand" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -338,11 +338,11 @@ originator. Sometimes data may not be parsed as desired or expected, as
 many of these Cartridges have required reverse-engineering of the data
 format in question.
 
-<div id="id52991" class="table">
+<div>
 
 **Table 16.13. **
 
-<div class="table-contents">
+<div>
 
 | Cartridge                  | Needs                                                                                 | Sample URI                                                                                                                                                                                                                                                                                                                                                                                                                  | Resource Description                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |----------------------------|---------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -647,9 +647,9 @@ format in question.
 
 </div>
 
-<div id="virtuosospongercartridgesmeta" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -672,11 +672,11 @@ Resource itself.
 Default Sponger behavior is for all installed Meta Cartridges to be
 brought to bear on all submitted Resources:
 
-<div id="id53586" class="table">
+<div>
 
 **Table 16.14. **
 
-<div class="table-contents">
+<div>
 
 | Cartridge                    | Needs                                    | Sample URI                                                                                                                                                                                           | Resource Description                                                                                                                                                                            | Linked Data Graph                                                                                                                                                                             |
 |------------------------------|------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1166,9 +1166,9 @@ brought to bear on all submitted Resources:
 
   
 
-<div id="virtuosospongercartridgetypesmetarest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1185,11 +1185,11 @@ brought to bear on all submitted Resources:
 Description.vsp underlies the /about/html/ page, and accepts the
 parameters described below.
 
-<div id="id54433" class="table">
+<div>
 
 **Table 16.15. **
 
-<div class="table-contents">
+<div>
 
 | Parameter                                          | Value                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Example                                                                                              |
 |----------------------------------------------------|----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
@@ -1223,9 +1223,9 @@ parameters described below.
 
 </div>
 
-<div id="virtuosospongercartridgetypesmetarestexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1254,11 +1254,11 @@ class="ulink" target="_top">with all Meta Cartridges combined</a> . As
 may be obvious, this must wait for each of the above services to
 respond, so it may take quite some time to return.
 
-<div id="id54503" class="table">
+<div>
 
 **Table 16.16. **
 
-<div class="table-contents">
+<div>
 
 | Cartridge                    | URL Pattern             | Example                                                                                                                      |
 |------------------------------|-------------------------|------------------------------------------------------------------------------------------------------------------------------|

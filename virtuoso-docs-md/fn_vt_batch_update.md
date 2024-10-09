@@ -1,10 +1,10 @@
-<div id="fn_vt_batch_update" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ VT_BATCH_UPDATE — Set batch mode update of free text indexing.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vt_batch_update_01" class="funcsynopsis">
+<div>
 
 |                                             |                                     |
 |---------------------------------------------|-------------------------------------|
@@ -24,7 +24,7 @@ VT_BATCH_UPDATE — Set batch mode update of free text indexing.
 |                                             | in `flag ` varchar ,                |
 |                                             | in `interval_minutes ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ VT_BATCH_UPDATE — Set batch mode update of free text indexing.
 
 </div>
 
-<div id="desc_vt_batch_update_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ VT_INC_INDEX\_\<q\>\_\<o\>\_\<table\> function.
 
 </div>
 
-<div id="params_vt_batch_update_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118967" class="refsect2">
+<div>
 
 ### table
 
@@ -62,7 +62,7 @@ the name of the table to perform batch updating of.
 
 </div>
 
-<div id="id118970" class="refsect2">
+<div>
 
 ### flag
 
@@ -70,7 +70,7 @@ If ON, updates are in batch mode, if OFF, they are synchronous.
 
 </div>
 
-<div id="id118973" class="refsect2">
+<div>
 
 ### interval_minutes
 
@@ -80,15 +80,15 @@ the update interval. NULL means that updates are not scheduled.
 
 </div>
 
-<div id="errors_vt_batch_update_01" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id118978" class="table">
+<div>
 
-**Table 24.116. Errors signalled by**
+**Table 24.115. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                      | Error Text                      | Description |
 |---------------------------------|---------------------------------|---------------------------------|-------------|
@@ -102,7 +102,7 @@ the update interval. NULL means that updates are not scheduled.
 
 </div>
 
-<div id="seealso_vt_batch_update_01" class="refsect1">
+<div>
 
 ## See Also
 

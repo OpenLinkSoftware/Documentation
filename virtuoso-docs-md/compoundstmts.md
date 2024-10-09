@@ -1,6 +1,6 @@
-<div id="compoundstmts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,7 +63,7 @@ statement allows declaring local variables and exception handlers. See
 Labeled statements (goto targets) and declarations can only occur within
 a compound statement.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                             |
 |:--------------------------:|:------------------------------------------------------------|

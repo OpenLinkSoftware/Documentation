@@ -1,6 +1,6 @@
-<div id="difcrdrdelgr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,7 +43,7 @@ database slightly more compact and the text search slightly faster.
 <span class="emphasis">*CLEAR GRAPH*</span> inside, not just
 <span class="emphasis">*DELETE FROM ...*</span> )
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                    |
 |:--------------------------:|:-------------------------------------------------------------------|

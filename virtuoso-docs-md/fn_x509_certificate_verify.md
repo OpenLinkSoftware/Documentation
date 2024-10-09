@@ -1,10 +1,10 @@
-<div id="fn_x509_certificate_verify" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ x509_certificate_verify — Verifies X.509 certificate
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_x509_certificate_verify" class="funcsynopsis">
+<div>
 
 |                                             |                          |
 |---------------------------------------------|--------------------------|
@@ -24,7 +24,7 @@ x509_certificate_verify — Verifies X.509 certificate
 |                                             | in `cacerts ` any ,      |
 |                                             | in `flags ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ x509_certificate_verify — Verifies X.509 certificate
 
 </div>
 
-<div id="desc_x509_certificate_verify" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ binary data in DER (raw) format.
 
 </div>
 
-<div id="params_x509_certificate_verify" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119486" class="refsect2">
+<div>
 
 ### cert
 
@@ -60,7 +60,7 @@ The X.509 certificate to be verified
 
 </div>
 
-<div id="id119489" class="refsect2">
+<div>
 
 ### cacerts
 
@@ -68,18 +68,18 @@ array of strings containing CA certificates
 
 </div>
 
-<div id="id119492" class="refsect2">
+<div>
 
 ### flags
 
 A string containing comma separated list of verification options. See
 table below for valid values.
 
-<div id="id119495" class="table">
+<div>
 
-**Table 24.117. Values for *`flags `***
+**Table 24.116. Values for *`flags `***
 
-<div class="table-contents">
+<div>
 
 | Option              | Description                                   |
 |---------------------|-----------------------------------------------|
@@ -99,7 +99,7 @@ table below for valid values.
 
 </div>
 
-<div id="ret_x509_certificate_verify" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -107,15 +107,15 @@ None
 
 </div>
 
-<div id="errors_x509_certificate_verify" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id119524" class="table">
+<div>
 
-**Table 24.118. Errors signalled by `x509_certificate_verify `**
+**Table 24.117. Errors signalled by `x509_certificate_verify `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                   | Description                                                 |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------------|-------------------------------------------------------------|
@@ -134,15 +134,15 @@ None
 
 </div>
 
-<div id="examples_x509_certificate_verify" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_x509_certificate_verify" class="example">
+<div>
 
 **Example 24.454. Verification of a X.509 certificate**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
     SQL> x509_certificate_verify (file_to_string ('keys/srv/cert.cer'), vector (file_to_string ('keys/srv/ca.cer')), 'self-signed');
@@ -159,7 +159,7 @@ None
 
 </div>
 
-<div id="seealso_x509_certificate_verify" class="refsect1">
+<div>
 
 ## See Also
 

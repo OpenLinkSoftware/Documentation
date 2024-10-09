@@ -1,10 +1,10 @@
-<div id="xpf_filter" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ filter — Composes trees of shallow copies of given XML entities.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_filter" class="funcsynopsis">
+<div>
 
 |                             |                            |
 |-----------------------------|----------------------------|
 | `node-set `**`filter`**` (` | `selection ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ filter — Composes trees of shallow copies of given XML entities.
 
 </div>
 
-<div id="xpf_desc_filter" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,11 +65,11 @@ in Virtuoso it may be used freely in expression of any kind.
 
 </div>
 
-<div id="xpf_params_filter" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127276" class="refsect2">
+<div>
 
 ### selection
 
@@ -79,7 +79,7 @@ The sequence of nodes that should be included into the result
 
 </div>
 
-<div id="xpf_ret_filter" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -87,15 +87,15 @@ Node-set
 
 </div>
 
-<div id="xpf_errors_filter" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id127284" class="table">
+<div>
 
-**Table 24.142. Errors signalled by filter()**
+**Table 24.141. Errors signalled by filter()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                  | Description                                                                                                           |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
@@ -109,15 +109,15 @@ Node-set
 
 </div>
 
-<div id="xpf_examples_filter" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_filter" class="example">
+<div>
 
 **Example 24.586. Composing table of contents**
 
-<div class="example-contents">
+<div>
 
 The following example is from the XQuery standard and it illustrates how
 filter() might be used to compute a table of contents for a document
@@ -145,7 +145,7 @@ table of contents for a document named "cookbook.xml".
 
 </div>
 
-<div id="xpf_seealso_filter" class="refsect1">
+<div>
 
 ## See Also
 

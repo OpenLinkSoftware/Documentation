@@ -1,6 +1,6 @@
-<div id="twopc_recovery" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

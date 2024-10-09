@@ -1,6 +1,6 @@
-<div id="rdfsqlfromsparqldescribe" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,7 +23,7 @@ sources.
 The supported option values for
 <span class="emphasis">*sql:describe-mode*</span> are:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*(default)*</span>
 
@@ -100,7 +100,7 @@ dict_put (resulting_dict,
 
 Procedure arguments are as follows:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*subj_dict*</span>
 
@@ -136,9 +136,9 @@ Procedure arguments are as follows:
 One should grant execute permission on both procedures to SPARQL_SELECT
 before referring to them in SPARQL.
 
-<div id="rdfsqlfromsparqldescribeex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -187,9 +187,9 @@ INSERT IN xmp:good2
   };
 ```
 
-<div id="rdfsqlfromsparqldescribeexcbd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -220,9 +220,9 @@ LONG VARCHAR
 
 </div>
 
-<div id="rdfsqlfromsparqldescribeexspo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -312,9 +312,9 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="rdfsqlfromsparqldescribeexcbd_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -398,9 +398,9 @@ ns1:me  foaf:knows  ns9:me .
 
 </div>
 
-<div id="rdfsqlfromsparqldescribeexobjcbd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -434,9 +434,9 @@ LONG VARCHAR
 
 </div>
 
-<div id="rdfsqlfromsparqldescribeexcf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

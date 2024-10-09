@@ -1,10 +1,10 @@
-<div id="fn_sql_procedures" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sql_procedures — get procedures information for a remote DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_procedures" class="funcsynopsis">
+<div>
 
 |                                   |                           |
 |-----------------------------------|---------------------------|
@@ -25,7 +25,7 @@ sql_procedures — get procedures information for a remote DSN
 |                                   | in `owner ` varchar ,     |
 |                                   | in `name ` varchar `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ sql_procedures — get procedures information for a remote DSN
 
 </div>
 
-<div id="desc_procedures" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,7 +53,7 @@ signs, which are interpreted as in LIKE.
 
 </div>
 
-<div id="params_sql_procedures" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -61,7 +61,7 @@ As defined in ODBC API for the corresponding catalog call.
 
 </div>
 
-<div id="ret_sql_procedures" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ each column.
 
 </div>
 
-<div id="examples_sql_procedures" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sql_procedures" class="example">
+<div>
 
 **Example 24.399. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 dbg_obj_print (sql_procedures ('Local Virtuoso', 'DB', 'DBA', 'VT_INC_INDEX_DB_DBA_MAIL_MESSAGE'));
@@ -99,7 +99,7 @@ dbg_obj_print (sql_procedures ('Local Virtuoso', 'DB', 'DBA', 'VT_INC_INDEX_DB_D
 
 </div>
 
-<div id="seealso_sql_procedures" class="refsect1">
+<div>
 
 ## See Also
 

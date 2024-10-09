@@ -1,10 +1,10 @@
-<div id="fn_pem_certificates_to_array" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ strings
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_pem_certificates_to_array" class="funcsynopsis">
+<div>
 
 |                                        |                               |
 |----------------------------------------|-------------------------------|
 | ` `**`pem_certificates_to_array`**` (` | in `pem_string ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ strings
 
 </div>
 
-<div id="desc_pem_certificates_to_array" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ blocks other than X509 PEM certificates.
 
 </div>
 
-<div id="params_pem_certificates_to_array" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98741" class="refsect2">
+<div>
 
 ### pem_string
 
@@ -61,7 +61,7 @@ text of the PEM file
 
 </div>
 
-<div id="ret_pem_certificates_to_array" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -69,15 +69,15 @@ Array of PEM strings
 
 </div>
 
-<div id="errors_pem_certificates_to_array" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id98749" class="table">
+<div>
 
-**Table 24.61. Errors signalled by `pem_certificates_to_array `**
+**Table 24.60. Errors signalled by `pem_certificates_to_array `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                            | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------|-------------|
@@ -92,7 +92,7 @@ Array of PEM strings
 
 </div>
 
-<div id="seealso_pem_certificates_to_array" class="refsect1">
+<div>
 
 ## See Also
 

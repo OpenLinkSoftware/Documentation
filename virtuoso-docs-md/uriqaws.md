@@ -1,6 +1,6 @@
-<div id="uriqaws" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

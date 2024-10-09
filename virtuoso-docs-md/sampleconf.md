@@ -1,6 +1,6 @@
-<div id="sampleconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -64,7 +64,7 @@ Segment1 = 24G,  /disk1/tpcc-1-1.db = q1, /disk2/tpcc-1-2.db = q2,  /disk3/tpcc-
 Assuming we have file systems. Note the I/O queue names q1...q6, meaning
 that each stripe gets processed on a separate thread for I/O.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                      |
 |:--------------------------:|:-------------------------------------|
@@ -84,7 +84,7 @@ high value causes the number of clean buffers at any time being too low,
 causing an imperfect match of the read working set. The read-only set is
 only the ITEM table, about 20 MB.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                              |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

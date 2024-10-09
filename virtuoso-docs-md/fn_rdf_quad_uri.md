@@ -1,10 +1,10 @@
-<div id="fn_rdf_quad_uri" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ is a node.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_quad_uri" class="funcsynopsis">
+<div>
 
 |                                  |                          |
 |----------------------------------|--------------------------|
@@ -26,7 +26,7 @@ is a node.
 |                                  | in `p_uri ` varchar ,    |
 |                                  | in `o_uri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ is a node.
 
 </div>
 
-<div id="desc_rdf_quad_uri" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ stored but are not queryable via SPARQL.
 
 </div>
 
-<div id="params_rdf_quad_uri" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104046" class="refsect2">
+<div>
 
 ### g_uri
 
@@ -59,7 +59,7 @@ graph uri IRI string or IRI_ID
 
 </div>
 
-<div id="id104049" class="refsect2">
+<div>
 
 ### s_uri
 
@@ -67,7 +67,7 @@ subject IRI string or IRI_ID
 
 </div>
 
-<div id="id104052" class="refsect2">
+<div>
 
 ### p_uri
 
@@ -75,7 +75,7 @@ predicate IRI string or IRI_ID
 
 </div>
 
-<div id="id104055" class="refsect2">
+<div>
 
 ### o_uri
 
@@ -85,7 +85,7 @@ object IRI string or IRI_ID
 
 </div>
 
-<div id="ret_rdf_quad_uri" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -93,7 +93,7 @@ any
 
 </div>
 
-<div id="seealso_rdf_quad_uri" class="refsect1">
+<div>
 
 ## See Also
 

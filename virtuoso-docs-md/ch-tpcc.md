@@ -1,6 +1,6 @@
-<div id="ch-tpcc" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -22,7 +22,7 @@ industry standard Transaction Processing Performance Council (TPC) C
 benchmark and can be used as a component in an official benchmark but
 does not in itself constitute a complete test driver.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                              |
 |:--------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------|
@@ -44,7 +44,7 @@ make after choosing the target (see makefile).
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -86,9 +86,9 @@ Configuration](sampleconf.html)</span>
 
 </div>
 
-<div id="tpcctestdb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

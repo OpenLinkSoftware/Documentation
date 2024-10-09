@@ -1,6 +1,6 @@
-<div id="sparqldatediffindexfriendly" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="sparqldatediffindexfriendlywhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,9 +35,9 @@ SPARQL query.
 
 </div>
 
-<div id="sparqldatediffindexfriendlywhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,9 +55,9 @@ Achieve fast results and better performance.
 
 </div>
 
-<div id="sparqldatediffindexfriendlyhow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -96,7 +96,7 @@ FILTER ( bif:datediff('minute', now(),  xsd:DateTime(?extracted)) <= 10 ) .
 
 For each "is modified" triple we:
 
-<div class="orderedlist">
+<div>
 
 1.  Convert ?extracted to xsd:dateTime;
 
@@ -155,7 +155,7 @@ need to write a cast like xsd:dateTime --- it can make an expression
 index-unfriendly even if it will always return the argument unchanged on
 your specific data.
 
-<div class="orderedlist">
+<div>
 
 1.  <a href="http://bit.ly/13xefMl" class="ulink" target="_top">View the
     SPARQL Query Definition via SPARQL Protocol URL</a>

@@ -1,6 +1,6 @@
-<div id="voauthubc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,9 +19,9 @@ instances and instance specific data using the ODS Controllers API. This
 command set is available only for the Firefox browser with the Ubiquity
 extension installed.
 
-<div id="voauthubinstall" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,9 +42,9 @@ accessed by the ctrl-space key combination.
 
 </div>
 
-<div id="voauthubcommands" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -58,9 +58,9 @@ accessed by the ctrl-space key combination.
 
 </div>
 
-<div id="voauthubcommandsei" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -84,9 +84,9 @@ Example: ods-oauth-host http://demo.openlinksw.com/OAuth
 
 </div>
 
-<div id="voauthubcommandscm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -106,7 +106,7 @@ against an ODS instance: oauth or sid.
 In OAuth mode, for every ODS application instance, an OAuth key must be
 obtained and then initialized via the following steps:
 
-<div class="itemizedlist">
+<div>
 
 - obtain an ODS based OAuth session-key via the ODS example endpoint:
   http://host:port/ods/oauth_sid.vsp
@@ -124,7 +124,7 @@ obtained and then initialized via the following steps:
 If you choose the SID mode of interaction with ODS you have to perform
 the following steps:
 
-<div class="itemizedlist">
+<div>
 
 - set mode via command: ods-set-mode sid or ods-set-mode oauth
 
@@ -137,9 +137,9 @@ bound instance and user combination. It's obtained from an ODS session.
 
 </div>
 
-<div id="voauthubcommandsexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -163,7 +163,7 @@ server. More information and simple scenario how to be done you can find
 <a href="voauthcontrollers.html" class="link"
 title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a>
 
-<div class="orderedlist">
+<div>
 
 1.  Execute the command:
 
@@ -173,15 +173,15 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
     ods-oauth-host http://demo.openlinksw.com/OAuth
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys3" class="figure">
+    <div>
 
     **Figure 17.30. OAuth Authentication**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Authentication](images/ui/keys3.png)
 
@@ -201,15 +201,15 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
     ods-set-mode oauth
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys4" class="figure">
+    <div>
 
     **Figure 17.31. OAuth Authentication**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Authentication](images/ui/keys4.png)
 
@@ -225,20 +225,20 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
 
 3.  Obtain the OAuth Generated Key:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Go to http://cname:port/ods/oauth_sid.vsp . For ex.
         http://demo.openlinksw.com/ods/oauth_sid.vsp
 
-        <div class="figure-float">
+        <div>
 
-        <div id="keys5" class="figure">
+        <div>
 
         **Figure 17.32. OAuth Authentication**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![OAuth Authentication](images/ui/keys5.png)
 
@@ -255,15 +255,15 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
     2.  In the shown form enter user demo and choose the application
         "mybookmarks". Click the "Execute" button.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="keys6" class="figure">
+        <div>
 
         **Figure 17.33. OAuth Authentication**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![OAuth Authentication](images/ui/keys6.png)
 
@@ -284,15 +284,15 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
 
 5.  Enter for user demo its password and click the "Login" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys7" class="figure">
+    <div>
 
     **Figure 17.34. OAuth Authentication**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Authentication](images/ui/keys7.png)
 
@@ -308,15 +308,15 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
 
 6.  Click the "Authorize" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys8" class="figure">
+    <div>
 
     **Figure 17.35. OAuth Authentication**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Authentication](images/ui/keys8.png)
 
@@ -333,15 +333,15 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
 7.  Copy the obtains OAuth SID value for ex.:
     7ef4dcf23869488823b771b09b952cc9
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys9" class="figure">
+    <div>
 
     **Figure 17.36. OAuth Authentication**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Authentication](images/ui/keys9.png)
 
@@ -365,15 +365,15 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
     ods-set-addressbook-oauth 7ef4dcf23869488823b771b09b952cc9
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys10" class="figure">
+    <div>
 
     **Figure 17.37. OAuth Authentication**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OAuth Authentication](images/ui/keys10.png)
 
@@ -410,7 +410,7 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                  |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------|
@@ -425,9 +425,9 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
 
 </div>
 
-<div id="id1913" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -441,7 +441,7 @@ title="17.4.4. OAuth Generate Keys for ODS Controllers (Web Services)">here.</a
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                               |
 |:--------------------------:|:------------------------------------------------------------------------------|

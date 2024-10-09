@@ -1,6 +1,6 @@
-<div id="wsacldefrem" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 ACL's can be managed from the administration web interface using the
 following steps.
 
-<div class="itemizedlist">
+<div>
 
 - From Admin UI main menu open "System Admin" node.
 
@@ -34,15 +34,15 @@ following steps.
    href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/pubsubhub_dav.vad"  
    class="ulink" target="_top">pubsubhub_dav.vad</a> is installed.                             |
 
-  <div class="figure-float">
+  <div>
 
-  <div id="admacl1" class="figure">
+  <div>
 
   **Figure 14.13. Access Control**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Access Control](images/ui/admacl.png)
 

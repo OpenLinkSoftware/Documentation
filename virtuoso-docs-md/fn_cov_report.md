@@ -1,10 +1,10 @@
-<div id="fn_cov_report" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ cov_report — Produce a text coverage report.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cov_report" class="funcsynopsis">
+<div>
 
 |                         |                           |
 |-------------------------|---------------------------|
 | ` `**`cov_report`**` (` | in `fname ` varchar ,     |
 |                         | in `outdir ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ cov_report — Produce a text coverage report.
 
 </div>
 
-<div id="desc_cov_report" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ that directory must exists before calling this function.
 
 </div>
 
-<div id="params_cov_report" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83123" class="refsect2">
+<div>
 
 ### fname
 
@@ -62,7 +62,7 @@ Name of coverage report file.
 
 </div>
 
-<div id="id83126" class="refsect2">
+<div>
 
 ### outdir
 
@@ -72,7 +72,7 @@ Destination directory for storing .cov coverage files.
 
 </div>
 
-<div id="ret_cov_report" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,7 +80,7 @@ None.
 
 </div>
 
-<div id="seealso_cov_report" class="refsect1">
+<div>
 
 ## See Also
 

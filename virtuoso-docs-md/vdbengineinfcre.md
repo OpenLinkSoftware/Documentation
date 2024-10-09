@@ -1,6 +1,6 @@
-<div id="vdbengineinfcre" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the Informix stores_demo database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf1" class="figure">
+    <div>
 
     **Figure 8.227. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the Informix stores_demo database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_06" class="figure">
+    <div>
 
     **Figure 8.228. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the Informix stores_demo database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf2" class="figure">
+    <div>
 
     **Figure 8.229. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/einf2.png)
 
@@ -137,15 +137,15 @@ the Informix stores_demo database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf3" class="figure">
+    <div>
 
     **Figure 8.230. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/einf3.png)
 
@@ -161,15 +161,15 @@ the Informix stores_demo database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf4" class="figure">
+    <div>
 
     **Figure 8.231. New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![New Item](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the Informix stores_demo database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf5" class="figure">
+    <div>
 
     **Figure 8.232. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/einf5.png)
 
@@ -241,15 +241,15 @@ the Informix stores_demo database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora6_03" class="figure">
+    <div>
 
     **Figure 8.233. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the Informix stores_demo database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf7" class="figure">
+    <div>
 
     **Figure 8.234. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the Informix stores_demo database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf8" class="figure">
+    <div>
 
     **Figure 8.235. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the Informix stores_demo database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf9" class="figure">
+    <div>
 
     **Figure 8.236. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the Informix stores_demo database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf10" class="figure">
+    <div>
 
     **Figure 8.237. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/einf10.png)
 
@@ -405,15 +405,15 @@ the Informix stores_demo database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf11" class="figure">
+    <div>
 
     **Figure 8.238. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -442,15 +442,15 @@ the Informix stores_demo database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf12" class="figure">
+    <div>
 
     **Figure 8.239. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/einf12.png)
 
@@ -487,15 +487,15 @@ the Informix stores_demo database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf13" class="figure">
+    <div>
 
     **Figure 8.240. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/einf13.png)
 
@@ -516,15 +516,15 @@ the Informix stores_demo database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="einf14" class="figure">
+    <div>
 
     **Figure 8.241. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/einf14.png)
 

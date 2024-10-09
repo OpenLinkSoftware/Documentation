@@ -1,6 +1,6 @@
-<div id="conceptarchitecture" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,15 +20,15 @@ local native and remote SQL and XML based resources. Web and Internet
 services and protocols then sit atop of this layer to expose Virtuoso to
 the Web and its users.
 
-<div class="figure-float">
+<div>
 
-<div id="varch322" class="figure">
+<div>
 
 **Figure 5.2. OpenLink Virtuoso Product Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![OpenLink Virtuoso Product Architecture](images/varch32.jpg)
 

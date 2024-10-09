@@ -1,10 +1,10 @@
-<div id="fn_uptime" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ up.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_uptime" class="funcsynopsis">
+<div>
 
 |                     |      |
 |---------------------|------|
 | ` `**`uptime`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ up.
 
 </div>
 
-<div id="desc_uptime" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,15 +42,15 @@ server have been up.
 
 </div>
 
-<div id="examples_10" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_uptime" class="example">
+<div>
 
 **Example 24.413. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> uptime();
@@ -70,7 +70,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_18" class="refsect1">
+<div>
 
 ## See Also
 

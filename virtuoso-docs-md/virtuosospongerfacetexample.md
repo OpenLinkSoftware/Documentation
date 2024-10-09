@@ -1,6 +1,6 @@
-<div id="virtuosospongerfacetexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,19 +21,19 @@ The following example demonstrates a simple scenario of tracking
 Kingsley Idehen's conversations across the Web, using the Virtuoso
 Faceted Browser hosted on LOD.
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://lod.openlinksw.com/fct/
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fb2" class="figure">
+    <div>
 
     **Figure 16.153. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/fb2.png)
 
@@ -50,15 +50,15 @@ Faceted Browser hosted on LOD.
 2.  Enter a free text search pattern (for example, "Kingsley Idehen"),
     and click Search
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f1" class="figure">
+    <div>
 
     **Figure 16.154. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f1.png)
 
@@ -75,15 +75,15 @@ Faceted Browser hosted on LOD.
 3.  Your initial query results page will display a list of literal value
     snippets from property values associated with the query text pattern
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f2" class="figure">
+    <div>
 
     **Figure 16.155. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f2.png)
 
@@ -102,15 +102,15 @@ Faceted Browser hosted on LOD.
     based hyperlinks for each of the Entity Types associated with
     Property values that contains the query text pattern
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f3" class="figure">
+    <div>
 
     **Figure 16.156. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f3.png)
 
@@ -130,15 +130,15 @@ Faceted Browser hosted on LOD.
     a list of Attributes and Values + automatically generated QRCode
     image:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f4" class="figure">
+    <div>
 
     **Figure 16.157. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f4.png)
 
@@ -159,15 +159,15 @@ Faceted Browser hosted on LOD.
     Entities of this Type, un-hatch the checkbox beside this link for
     Negation (filtering out) based on this Entity Type
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f7" class="figure">
+    <div>
 
     **Figure 16.158. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f7.png)
 
@@ -181,20 +181,20 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="itemizedlist">
+    <div>
 
     - For Negation (filtering out) based on this Entity Type un-hatch
       the check-box shown besides the link:
 
-      <div class="figure-float">
+      <div>
 
-      <div id="f5" class="figure">
+      <div>
 
       **Figure 16.159. Faceted Navigation Example**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Faceted Navigation Example](images/ui/f5.png)
 
@@ -208,15 +208,15 @@ Faceted Browser hosted on LOD.
 
       </div>
 
-      <div class="figure-float">
+      <div>
 
-      <div id="f6" class="figure">
+      <div>
 
       **Figure 16.160. Faceted Navigation Example**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Faceted Navigation Example](images/ui/f6.png)
 
@@ -237,15 +237,15 @@ Faceted Browser hosted on LOD.
       combination of Properties and Entities where Entities in the
       result-set contain values matching the query text pattern
 
-      <div class="figure-float">
+      <div>
 
-      <div id="f8" class="figure">
+      <div>
 
       **Figure 16.161. Faceted Navigation Example**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Faceted Navigation Example](images/ui/f8.png)
 
@@ -263,15 +263,15 @@ Faceted Browser hosted on LOD.
 
 8.  From "Entity Relations Navigation" click "Attributes".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f9" class="figure">
+    <div>
 
     **Figure 16.162. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f9.png)
 
@@ -288,15 +288,15 @@ Faceted Browser hosted on LOD.
 9.  You can navigate amongst the search results pages by using the
     "Prev" and "Next" buttons. Click for ex. "Next":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f10" class="figure">
+    <div>
 
     **Figure 16.163. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f10.png)
 
@@ -313,15 +313,15 @@ Faceted Browser hosted on LOD.
 10. From the list of Property Types, click on the "foaf:interest" link
     to filter further, based on the values of this property:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f11" class="figure">
+    <div>
 
     **Figure 16.164. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f11.png)
 
@@ -341,15 +341,15 @@ Faceted Browser hosted on LOD.
     "foaf:Person" associated with the property "foaf:interest", in the
     LOD data space:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f12" class="figure">
+    <div>
 
     **Figure 16.165. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f12.png)
 
@@ -373,15 +373,15 @@ Faceted Browser hosted on LOD.
     descriptions. Additionally, a QRCode image will be produced
     automatically for the given entity:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f13" class="figure">
+    <div>
 
     **Figure 16.166. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f13.png)
 
@@ -395,15 +395,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f14" class="figure">
+    <div>
 
     **Figure 16.167. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f14.png)
 
@@ -417,15 +417,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f15" class="figure">
+    <div>
 
     **Figure 16.168. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f15.png)
 
@@ -439,15 +439,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f16" class="figure">
+    <div>
 
     **Figure 16.169. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f16.png)
 
@@ -464,15 +464,15 @@ Faceted Browser hosted on LOD.
 13. You can navigate amongst the search results pages by using the
     "First", "Prev", "Next" and "Last" buttons. Click for ex. "Last":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f17" class="figure">
+    <div>
 
     **Figure 16.170. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f17.png)
 
@@ -486,15 +486,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f18" class="figure">
+    <div>
 
     **Figure 16.171. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f18.png)
 
@@ -513,15 +513,15 @@ Faceted Browser hosted on LOD.
     graphs are akin to saying "Table X" and "Table Y" where each table
     is the container of Records re. RDBMS or Worksheet re. Spreadsheet.:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f19" class="figure">
+    <div>
 
     **Figure 16.172. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f19.png)
 
@@ -535,15 +535,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f20" class="figure">
+    <div>
 
     **Figure 16.173. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f20.png)
 
@@ -562,15 +562,15 @@ Faceted Browser hosted on LOD.
     saying: here are his other names or his know by this name in this
     other place):
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fct12" class="figure">
+    <div>
 
     **Figure 16.174. f21 Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![f21 Navigation Example](images/ui/f21.png)
 
@@ -584,15 +584,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f22" class="figure">
+    <div>
 
     **Figure 16.175. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f22.png)
 
@@ -609,15 +609,15 @@ Faceted Browser hosted on LOD.
 16. Click on "Settings" check "owl:sameAs" and it sets a context mode
     for the session (meaning: a set of rules to take place):
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f23" class="figure">
+    <div>
 
     **Figure 16.176. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f23.png)
 
@@ -633,15 +633,15 @@ Faceted Browser hosted on LOD.
 
 17. Go back to the "Direct Co-reference" tab:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="f24" class="figure">
+    <div>
 
     **Figure 16.177. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/f24.png)
 
@@ -665,15 +665,15 @@ Faceted Browser hosted on LOD.
 20. Enter a free text search pattern (for example, " `Camcorder` " as
     consumer product), and click Search:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fb19" class="figure">
+    <div>
 
     **Figure 16.178. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/fb19.png)
 
@@ -690,15 +690,15 @@ Faceted Browser hosted on LOD.
 21. Your initial query results page will display a list of literal value
     snippets where for each URI will be displayed a label:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fb20" class="figure">
+    <div>
 
     **Figure 16.179. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/fb20.png)
 
@@ -718,15 +718,15 @@ Faceted Browser hosted on LOD.
     Attributes and Values will be presented. An URI label of the product
     also will be shown: "CG-800":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fb21" class="figure">
+    <div>
 
     **Figure 16.180. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/fb21.png)
 
@@ -740,15 +740,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fb22" class="figure">
+    <div>
 
     **Figure 16.181. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/fb22.png)
 
@@ -762,15 +762,15 @@ Faceted Browser hosted on LOD.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fb23" class="figure">
+    <div>
 
     **Figure 16.182. Faceted Navigation Example**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Faceted Navigation Example](images/ui/fb23.png)
 

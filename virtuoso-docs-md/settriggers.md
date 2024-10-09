@@ -1,6 +1,6 @@
-<div id="settriggers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ of triggers or for debugging triggers.
 The value of TRIGGERS is passed into called procedures but other options
 are not.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                     |
 |:--------------------------:|:--------------------------------------------------------------------|

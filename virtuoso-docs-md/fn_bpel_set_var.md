@@ -1,10 +1,10 @@
-<div id="fn_bpel_set_var" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ from \<bpelv:exec binding="SQL"\> activity
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_setvariabledata_01" class="funcsynopsis">
+<div>
 
 |                                        |                          |
 |----------------------------------------|--------------------------|
@@ -26,7 +26,7 @@ from \<bpelv:exec binding="SQL"\> activity
 |                                        | in `part ` varchar ,     |
 |                                        | in `query ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,11 +36,11 @@ from \<bpelv:exec binding="SQL"\> activity
 
 </div>
 
-<div id="params_set_var_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130315" class="refsect2">
+<div>
 
 ### var_name
 
@@ -48,7 +48,7 @@ from \<bpelv:exec binding="SQL"\> activity
 
 </div>
 
-<div id="id130319" class="refsect2">
+<div>
 
 ### value
 
@@ -57,7 +57,7 @@ varchar
 
 </div>
 
-<div id="id130323" class="refsect2">
+<div>
 
 ### part
 
@@ -66,7 +66,7 @@ variable in question.
 
 </div>
 
-<div id="id130327" class="refsect2">
+<div>
 
 ### query
 
@@ -77,7 +77,7 @@ data in the BPEL variable
 
 </div>
 
-<div id="ret_set_var_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,7 +85,7 @@ this function has no return value.
 
 </div>
 
-<div id="desc_wsdl_upload_04" class="refsect1">
+<div>
 
 ## Description
 
@@ -98,15 +98,15 @@ process.
 
 </div>
 
-<div id="examples_setvariabledata_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_wsdl_upload_05" class="example">
+<div>
 
 **Example 24.649. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 declare country any;

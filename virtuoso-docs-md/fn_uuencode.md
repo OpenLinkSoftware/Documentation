@@ -1,10 +1,10 @@
-<div id="fn_uuencode" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ characters, suitable for transfer via "ASCII-only" data channels
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_uuencode" class="funcsynopsis">
+<div>
 
 |                       |                                        |
 |-----------------------|----------------------------------------|
@@ -25,7 +25,7 @@ characters, suitable for transfer via "ASCII-only" data channels
 |                       | in `mode ` integer ,                   |
 |                       | in `maxlines ` integer `)`;            |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ characters, suitable for transfer via "ASCII-only" data channels
 
 </div>
 
-<div id="desc_uuencode" class="refsect1">
+<div>
 
 ## Description
 
@@ -79,11 +79,11 @@ Older RFC 1521 is now obsoleted.
 Currently, eight conventions are used for mail attachments. In Virtuoso,
 they are enumerated by integer IDs.
 
-<div id="id117145" class="table">
+<div>
 
-**Table 24.109. Unicode-like standards, supported by Virtuoso**
+**Table 24.108. Unicode-like standards, supported by Virtuoso**
 
-<div class="table-contents">
+<div>
 
 | ID  | Standard                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 |-----|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -105,11 +105,11 @@ they are enumerated by integer IDs.
 
 </div>
 
-<div id="params_uuencode" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117192" class="refsect2">
+<div>
 
 ### input
 
@@ -117,7 +117,7 @@ String or string-output session with data to be encoded.
 
 </div>
 
-<div id="id117195" class="refsect2">
+<div>
 
 ### mode
 
@@ -125,7 +125,7 @@ Integer ID of encoding to be used.
 
 </div>
 
-<div id="id117198" class="refsect2">
+<div>
 
 ### maxlines
 
@@ -137,7 +137,7 @@ error.
 
 </div>
 
-<div id="ret_uuencode" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -146,15 +146,15 @@ section.
 
 </div>
 
-<div id="errors_uuencode_01" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id117206" class="table">
+<div>
 
-**Table 24.110. Errors signalled by**
+**Table 24.109. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                                      | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|-------------|
@@ -169,15 +169,15 @@ section.
 
 </div>
 
-<div id="examples_uuencode" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_uuencode" class="example">
+<div>
 
 **Example 24.434. BinHex**
 
-<div class="example-contents">
+<div>
 
 This function displays BinHex result of uuencode as a result-set of
 sections.
@@ -235,7 +235,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_uuencode" class="refsect1">
+<div>
 
 ## See Also
 

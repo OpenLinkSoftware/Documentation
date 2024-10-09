@@ -1,10 +1,10 @@
-<div id="fn_udt_implements_method" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ specific name in a user defined type.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_udt_implements_method" class="funcsynopsis">
+<div>
 
 |                                       |                                |
 |---------------------------------------|--------------------------------|
 | `any `**`udt_implements_method`**` (` | in `udt ` any ,                |
 |                                       | in `method_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ specific name in a user defined type.
 
 </div>
 
-<div id="desc_udt_implements_method" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ as a first argument to the indirect call statement.
 
 </div>
 
-<div id="params_udt_implements_method" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id115986" class="refsect2">
+<div>
 
 ### udt
 
@@ -60,7 +60,7 @@ Type name as varchar or a type instance.
 
 </div>
 
-<div id="id115989" class="refsect2">
+<div>
 
 ### method_name
 
@@ -70,7 +70,7 @@ The requested method name as a varchar.
 
 </div>
 
-<div id="ret_udt_implements_method" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -81,15 +81,15 @@ that name will be returned.
 
 </div>
 
-<div id="examples_udt_implements_method" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_udt_implements_method" class="example">
+<div>
 
 **Example 24.427. Finding methods within a UDT**
 
-<div class="example-contents">
+<div>
 
 This example demonstrates how one might go about utilizing the handle of
 a method if found within a user defined type.
@@ -117,7 +117,7 @@ else
 
 </div>
 
-<div id="seealso_udt_implements_method" class="refsect1">
+<div>
 
 ## See Also
 

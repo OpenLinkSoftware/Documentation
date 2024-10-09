@@ -1,6 +1,6 @@
-<div id="udtstaticmethods" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,11 +23,11 @@ T::SM ( [ parameter, .... ] )
 This will call the static method of `SM` of `T` and will return whatever
 the static method returns.
 
-<div id="ex_callstaticmethod" class="example">
+<div>
 
 **Example 9.9. Calling A Static Method**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select UDT_TEST::_ADD (1, 2);

@@ -1,10 +1,10 @@
-<div id="fn_bag_agg" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ DB.DBA.BAG_AGG — Returns a vector of passed values.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bag_agg" class="funcsynopsis">
+<div>
 
 |                                   |                              |
 |-----------------------------------|------------------------------|
 | `vector `**`DB.DBA.BAG_AGG`**` (` | `value_expression ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ DB.DBA.BAG_AGG — Returns a vector of passed values.
 
 </div>
 
-<div id="desc_bag_agg" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ is not important for your application, consider using of
 
 </div>
 
-<div id="params_bag_agg" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id79952" class="refsect2">
+<div>
 
 ### value_expression
 
@@ -66,7 +66,7 @@ Value of item for aggregation.
 
 </div>
 
-<div id="ret_bag_agg" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ Any
 
 </div>
 
-<div id="examples_bag_agg" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_bag_agg_1" class="example">
+<div>
 
 **Example 24.6. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SELECT DB.DBA.BAG_AGG (subquery.X)
@@ -97,7 +97,7 @@ FROM (SELECT X FROM ... ORDER BY X) as subquery
 
 </div>
 
-<div id="seealso_bag_agg" class="refsect1">
+<div>
 
 ## See Also
 

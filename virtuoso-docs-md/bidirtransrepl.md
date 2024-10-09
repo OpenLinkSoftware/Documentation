@@ -1,6 +1,6 @@
-<div id="bidirtransrepl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -44,9 +44,9 @@ publisher. After all replication log data has been sent to the publisher
 it is put into "synced" mode and will receive modifications immediately
 after each COMMIT on subscriber.
 
-<div id="bidirtransreplcreate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -74,9 +74,9 @@ subscribers will be replayed as user 'demo'.
 
 </div>
 
-<div id="bidirtransrepladdtable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -107,9 +107,9 @@ otherwise conflict resolution must take place.
 
 </div>
 
-<div id="bidirtransreplconflictres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -129,7 +129,7 @@ always take place on the publisher.
 Assume some DML operation that occurred on a subscriber is being
 replayed on publisher. There may be three types of conflicts:
 
-<div class="orderedlist">
+<div>
 
 1.  **uniqueness conflict (insert conflict) . ** occurs when the row
     with some primary key \<PK\> already exists in publisher's table.
@@ -171,7 +171,7 @@ transaction originator.
 Conflict resolvers can return the following integer values; The conflict
 resolver types concerned for each are listed in parentheses:
 
-<div class="itemizedlist">
+<div>
 
 - **0 - can't decide (I, U, D) . ** next conflict resolver will be
   fired.
@@ -201,11 +201,11 @@ resolver types concerned for each are listed in parentheses:
 Conflict resolution stops when conflict resolvers return a non-zero
 value meaning that it has made a decision.
 
-<div id="ex_conflictreslntrans" class="example">
+<div>
 
 **Example 13.5. Conflict Resolution**
 
-<div class="example-contents">
+<div>
 
 Suppose we have the following table:
 
@@ -295,7 +295,7 @@ create procedure items_cr(
 
 Conflict resolution occurs differently for each kind of DML operation:
 
-<div class="itemizedlist">
+<div>
 
 - **INSERT . ** When INSERT of some row with primary key \<PK\> is
   replayed, the row in the publisher's table with such \<PK\> is
@@ -333,9 +333,9 @@ Conflict resolution occurs differently for each kind of DML operation:
 
 </div>
 
-<div id="bidirtransreplautoconres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -352,21 +352,21 @@ Conflict resolution occurs differently for each kind of DML operation:
 Simple conflict resolvers can be generated automatically. This can be
 done by calling REPL_ADD_CR function.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
-|                            |                                                                     |
-|:--------------------------:|:--------------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                           |
-|                            | <a href="fn_repl_add_cr.html" class="link" shape="rect"             
-                              title="REPL_ADD_CR"><code class="function">REPL_ADD_CR()</code></a>  |
-
-</div>
+|                            |                                                                      |
+|:--------------------------:|:---------------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                            |
+|                            | <a href="fn_repl_add_cr.html" class="link" title="REPL_ADD_CR"><code 
+                              class="function">REPL_ADD_CR()</code></a>                             |
 
 </div>
 
-<div id="bidirtransrepllogdata" class="section">
+</div>
 
-<div class="titlepage">
+<div>
+
+<div>
 
 <div>
 
@@ -382,7 +382,7 @@ done by calling REPL_ADD_CR function.
 
 Replication log data is different for each kind of DML operation:
 
-<div class="itemizedlist">
+<div>
 
 - **INSERT. ** (stmt, \<ALLCOLS\>)
 

@@ -1,6 +1,6 @@
-<div id="faultfaulttolersampleconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

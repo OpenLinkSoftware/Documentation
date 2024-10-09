@@ -1,6 +1,6 @@
-<div id="backslashserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ SQL_NO_CHAR_C_ESCAPE=0/1 can be set in the "Client" section of the
 virtuoso.ini file to set the connection default backslash handling
 behavior. The default value is 0.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                          |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -1,6 +1,6 @@
-<div id="rdfperfloading" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,9 +67,9 @@ the best way may be to try
 title="Data Import"><code class="function">ttlp_mt</code></a> and see if
 this runs faster than a single threaded ttlp call.
 
-<div id="rdfperfloadingutility" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -251,9 +251,9 @@ title="rdf_loader_run">rdf_loader_run()</a> function.
 
 </div>
 
-<div id="rdfperfloadinglod" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -269,7 +269,7 @@ title="rdf_loader_run">rdf_loader_run()</a> function.
 
 To load the rdf data to LOD instance, perform the following steps:
 
-<div class="itemizedlist">
+<div>
 
 - Configure & start cluster
 
@@ -341,9 +341,9 @@ To load the rdf data to LOD instance, perform the following steps:
 
 </div>
 
-<div id="rdfperfloadingunitpro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -421,7 +421,7 @@ MaxCheckpointRemap = 1500000
 DefaultIsolation = 2
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                  |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------|
@@ -432,7 +432,7 @@ DefaultIsolation = 2
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 |:--------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -487,9 +487,9 @@ END { }
 
 </div>
 
-<div id="rdfperfloadingdbpedia" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -610,9 +610,9 @@ exit 0
 
 </div>
 
-<div id="rdfperfloadingbio2rdf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

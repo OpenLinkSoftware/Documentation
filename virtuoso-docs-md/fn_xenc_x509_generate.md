@@ -1,10 +1,10 @@
-<div id="fn_xenc_x509_generate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ public key
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_x509_generate" class="funcsynopsis">
+<div>
 
 |                                 |                                 |
 |---------------------------------|---------------------------------|
@@ -29,7 +29,7 @@ public key
 |                                 | in `extensions ` vector ,       |
 |                                 | in `hours ` integer `)`;        |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ public key
 
 </div>
 
-<div id="desc_xenc_x509_generate" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ the certificate with CA private key
 
 </div>
 
-<div id="params_xenc_x509_generate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120883" class="refsect2">
+<div>
 
 ### ca_key_name
 
@@ -60,7 +60,7 @@ The name of CA key, the key must have corresponding certificate.
 
 </div>
 
-<div id="id120886" class="refsect2">
+<div>
 
 ### public_key_name
 
@@ -70,7 +70,7 @@ in CA'a key space.
 
 </div>
 
-<div id="id120889" class="refsect2">
+<div>
 
 ### serial
 
@@ -78,7 +78,7 @@ The serial number
 
 </div>
 
-<div id="id120892" class="refsect2">
+<div>
 
 ### validity
 
@@ -86,7 +86,7 @@ Certificate's validity in days
 
 </div>
 
-<div id="id120895" class="refsect2">
+<div>
 
 ### subject
 
@@ -94,7 +94,7 @@ An array of name/value pairs representing the subject aka name enties
 
 </div>
 
-<div id="id120898" class="refsect2">
+<div>
 
 ### extensions
 
@@ -102,7 +102,7 @@ An array of name/value pairs to add as X.509v3 extensions to certificate
 
 </div>
 
-<div id="id120901" class="refsect2">
+<div>
 
 ### hours
 
@@ -113,15 +113,15 @@ control over the expiration date.
 
 </div>
 
-<div id="examples_xenc_x509_generate" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_x509_generate" class="example">
+<div>
 
 **Example 24.479. Issuing a certificate**
 
-<div class="example-contents">
+<div>
 
 The example below decodes a public key sent from client and then issue a
 certificate and sign it with CA's key 'id_rsa'. The client's key is
@@ -155,7 +155,7 @@ xenc_x509_generate ('id_rsa', kname, sequence_next ('ca_id_rsa'), 365,
 
 </div>
 
-<div id="seealso_xenc_x509_generate" class="refsect1">
+<div>
 
 ## See Also
 

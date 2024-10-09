@@ -1,6 +1,6 @@
-<div id="udtserilizingtypeinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,11 +18,11 @@ Virtuoso allows serializing and deserializing of non TEMPORARY type
 instances. This means that the instances can be saved as a column value
 and can be used with the serialize/deserialize SQL functions.
 
-<div id="ex_serializetypeinst" class="example">
+<div>
 
 **Example 9.11. Storing User Defined Types**
 
-<div class="example-contents">
+<div>
 
 This creates a type SER_UDT, a table UDT_TABLE with a DATA column
 capable of storing SER_UDT instances, stores an instance of SER_UDT into
@@ -97,11 +97,11 @@ insert into ANY_TABLE (ID, DATA) values (1, new SER_UDT());
 select (C.DATA as SER_UDT).A from ANY_TABLE C where C.ID = 1;
 ```
 
-<div id="ex_serializebifs" class="example">
+<div>
 
 **Example 9.12. SERIALIZE/DESERIALIZE VSEs example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select (DESERIALIZE (SERIALIZE (new SER_UDT ())) as SER_UDT).A;

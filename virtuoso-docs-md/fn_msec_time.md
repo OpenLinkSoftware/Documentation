@@ -1,10 +1,10 @@
-<div id="fn_msec_time" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ msec_time — Get number of milliseconds from system epoch
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_msec_time" class="funcsynopsis">
+<div>
 
 |                        |          |     |
 |------------------------|----------|-----|
 | ` `**`msec_time`**` (` | `void)`; |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ msec_time — Get number of milliseconds from system epoch
 
 </div>
 
-<div id="desc_msec_time" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ is useful for benchmarking purposes, timing operations, etc.
 
 </div>
 
-<div id="params_msec_time" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96848" class="refsect2">
+<div>
 
 ### No parameters
 
@@ -55,7 +55,7 @@ The function does not take parameters.
 
 </div>
 
-<div id="ret_msec_time" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ system epoch.
 
 </div>
 
-<div id="examples_msec_time" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_msec_time_1" class="example">
+<div>
 
 **Example 24.222. Simple example**
 
-<div class="example-contents">
+<div>
 
 Time a function
 
@@ -118,7 +118,7 @@ fib (10) is 55, got it in 10 milliseconds.
 
 </div>
 
-<div id="seealso_msec_time" class="refsect1">
+<div>
 
 ## See Also
 

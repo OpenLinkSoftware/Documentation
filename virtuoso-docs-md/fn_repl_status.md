@@ -1,10 +1,10 @@
-<div id="fn_repl_status" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ repl_status — returns status of a published or subscribed publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_status" class="funcsynopsis">
+<div>
 
 |                          |                             |
 |--------------------------|-----------------------------|
@@ -25,7 +25,7 @@ repl_status — returns status of a published or subscribed publication
 |                          | out `level ` integer ,      |
 |                          | out `stat ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ repl_status — returns status of a published or subscribed publication
 
 </div>
 
-<div id="desc_repl_status" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ publication on the local server.
 
 </div>
 
-<div id="params_repl_status" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id106356" class="refsect2">
+<div>
 
 ### publisher
 
@@ -56,7 +56,7 @@ Name of the publisher.
 
 </div>
 
-<div id="id106359" class="refsect2">
+<div>
 
 ### publication
 
@@ -64,7 +64,7 @@ Name of the publication.
 
 </div>
 
-<div id="id106362" class="refsect2">
+<div>
 
 ### level
 
@@ -79,7 +79,7 @@ parameter.
 
 </div>
 
-<div id="id106366" class="refsect2">
+<div>
 
 ### stat
 
@@ -100,15 +100,15 @@ Otherwise it has the following possible values:
 
 </div>
 
-<div id="examples_repl_status" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_status_1" class="example">
+<div>
 
 **Example 24.332. Retrieving the subscription status**
 
-<div class="example-contents">
+<div>
 
 This example shows an analogue of the REPL_STAT() function.
 
@@ -135,7 +135,7 @@ create procedure MY_REPL_STAT ()
 
 </div>
 
-<div id="seealso_repl_status" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_rdf_quad_uri_l_typed" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ and language.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_quad_uri_l_typed" class="funcsynopsis">
+<div>
 
 |                                          |                         |
 |------------------------------------------|-------------------------|
@@ -29,7 +29,7 @@ and language.
 |                                          | in `dt ` any ,          |
 |                                          | in `lang ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ and language.
 
 </div>
 
-<div id="desc_rdf_quad_uri_l_typed" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ are not queryable via SPARQL.
 
 </div>
 
-<div id="params_rdf_quad_uri_l_typed" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104211" class="refsect2">
+<div>
 
 ### g_uri
 
@@ -63,7 +63,7 @@ graph uri IRI string or IRI_ID
 
 </div>
 
-<div id="id104214" class="refsect2">
+<div>
 
 ### s_uri
 
@@ -71,7 +71,7 @@ subject IRI string or IRI_ID
 
 </div>
 
-<div id="id104217" class="refsect2">
+<div>
 
 ### p_uri
 
@@ -79,7 +79,7 @@ predicate IRI string or IRI_ID
 
 </div>
 
-<div id="id104220" class="refsect2">
+<div>
 
 ### o_uri
 
@@ -87,7 +87,7 @@ string value of the literal
 
 </div>
 
-<div id="id104223" class="refsect2">
+<div>
 
 ### dt
 
@@ -95,7 +95,7 @@ datatype as IRI string or IRI_ID, can be NULL
 
 </div>
 
-<div id="id104226" class="refsect2">
+<div>
 
 ### lang
 
@@ -105,7 +105,7 @@ language as string or NULL
 
 </div>
 
-<div id="ret_rdf_quad_uri_l_typed" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -113,15 +113,15 @@ any
 
 </div>
 
-<div id="examples_rdf_quad_uri_l_typed" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_quad_uri_l_typed" class="example">
+<div>
 
 **Example 24.309. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>DB.DBA.RDF_QUAD_URI_L_TYPED ('g_many', 's1', 'p_some', 'z016,g_many,s1,p_some', null, 'en');
@@ -137,7 +137,7 @@ Done. -- 0 msec.
 
 </div>
 
-<div id="seealso_rdf_quad_uri_l_typed" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_stringdate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ stringdate — Convert a string to a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_stringdate" class="funcsynopsis">
+<div>
 
 |                         |                        |
 |-------------------------|------------------------|
 | ` `**`stringdate`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ stringdate — Convert a string to a datetime
 
 </div>
 
-<div id="desc_stringdate" class="refsect1">
+<div>
 
 ## Description
 
@@ -54,11 +54,11 @@ is preferred over this function.
 
 </div>
 
-<div id="params_stringdate" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112242" class="refsect2">
+<div>
 
 ### str
 
@@ -69,19 +69,18 @@ format.
 
 </div>
 
-<div id="errors_stringdate" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id112248" class="table">
+<div>
 
-**Table 24.81. Errors signalled by `datestring ` and `stringdate `**
+**Table 24.80. Errors signalled by `datestring ` and `stringdate `**
 
-<div class="table-contents">
+<div>
 
-|                                       |                                       |                                                                                 |             |
-|---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------|-------------|
 | SQLState                              | Error Code                            | Error Text                                                                      | Description |
+|---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------|-------------|
 | <span class="errorcode">22007 </span> | <span class="errorcode">DT006 </span> | <span class="errortext">Cannot convert \<offending string\> to datetime </span> |             |
 | <span class="errorcode">22002 </span> | <span class="errorcode">DT007 </span> | <span class="errortext">Nulls not allowed as parameters to stringdate </span>   |             |
 
@@ -93,15 +92,15 @@ format.
 
 </div>
 
-<div id="examples_04_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_stringdate_1" class="example">
+<div>
 
 **Example 24.406. Stringdate example with datestring_GMT**
 
-<div class="example-contents">
+<div>
 
 We are at central european time zone CET(GMT+1).
 
@@ -140,7 +139,7 @@ SQL> use Demo;
 
 </div>
 
-<div id="seealso_stringdate" class="refsect1">
+<div>
 
 ## See Also
 

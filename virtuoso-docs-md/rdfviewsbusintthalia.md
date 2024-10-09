@@ -1,6 +1,6 @@
-<div id="rdfviewsbusintthalia" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

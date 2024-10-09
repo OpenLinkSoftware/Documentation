@@ -1,6 +1,6 @@
-<div id="startvdbms" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,9 +20,9 @@ Windows 98 and Windows ME) and the Windows NT family (including Windows
 2003, and Windows Server 2008), specific instructions for starting and
 stopping your Virtuoso server are supplied for each Windows family.
 
-<div id="winnt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -39,9 +39,9 @@ stopping your Virtuoso server are supplied for each Windows family.
 You can start your Virtuoso server in one of two ways, automatically or
 manually, the default mode configured by your installer is Automatic.
 
-<div id="winntautostart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,9 +65,9 @@ is required to complete the install.
 
 </div>
 
-<div id="winntmanstart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -87,15 +87,15 @@ doing this via the "Services" control panel Applet you need to simply
 open up your control panel and click on the "services" applet. This will
 present you with a screen similar to the one below:
 
-<div class="figure-float">
+<div>
 
-<div id="inst016" class="figure">
+<div>
 
 **Figure 2.13. Services Applet**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Services Applet](images/virtinst12.gif)
 
@@ -123,9 +123,9 @@ virtuoso-odbc-f +service start
 
 </div>
 
-<div id="win9x" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -143,9 +143,9 @@ You can start your Virtuoso server under Windows 95/98 in one of two
 ways, automatically or manually, the default mode configured by your
 installer is Automatic.
 
-<div id="win9xautostart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -176,9 +176,9 @@ C:\Program Files\OpenLink\Virtuoso\bin\virtuoso-odbc-f +service start
 
 </div>
 
-<div id="sect4win9xmanstart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -200,7 +200,7 @@ virtuoso-odbc-f +service start
 virtuoso-odbc-f +instance demo +service start
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                              |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------|

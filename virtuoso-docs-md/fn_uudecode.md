@@ -1,10 +1,10 @@
-<div id="fn_uudecode" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ uudecode — Decodes a string previously encoded by uuencode
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_uudecode" class="funcsynopsis">
+<div>
 
 |                       |                         |
 |-----------------------|-------------------------|
 | ` `**`uudecode`**` (` | in `input ` string ,    |
 |                       | in `mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ uudecode — Decodes a string previously encoded by uuencode
 
 </div>
 
-<div id="desc_uudecode" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ Older RFC 1521 is now obsoleted.
 Currently, eight conventions are used for mail attachments. In Virtuoso,
 they are enumerated by integer IDs.
 
-<div id="id117004" class="table">
+<div>
 
-**Table 24.107. Unicode-like standards, supported by Virtuoso**
+**Table 24.106. Unicode-like standards, supported by Virtuoso**
 
-<div class="table-contents">
+<div>
 
 | ID  | Standard                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 |-----|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -85,11 +85,11 @@ methods in turn if automatic guess will fail.
 
 </div>
 
-<div id="params_uudecode" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117052" class="refsect2">
+<div>
 
 ### input
 
@@ -97,7 +97,7 @@ String or string-output session with data to be encoded.
 
 </div>
 
-<div id="id117055" class="refsect2">
+<div>
 
 ### mode
 
@@ -107,7 +107,7 @@ Integer ID of encoding to be used.
 
 </div>
 
-<div id="ret_uudecode" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -116,15 +116,15 @@ section.
 
 </div>
 
-<div id="errors_uuencode" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id117063" class="table">
+<div>
 
-**Table 24.108. Errors signalled by**
+**Table 24.107. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                            | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------|-------------|
@@ -141,15 +141,15 @@ section.
 
 </div>
 
-<div id="examples_uudecode" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_uudecode" class="example">
+<div>
 
 **Example 24.433. Encoding with auto-detection of the encoding type**
 
-<div class="example-contents">
+<div>
 
 The function gets a string 'Hello' in BinHex encoding and zero to let it
 guess that the encoding is BinHex. The call returns 'Hello'.
@@ -168,7 +168,7 @@ Hello
 
 </div>
 
-<div id="seealso_uudecode" class="refsect1">
+<div>
 
 ## See Also
 

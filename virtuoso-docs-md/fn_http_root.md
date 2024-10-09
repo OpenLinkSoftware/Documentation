@@ -1,10 +1,10 @@
-<div id="fn_http_root" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_root — Returns the absolute path of the server root directory.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_root" class="funcsynopsis">
+<div>
 
 |                               |      |
 |-------------------------------|------|
 | `varchar `**`http_root`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_root — Returns the absolute path of the server root directory.
 
 </div>
 
-<div id="desc_http_root" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,7 +40,7 @@ Returns the absolute path of the server root directory.
 
 </div>
 
-<div id="ret_http_root" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -48,15 +48,15 @@ String of the absolute path of the server root directory.
 
 </div>
 
-<div id="examples_http_root" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_root" class="example">
+<div>
 
 **Example 24.179. Obtaining the Client IP Address**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp
@@ -72,7 +72,7 @@ String of the absolute path of the server root directory.
 
 </div>
 
-<div id="seealso_http_root" class="refsect1">
+<div>
 
 ## See Also
 

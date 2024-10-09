@@ -1,6 +1,6 @@
-<div id="srchprd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -96,7 +96,7 @@ Done. -- 16 msec.
 
 <span class="emphasis">*Example Usage*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Execute:
 

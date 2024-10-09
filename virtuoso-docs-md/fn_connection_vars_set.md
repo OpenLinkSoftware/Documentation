@@ -1,10 +1,10 @@
-<div id="fn_connection_vars_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ connection_vars_set — set all connection variables
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_connection_vars_set" class="funcsynopsis">
+<div>
 
 |                                  |                          |
 |----------------------------------|--------------------------|
 | ` `**`connection_vars_set`**` (` | in `var_array ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ connection_vars_set — set all connection variables
 
 </div>
 
-<div id="desc_connection_vars_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ title="14.1.4. Session Management">Session Variables</a> -section.
 
 </div>
 
-<div id="params_connection_vars_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82921" class="refsect2">
+<div>
 
 ### var_array
 
@@ -62,15 +62,15 @@ for current connection to be erased.
 
 </div>
 
-<div id="examples_connection_vars_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_connection_vars_set" class="example">
+<div>
 
 **Example 24.53. Usage**
 
-<div class="example-contents">
+<div>
 
 ``` screen
   <?vsp
@@ -84,11 +84,11 @@ for current connection to be erased.
 
   
 
-<div id="ex_connection_vars_set2" class="example">
+<div>
 
 **Example 24.54. Setting and Retrieving Connection Variables**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>connection_vars_set(vector('v1', 'a', 'v2', 1));
@@ -124,7 +124,7 @@ v1                        a                         v2                        1
 
 </div>
 
-<div id="seealso_connection_vars_set" class="refsect1">
+<div>
 
 ## See Also
 

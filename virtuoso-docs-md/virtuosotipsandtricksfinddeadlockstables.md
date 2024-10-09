@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksfinddeadlockstables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

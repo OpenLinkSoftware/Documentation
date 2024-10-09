@@ -1,10 +1,10 @@
-<div id="fn_vd_statistics" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ VD_STATISTICS — Update VDB RPC cost statistics for given DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vd_statistics" class="funcsynopsis">
+<div>
 
 |                                   |                                  |
 |-----------------------------------|----------------------------------|
 | `DB.DBA. `**`VD_STATISTICS`**` (` | in `_dsn ` varchar ,             |
 |                                   | in `vd_table_mask ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ VD_STATISTICS — Update VDB RPC cost statistics for given DSN
 
 </div>
 
-<div id="desc_vd_statistics" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ data sources.
 
 </div>
 
-<div id="params_vd_statistics" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118164" class="refsect2">
+<div>
 
 ### \_dsn
 
@@ -56,7 +56,7 @@ in DS_DSN column of SYS_DATA_SOURCE system table. Its default value of
 
 </div>
 
-<div id="id118167" class="refsect2">
+<div>
 
 ### vd_table_mask
 
@@ -68,7 +68,7 @@ means update all tables.
 
 </div>
 
-<div id="seealso_vd_statistics" class="refsect1">
+<div>
 
 ## See Also
 

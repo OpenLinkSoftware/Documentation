@@ -1,6 +1,6 @@
-<div id="clusteroperation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -35,9 +35,9 @@ same data.
 
 </div>
 
-<div id="clusteroperationgeneral" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -81,9 +81,9 @@ other processes of the same physical cluster. The cluster listener ports
 of all processes are declared in cluster.ini and all processes must
 specify the same information.
 
-<div id="clusteroperationgeneralclusterinifields" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

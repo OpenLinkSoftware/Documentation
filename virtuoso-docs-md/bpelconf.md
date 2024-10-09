@@ -1,6 +1,6 @@
-<div id="bpelconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ The BPEL engine has global configuration parameters settable via the
 configuration settings page of its web user interface. These are global
 and are kept in the BPEL..configuration table as name/value pairs.
 
-<div class="itemizedlist">
+<div>
 
 - EngineMailAddress - e-mail address to whom will be sent error alerts
   and reports.

@@ -1,6 +1,6 @@
-<div id="wsdl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,7 +36,7 @@ to format a suitable SOAP request. The client sends this request to the
 provider. The provider executes the requested operation and sends the
 results back to the client requester as a SOAP response.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                           |
 |:--------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------|
@@ -46,9 +46,9 @@ results back to the client requester as a SOAP response.
 
 </div>
 
-<div id="exposplaswsdl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -102,7 +102,7 @@ flexibility by allowing us to map logical HTTP paths to the location
 making groups of services available under different locations. We will
 now demonstrate this:
 
-<div class="orderedlist">
+<div>
 
 1.  First, create a new user in the database for creating the stored
     procedures as SOAP messages:
@@ -138,7 +138,7 @@ now demonstrate this:
     SQL>VHOST_REMOVE (vhost=>'*ini*',lhost=>'*ini*',lpath=>'/services')
     ```
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div>
 
     |                              |                                                                                                          |
     |:----------------------------:|:---------------------------------------------------------------------------------------------------------|
@@ -243,7 +243,7 @@ now demonstrate this:
     </definitions>
     ```
 
-    <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div>
 
     |                            |                                                                                                                                                                                     |
     |:--------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

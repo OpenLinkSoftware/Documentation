@@ -1,6 +1,6 @@
-<div id="sqlrefcreattablewithschema" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -51,11 +51,11 @@ of the document, nesting of elements, presence of all "required"
 attributes, syntax of values of typed elements and attributes; it also
 will check referential integrity of ID and IDREF attributes.
 
-<div id="ex_sqlrefcreattablewithschema" class="example">
+<div>
 
 **Example 9.26. Creating a table with the WITH SCHEMA constraint**
 
-<div class="example-contents">
+<div>
 
 Here a simple table will be created with a WITH SCHEMA constraint.
 Sample SQL statements follow that will demonstrate the effectiveness of
@@ -139,7 +139,7 @@ class="function">xml_validate_schema()</code></a> in triggers may be
 safer than using the constraint: such triggers will be slower than the
 constraint but you can drop triggers without re-creating the table.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

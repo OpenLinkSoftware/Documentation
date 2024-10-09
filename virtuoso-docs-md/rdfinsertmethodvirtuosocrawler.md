@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodvirtuosocrawler" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,19 +19,19 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 <span class="emphasis">*Example:*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to Conductor UI. For ex. at http://example.com/conductor :
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav11" class="figure">
+    <div>
 
     **Figure 16.86. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert11.png)
 
@@ -47,15 +47,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 2.  Enter admin user credentials:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav12" class="figure">
+    <div>
 
     **Figure 16.87. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert12.png)
 
@@ -71,15 +71,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 3.  Go to tab Web Application Server:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav13" class="figure">
+    <div>
 
     **Figure 16.88. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert13.png)
 
@@ -95,15 +95,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 4.  Go to tab Content Imports:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav14" class="figure">
+    <div>
 
     **Figure 16.89. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert14.png)
 
@@ -119,15 +119,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 5.  Click the "New Target" button:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav15" class="figure">
+    <div>
 
     **Figure 16.90. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert15.png)
 
@@ -143,7 +143,7 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 6.  In the shown form set respectively:
 
-    <div class="orderedlist">
+    <div>
 
     1.  "Target description": Tim Berners-Lee's electronic Business Card
 
@@ -169,15 +169,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav16" class="figure">
+    <div>
 
     **Figure 16.91. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert16.png)
 
@@ -191,15 +191,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav17" class="figure">
+    <div>
 
     **Figure 16.92. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert17.png)
 
@@ -215,15 +215,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 7.  Click the button "Create":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav19" class="figure">
+    <div>
 
     **Figure 16.93. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert19.png)
 
@@ -239,15 +239,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 8.  Click the button "Import Queues":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav20" class="figure">
+    <div>
 
     **Figure 16.94. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert20.png)
 
@@ -266,15 +266,15 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 10. As result should be shown the number of the pages retrieved.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="rdfinsertwebdav2" class="figure">
+    <div>
 
     **Figure 16.95. Using Virtuoso Crawler**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Using Virtuoso Crawler](images/ui/rdfinsert2.png)
 
@@ -323,7 +323,7 @@ insert soft SYS_SCHEDULED_EVENT (SE_SQL, SE_START, SE_INTERVAL, SE_NAME)
     values ('DB.DBA.PTSW_CRAWL ()', cast (stringtime ('0:0') as DATETIME), 60, 'PTSW Crawling');
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|

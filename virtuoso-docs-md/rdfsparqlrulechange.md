@@ -1,6 +1,6 @@
-<div id="rdfsparqlrulechange" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

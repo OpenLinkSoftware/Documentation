@@ -1,6 +1,6 @@
-<div id="rdfsparqlruleenableinfr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

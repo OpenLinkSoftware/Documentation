@@ -1,6 +1,6 @@
-<div id="rdfspongerprogrammerguide" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@ integration with other Virtuoso facilities such as the Open Data
 Services (ODS) application framework. This guide focuses solely on
 custom cartridge development.
 
-<div id="virtuosospongeroverviewxmlset" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -64,9 +64,9 @@ XML_SET_NS_DECL ('uriburner',
 
 </div>
 
-<div id="virtuosospongeroverviewcartarch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -92,7 +92,7 @@ the cartridge's entity extractor and ontology mapper.
 When an RDF aware client requests data from a network accessible
 resource via the Sponger the following events occur:
 
-<div class="itemizedlist">
+<div>
 
 - A request is made for data in RDF form (explicitly via HTTP Accept
   Headers), and if RDF is returned nothing further happens.
@@ -122,7 +122,7 @@ applies the appropriate entity extractor. Detection occurs at the time
 of content negotiation instigated by the retrieval user agent. The
 normal extraction pipeline processing is as follows:
 
-<div class="itemizedlist">
+<div>
 
 - The Sponger tries to get RDF data (including N3 or Turtle) directly
   from the dereferenced URL. If it finds some, it returns it, otherwise,
@@ -198,9 +198,9 @@ PRIMARY KEY ("RM_PATTERN", "RM_TYPE")
 
 </div>
 
-<div id="virtuosospongeroverviewcartinvo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -230,7 +230,7 @@ HTTP user agent (client) that makes a content type specific request to
 an HTTP server via the HTTP request's Accept headers. The following then
 occurs:
 
-<div class="itemizedlist">
+<div>
 
 - If the content type returned is RDF then no further transformation is
   needed and the process stops. For instance, when consuming an (X)HTML
@@ -247,7 +247,7 @@ occurs:
   function doesn't exist, or signals an error, the SPARQL processor
   looks at next record.
 
-  <div class="itemizedlist">
+  <div>
 
   - If the hook returns zero, the next cartridge is tried. (A cartridge
     function can return zero if it believes a subsequent cartridge in
@@ -277,15 +277,15 @@ additional information gleaned from 'lookup' data sources and web
 services. Meta-cartridges are described in more detail in a later
 section.
 
-<div class="figure-float">
+<div>
 
-<div id="spong1" class="figure">
+<div>
 
 **Figure 16.104. Meta-Cartridges**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Meta-Cartridges](images/ui/spong1.png)
 
@@ -301,9 +301,9 @@ section.
 
 </div>
 
-<div id="virtuosospongercatrbundled" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -317,9 +317,9 @@ section.
 
 </div>
 
-<div id="virtuosospongercatrbundledrdfvad" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -342,15 +342,15 @@ To see which cartridges are available, look at the 'Linked Data' screen
 in Conductor. This can be reached through the Linked Data -\> Sponger
 -\> Extractor Cartridges and Meta Cartridges menu items.
 
-<div class="figure-float">
+<div>
 
-<div id="spong2" class="figure">
+<div>
 
 **Figure 16.105. RDF Cartridges**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF Cartridges](images/ui/spong2.png)
 
@@ -381,9 +381,9 @@ class="ulink" target="_top">download</a> from the VOS Wiki.
 
 </div>
 
-<div id="virtuosospongercatrbundledexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -403,7 +403,7 @@ part of the VOS distribution. After downloading and unpacking the
 sources, the script used to create the cartridges, and the associated
 stylesheets can be found in:
 
-<div class="itemizedlist">
+<div>
 
 - \<vos root\>/binsrc/rdf_mappers/rdf_mappers.sql
 
@@ -427,9 +427,9 @@ can also be found in the DAV/VAD/cartridges folder.
 
 </div>
 
-<div id="virtuosospongercatrbundledcusgtomcart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -453,9 +453,9 @@ own requirements. Apart from these circumstances, the existing Sponger
 infrastructure should meet most of your needs. This is particularly the
 case for document resources.
 
-<div id="virtuosospongerdocres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -481,7 +481,7 @@ transformed to RDF using an existing filter.
 The following cases should all be covered by the existing Sponger
 cartridges:
 
-<div class="itemizedlist">
+<div>
 
 - embedded or linked RDF
 
@@ -494,9 +494,9 @@ cartridges:
 
 </div>
 
-<div id="virtuosospongergrddl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -545,9 +545,9 @@ cartridges in Conductor's 'RDF Cartridges' screen.
 
 </div>
 
-<div id="virtuosospongercreatecustcartr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -569,9 +569,9 @@ extractors can be built using Virtuoso PL, C/C++, Java or any other
 external language supported by Virtuoso's Server Extension API. Of
 course, Virtuoso's own entity extractors are written in Virtuoso PL.
 
-<div id="virtuosospongercreatecustcartran" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -592,7 +592,7 @@ into the Virtuoso SPARQL engine must have a parameter list with the
 following parameters (the names of the parameters are not important, but
 their order and presence are):
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*in graph_iri varchar*</span>
 
@@ -788,7 +788,7 @@ functions.
 The broad pipeline outlined here reflects the steps common to most
 cartridges:
 
-<div class="itemizedlist">
+<div>
 
 - Redirect from the requested URL to a Web service which returns XML
 
@@ -931,7 +931,7 @@ use RDF_LOAD_RDFXML. However there may be occasions where you want to
 insert statements written as TTL, rather than RDF/XML, in which case you
 should use TTLP.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -1004,9 +1004,9 @@ evaluating the 'date' header and 'last-modified' HTTP headers.
 
 </div>
 
-<div id="virtuosospongercreatecustcartrontolg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1091,15 +1091,15 @@ container into the generated graph constituting the RDF description.
 
 The template is depicted below:
 
-<div class="figure-float">
+<div>
 
-<div id="spong3" class="figure">
+<div>
 
 **Figure 16.106. Template**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Template](images/ui/spong3.png)
 
@@ -1196,9 +1196,9 @@ http://\<hostName:port\>/about/html/http/\<resourceURL\>#this
 
 </div>
 
-<div id="virtuosospongercreatecustcartrrgst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1220,9 +1220,9 @@ Virtuoso's SQL interfaces. You can create the required Cartridge
 Registry entry either by adding a row to the SYS_REF_MAPPERS table
 directly using SQL, or by using the Conductor UI.
 
-<div id="virtuosospongercreatecustcartrrgstis" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1281,9 +1281,9 @@ WHERE RM_HOOK = 'DB.DBA.RDF_LOAD_BIN_DOCUMENT';
 
 </div>
 
-<div id="virtuosospongercreatecustcartrrgstcn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1300,15 +1300,15 @@ WHERE RM_HOOK = 'DB.DBA.RDF_LOAD_BIN_DOCUMENT';
 Cartridges can be added manually using the 'Add' panel of the 'RDF
 Cartridges' screen.
 
-<div class="figure-float">
+<div>
 
-<div id="spong4" class="figure">
+<div>
 
 **Figure 16.107. RDF Cartridges**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF Cartridges](images/ui/spong4.png)
 
@@ -1324,9 +1324,9 @@ Cartridges' screen.
 
 </div>
 
-<div id="virtuosospongercreatecustcartrrgstit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1345,15 +1345,15 @@ configured to be accessible by Virtuoso, the simplest option is to
 upload them to the DAV/VAD/cartridges/xslt folder using the WebDAV
 browser accessible from the Conductor UI.
 
-<div class="figure-float">
+<div>
 
-<div id="spong6" class="figure">
+<div>
 
 **Figure 16.108. WebDAV browser**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![WebDAV browser](images/ui/spong6.png)
 
@@ -1373,9 +1373,9 @@ appropriately.
 
 </div>
 
-<div id="virtuosospongercreatecustcartrrgstap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1396,15 +1396,15 @@ the list provided, entering the API Account and API Key in the dialog at
 the bottom of the page and click update to save, as indicated in the
 screenshot below:
 
-<div class="figure-float">
+<div>
 
-<div id="catr1" class="figure">
+<div>
 
 **Figure 16.109. Registering API Key**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Registering API Key](images/ui/cartrapikey.png)
 
@@ -1430,9 +1430,9 @@ configuration file and retrieve it in the hook function.
 
 </div>
 
-<div id="virtuosospongercreatecustcartrrgstflickr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1478,9 +1478,9 @@ tmp := http_get (url, hdr);
 
 </div>
 
-<div id="virtuosospongercreatecustcartrexmp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1564,15 +1564,15 @@ classes and properties for describing music on the Semantic Web. Part of
 the subset used is depicted in the following RDF graph (representing in
 this case a John Cale album).
 
-<div class="figure-float">
+<div>
 
-<div id="spong7" class="figure">
+<div>
 
 **Figure 16.110. RDF graph**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF graph](images/ui/spong7.png)
 
@@ -1860,9 +1860,9 @@ releases, or the tracks on those releases, are shown.
 
 </div>
 
-<div id="virtuosospongercreatecartentextmapcont" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1898,7 +1898,7 @@ the target graph IRI represents a dereferenceable URL then content will
 be retrieved using content negotiation. The next step is the content
 type to be detected:
 
-<div class="itemizedlist">
+<div>
 
 - If RDF and no further transformation such as GRDDL is needed, then the
   process would stop.
@@ -1908,7 +1908,7 @@ type to be detected:
   of RM_ID and for every matching URL or MIME type pattern (depends on
   column RM_TYPE) will call the mapper hook.
 
-  <div class="itemizedlist">
+  <div>
 
   - If hook returns zero the next mapper will be tried;
 
@@ -1922,9 +1922,9 @@ type to be detected:
 
 </div>
 
-<div id="virtuosospongercartridgesextractorpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1943,7 +1943,7 @@ type to be detected:
 Every PL function used to plug a mapper into SPARQL engine must have
 following parameters in the same order:
 
-<div class="itemizedlist">
+<div>
 
 - in graph_iri varchar: the graph IRI which is currently retrieved
 
@@ -2052,7 +2052,7 @@ To enable usage of user defined authentication, there are added more
 parameters to the /proxy/rdf and /sparql endpoints. So to use it, the
 RDF browser and iSPARQL should send following url parameters:
 
-<div class="itemizedlist">
+<div>
 
 - for /proxy/rdf endpoint:
 
@@ -2070,9 +2070,9 @@ RDF browser and iSPARQL should send following url parameters:
 
 </div>
 
-<div id="virtuosospongerrdfmappersregistry" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2107,9 +2107,9 @@ statement e.g. NSERT/UPDATE/DELETE.
 
 </div>
 
-<div id="virtuosospongerrdfmappersexec" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2143,9 +2143,9 @@ built-in WebDAV metadata extractor will be called.
 
 </div>
 
-<div id="virtuosospongerrdfmappersextfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2180,7 +2180,7 @@ THE_MAPPER_FUNCTION_NAME (
 
 <span class="emphasis">*Parameters*</span>
 
-<div class="itemizedlist">
+<div>
 
 - graph_iri - the target graph IRI
 
@@ -2205,7 +2205,7 @@ THE_MAPPER_FUNCTION_NAME (
 
 <span class="emphasis">*Return value*</span>
 
-<div class="itemizedlist">
+<div>
 
 - 0 - no data was retrieved or some next matching mapper must extract
   more data
@@ -2218,9 +2218,9 @@ THE_MAPPER_FUNCTION_NAME (
 
 </div>
 
-<div id="virtuosospongerrdfmapperspackage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2257,11 +2257,11 @@ more data.
 This mapper is composite, it looking for metadata which can specified in
 a HTML pages as follows:
 
-<div class="itemizedlist">
+<div>
 
 - Embedded/linked RDF
 
-  <div class="itemizedlist">
+  <div>
 
   - scan for meta in RDF
 
@@ -2275,7 +2275,7 @@ a HTML pages as follows:
 
 - Micro-formats
 
-  <div class="itemizedlist">
+  <div>
 
   - GRDDL - GRDDL Data Views: RDF expressed in XHTML and XML:
     http://www.w3.org/2003/g/data-view#
@@ -2304,7 +2304,7 @@ a HTML pages as follows:
 
 - Feeds extraction
 
-  <div class="itemizedlist">
+  <div>
 
   - RSS/Linked Data - SIOC & AtomOWL
 
@@ -2375,7 +2375,7 @@ re-install the VAD.
 <span class="emphasis">*Setting-up Virtuoso with Java hosting to run
 Aperture framework*</span>
 
-<div class="itemizedlist">
+<div>
 
 - Install a Virtuoso binary which includes built-in Java hosting support
   (The executable name will indicate whether the required hosting
@@ -2396,7 +2396,7 @@ Aperture framework*</span>
 
 - In the \[Parameters\] section of the virtuoso.ini configuration file:
 
-  <div class="itemizedlist">
+  <div>
 
   - Add the line (linebreaks have been inserted for clarity):
 
@@ -2434,7 +2434,7 @@ Aperture framework*</span>
 To check the cartridge has been configured, connect with Virtuoso's ISQL
 tool:
 
-<div class="itemizedlist">
+<div>
 
 - Issue the command:
 
@@ -2479,9 +2479,9 @@ http://demo.openlinksw.com/tutorial/rdf/rd_s_1/rd_s_1.vsp .
 
 </div>
 
-<div id="virtuosospongercreatecustcartrxslt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2579,7 +2579,7 @@ post-processing stops and no further meta-cartridges are invoked.
 
 The order of processing by the Sponger cartridge pipeline is thus:
 
-<div class="orderedlist">
+<div>
 
 1.  Try to get RDF in the form of TTL or RDF/XML. If RDF is retrieved if
     go to step 3
@@ -2595,9 +2595,9 @@ The order of processing by the Sponger cartridge pipeline is thus:
 Notice that meta-cartridges may be invoked even if primary cartridges
 are not.
 
-<div id="virtuosospongercreatecustcartrexfm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3093,7 +3093,7 @@ stylesheet, you should be able to test the meta-cartridge by sponging a
 Freebase page as described earlier using ODE or the command line. For
 instance:
 
-<div class="itemizedlist">
+<div>
 
 - http://www.freebase.com/view/en/barack_obama , or
 
@@ -3134,7 +3134,7 @@ where the graph generated by the Sponger will be
 
 To test whether a resource is a senator, RDF_MQL_RESOURCE_IS_SENATOR
 
-<div class="itemizedlist">
+<div>
 
 - Checks whether the Freebase resource is of rdf:type foaf:Person
 
@@ -3162,9 +3162,9 @@ were presented earlier.
 
 </div>
 
-<div id="virtuosospongequeue" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3178,9 +3178,9 @@ were presented earlier.
 
 </div>
 
-<div id="virtuosospongequeuefn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3194,7 +3194,7 @@ were presented earlier.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*DB.DBA.RDF_SPONGER_QUEUE_ADD*</span>
 
@@ -3204,7 +3204,7 @@ were presented earlier.
   DB.DBA.RDF_SPONGER_QUEUE_ADD  (url, options);
   ```
 
-  <div class="itemizedlist">
+  <div>
 
   - <span class="emphasis">*url* </span>
 
@@ -3224,9 +3224,9 @@ were presented earlier.
 
 </div>
 
-<div id="virtuosospongequeuerwebs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3242,13 +3242,13 @@ were presented earlier.
 
 The Sponger REST Web service has the following characteristics:
 
-<div class="itemizedlist">
+<div>
 
 - endpoint: http://cname/about/service
 
 - parameters:
 
-  <div class="itemizedlist">
+  <div>
 
   - op=add: type of operation, for now addition to the queue is
     supported
@@ -3276,7 +3276,7 @@ In case of error a JSON with error text will be returned and http status
 
 ###### cURL example
 
-<div class="orderedlist">
+<div>
 
 1.  Assume file.txt which contains URL encoded JSON string:
 
@@ -3305,9 +3305,9 @@ In case of error a JSON with error text will be returned and http status
 
 </div>
 
-<div id="virtuosospongerelatedfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3321,9 +3321,9 @@ In case of error a JSON with error text will be returned and http status
 
 </div>
 
-<div id="virtuosospongerelatedfuncstring" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3363,9 +3363,9 @@ tmp := split_and_decode (response_hdr[0], 0, '\0\0 ');
 
 </div>
 
-<div id="virtuosospongerelatedfuncrurl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3418,9 +3418,9 @@ ret_content_type := http_request_header (hdr, 'Content-Type', null, null);
 
 </div>
 
-<div id="virtuosospongerelatedfunchnxml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3447,9 +3447,9 @@ url := sprintf ('http://www.freebase.com/api/service/mqlread?queries=%U', qr);
 
 </div>
 
-<div id="virtuosospongerelatedfuncwrarb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3502,9 +3502,9 @@ title="string_output_string">string_output_string</a>* </span>
 
 </div>
 
-<div id="virtuosospongerelatedfuncxmlxslt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3547,9 +3547,9 @@ xt := DB.DBA.RDF_MAPPER_XSLT (
 
 </div>
 
-<div id="virtuosospongerelatedfunccharserconv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3578,9 +3578,9 @@ DB.DBA.RM_RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));
 
 </div>
 
-<div id="virtuosospongerelatedfuncloaddata" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3626,7 +3626,7 @@ content := string_output_string (sess);
 DB.DBA.TTLP (content, new_origin_uri, coalesce (dest, graph_iri));
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -3656,9 +3656,9 @@ functions</a></p></li>
 
 </div>
 
-<div id="virtuosospongerelatedfuncdebugpoutput" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3683,9 +3683,9 @@ dbg_obj_print ('try all grddl mappings here');
 
 </div>
 
-<div id="virtuosospongeref" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3699,7 +3699,7 @@ dbg_obj_print ('try all grddl mappings here');
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - RDF Primer: http://www.w3.org/TR/2004/REC-rdf-primer-20040210/
 
@@ -3709,9 +3709,9 @@ dbg_obj_print ('try all grddl mappings here');
 
 </div>
 
-<div id="virtuosospongerefping" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3771,9 +3771,9 @@ Execution and Multithreading in Virtuoso/PL</a>
 
 </div>
 
-<div id="virtuosospongeremname" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -3791,7 +3791,7 @@ A list of the main namespaces / ontologies used by OpenLink-provided
 Sponger cartridges is given below. Some of these ontologies may prove
 useful when creating your own cartridges.
 
-<div class="itemizedlist">
+<div>
 
 - \- http://www.openlinksw.com/virtuoso/xslt/
 
@@ -3819,9 +3819,9 @@ useful when creating your own cartridges.
 
 </div>
 
-<div id="virtuosospongerfreeb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4047,9 +4047,9 @@ create procedure DB.DBA.RDF_LOAD_MQL (in graph_iri varchar, in new_origin_uri va
 
 </div>
 
-<div id="rdfspongerprogrammerguidepython" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -4066,12 +4066,12 @@ create procedure DB.DBA.RDF_LOAD_MQL (in graph_iri varchar, in new_origin_uri va
 This section contains the generic steps to use Python language to extend
 the Virtuoso Sponger.
 
-<div class="orderedlist">
+<div>
 
 1.  Build the latest Python hosting module. It will introduce a new
     function `python_exec ()` The parameters of python_exec are :
 
-    <div class="itemizedlist">
+    <div>
 
     - string containing a python code, it should define one or more
       functions, see remarks below

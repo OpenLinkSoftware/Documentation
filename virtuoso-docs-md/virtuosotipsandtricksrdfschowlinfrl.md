@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksrdfschowlinfrl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,7 +38,7 @@ exploring RDF Schema and OWL reasoning once you've installed the <a
 href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/fct_dav.vad"
 class="ulink" target="_top">Virtuoso Faceted Browser VAD package</a> .
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

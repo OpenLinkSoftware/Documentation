@@ -1,6 +1,6 @@
-<div id="voauthqa" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="voauthqamyspace" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ In order to use the
 <a href="http://developer.myspace.com/community/myspace/oauthintro.aspx"
 class="ulink" target="_top">MySpace OAuth Testing Tool</a> :
 
-<div class="orderedlist">
+<div>
 
 1.  Need to have registered myspace account.
 
@@ -44,9 +44,9 @@ class="ulink" target="_top">MySpace OAuth Testing Tool</a> :
 
 </div>
 
-<div id="voauthqagoogle" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,9 +67,9 @@ tried
 <a href="http://googlecodesamples.com/oauth_playground/" class="ulink"
 target="_top">here</a> .
 
-<div id="voauthqagooglereg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -86,7 +86,7 @@ target="_top">here</a> .
 In order to use the tool, you need to register the web application as
 domain:
 
-<div class="orderedlist">
+<div>
 
 1.  Login at your gmail account
 
@@ -108,15 +108,15 @@ domain:
 6.  Once the file is put in the correct server root, you should get the
     confirmation page:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys16" class="figure">
+    <div>
 
     **Figure 17.43. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys16.png)
 
@@ -136,15 +136,15 @@ domain:
     in for "Target URL path prefix:":
     http://ec2-67-202-42-146.compute-1.amazonaws.com/ods
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys17" class="figure">
+    <div>
 
     **Figure 17.44. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys17.png)
 
@@ -175,15 +175,15 @@ domain:
 
 13. Click the "Grant Access" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys18" class="figure">
+    <div>
 
     **Figure 17.45. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys18.png)
 
@@ -205,15 +205,15 @@ domain:
 
 16. Note that already is shown for the domain that is "Active":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys19" class="figure">
+    <div>
 
     **Figure 17.46. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys19.png)
 
@@ -231,9 +231,9 @@ domain:
 
 </div>
 
-<div id="voauthqagoogleplay" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -249,7 +249,7 @@ domain:
 
 Let's try the playground tool:
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://googlecodesamples.com/oauth_playground/
 
@@ -266,15 +266,15 @@ Let's try the playground tool:
 
 7.  As result will get Response with Status Ok
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys20" class="figure">
+    <div>
 
     **Figure 17.47. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys20.png)
 
@@ -288,7 +288,7 @@ Let's try the playground tool:
 
     </div>
 
-    <div class="itemizedlist">
+    <div>
 
     - the Signature base string:
 
@@ -329,15 +329,15 @@ Let's try the playground tool:
 8.  And also in the "Get the Token" section now will be active the
     "Authorize" button. Click it.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys21" class="figure">
+    <div>
 
     **Figure 17.48. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys21.png)
 
@@ -354,15 +354,15 @@ Let's try the playground tool:
 9.  As result will be shown the authentication page where you need to
     click the "Grant Access" button:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys22" class="figure">
+    <div>
 
     **Figure 17.49. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys22.png)
 
@@ -379,15 +379,15 @@ Let's try the playground tool:
 10. As result now in the "Get the Token" section will be active the
     "Access token" button. Click it.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys23" class="figure">
+    <div>
 
     **Figure 17.50. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys23.png)
 
@@ -403,15 +403,15 @@ Let's try the playground tool:
 
 11. As result the access_token will be obtained:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys24" class="figure">
+    <div>
 
     **Figure 17.51. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys24.png)
 
@@ -442,15 +442,15 @@ Let's try the playground tool:
 
 16. As result will find your blogs, post, info at Blogger:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys25" class="figure">
+    <div>
 
     **Figure 17.52. Google OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Google OAuth](images/ui/keys25.png)
 

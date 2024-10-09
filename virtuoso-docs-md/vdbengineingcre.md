@@ -1,6 +1,6 @@
-<div id="vdbengineingcre" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the Ingres Tutorial database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora1_01" class="figure">
+    <div>
 
     **Figure 8.158. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the Ingres Tutorial database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_04" class="figure">
+    <div>
 
     **Figure 8.159. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the Ingres Tutorial database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora2_01" class="figure">
+    <div>
 
     **Figure 8.160. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/eora2.png)
 
@@ -137,15 +137,15 @@ the Ingres Tutorial database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora3_01" class="figure">
+    <div>
 
     **Figure 8.161. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/eora3.png)
 
@@ -161,15 +161,15 @@ the Ingres Tutorial database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora4_01" class="figure">
+    <div>
 
     **Figure 8.162. VirtuosoDataService**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![VirtuosoDataService](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the Ingres Tutorial database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora5_01" class="figure">
+    <div>
 
     **Figure 8.163. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/eora5.png)
 
@@ -241,15 +241,15 @@ the Ingres Tutorial database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora6_02" class="figure">
+    <div>
 
     **Figure 8.164. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the Ingres Tutorial database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora7_01" class="figure">
+    <div>
 
     **Figure 8.165. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the Ingres Tutorial database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora8_01" class="figure">
+    <div>
 
     **Figure 8.166. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the Ingres Tutorial database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora10_04" class="figure">
+    <div>
 
     **Figure 8.167. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the Ingres Tutorial database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora10i" class="figure">
+    <div>
 
     **Figure 8.168. Add conneciton**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add conneciton](images/ui/eora10i.png)
 
@@ -405,15 +405,15 @@ the Ingres Tutorial database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora11_02" class="figure">
+    <div>
 
     **Figure 8.169. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -429,15 +429,15 @@ the Ingres Tutorial database:
 
 15. Click OK to add the connection.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora12i" class="figure">
+    <div>
 
     **Figure 8.170. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12i.png)
 
@@ -466,15 +466,15 @@ the Ingres Tutorial database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora12i" class="figure">
+    <div>
 
     **Figure 8.171. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/eora12i.png)
 
@@ -511,15 +511,15 @@ the Ingres Tutorial database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora13i" class="figure">
+    <div>
 
     **Figure 8.172. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/eora13i.png)
 
@@ -540,15 +540,15 @@ the Ingres Tutorial database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora14i" class="figure">
+    <div>
 
     **Figure 8.173. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/eora14i.png)
 

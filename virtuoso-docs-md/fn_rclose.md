@@ -1,10 +1,10 @@
-<div id="fn_rclose" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ rclose — Closes cursor created by rexecute()
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rclose" class="funcsynopsis">
+<div>
 
 |                     |                               |
 |---------------------|-------------------------------|
 | ` `**`rclose`**` (` | in `cursor_handle ` long `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ rclose — Closes cursor created by rexecute()
 
 </div>
 
-<div id="desc_rclose" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Closes the cursor opened to a remote DSN by the rexecute() function.
 
 </div>
 
-<div id="params_rclose" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99913" class="refsect2">
+<div>
 
 ### cursor_handle
 

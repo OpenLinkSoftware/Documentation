@@ -1,6 +1,6 @@
-<div id="sampleodbcapps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="macosxsamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@
 
 </div>
 
-<div id="odbctestmac" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -48,7 +48,7 @@
 
 This is a simple 'C' based and ODBC compliant Interactive SQL processor.
 
-<div class="orderedlist">
+<div>
 
 1.  Open a Terminal session, and start ODBCTEST by executing the
     following command:

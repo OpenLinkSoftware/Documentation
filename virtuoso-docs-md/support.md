@@ -1,6 +1,6 @@
-<div id="support" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="discussionforums" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ client to one of the following news servers:
 <span class="emphasis">*news.openlinksw.com*</span> or
 <span class="emphasis">*news.openlinksw.co.uk*</span> .
 
-<div id="virtnews" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -52,11 +52,11 @@ client to one of the following news servers:
 
 </div>
 
-<div id="id77283" class="decimalstyle">
+<div>
 
 **Table 23.4. Virtuoso Newsgroups**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Newsgroup Description | Newsgroup URL                                                                          |     |     |
 |:----------------------|----------------------------------------------------------------------------------------|-----|-----|
@@ -71,9 +71,9 @@ client to one of the following news servers:
 
 </div>
 
-<div id="udalitenews" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -90,11 +90,11 @@ client to one of the following news servers:
 Dedicated to Database Connectivity issues that relate to OpenLink Data
 Access Drivers (PC based) that depend on:
 
-<div id="id77301" class="decimalstyle">
+<div>
 
 **Table 23.5. OpenLink Data Access Newsgroups**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Newsgroup Description                                                                                            | Newsgroup URL                                                                               |     |     |
 |:-----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-----|-----|
@@ -127,9 +127,9 @@ Access Drivers (PC based) that depend on:
 
 </div>
 
-<div id="udamtnews" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -146,11 +146,11 @@ Access Drivers (PC based) that depend on:
 Dedicated to Database Connectivity issues that relate to OpenLink Data
 Access Drivers that depend on
 
-<div id="id77369" class="decimalstyle">
+<div>
 
 **Table 23.6. OpenLink Data Access Newsgroups**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Newsgroup Description                                                                                                                                       | Newsgroup URL                                                                                     |     |     |
 |:------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|-----|-----|

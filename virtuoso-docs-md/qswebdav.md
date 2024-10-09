@@ -1,6 +1,6 @@
-<div id="qswebdav" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -36,9 +36,9 @@ See the <a href="webdavadmin.html" class="link"
 title="6.2.4. WebDAV Administration">WebDAV Administration</a> section,
 to setup the WebDAV in the Visual Server Administration Interface.
 
-<div id="qswebfolders" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -57,21 +57,21 @@ connects to a WebDAV store which can then be traversed like any other
 file system. Files can be copied and moved to and from the DAV using
 normal drag-and-drop methods.
 
-<div class="orderedlist">
+<div>
 
 1.  To create a Web Folder open the <span class="emphasis">*Windows
     Explorer*</span> and navigate to <span class="emphasis">*My Network
     Places*</span> .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="qs-dav001" class="figure">
+    <div>
 
     **Figure 3.32. My Network Places**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![My Network Places](images/ui/qs-dav001.png)
 
@@ -89,15 +89,15 @@ normal drag-and-drop methods.
     Network Place*</span> which when double-clicked will lead you to the
     wizard.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="qs-dav002" class="figure">
+    <div>
 
     **Figure 3.33. Web Folder Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Folder Wizard](images/ui/qs-dav002.png)
 
@@ -121,15 +121,15 @@ normal drag-and-drop methods.
     http://example.com:8889/DAV/
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="qs-dav003" class="figure">
+    <div>
 
     **Figure 3.34. WebDAV location**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![WebDAV location](images/ui/qs-dav003.png)
 
@@ -147,15 +147,15 @@ normal drag-and-drop methods.
     require a username and a password. If defaults are taken then this
     would simply be dav and dav for both.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="qs-dav004" class="figure">
+    <div>
 
     **Figure 3.35. WebDAV authentication**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![WebDAV authentication](images/ui/qs-dav004.png)
 
@@ -172,15 +172,15 @@ normal drag-and-drop methods.
 5.  To complete the creation of a Web Folder you be asked to supply a
     name for the network place.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="qs-dav005" class="figure">
+    <div>
 
     **Figure 3.36. Name of your WebDAV Web Folder**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Name of your WebDAV Web Folder](images/ui/qs-dav005.png)
 
@@ -197,15 +197,15 @@ normal drag-and-drop methods.
 6.  Once provided Explorer will automatically open a new Window over
     looking the new location.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="qs-dav006" class="figure">
+    <div>
 
     **Figure 3.37. Files contained in your DAV**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Files contained in your DAV](images/ui/qs-dav006.png)
 

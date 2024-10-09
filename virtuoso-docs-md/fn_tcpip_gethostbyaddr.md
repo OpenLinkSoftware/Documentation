@@ -1,10 +1,10 @@
-<div id="fn_tcpip_gethostbyaddr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ associated with given IP address
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_tcpip_gethostbyaddr" class="funcsynopsis">
+<div>
 
 |                                         |                            |
 |-----------------------------------------|----------------------------|
 | `varchar `**`tcpip_gethostbyaddr`**` (` | in `address ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ associated with given IP address
 
 </div>
 
-<div id="desc_tcpip_gethostbyaddr" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ then it returns it's argument.
 
 </div>
 
-<div id="params_tcpip_gethostbyaddr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id113319" class="refsect2">
+<div>
 
 ### address
 
@@ -57,7 +57,7 @@ A string containing an IP address
 
 </div>
 
-<div id="ret_tcpip_gethostbyaddr" class="refsect1">
+<div>
 
 ## Return Types
 

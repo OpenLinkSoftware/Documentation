@@ -1,6 +1,6 @@
-<div id="sparqlnotexists" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

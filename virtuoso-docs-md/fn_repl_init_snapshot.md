@@ -1,10 +1,10 @@
-<div id="fn_repl_init_snapshot" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_INIT_SNAPSHOT — Initializes a bi-directional snapshot publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_init_snapshot" class="funcsynopsis">
+<div>
 
 |                                     |                             |
 |-------------------------------------|-----------------------------|
@@ -25,7 +25,7 @@ REPL_INIT_SNAPSHOT — Initializes a bi-directional snapshot publication
 |                                     | in `type ` integer ,        |
 |                                     | in `how_many ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,14 +35,14 @@ REPL_INIT_SNAPSHOT — Initializes a bi-directional snapshot publication
 
 </div>
 
-<div id="desc_repl_init_snapshot" class="refsect1">
+<div>
 
 ## Description
 
 This procedure should be used to initialize a bi-directional snapshot
 publication.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                           |
 |:----------------------------:|:------------------------------------------|
@@ -53,11 +53,11 @@ publication.
 
 </div>
 
-<div id="params_repl_init_snapshot" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107512" class="refsect2">
+<div>
 
 ### server
 
@@ -66,7 +66,7 @@ the server can be obtained using `REPL_SERVER_NAME()` function.
 
 </div>
 
-<div id="id107517" class="refsect2">
+<div>
 
 ### item
 
@@ -74,7 +74,7 @@ Item is a DAV collection or table name.
 
 </div>
 
-<div id="id107520" class="refsect2">
+<div>
 
 ### type
 
@@ -83,7 +83,7 @@ or 2 if item is a table name.
 
 </div>
 
-<div id="id107523" class="refsect2">
+<div>
 
 ### how_many
 
@@ -94,7 +94,7 @@ during doing initial copy in table case (when type is 2).
 
 </div>
 
-<div id="ret_repl_init_snapshot" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -102,15 +102,15 @@ None.
 
 </div>
 
-<div id="examples_repl_init_snapshot" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_repl_init_snapshot" class="example">
+<div>
 
 **Example 24.345. Initializing bi-directional snapshot subscription**
 
-<div class="example-contents">
+<div>
 
 The following statement does initial copy of data for bi-directional
 snapshot subscription of server with DSN 'localhost:1121' for table
@@ -128,7 +128,7 @@ SQL> DB.DBA.REPL_INIT_SNAPSHOT (REPL_SERVER_NAME ('localhost:1121'), 'Demo.demo.
 
 </div>
 
-<div id="seealso_repl_init_snapshot" class="refsect1">
+<div>
 
 ## See Also
 

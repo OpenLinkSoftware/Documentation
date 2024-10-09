@@ -1,10 +1,10 @@
-<div id="fn_user_change_password" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ USER_CHANGE_PASSWORD — Change the password of an existing user account.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_change_password" class="funcsynopsis">
+<div>
 
 |                                   |                            |
 |-----------------------------------|----------------------------|
@@ -24,7 +24,7 @@ USER_CHANGE_PASSWORD — Change the password of an existing user account.
 |                                   | in `old_pwd ` varchar ,    |
 |                                   | in `new_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ USER_CHANGE_PASSWORD — Change the password of an existing user account.
 
 </div>
 
-<div id="desc_user_change_password" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ account.
 
 </div>
 
-<div id="params_user_change_password" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116291" class="refsect2">
+<div>
 
 ### name
 
@@ -56,7 +56,7 @@ changed.
 
 </div>
 
-<div id="id116294" class="refsect2">
+<div>
 
 ### old_pwd
 
@@ -64,7 +64,7 @@ A string containing the old password of the user.
 
 </div>
 
-<div id="id116297" class="refsect2">
+<div>
 
 ### new_pwd
 
@@ -74,7 +74,7 @@ A string containing the new password to be used.
 
 </div>
 
-<div id="ret_user_change_password" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,7 +82,7 @@ None
 
 </div>
 
-<div id="seealso_user_change_password" class="refsect1">
+<div>
 
 ## See Also
 

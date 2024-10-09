@@ -1,10 +1,10 @@
-<div id="fn_xper_doc" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ document
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xper_doc" class="funcsynopsis">
+<div>
 
 |                       |                                      |
 |-----------------------|--------------------------------------|
@@ -29,7 +29,7 @@ document
 |                       | in `dtd_validator_config ` varchar , |
 |                       | in `index_attrs ` integer `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ document
 
 </div>
 
-<div id="desc_76" class="refsect1">
+<div>
 
 ## Description
 
@@ -57,11 +57,11 @@ tree" entity will be converted back to plain text of XML syntax; but
 
 </div>
 
-<div id="params_40" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124230" class="refsect2">
+<div>
 
 ### document
 
@@ -69,7 +69,7 @@ well formed XML or HTML document
 
 </div>
 
-<div id="id124233" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -78,7 +78,7 @@ mode (with quiet recovery after any syntax error)
 
 </div>
 
-<div id="id124236" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -87,7 +87,7 @@ given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id124239" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -97,7 +97,7 @@ mode and 'LATIN-1' for HTML mode.
 
 </div>
 
-<div id="id124242" class="refsect2">
+<div>
 
 ### content_language
 
@@ -107,7 +107,7 @@ various human languages)
 
 </div>
 
-<div id="id124245" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -119,7 +119,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="id124249" class="refsect2">
+<div>
 
 ### index_attrs
 
@@ -133,7 +133,7 @@ some important optimizations in free-text search operations.
 
 </div>
 
-<div id="ret_23" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -142,15 +142,15 @@ be a special sort of BLOB.
 
 </div>
 
-<div id="examples_26" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xper_doc" class="example">
+<div>
 
 **Example 24.530. Xper_Doc**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 declare tree any;
@@ -177,7 +177,7 @@ tree := xper_doc ('file://doc.xml');
 
 </div>
 
-<div id="seealso_48" class="refsect1">
+<div>
 
 ## See Also
 

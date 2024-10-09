@@ -1,6 +1,6 @@
-<div id="rdfsparqlruletransoption" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - See <a
   href="rdfsparqlimplementatiotrans.html#rdfsparqlimplementatiotransexamples7"

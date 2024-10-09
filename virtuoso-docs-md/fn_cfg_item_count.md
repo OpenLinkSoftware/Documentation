@@ -1,10 +1,10 @@
-<div id="fn_cfg_item_count" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cfg_item_count" class="funcsynopsis">
+<div>
 
 |                             |                            |
 |-----------------------------|----------------------------|
 | ` `**`cfg_item_count`**` (` | in `path ` varchar ,       |
 |                             | in `section ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ file
 
 </div>
 
-<div id="desc_cfg_item_count" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ INI file.
 
 </div>
 
-<div id="params_cfg_item_count" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81672" class="refsect2">
+<div>
 
 ### path
 
@@ -55,7 +55,7 @@ Name of the INI file.
 
 </div>
 
-<div id="id81675" class="refsect2">
+<div>
 
 ### section
 
@@ -65,7 +65,7 @@ Name of the section in the INI file.
 
 </div>
 
-<div id="ret_cfg_item_count" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -74,15 +74,15 @@ that exist in the section.
 
 </div>
 
-<div id="examples_cfg_item_count" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_cfg_item_count" class="example">
+<div>
 
 **Example 24.31. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Find number of items in the \[Parameters\] section of the current
 virtuoso.ini file.
@@ -104,7 +104,7 @@ _______________________________________________________________
 
 </div>
 
-<div id="seealso_cfg_item_count" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="virtdocs" class="book">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,9 +12,9 @@
 
 <div>
 
-<div class="authorgroup">
+<div>
 
-<div class="author">
+<div>
 
 ### <span class="orgname">OpenLink Software Documentation Team </span> `<`<a
 href="mailto:virtuoso.docs@openlinksw.com%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20"
@@ -44,7 +44,7 @@ Copyright © 1999 - 2020 OpenLink Software
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 

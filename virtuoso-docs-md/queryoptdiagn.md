@@ -1,6 +1,6 @@
-<div id="queryoptdiagn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,11 +23,11 @@ system with
 <a href="fn_dbf_set.html" class="link" title="__dbf_set"><code
 class="function">__dbf_set</code></a> function:
 
-<div id="id34458" class="table">
+<div>
 
 **Table 9.4. **
 
-<div class="table-contents">
+<div>
 
 | INI section | INI parameter name           | \_\_dbf_set function name                                        | \_\_dbf_set function description                                                                                                                                                                                                 |
 |-------------|------------------------------|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

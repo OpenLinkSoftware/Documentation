@@ -1,6 +1,6 @@
-<div id="virtuosoinstallunixpe" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtuosoinstallunixpedescr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,7 +34,7 @@ Once the required tar file has been downloaded from the web or ftp site
 and placed in a designated installation directory the installation
 process is ready to commence.
 
-<div class="itemizedlist">
+<div>
 
 - Choose or create a suitable user account to own your Virtuoso
   installation.

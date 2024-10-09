@@ -1,6 +1,6 @@
-<div id="installdemomac" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

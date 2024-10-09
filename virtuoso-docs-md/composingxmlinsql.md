@@ -1,6 +1,6 @@
-<div id="composingxmlinsql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -89,7 +89,7 @@ select
 from "Demo"."demo"."Employees";
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                         |
 |:----------------------------:|:--------------------------------------------------------|
@@ -118,7 +118,7 @@ hexadecimal code. For example, "first_name" is replaced with
 
 The following example creates an 'FullAddress' element with
 
-<div class="itemizedlist">
+<div>
 
 - four attributes, three of them ('PostalCode', 'Address', 'City') are
   produced by `XMLATTRIBUTES`, and the fourth attribute - 'country' is
@@ -159,7 +159,7 @@ from "Demo"."demo"."Employees"
  
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

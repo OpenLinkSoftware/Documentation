@@ -1,6 +1,6 @@
-<div id="saveqrytoxmltemplatessql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,15 +23,15 @@ First we will make a new WebDAV directory. From Web Application Server
 the shown form enter for "Folder Name": xmlt. Choose for "Owner" dav and
 click the "Create" button.
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate001" class="figure">
+<div>
 
 **Figure 15.2. Creating a new directory (collection) in WebDAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Creating a new directory (collection) in
 WebDAV](images/xmltemplate001.png)
@@ -51,16 +51,16 @@ XML Templates can be executed later. Go to Web Application Server /
 Virtual Domains & Directories and for your {Default Web Site} click the
 link "New Directory". In the shown form click "Next".
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate004" class="figure">
+<div>
 
 **Figure 15.3. Configuring a Virtual Directory to respond to XML
 Template requests from our Dav**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Configuring a Virtual Directory to respond to XML Template requests
 from our Dav](images/xmltemplate004.png)
@@ -90,15 +90,15 @@ Now we go to Database/Interactive SQL and will use a simple query. Here
 we are assuming that the Demo database is being used, so we will query
 the Customers table:
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate002" class="figure">
+<div>
 
 **Figure 15.4. A SQL Query**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![A SQL Query](images/xmltemplate002.png)
 
@@ -112,15 +112,15 @@ the Customers table:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate002a" class="figure">
+<div>
 
 **Figure 15.5. Results**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Results](images/xmltemplate002a.png)
 
@@ -142,15 +142,15 @@ and add the name of the xmltemplate to which the result will be saved,
 for example: sql-template.xml So finally the value should be
 `/DAV/xmlt/sql-template.xml` .
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate005" class="figure">
+<div>
 
 **Figure 15.6. The Save XML Template page and settings**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The Save XML Template page and settings](images/xmltemplate005.png)
 
@@ -168,16 +168,16 @@ Once the template has been saved we can test it. Point your browser at
 you newly created file, a URL similar to:
 `http://host:port/DAV/xmlt/sql-template.xml` :
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate006" class="figure">
+<div>
 
 **Figure 15.7. The test results:
 http://host:port/DAV/xmlt/sql-template.xml**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The test results:
 http://host:port/DAV/xmlt/sql-template.xml](images/xmltemplate006.png)
@@ -192,7 +192,7 @@ http://host:port/DAV/xmlt/sql-template.xml](images/xmltemplate006.png)
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                          |
 |:--------------------------:|:-----------------------------------------|

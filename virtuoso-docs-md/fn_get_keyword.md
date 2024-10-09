@@ -1,10 +1,10 @@
-<div id="fn_get_keyword" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ get_keyword — Find a value in keyword vector
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_get_keyword" class="funcsynopsis">
+<div>
 
 |                          |                            |
 |--------------------------|----------------------------|
@@ -25,7 +25,7 @@ get_keyword — Find a value in keyword vector
 |                          | `default ` any ,           |
 |                          | `no_copy ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ get_keyword — Find a value in keyword vector
 
 </div>
 
-<div id="desc_get_keyword" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ the default is not supplied.
 
 </div>
 
-<div id="params_get_keyword" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90066" class="refsect2">
+<div>
 
 ### keyword
 
@@ -59,7 +59,7 @@ String key value to be searched in the searched_array at even positions.
 
 </div>
 
-<div id="id90069" class="refsect2">
+<div>
 
 ### searched_array
 
@@ -68,7 +68,7 @@ to search. Each odd position can be any value that may then be returned.
 
 </div>
 
-<div id="id90072" class="refsect2">
+<div>
 
 ### default
 
@@ -76,7 +76,7 @@ Any data to be returned if keyword is not matched in the searched_array.
 
 </div>
 
-<div id="id90075" class="refsect2">
+<div>
 
 ### no_copy
 
@@ -94,18 +94,18 @@ was retrieved to 0 if this argument is true.
 
 </div>
 
-<div id="errors_get_keyword" class="refsect1">
+<div>
 
 ## Errors
 
 <a href="datatypeerror.html" class="link"
 title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
-<div id="id90083" class="table">
+<div>
 
-**Table 24.37. Errors signalled by `openxml `**
+**Table 24.36. Errors signalled by `openxml `**
 
-<div class="table-contents">
+<div>
 
 | SQL Code                              | Error Message                                                    | Virtuoso Code |
 |---------------------------------------|------------------------------------------------------------------|---------------|
@@ -119,7 +119,7 @@ title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
 </div>
 
-<div id="ret_get_keyword" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -129,15 +129,15 @@ returned.
 
 </div>
 
-<div id="examples_get_keyword" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_get_keyword" class="example">
+<div>
 
 **Example 24.133. Sample calls**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 get_keyword(2,vector(1,'primero',2,'segundo',
@@ -160,7 +160,7 @@ the second call returns 0 as the data was set to 0 by the previous call.
 
 </div>
 
-<div id="seealso_get_keyword" class="refsect1">
+<div>
 
 ## See Also
 

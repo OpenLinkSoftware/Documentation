@@ -1,6 +1,6 @@
-<div id="mailsink" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,9 +25,9 @@ the mail message into a list of recipients. For each entry in the list,
 if an @-sign is found, the user ID will consist of the characters to the
 left of it, otherwise the whole entry is used.
 
-<div id="id1914" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -58,9 +58,9 @@ is the number of connections to Virtuoso to be pooled.
 
 </div>
 
-<div id="id1915" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -82,7 +82,7 @@ Use these commands to install the Virtuoso Sink:
 | <span class="command">**VirtuosoSink /Service**</span> Creates the Service in Manual start mode                                                                                                |
 | <span class="command">**cscript smtpreg.vbs /add 1 OnArrival Virtuoso_SMTP_Sink VirtuosoSink.SMTP "mail from=\*"**</span> - Registers the COM Object as a mail sink with the IIS SMTP service. |
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                              |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------|
@@ -95,9 +95,9 @@ Use these commands to install the Virtuoso Sink:
 
 </div>
 
-<div id="id1916" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

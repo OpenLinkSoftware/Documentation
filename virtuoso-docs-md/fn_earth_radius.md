@@ -1,10 +1,10 @@
-<div id="fn_earth_radius" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ earth_radius — returns geom.mean of radius of Earth
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_earth_radius" class="funcsynopsis">
+<div>
 
 |                           |      |
 |---------------------------|------|
 | ` `**`earth_radius`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ earth_radius — returns geom.mean of radius of Earth
 
 </div>
 
-<div id="desc_earth_radius" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,7 +40,7 @@ returns geom.mean of radius of Earth in kilometers, 6367.43568
 
 </div>
 
-<div id="ret_earth_radius" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -48,15 +48,15 @@ Returns any.
 
 </div>
 
-<div id="examples_earth_radius" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_earth_radius" class="example">
+<div>
 
 **Example 24.658. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SELECT earth_radius ()

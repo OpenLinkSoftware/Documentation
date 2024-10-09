@@ -1,10 +1,10 @@
-<div id="fn_sprintf_iri" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ string.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sprintf_iri" class="funcsynopsis">
+<div>
 
 |                          |                    |
 |--------------------------|--------------------|
@@ -26,7 +26,7 @@ string.
 |                          | `... ` ,           |
 |                          | `arg_x ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ string.
 
 </div>
 
-<div id="desc_26" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,7 +46,7 @@ format string format. The difference is that the returned string is
 marked as being IRI string so some applications and clients may
 distinguish between RDF reference string and RDF literal.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                              |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -58,15 +58,15 @@ distinguish between RDF reference string and RDF literal.
 
 </div>
 
-<div id="examples_sprintf_iri" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sprintf_iri" class="example">
+<div>
 
 **Example 24.390. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create function job_history(

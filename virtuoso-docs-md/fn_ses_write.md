@@ -1,10 +1,10 @@
-<div id="fn_ses_write" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ ses_write — Write character data to an open TCP session.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ses_write" class="funcsynopsis">
+<div>
 
 |                        |                               |
 |------------------------|-------------------------------|
 | ` `**`ses_write`**` (` | in `buffer ` varchar ,        |
 |                        | in `ses ` session_handle `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ ses_write — Write character data to an open TCP session.
 
 </div>
 
-<div id="desc_ses_write" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ will result in an error being returned.
 
 </div>
 
-<div id="params_ses_write" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109712" class="refsect2">
+<div>
 
 ### buffer
 
@@ -55,7 +55,7 @@ Character data to be sent to the session.
 
 </div>
 
-<div id="id109715" class="refsect2">
+<div>
 
 ### ses
 
@@ -66,7 +66,7 @@ assumed.
 
 </div>
 
-<div id="seealso_ses_write" class="refsect1">
+<div>
 
 ## See Also
 

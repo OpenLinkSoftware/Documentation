@@ -1,6 +1,6 @@
-<div id="createtable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="syntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

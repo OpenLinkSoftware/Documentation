@@ -1,10 +1,10 @@
-<div id="fn_bpel_get_var" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ binding="SQL"\> activity
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_getvariabledata_01" class="funcsynopsis">
+<div>
 
 |                                        |                          |
 |----------------------------------------|--------------------------|
@@ -25,7 +25,7 @@ binding="SQL"\> activity
 |                                        | in `part ` varchar ,     |
 |                                        | in `query ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,11 +35,11 @@ binding="SQL"\> activity
 
 </div>
 
-<div id="params_get_var_03" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130269" class="refsect2">
+<div>
 
 ### var_name
 
@@ -47,7 +47,7 @@ binding="SQL"\> activity
 
 </div>
 
-<div id="id130273" class="refsect2">
+<div>
 
 ### part
 
@@ -56,7 +56,7 @@ variable in question.
 
 </div>
 
-<div id="id130277" class="refsect2">
+<div>
 
 ### query
 
@@ -67,7 +67,7 @@ data in the BPEL variable
 
 </div>
 
-<div id="ret_get_var_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -76,7 +76,7 @@ be either an XML tree or a varchar or an integer.
 
 </div>
 
-<div id="desc_wsdl_upload_01_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -88,15 +88,15 @@ invoked from a BPEL process.
 
 </div>
 
-<div id="examples_getvariabledata_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_wsdl_upload_04" class="example">
+<div>
 
 **Example 24.648. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 declare city, country varchar;

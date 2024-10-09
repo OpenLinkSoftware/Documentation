@@ -1,6 +1,6 @@
-<div id="mapping_schemas" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -31,11 +31,11 @@ query XML views defined using the CREATE XML VIEW statement with XPATH:
 XPATH [__view "xml_view_name"]/xpath_query
 ```
 
-<div id="ex_loadingmapxmlsch" class="example">
+<div>
 
 **Example 15.11. Loading and Querying a Mapping Schema**
 
-<div class="example-contents">
+<div>
 
 The XML view "Catmp" from the file "Catmp.xsd" may be loaded using the
 following statement:
@@ -208,7 +208,7 @@ Also, there are some restrictions to the structure of mapping schemas:
 | Subelement having no sql:is-constant annotation and not mapped to any table can not contain subelements and attributes. |
 | Recursive relationships is not supported.                                                                               |
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                        |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -217,7 +217,7 @@ Also, there are some restrictions to the structure of mapping schemas:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                               |
 |:--------------------------:|:--------------------------------------------------------------------------------------------------------------|

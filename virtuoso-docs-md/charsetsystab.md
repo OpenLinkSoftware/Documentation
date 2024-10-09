@@ -1,6 +1,6 @@
-<div id="charsetsystab" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_file_dirlist" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ file_dirlist — Returns list with content of file system directory
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_dirlist" class="funcsynopsis">
+<div>
 
 |                           |                       |
 |---------------------------|-----------------------|
@@ -24,7 +24,7 @@ file_dirlist — Returns list with content of file system directory
 |                           | in `what ` integer ,  |
 |                           | out `error ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ file_dirlist — Returns list with content of file system directory
 
 </div>
 
-<div id="desc_file_dirlist" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ This returns the list of the contents of a given file system directory.
 
 </div>
 
-<div id="params_file_dirlist" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88645" class="refsect2">
+<div>
 
 ### path
 
@@ -56,7 +56,7 @@ string containing valid path to directory in file system
 
 </div>
 
-<div id="id88648" class="refsect2">
+<div>
 
 ### what
 
@@ -65,7 +65,7 @@ regular files, 2 - symbolic links, 3 - all entries
 
 </div>
 
-<div id="id88651" class="refsect2">
+<div>
 
 ### error
 
@@ -76,7 +76,7 @@ signalled.
 
 </div>
 
-<div id="ret_file_dirlist" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,15 +84,15 @@ an array of strings containing directory entries.
 
 </div>
 
-<div id="errors_file_dirlist" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id88659" class="table">
+<div>
 
-**Table 24.33. Errors signalled by**
+**Table 24.32. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                               | Description |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------------------------|-------------|
@@ -109,7 +109,7 @@ an array of strings containing directory entries.
 
 </div>
 
-<div id="seealso_file_dirlist" class="refsect1">
+<div>
 
 ## See Also
 

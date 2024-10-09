@@ -1,10 +1,10 @@
-<div id="vc_before_render" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ rendering.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_before_render" class="funcsynopsis">
+<div>
 
 |                                                                     |      |
 |---------------------------------------------------------------------|------|
 | ` <`**`before-render`**` >(EventHandler)</`**`before-render`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ rendering.
 
 </div>
 
-<div id="vc_desc_before_render" class="refsect1">
+<div>
 
 ## Description
 

@@ -1,6 +1,6 @@
-<div id="rdfnativestorageproviderredland" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfnativestorageproviderredlandwhatis" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,9 +43,9 @@ target="_top">Rasqal</a> RDF syntax and query library for its use.
 
 </div>
 
-<div id="rdfnativestorageproviderredlandwhatisv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -72,15 +72,15 @@ instance. The provider has been tested against the
 target="_top">Redland 1.0.8</a> version currently available for
 download.
 
-<div class="figure-float">
+<div>
 
-<div id="rdfnativestorageproviderredland1" class="figure">
+<div>
 
 **Figure 16.200. Redland Component Stack**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Redland Component Stack](images/ui/VirtRedLand.png)
 
@@ -121,9 +121,9 @@ remote Virtuoso QUAD store.
 
 </div>
 
-<div id="rdfnativestorageproviderredlandsetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -137,9 +137,9 @@ remote Virtuoso QUAD store.
 
 </div>
 
-<div id="rdfnativestorageproviderredlandreqfiles" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -162,7 +162,7 @@ committed into the available Redland release a tar ball created by
 OpenLink Software and a diff for application to a Redland 1.0.8 tree can
 be obtained from:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="ftp://download.openlinksw.com/support/vos/redland-vos-1.0.8.tar.gz"
@@ -178,9 +178,9 @@ be obtained from:
 
 </div>
 
-<div id="rdfnativestorageprovidersredlandcmsmpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -194,7 +194,7 @@ be obtained from:
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://svn.librdf.org/" class="ulink" target="_top">Download
   Redland</a> , extract and apply diff above or download the tar ball
@@ -385,9 +385,9 @@ be obtained from:
 
 </div>
 
-<div id="rdfnativestorageprovidersredlandcp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -404,7 +404,7 @@ be obtained from:
 The Virtuoso provider has the following connection parameters available
 fro use:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*dsn*</span>
 
@@ -471,9 +471,9 @@ Examples:
 
 </div>
 
-<div id="rdfnativestorageprovidersredlandref" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -487,7 +487,7 @@ Examples:
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://librdf.org/docs/api/redland-storage.html" class="ulink"
   target="_top">RedLand Triple Store</a>

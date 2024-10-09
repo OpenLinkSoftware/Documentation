@@ -1,10 +1,10 @@
-<div id="fn_mts_status" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ mts_status — checks status of current transaction or server.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mts_status" class="funcsynopsis">
+<div>
 
 |                         |                            |
 |-------------------------|----------------------------|
 | ` `**`mts_status`**` (` | in `subject ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ mts_status — checks status of current transaction or server.
 
 </div>
 
-<div id="desc_mts_status" class="refsect1">
+<div>
 
 ## Description
 

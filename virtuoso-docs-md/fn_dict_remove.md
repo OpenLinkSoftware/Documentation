@@ -1,10 +1,10 @@
-<div id="fn_dict_remove" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ the given dictionary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_remove" class="funcsynopsis">
+<div>
 
 |                             |                            |
 |-----------------------------|----------------------------|
 | `int `**`dict_remove`**` (` | inout `dict ` dictionary , |
 |                             | inout `key ` any `)`;      |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ the given dictionary.
 
 </div>
 
-<div id="desc_dict_remove" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ equivalent to the given one the function returns zero.
 
 </div>
 
-<div id="params_dict_remove" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87039" class="refsect2">
+<div>
 
 ### dict
 
@@ -57,7 +57,7 @@ Dictionary object to process.
 
 </div>
 
-<div id="id87042" class="refsect2">
+<div>
 
 ### key
 
@@ -67,7 +67,7 @@ Key of a key-value pair that should be removed from the dictionary.
 
 </div>
 
-<div id="ret_dict_remove" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,7 +75,7 @@ Integer flag indicating if a key-value pair has been found and removed.
 
 </div>
 
-<div id="seealso_dict_remove" class="refsect1">
+<div>
 
 ## See Also
 

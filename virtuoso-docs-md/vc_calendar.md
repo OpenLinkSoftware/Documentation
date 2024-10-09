@@ -1,10 +1,10 @@
-<div id="vc_calendar" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ calendar — Databound calendar control.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_calendar" class="funcsynopsis">
+<div>
 
 |                          |                               |
 |--------------------------|-------------------------------|
@@ -34,7 +34,7 @@ calendar — Databound calendar control.
 |                          | `debug-srcline` (optional) ,  |
 |                          | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -44,7 +44,7 @@ calendar — Databound calendar control.
 
 </div>
 
-<div id="vc_desc_calendar" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,7 +52,7 @@ This is the generic calendar control.
 
 </div>
 
-<div id="vc_attrs_calendar" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -117,7 +117,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_calendar" class="refsect1">
+<div>
 
 ## Declaration of type vspx_calendar
 
@@ -137,15 +137,15 @@ constructor method vspx_calendar (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_calendar" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_calendar__0" class="example">
+<div>
 
 **Example 14.21.  A calendar**
 
-<div class="example-contents">
+<div>
 
 This demo will show a calendar allowing to list dates by months:
 

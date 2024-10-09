@@ -1,10 +1,10 @@
-<div id="fn_rdf_default_user_perms_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.RDF_DEFAULT_USER_PERMS_SET — Sets default permissions of user.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_default_user_perms_set" class="funcsynopsis">
+<div>
 
 |                                                |                                            |
 |------------------------------------------------|--------------------------------------------|
@@ -24,7 +24,7 @@ DB.DBA.RDF_DEFAULT_USER_PERMS_SET — Sets default permissions of user.
 |                                                | in `perms ` integer ,                      |
 |                                                | in `set_private ` integer (default 0) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ DB.DBA.RDF_DEFAULT_USER_PERMS_SET — Sets default permissions of user.
 
 </div>
 
-<div id="desc_rdf_default_user_perms_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ specified by perms.
 
 </div>
 
-<div id="params_rdf_default_user_perms_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100259" class="refsect2">
+<div>
 
 ### uname
 
@@ -55,7 +55,7 @@ User name.
 
 </div>
 
-<div id="id100262" class="refsect2">
+<div>
 
 ### perms
 
@@ -71,7 +71,7 @@ be an active SQL user or "nobody".
 Four sorts of access are specified by four bits of an integer
 "permission bit-mask", plain old UNIX style:
 
-<div class="itemizedlist">
+<div>
 
 - Bit 1 permits read access.
 
@@ -94,7 +94,7 @@ Permissions"</a>
 
 </div>
 
-<div id="id100280" class="refsect2">
+<div>
 
 ### set_private
 
@@ -105,15 +105,15 @@ default for "private" graphs otherwise it is set for "world" graphs.
 
 </div>
 
-<div id="examples_rdf_default_user_perms_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_default_user_perms_set" class="example">
+<div>
 
 **Example 24.256. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 -- Set 'demo' user/role to have no access to private graphs:
@@ -134,7 +134,7 @@ Blogs and Resource Sharing</a>
 
 </div>
 
-<div id="seealso_rdf_default_user_perms_set" class="refsect1">
+<div>
 
 ## See Also
 

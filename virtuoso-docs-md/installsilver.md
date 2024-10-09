@@ -1,6 +1,6 @@
-<div id="installsilver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,9 +21,9 @@ title="2.10. Creating a Web Browser Application to Access RDF Data Using The Vi
 a Web Browser Application to Access RDF Data Using The Virtuoso ADO.Net
 Provider.</a>
 
-<div id="installsilverpreq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,7 +37,7 @@ Provider.</a>
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  The <a
     href="http://www.microsoft.com/downloads/details.aspx?FamilyId=c22d6a7b-546f-4407-8ef6-d60c8ee221ed&amp;displaylang=en"

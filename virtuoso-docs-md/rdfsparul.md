@@ -1,6 +1,6 @@
-<div id="rdfsparul" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfsparulintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ as by data querying.
 
 </div>
 
-<div id="rdfsparulfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -127,9 +127,9 @@ create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
 
 </div>
 
-<div id="rdfsparulexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -143,9 +143,9 @@ create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
 
 </div>
 
-<div id="rdfsparulexamples1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -176,9 +176,9 @@ Insert into <http://mygraph.com>, 1 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -228,7 +228,7 @@ privilege.
 Assume the following sequence of commands to be executed from the
 /sparql endpoint:
 
-<div class="itemizedlist">
+<div>
 
 - Create explicitly a graph:
 
@@ -269,9 +269,9 @@ Assume the following sequence of commands to be executed from the
 
 </div>
 
-<div id="rdfsparulexamples3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -320,9 +320,9 @@ Delete from <http://mygraph.com>, 1 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -388,9 +388,9 @@ Insert into <http://mygraph.com>, 1 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -422,9 +422,9 @@ Insert into <http://mygraph.com>, 4 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -502,7 +502,7 @@ You can also find live demo query results <a
 href="http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&amp;should-sponge=&amp;query=SELECT+%0D%0A%3Fs1+%3Fs2+count+%281%29+where+%7B%0D%0A%3Fs1+%3Fp+%3Fo+.%0D%0Afilter+%28%3Fs1+in+%28%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FClimate_change%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FDisaster_risk_reduction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FTanzania%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FCapacity_building%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FPoverty%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FConstruction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FVulnerability%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FMount_Kilimanjaro%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FSocial_vulnerability%3E+%29%29%0D%0A%3Fs2+%3Fp+%3Fo+.%0D%0Afilter+%28%3Fs2+in+%28%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FClimate_change%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FDisaster_risk_reduction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FTanzania%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FCapacity_building%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FPoverty%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FConstruction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FVulnerability%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FMount_Kilimanjaro%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FSocial_vulnerability%3E+%29%29%0D%0Afilter+%28%3Fs1+!%3D+%3Fs2%29%0D%0Afilter+%28str%28%3Fs1%29+%3C+str+%28%3Fs2%29%29%0D%0A%7D+limit+20&amp;format=html&amp;debug=on&amp;timeout="
 class="ulink" target="_top">here</a>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                         |
 |:--------------------------:|:----------------------------------------------------------------------------------------|
@@ -515,9 +515,9 @@ class="ulink" target="_top">here</a>
 
 </div>
 
-<div id="rdfsparulexamples7" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -564,9 +564,9 @@ DELETE FROM GRAPH <http://mygraph.com> { <http://example.com/dataspace/Caroline#
 
 </div>
 
-<div id="rdfsparulexamples8" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -583,7 +583,7 @@ DELETE FROM GRAPH <http://mygraph.com> { <http://example.com/dataspace/Caroline#
 The RDF information resource URI can be generated via a string
 expression.
 
-<div class="orderedlist">
+<div>
 
 1.  Suppose there is a sample file kidehen.n3:
 
@@ -605,15 +605,15 @@ expression.
 
 6.  Finally Click "Update"
 
-7.  <div class="figure-float">
+7.  <div>
 
-    <div id="gnr1" class="figure">
+    <div>
 
     **Figure 16.44. Generating RDF information resource URI**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating RDF information resource URI](images/ui/exmp1.png)
 
@@ -681,9 +681,9 @@ expression.
 
 </div>
 
-<div id="rdfsparulexamples9" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -734,7 +734,7 @@ SQL>SPARQL
 load bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/n3_collection/kidehen.n3") INTO GRAPH <http://mygraph.com>;
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                       |
 |:--------------------------:|:----------------------------------------------------------------------|
@@ -747,9 +747,9 @@ load bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/n3_colle
 
 </div>
 
-<div id="rdfsparulexamples10" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -783,9 +783,9 @@ log_enable (2) beforehand, and log_enable(1) after it completes.
 
 </div>
 
-<div id="rdfsparulexamples11" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -801,7 +801,7 @@ log_enable (2) beforehand, and log_enable(1) after it completes.
 
 The procedure below keeps simple cases of graphs with bnodes:
 
-<div class="orderedlist">
+<div>
 
 1.  First it compares all triples without bnodes
 
@@ -1330,9 +1330,9 @@ select DB.DBA.TEST_RDF_GRAPHS_DIFFER_EXP ( 'throughout test on foafs (equiv)', 0
 
 </div>
 
-<div id="rdfsparulexamples12" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1366,9 +1366,9 @@ Insert into <http://BookStore.com>, 6 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples13" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1401,7 +1401,7 @@ Modify <http://BookStore.com>, delete 1 and insert 1 triples -- done
 1 Rows. -- 20 msec.
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                       |
 |:--------------------------:|:----------------------------------------------------------------------|
@@ -1414,9 +1414,9 @@ Modify <http://BookStore.com>, delete 1 and insert 1 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples14" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1454,9 +1454,9 @@ Delete from <http://BookStore.com>, 6 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples15" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1505,9 +1505,9 @@ Insert into <http://NewBookStore.com>, 6 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples16" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1565,9 +1565,9 @@ Delete from <http://BookStore.com>, 3 triples -- done
 
 </div>
 
-<div id="rdfsparulexamples17" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1707,9 +1707,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparulexamples18" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1758,7 +1758,7 @@ http://s.zemanta.com/ns#targetType                  http://s.zemanta.com/targets
 3 Rows. -- 10 msec.
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                         |
 |:--------------------------:|:------------------------------------------------------------------------|
@@ -1770,9 +1770,9 @@ http://s.zemanta.com/ns#targetType                  http://s.zemanta.com/targets
 
 </div>
 
-<div id="rdfsparulexamples19" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1824,9 +1824,9 @@ Note that the query will not show anything when there are triples like:
 
 </div>
 
-<div id="rdfsparulexamples20" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1874,9 +1874,9 @@ Note that the query will not show anything when there are triples like:
 
 </div>
 
-<div id="rdfsparulexamples21" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1940,9 +1940,9 @@ SQL>
 
 </div>
 
-<div id="rdfsparulexamples22" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1960,17 +1960,17 @@ The following sample scenario demonstrates how to perform INSERT/DELETE
 (SPARUL) statements against a protected SPARQL Endpoint by setting WebID
 Protocol ACLs using the Virtuoso Authentication Server UI:
 
-<div class="orderedlist">
+<div>
 
 1.  Obtain a WebID:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Download and install the <a
         href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/ods_framework_dav.vad"
         class="ulink" target="_top">ods_framework_dav.vad</a> .
 
-        <div class="itemizedlist">
+        <div>
 
         - Note: an existing ODS DataSpace user instance can also be
           used, for example at
@@ -2006,15 +2006,15 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 4.  Go to System Admin -\> Linked Data -\> Access Control -\>
     SPARQL-WebID
 
-    <div class="figure-float">
+    <div>
 
-    <div id="si1" class="figure">
+    <div>
 
     **Figure 16.45. Conductor SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor SPARQL-WebID](images/ui/si1.png)
 
@@ -2030,7 +2030,7 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 
 5.  In the displayed form:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Enter the Web ID for the user registered above, for example:
 
@@ -2044,15 +2044,15 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 
         ".
 
-        <div class="figure-float">
+        <div>
 
-        <div id="si2" class="figure">
+        <div>
 
         **Figure 16.46. Conductor SPARQL-WebID**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Conductor SPARQL-WebID](images/ui/si2.png)
 
@@ -2072,15 +2072,15 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 
 7.  The WebID Protocol ACL will be created:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="si3" class="figure">
+    <div>
 
     **Figure 16.47. Conductor SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor SPARQL-WebID](images/ui/si3.png)
 
@@ -2100,15 +2100,15 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 
 9.  Select the user's certificate:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="si4" class="figure">
+    <div>
 
     **Figure 16.48. Conductor SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor SPARQL-WebID](images/ui/si4.png)
 
@@ -2124,15 +2124,15 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 
 10. The SPARQL Query UI will be displayed:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="si5" class="figure">
+    <div>
 
     **Figure 16.49. Conductor SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor SPARQL-WebID](images/ui/si5.png)
 
@@ -2156,15 +2156,15 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
     }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="si6" class="figure">
+    <div>
 
     **Figure 16.50. Conductor SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor SPARQL-WebID](images/ui/si6.png)
 
@@ -2178,15 +2178,15 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="si7" class="figure">
+    <div>
 
     **Figure 16.51. Conductor SPARQL-WebID**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor SPARQL-WebID](images/ui/si7.png)
 
@@ -2214,9 +2214,9 @@ grant execute on DB.DBA.SPARQL_DELETE_DICT_CONTENT to "demo";
 
 </div>
 
-<div id="rdfsparulexamples23" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2285,9 +2285,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparulexamples24" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2303,7 +2303,7 @@ WHERE
 
 There are two ways to delete a particular blank node:
 
-<div class="orderedlist">
+<div>
 
 1.  To refer to it via some properties or:
 
@@ -2314,7 +2314,7 @@ There are two ways to delete a particular blank node:
 
 Assume the following sample scenario:
 
-<div class="orderedlist">
+<div>
 
 1.  Clear the graph:
 
@@ -2517,9 +2517,9 @@ application should identify bnodes by properties before doing
 
 </div>
 
-<div id="rdfsparulexamples25" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2541,9 +2541,9 @@ back-quotes i.e:
 `expression`
 ```
 
-<div id="rdfsparulexamples25what" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2562,9 +2562,9 @@ expressions.
 
 </div>
 
-<div id="rdfsparulexamples25why" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2585,9 +2585,9 @@ and rdfs:comment .
 
 </div>
 
-<div id="rdfsparulexamples25how" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2604,9 +2604,9 @@ and rdfs:comment .
 Here some SPARQL 1.1 Update Language examples showcasing how this is
 achieved using Virtuoso.
 
-<div id="rdfsparulexamples25howex1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2651,9 +2651,9 @@ results</a> of the query.
 
 </div>
 
-<div id="rdfsparulexamples25howex2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2722,9 +2722,9 @@ ADO.NET Driver (Single-Tier Lite Edition) Instance with up to 16 logical process
 
 </div>
 
-<div id="rdfsparulexamples25howex3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

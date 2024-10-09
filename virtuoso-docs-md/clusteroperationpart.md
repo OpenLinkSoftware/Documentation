@@ -1,6 +1,6 @@
-<div id="clusteroperationpart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,7 +19,7 @@ operations take effect on all nodes simultaneously.
 
 The tables can be of one of three types:
 
-<div class="itemizedlist">
+<div>
 
 - Partitioned: A row of a partitioned table resides in exactly one
   partition, according to the values of its partitioning columns. Each
@@ -63,9 +63,9 @@ the set of nodes declared in the cluster.ini file.
 Basic applications do not need to declare their own cluster since the
 default one is most often applicable.
 
-<div id="clusteroperationcrclst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -121,9 +121,9 @@ create cluster C3 default group ("Host1", "Host2", "Host3", Host4");
 
 </div>
 
-<div id="clusteroperationaltind" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

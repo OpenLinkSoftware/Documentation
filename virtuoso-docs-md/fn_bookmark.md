@@ -1,10 +1,10 @@
-<div id="fn_bookmark" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ bookmark — Return the bookmark for current row of a scrollable cursor
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bookmark" class="funcsynopsis">
+<div>
 
 |                          |                          |
 |--------------------------|--------------------------|
 | `any `**`bookmark`**` (` | in `cursor ` CURSOR `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ bookmark — Return the bookmark for current row of a scrollable cursor
 
 </div>
 
-<div id="desc_bookmark" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ subsequent FETCH .. BOOKMARK over the same cursor.
 
 </div>
 
-<div id="params_bookmark" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81569" class="refsect2">
+<div>
 
 ### bookmark
 
@@ -55,7 +55,7 @@ Given Bookmark.
 
 </div>
 
-<div id="id81572" class="refsect2">
+<div>
 
 ### cursor
 
@@ -65,7 +65,7 @@ Open scrollable cursor.
 
 </div>
 
-<div id="ret_bookmark" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,15 +73,15 @@ Open scrollable cursor.
 
 </div>
 
-<div id="errors_bookmark" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id81581" class="table">
+<div>
 
 **Table 24.8. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                            | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------|-------------|
@@ -96,7 +96,7 @@ Open scrollable cursor.
 
 </div>
 
-<div id="seealso_bookmark" class="refsect1">
+<div>
 
 ## See Also
 

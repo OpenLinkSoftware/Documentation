@@ -1,10 +1,10 @@
-<div id="fn_st_zmflag" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ST_Zmflag — returns bits indicating presence of Z and/or M coordinates.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_zmflag" class="funcsynopsis">
+<div>
 
 |                        |                  |
 |------------------------|------------------|
 | ` `**`ST_Zmflag`**` (` | in `g ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ST_Zmflag — returns bits indicating presence of Z and/or M coordinates.
 
 </div>
 
-<div id="desc_st_zmflag" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ means Z but ont M, 3 is for both M and Z.
 
 </div>
 
-<div id="params_st_zmflag" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id132615" class="refsect2">
+<div>
 
 ### g
 
@@ -56,7 +56,7 @@ Geometry
 
 </div>
 
-<div id="ret_st_zmflag" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Returns integer.
 
 </div>
 
-<div id="examples_st_zmflag" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_zmflag" class="example">
+<div>
 
 **Example 24.682. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SELECT ST_Zmflag( st_point (10, 20, 30, 40));
@@ -89,7 +89,7 @@ INTEGER
 
 </div>
 
-<div id="seealso_st_zmflag" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="caseandco" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="case" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -51,11 +51,11 @@ When a \<search-condition\> is met the corresponding \<output\> is
 returned. If no conditions are met then the \<output\> after is ELSE is
 returned as a default value.
 
-<div id="ex_caseexp" class="example">
+<div>
 
 **Example 9.34. Using the CASE expression**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SELECT Title, CustomerName,
@@ -103,11 +103,11 @@ END
 This short hand is best demonstrated by the rewrite of the above example
 as follows:
 
-<div id="ex_caseexpshort" class="example">
+<div>
 
 **Example 9.35. Using the CASE short-hand expression**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SELECT Title, CustomerName,
@@ -133,9 +133,9 @@ ELSE NULL is implicit.
 
 </div>
 
-<div id="casenullif" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -173,9 +173,9 @@ would rather this was NULL.
 
 </div>
 
-<div id="casecoalesce" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -209,9 +209,9 @@ END
 
 </div>
 
-<div id="selcastexp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -236,7 +236,7 @@ cast as follows:
 cast('1' as integer) = 1
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                  |
 |:--------------------------:|:-----------------------------------------------------------------|

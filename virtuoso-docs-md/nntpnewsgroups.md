@@ -1,6 +1,6 @@
-<div id="nntpnewsgroups" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="nntpclient" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@
 
 </div>
 
-<div id="fn_nntp_get_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

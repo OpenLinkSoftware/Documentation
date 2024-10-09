@@ -1,6 +1,6 @@
-<div id="constructaggfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 The following section demonstrates usage example of CONSTRUCT Query with
 object which is a value of the aggregate function COUNT:
 
-<div class="orderedlist">
+<div>
 
 1.  Assume following SPARQL SELECT Query:
 

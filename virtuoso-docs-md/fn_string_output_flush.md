@@ -1,10 +1,10 @@
-<div id="fn_string_output_flush" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ string_output_flush — resets the state of the string_output object
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_string_output_flush" class="funcsynopsis">
+<div>
 
 |                                  |                          |
 |----------------------------------|--------------------------|
 | ` `**`string_output_flush`**` (` | inout `stream ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ string_output_flush — resets the state of the string_output object
 
 </div>
 
-<div id="desc_34" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ after this call.
 
 </div>
 
-<div id="params_08" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112375" class="refsect2">
+<div>
 
 ### stream
 
@@ -56,15 +56,15 @@ stream to clear, must have been created by the string_output function.
 
 </div>
 
-<div id="examples_09" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_string_output_flush" class="example">
+<div>
 
 **Example 24.408. Flush the String Output Stream**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp

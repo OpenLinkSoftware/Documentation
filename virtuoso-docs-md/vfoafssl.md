@@ -1,6 +1,6 @@
-<div id="vfoafssl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,9 +65,9 @@ visitor), and if they matched up (in other words, the visitor could not
 get in simply by claiming a family relationship; the relationship must
 be confirmed by the owner's FOAF data), the pictures would be shown.
 
-<div id="vfoafsslx509" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -87,7 +87,7 @@ For testing purposes we used OpenSSL demo CA to generate such
 certificates. If you are not using the OpenSSL demo CA, you must first
 setup a self-signed CA; read OpenSSL documents on how to do this.
 
-<div class="orderedlist">
+<div>
 
 1.  Add the following line to the \[usr_cert\] section of the
     openssl.cnf file:

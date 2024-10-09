@@ -1,10 +1,10 @@
-<div id="fn_sparql_rexec_to_array" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ protocol, produces a vector of vectors of SQL value.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_rexec_to_array" class="funcsynopsis">
+<div>
 
 |                                           |                            |
 |-------------------------------------------|----------------------------|
@@ -29,7 +29,7 @@ protocol, produces a vector of vectors of SQL value.
 |                                           | in `maxrows ` integer ,    |
 |                                           | in `bnode_dict ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ protocol, produces a vector of vectors of SQL value.
 
 </div>
 
-<div id="desc_sparql_rexec_to_array" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ vectors of SQL value.
 
 </div>
 
-<div id="params_sparql_rexec_to_array" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103678" class="refsect2">
+<div>
 
 ### service
 
@@ -60,7 +60,7 @@ service URI to call via HTTP.
 
 </div>
 
-<div id="id103681" class="refsect2">
+<div>
 
 ### query
 
@@ -68,7 +68,7 @@ text of SPARQL query to execute.
 
 </div>
 
-<div id="id103684" class="refsect2">
+<div>
 
 ### dflt_graph
 
@@ -77,7 +77,7 @@ query
 
 </div>
 
-<div id="id103687" class="refsect2">
+<div>
 
 ### named_graphs
 
@@ -86,7 +86,7 @@ specified in query
 
 </div>
 
-<div id="id103690" class="refsect2">
+<div>
 
 ### req_hdr
 
@@ -95,7 +95,7 @@ additional HTTP header lines that should be passed to the service;
 
 </div>
 
-<div id="id103693" class="refsect2">
+<div>
 
 ### maxrows
 
@@ -103,7 +103,7 @@ limit on numbers of rows that should be returned.
 
 </div>
 
-<div id="id103696" class="refsect2">
+<div>
 
 ### bnode_dict
 
@@ -113,7 +113,7 @@ dictionary of bnode ID references.
 
 </div>
 
-<div id="ret_sparql_rexec_to_array" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -121,7 +121,7 @@ any
 
 </div>
 
-<div id="seealso_sparql_rexec_to_array" class="refsect1">
+<div>
 
 ## See Also
 

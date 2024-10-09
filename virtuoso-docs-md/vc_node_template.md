@@ -1,10 +1,10 @@
-<div id="vc_node_template" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ node-template
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_node_template" class="funcsynopsis">
+<div>
 
 |                               |                               |
 |-------------------------------|-------------------------------|
@@ -33,7 +33,7 @@ node-template
 |                               | `debug-srcline` (optional) ,  |
 |                               | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -43,13 +43,13 @@ node-template
 
 </div>
 
-<div id="vc_desc_node_template" class="refsect1">
+<div>
 
 ## Description
 
 </div>
 
-<div id="vc_attrs_node_template" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -110,7 +110,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_node_template" class="refsect1">
+<div>
 
 ## Declaration of type vspx_node_template
 

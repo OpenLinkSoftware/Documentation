@@ -1,10 +1,10 @@
-<div id="fn_csv_table_def" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ csv_table_def — Guess table definition from CSV file.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_csv_table_def" class="funcsynopsis">
+<div>
 
 |                            |                              |
 |----------------------------|------------------------------|
 | ` `**`csv_table_def`**` (` | in `file_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ csv_table_def — Guess table definition from CSV file.
 
 </div>
 
-<div id="desc_csv_table_def" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ specified by file_name.
 
 </div>
 
-<div id="params_csv_table_def" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89939" class="refsect2">
+<div>
 
 ### file_name
 
@@ -55,15 +55,15 @@ The name of the CSV file.
 
 </div>
 
-<div id="examples_csv_table_def" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_csv_table_def" class="example">
+<div>
 
 **Example 24.131. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>select csv_table_def('tmp/MyContacts.csv');
@@ -87,7 +87,7 @@ Business_Phone_Business_Fax_Pager_Company_Job_Title_Department_Office_Location_N
 
 </div>
 
-<div id="seealso_csv_table_def" class="refsect1">
+<div>
 
 ## See Also
 

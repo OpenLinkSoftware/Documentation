@@ -1,10 +1,10 @@
-<div id="fn_isarray" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isarray — Check for a valid array
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isarray" class="funcsynopsis">
+<div>
 
 |                             |                  |
 |-----------------------------|------------------|
 | `boolean `**`isarray`**` (` | in `x ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isarray — Check for a valid array
 
 </div>
 
-<div id="desc_isarray" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ case for any string or vector.
 
 </div>
 
-<div id="params_isarray" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94119" class="refsect2">
+<div>
 
 ### x
 
@@ -55,7 +55,7 @@ The variable to be checked.
 
 </div>
 
-<div id="ret_isarray" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,7 +64,7 @@ return 0.
 
 </div>
 
-<div id="errors_isarray" class="refsect1">
+<div>
 
 ## Errors
 

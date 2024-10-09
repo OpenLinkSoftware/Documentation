@@ -1,10 +1,10 @@
-<div id="xpf_starts_with" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ second argument string, and otherwise returns false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_starts_with" class="funcsynopsis">
+<div>
 
 |                                 |                       |
 |---------------------------------|-----------------------|
 | `boolean `**`starts-with`**` (` | `strg ` string ,      |
 |                                 | `prefix ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ second argument string, and otherwise returns false.
 
 </div>
 
-<div id="xpf_desc_starts_with" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ it will be converted to an empty string first.
 
 </div>
 
-<div id="xpf_params_starts_with" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129062" class="refsect2">
+<div>
 
 ### strg
 
@@ -58,7 +58,7 @@ String whose first characters must be compared
 
 </div>
 
-<div id="id129065" class="refsect2">
+<div>
 
 ### prefix
 
@@ -69,7 +69,7 @@ String whose characters must be compared with first characters of
 
 </div>
 
-<div id="xpf_ret_starts_with" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -77,15 +77,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_starts_with" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_starts_with" class="example">
+<div>
 
 **Example 24.620. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 starts-with('OpenLink Virtuoso', 'OpenLink')
@@ -99,7 +99,7 @@ starts-with('OpenLink Virtuoso', 'OpenLink')
 
 </div>
 
-<div id="xpf_seealso_starts_with" class="refsect1">
+<div>
 
 ## See Also
 

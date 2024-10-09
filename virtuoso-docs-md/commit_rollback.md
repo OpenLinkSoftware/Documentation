@@ -1,6 +1,6 @@
-<div id="commit_rollback" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,11 +41,11 @@ rules and decides to abort the transaction. This can be done by ROLLBACK
 WORK, typically followed by a call to the signal function for notifying
 the application.
 
-<div id="id34059" class="example">
+<div>
 
 **Example 9.37. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure retry (in x integer)
@@ -74,7 +74,7 @@ create trigger sal_negative on "Employee" after update ("Salary")
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                       |
 |:--------------------------:|:----------------------------------------------------------------------------------------------------------------------|

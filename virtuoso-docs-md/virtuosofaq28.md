@@ -1,6 +1,6 @@
-<div id="virtuosofaq28" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 There is an extensive array of performance metrics. This includes:
 
-<div class="itemizedlist">
+<div>
 
 - Cluster status summary with thread counts, CPU utilization,
   interconnect traffic, clean and dirty cache pages, virtual memory

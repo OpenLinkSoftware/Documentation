@@ -1,10 +1,10 @@
-<div id="fn_vector_concat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ vector_concat — concatenate vectors
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vector_concat" class="funcsynopsis">
+<div>
 
 |                                  |                      |
 |----------------------------------|----------------------|
@@ -25,7 +25,7 @@ vector_concat — concatenate vectors
 |                                  | `... ` ,             |
 |                                  | `vec-n ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ vector_concat — concatenate vectors
 
 </div>
 
-<div id="desc_vector_concat" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ level) element in the arguments.
 
 </div>
 
-<div id="params_vector_concat" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118315" class="refsect2">
+<div>
 
 ### *`vec1..n `*
 
@@ -59,7 +59,7 @@ level) element in the arguments.
 
 </div>
 
-<div id="ret_vector_concat" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -67,15 +67,15 @@ A vector made of copies of elements contained in vec1..n.
 
 </div>
 
-<div id="examples_vector_concat" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vector_concat" class="example">
+<div>
 
 **Example 24.441. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 dbg_obj_print (vector_concat (vector (now(), 'black', 'crow'),
@@ -100,7 +100,7 @@ Would output something like this on the Virtuoso console:
 
 </div>
 
-<div id="seealso_vector_concat" class="refsect1">
+<div>
 
 ## See Also
 

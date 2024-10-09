@@ -1,10 +1,10 @@
-<div id="fn_repl_update_snapshot" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ REPL_UPDATE_SNAPSHOT — Updates a bi-directional snapshot publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_update_snapshot" class="funcsynopsis">
+<div>
 
 |                                       |                         |
 |---------------------------------------|-------------------------|
 | `None `**`REPL_UPDATE_SNAPSHOT`**` (` | in `item ` varchar ,    |
 |                                       | in `type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ REPL_UPDATE_SNAPSHOT — Updates a bi-directional snapshot publication
 
 </div>
 
-<div id="desc_repl_update_snapshot" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ publication. This procedure pulls all the updates from subscribers (with
 conflict resolution) and then pushes all the updates from publisher to
 all the subscribers.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                               |
 |:----------------------------:|:----------------------------------------------|
@@ -53,11 +53,11 @@ all the subscribers.
 
 </div>
 
-<div id="params_repl_update_snapshot" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107582" class="refsect2">
+<div>
 
 ### item
 
@@ -65,7 +65,7 @@ Item is a DAV collection or table name.
 
 </div>
 
-<div id="id107585" class="refsect2">
+<div>
 
 ### type
 
@@ -76,7 +76,7 @@ or 2 if item is a table name.
 
 </div>
 
-<div id="ret_repl_update_snapshot" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,15 +84,15 @@ None.
 
 </div>
 
-<div id="examples_repl_update_snapshot" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_repl_update_snapshot" class="example">
+<div>
 
 **Example 24.346. Updating bi-directional snapshot**
 
-<div class="example-contents">
+<div>
 
 The following statement updates bi-directional snapshot publication of
 table 'Demo.demo.Shippers'.
@@ -109,7 +109,7 @@ SQL> REPL_UPDATE_SNAPSHOT ('Demo.demo.Shippers', 2);
 
 </div>
 
-<div id="seealso_repl_update_snapshot" class="refsect1">
+<div>
 
 ## See Also
 

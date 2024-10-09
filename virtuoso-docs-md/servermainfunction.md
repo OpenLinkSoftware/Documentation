@@ -1,6 +1,6 @@
-<div id="servermainfunction" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -61,7 +61,7 @@ any threads yet), and/or custom code initialization not related to
 Virtuoso. Here, the `set_ddl_init_hook()` should be called also, if it
 exists, to register the `ddl_hook()` callback function.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                        |
 |:----------------------------:|:-----------------------------------------------------------------------|

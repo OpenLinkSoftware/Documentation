@@ -1,10 +1,10 @@
-<div id="vc_method" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ method — Page method - a user defined member of page class.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_method" class="funcsynopsis">
+<div>
 
 |                        |                           |
 |------------------------|---------------------------|
@@ -24,7 +24,7 @@ method — Page method - a user defined member of page class.
 |                        | `returns` (optional) ,    |
 |                        | `arglist` (optional) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ method — Page method - a user defined member of page class.
 
 </div>
 
-<div id="vc_desc_method" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ This creates a custom method of the page class.
 
 </div>
 
-<div id="vc_attrs_method" class="refsect1">
+<div>
 
 ## Attributes
 

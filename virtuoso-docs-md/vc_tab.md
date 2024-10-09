@@ -1,10 +1,10 @@
-<div id="vc_tab" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ tab — Selects one of its children to be active at any one time.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_tab" class="funcsynopsis">
+<div>
 
 |                     |                               |
 |---------------------|-------------------------------|
@@ -37,7 +37,7 @@ tab — Selects one of its children to be active at any one time.
 |                     | `debug-srcline` (optional) ,  |
 |                     | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ tab — Selects one of its children to be active at any one time.
 
 </div>
 
-<div id="vc_desc_tab" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,7 +58,7 @@ etc.
 
 </div>
 
-<div id="vc_attrs_tab" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -145,7 +145,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_tab" class="refsect1">
+<div>
 
 ## Declaration of type vspx_tab
 
@@ -168,15 +168,15 @@ as
 
 </div>
 
-<div id="vc_ex_tab" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_tab__0" class="example">
+<div>
 
 **Example 14.42. Switching of page content**
 
-<div class="example-contents">
+<div>
 
 The sample page contains three templates; only one of three is shown and
 user can switch them to change the visible content of the page.
@@ -202,7 +202,7 @@ user can switch them to change the visible content of the page.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|

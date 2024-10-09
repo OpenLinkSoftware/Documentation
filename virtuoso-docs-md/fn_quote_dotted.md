@@ -1,10 +1,10 @@
-<div id="fn_quote_dotted" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ quote_dotted — Returns an quoted identifier.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_quote_dotted" class="funcsynopsis">
+<div>
 
 |                                  |                               |
 |----------------------------------|-------------------------------|
 | `varchar `**`quote_dotted`**` (` | in `dsn ` varchar ,           |
 |                                  | in `identifier ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ quote_dotted — Returns an quoted identifier.
 
 </div>
 
-<div id="desc_quote_dotted" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ function.
 
 </div>
 
-<div id="params_quote_dotted" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99835" class="refsect2">
+<div>
 
 ### dsn
 
@@ -57,7 +57,7 @@ The remote DSN name.
 
 </div>
 
-<div id="id99838" class="refsect2">
+<div>
 
 ### identifier
 
@@ -68,7 +68,7 @@ or three part name, separated with the dot, '.', character.
 
 </div>
 
-<div id="ret_quote_dotted" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -76,15 +76,15 @@ A string will be returned containing the quoted identifier.
 
 </div>
 
-<div id="errors_quote_dotted" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id99846" class="table">
+<div>
 
-**Table 24.73. Errors signalled by**
+**Table 24.72. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                         | Description |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------|-------------|
@@ -98,15 +98,15 @@ A string will be returned containing the quoted identifier.
 
 </div>
 
-<div id="examples_quote_dotted" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_quote_dotted" class="example">
+<div>
 
 **Example 24.250. Using the quote_dotted() function**
 
-<div class="example-contents">
+<div>
 
 This simple example shows an identifier from a remote Oracle data source
 being correctly quoted using the quote_dotted() function from ISQL.
@@ -130,7 +130,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_quote_dotted" class="refsect1">
+<div>
 
 ## See Also
 

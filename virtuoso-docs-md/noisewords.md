@@ -1,6 +1,6 @@
-<div id="noisewords" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -38,11 +38,11 @@ The simplest way of composing noise.txt is to place every word on a
 separate line and save the file in UTF-8 encoding; this will work fine
 for most European languages.
 
-<div id="id66887" class="example">
+<div>
 
 **Example 20.3. Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 AND

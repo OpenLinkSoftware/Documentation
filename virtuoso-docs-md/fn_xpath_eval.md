@@ -1,10 +1,10 @@
-<div id="fn_xpath_eval" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ result(s).
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xpath_eval" class="funcsynopsis">
+<div>
 
 |                         |                                  |
 |-------------------------|----------------------------------|
@@ -26,7 +26,7 @@ result(s).
 |                         | in `index ` integer ,            |
 |                         | in `named_params ` vector `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ result(s).
 
 </div>
 
-<div id="desc_xpath_eval" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,11 +65,11 @@ are valid XPath variable names.
 
 </div>
 
-<div id="params_xpath_eval" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id124089" class="refsect2">
+<div>
 
 ### xpath_expression
 
@@ -83,7 +83,7 @@ the stylesheet.
 
 </div>
 
-<div id="id124093" class="refsect2">
+<div>
 
 ### xml_tree
 
@@ -91,7 +91,7 @@ An XML entity such as that returned from the `xtree_doc() ` function.
 
 </div>
 
-<div id="id124097" class="refsect2">
+<div>
 
 ### index
 
@@ -102,7 +102,7 @@ element per result.
 
 </div>
 
-<div id="id124100" class="refsect2">
+<div>
 
 ### named_params
 
@@ -113,7 +113,7 @@ processor.
 
 </div>
 
-<div id="ret_xpath_eval" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -123,15 +123,15 @@ value of 0 is supplied then the output is an array.
 
 </div>
 
-<div id="errors_xpath_eval" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id124111" class="table">
+<div>
 
-**Table 24.135. Errors signalled by xpath_eval**
+**Table 24.134. Errors signalled by xpath_eval**
 
-<div class="table-contents">
+<div>
 
 | SQL State                             | Error Code                            | Error Text                                                                                                                    | Description                                                                                                                                                                         |
 |---------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -145,15 +145,15 @@ value of 0 is supplied then the output is an array.
 
 </div>
 
-<div id="examples_xpath_eval" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xpath_eval" class="example">
+<div>
 
 **Example 24.527. Finding the Authors of Document Titles**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select xt_file, xpath_eval ('//author', t) from xml_text
@@ -171,11 +171,11 @@ the title.
 
   
 
-<div id="ex_xpath_eval2" class="example">
+<div>
 
 **Example 24.528. xpath_eval and Repeating Nodes.**
 
-<div class="example-contents">
+<div>
 
 This example shows how the xpath_eval can be used to retrieve multiple
 node answers to queries. First to set the scene consider the following
@@ -231,11 +231,11 @@ SELECT xpath_eval('//beatle/@instrument', xml_tree_doc (article_xml), 1)
 
   
 
-<div id="ex_xpath_eval3" class="example">
+<div>
 
 **Example 24.529. Passing a named parameter to the XPath**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select xpath_eval(
@@ -272,7 +272,7 @@ character.
 
 </div>
 
-<div id="seealso_xpath_eval" class="refsect1">
+<div>
 
 ## See Also
 

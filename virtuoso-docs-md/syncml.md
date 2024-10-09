@@ -1,6 +1,6 @@
-<div id="syncml" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -28,7 +28,7 @@ be synchronized. Also every WebDAV virtual directory can act as a SyncML
 server endpoint, the SyncML processing is triggered via the
 `Content-Type` , detected on the POST request (see below).
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                 |
 |:--------------------------:|:----------------------------------------------------------------|
@@ -80,7 +80,7 @@ This keeps VCARDS (contacts) and vCalendars in separate collections
 calendar and contacts (for example) in the same WebDAV collection,
 unless the device supports such items in a single database.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                             |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -89,11 +89,11 @@ unless the device supports such items in a single database.
 
 </div>
 
-<div id="ex_syncmlsession" class="example">
+<div>
 
 **Example 17.38. Example of a SyncML session**
 
-<div class="example-contents">
+<div>
 
 The client begins initial request
 
@@ -717,7 +717,7 @@ Final message from SyncML server; no more commands issued.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                         |
 |:--------------------------:|:------------------------------------------------------------------------|

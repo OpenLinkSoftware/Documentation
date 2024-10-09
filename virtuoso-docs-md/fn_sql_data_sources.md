@@ -1,10 +1,10 @@
-<div id="fn_sql_data_sources" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sql_data_sources — get list of available DSNs
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_data_sources" class="funcsynopsis">
+<div>
 
 |                               |      |
 |-------------------------------|------|
 | ` `**`sql_data_sources`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sql_data_sources — get list of available DSNs
 
 </div>
 
-<div id="desc_sql_data_sources" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ name and type pairs.
 
 </div>
 
-<div id="params_sql_data_sources" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -50,7 +50,7 @@ As defined in ODBC API for the corresponding catalog call.
 
 </div>
 
-<div id="ret_sql_data_sources" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ a <span class="type">string</span> data source name as 1st element and a
 
 </div>
 
-<div id="examples_sql_data_sources" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sql_data_sources" class="example">
+<div>
 
 **Example 24.394. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select aref (aref (sql_data_sources(), 0), 0);
@@ -91,7 +91,7 @@ Local Virtuoso
 
 </div>
 
-<div id="seealso_sql_data_sources" class="refsect1">
+<div>
 
 ## See Also
 

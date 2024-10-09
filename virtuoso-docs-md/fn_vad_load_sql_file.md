@@ -1,10 +1,10 @@
-<div id="fn_vad_load_sql_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ statements.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_load_sql_file" class="funcsynopsis">
+<div>
 
 |                                       |                               |
 |---------------------------------------|-------------------------------|
@@ -26,7 +26,7 @@ statements.
 |                                       | in `report_errors ` varchar , |
 |                                       | in `is_dav ` integer `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ statements.
 
 </div>
 
-<div id="desc_57" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ the process, the function makes needed reports and changes
 
 </div>
 
-<div id="params_23" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117747" class="refsect2">
+<div>
 
 ### sql_file_name
 
@@ -62,7 +62,7 @@ absolute: ('/DAV/\<folder-name\>...').
 
 </div>
 
-<div id="id117750" class="refsect2">
+<div>
 
 ### grouping
 
@@ -70,13 +70,13 @@ Always set this parameter to 1.
 
 </div>
 
-<div id="id117753" class="refsect2">
+<div>
 
 ### report_errors
 
 The supported values for this parameter are:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*'report'* </span> - to log errors and continue
   or:
@@ -88,7 +88,7 @@ The supported values for this parameter are:
 
 </div>
 
-<div id="id117763" class="refsect2">
+<div>
 
 ### is_dav
 
@@ -98,15 +98,15 @@ This parameter is 0 for plain file and 1 for resource loaded in DAV.
 
 </div>
 
-<div id="examples_vad_load_sql_file" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vad_load_sql_file_1" class="example">
+<div>
 
 **Example 24.437. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 DB.DBA.VAD_LOAD_SQL_FILE ('./conductor/vdir_helper.sql', 1, 'report', 0);
@@ -120,7 +120,7 @@ DB.DBA.VAD_LOAD_SQL_FILE ('./conductor/vdir_helper.sql', 1, 'report', 0);
 
 </div>
 
-<div id="seealso_29" class="refsect1">
+<div>
 
 ## See Also
 

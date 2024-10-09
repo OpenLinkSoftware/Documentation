@@ -1,10 +1,10 @@
-<div id="fn_http_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_file — Send a file to the HTTP client
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_file" class="funcsynopsis">
+<div>
 
 |                               |                         |
 |-------------------------------|-------------------------|
 | `varchar `**`http_file`**` (` | in `path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_file — Send a file to the HTTP client
 
 </div>
 
-<div id="desc_http_file" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ HTTP client by the caller is discarded.
 
 </div>
 
-<div id="params_http_file" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92517" class="refsect2">
+<div>
 
 ### path
 
@@ -58,15 +58,15 @@ Path to the file to send
 
 </div>
 
-<div id="examples_http_file" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_file" class="example">
+<div>
 
 **Example 24.159. Sending A File To HTTP Client**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <?vsp

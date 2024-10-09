@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksquadstorageinternally" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,7 +65,7 @@ http://www.openlinksw.com/schemas/virtrdf#SyncToQuads
 3 Rows. -- 3 msec.
 ```
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*virtrdf:DefaultQuadStorage*</span>
 
@@ -85,7 +85,7 @@ http://www.openlinksw.com/schemas/virtrdf#SyncToQuads
 There are two ways of using the Linked Data View from above in SPARQL
 endpoint without <span class="emphasis">*define input:storage*</span> :
 
-<div class="orderedlist">
+<div>
 
 1.  Create Linked Data View right in
 
@@ -97,7 +97,7 @@ endpoint without <span class="emphasis">*define input:storage*</span> :
 
     .
 
-    <div class="itemizedlist">
+    <div>
 
     - In any of these two variants, use:
 

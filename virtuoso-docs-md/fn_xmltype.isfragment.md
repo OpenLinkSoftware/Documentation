@@ -1,10 +1,10 @@
-<div id="fn_xmltype.isfragment" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ generic entity or 0 if it is a plain document.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.isfragment" class="funcsynopsis">
+<div>
 
 |                                 |      |
 |---------------------------------|------|
 | ` `**`XMLType.isFragment`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ generic entity or 0 if it is a plain document.
 
 </div>
 
-<div id="desc_xmltype.isfragment" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,7 +52,7 @@ returns 0 if it is a well-formed XML document.
 
 </div>
 
-<div id="ret_xmltype.isfragment" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -60,15 +60,15 @@ Integer value 1 or 0.
 
 </div>
 
-<div id="examples_xmltype.isfragment" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.isfragment" class="example">
+<div>
 
 **Example 24.555. Basic test**
 
-<div class="example-contents">
+<div>
 
 The table DB.DBA.SYS_USERS always contains more than one user record so
 the call of XMLAGG that returns one element per record creates an valid
@@ -101,7 +101,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.isfragment" class="refsect1">
+<div>
 
 ## See Also
 

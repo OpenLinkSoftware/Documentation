@@ -1,10 +1,10 @@
-<div id="xpf_format_number" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ format-number
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_format_number" class="funcsynopsis">
+<div>
 
 |                                  |                               |
 |----------------------------------|-------------------------------|
@@ -24,7 +24,7 @@ format-number
 |                                  | `format_pattern ` string ,    |
 |                                  | `decimal_format ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ format-number
 
 </div>
 
-<div id="xpf_desc_format_number" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,7 +47,7 @@ The format pattern string is in the syntax specified by the JDK 1.1
 DecimalFormat class. The following describes the structure of the
 pattern.
 
-<div class="itemizedlist">
+<div>
 
 - The pattern consists of one or two subpatterns, first is for positive
   numbers and zero, second is for negative numbers. Two subpatterns are
@@ -73,11 +73,11 @@ pattern.
 By default, the following characters are treated as special when used in
 the parts of the subpattern:
 
-<div id="id127440" class="table">
+<div>
 
-**Table 24.143.  Sub-pattern character substitutions**
+**Table 24.142.  Sub-pattern character substitutions**
 
-<div class="table-contents">
+<div>
 
 | Symbol | Meaning                                                                                                             |
 |--------|---------------------------------------------------------------------------------------------------------------------|
@@ -110,11 +110,11 @@ of the decimal-format with the specified expanded name.
 
 </div>
 
-<div id="xpf_params_format_number" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127479" class="refsect2">
+<div>
 
 ### num
 
@@ -122,7 +122,7 @@ Number to format.
 
 </div>
 
-<div id="id127482" class="refsect2">
+<div>
 
 ### format_pattern
 
@@ -130,7 +130,7 @@ Format pattern which must be applied to the number.
 
 </div>
 
-<div id="id127485" class="refsect2">
+<div>
 
 ### decimal_format
 
@@ -141,7 +141,7 @@ format pattern.
 
 </div>
 
-<div id="xpf_ret_format_number" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -149,15 +149,15 @@ String
 
 </div>
 
-<div id="xpf_errors_nnn" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id127493" class="table">
+<div>
 
-**Table 24.144. Errors signalled by**
+**Table 24.143. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                         | Description                                                                                                                      |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -171,15 +171,15 @@ String
 
 </div>
 
-<div id="xpf_examples_format_number" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_format_number" class="example">
+<div>
 
 **Example 24.589. **
 
-<div class="example-contents">
+<div>
 
 If the XSLT stylesheet defines format 'financial' as '###,###.00####',
 then the following returns '123,456.789':

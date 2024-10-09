@@ -1,6 +1,6 @@
-<div id="longhttptrans" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

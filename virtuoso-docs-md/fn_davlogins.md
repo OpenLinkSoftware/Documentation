@@ -1,6 +1,6 @@
-<div id="fn_davlogins" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ a HTTP client is authenticated against the WebDAV Server. Three
 parameters are available for audit purposes or any other pre-processing
 purpose totally user definable.
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*user_name:*</span>
 
@@ -83,11 +83,11 @@ client login by responding to 3 possible return values:
 | 0 - reject the login                                                               |
 | 1 - allow the login (the user returned should be a valid Virtuoso local user name) |
 
-<div id="ex_dbev_dav_login" class="example">
+<div>
 
 **Example 12.8. Sample WebDAV Login Hook**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure

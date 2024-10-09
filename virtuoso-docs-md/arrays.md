@@ -1,6 +1,6 @@
-<div id="arrays" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

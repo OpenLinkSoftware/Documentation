@@ -1,10 +1,10 @@
-<div id="fn___any_grants" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___any_grants" class="funcsynopsis">
+<div>
 
 |                                  |                              |
 |----------------------------------|------------------------------|
 | `integer `**`__any_grants`**` (` | in `tablename ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@
 
 </div>
 
-<div id="desc___any_grants" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ granted (for insert/update/delete) to a table for current SQL account.
 
 </div>
 
-<div id="params___any_grants" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80300" class="refsect2">
+<div>
 
 ### tablename
 
@@ -55,7 +55,7 @@ The table name to be tested.
 
 </div>
 
-<div id="ret___any_grants" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ any privileges granted (1) or not granted (zero 0) for current SQL user.
 
 </div>
 
-<div id="errors___any_grants" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id80308" class="table">
+<div>
 
 **Table 24.1. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                    | Description |
 |---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------|-------------|
@@ -86,15 +86,15 @@ any privileges granted (1) or not granted (zero 0) for current SQL user.
 
 </div>
 
-<div id="examples___any_grants" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex___any_grants" class="example">
+<div>
 
 **Example 24.12. Using the \_\_any_grants() function**
 
-<div class="example-contents">
+<div>
 
 This simple example shows testing a grant rights for a table, using the
 \_\_any_grants() function from ISQL and demo SQL user accout.

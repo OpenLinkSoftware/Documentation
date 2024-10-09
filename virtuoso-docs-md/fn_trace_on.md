@@ -1,10 +1,10 @@
-<div id="fn_trace_on" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ trace_on — Enable extra debug logging
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_trace_on" class="funcsynopsis">
+<div>
 
 |                              |                              |
 |------------------------------|------------------------------|
 | `integer `**`trace_on`**` (` | in `parameter ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ trace_on — Enable extra debug logging
 
 </div>
 
-<div id="desc_trace_on" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,7 +47,7 @@ statements, statements execution and VDB actions.
 
 </div>
 
-<div id="params_trace_on" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -73,7 +73,7 @@ The following options are available for logging:
 
 </div>
 
-<div id="ret_trace_on" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -152,15 +152,15 @@ SOAP_1 (response)
 
 </div>
 
-<div id="errors_trace_on" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id113984" class="table">
+<div>
 
-**Table 24.84. Errors signalled by `trace_on `**
+**Table 24.83. Errors signalled by `trace_on `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                            |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------|
@@ -174,15 +174,15 @@ SOAP_1 (response)
 
 </div>
 
-<div id="examples_trace_on" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_trace_on" class="example">
+<div>
 
 **Example 24.422. Simple example**
 
-<div class="example-contents">
+<div>
 
 To show users logging in to the server and failed user logins
 
@@ -210,7 +210,7 @@ The server console  and log file may thus contain lines such as:
 
 </div>
 
-<div id="seealso_trace_on" class="refsect1">
+<div>
 
 ## See Also
 

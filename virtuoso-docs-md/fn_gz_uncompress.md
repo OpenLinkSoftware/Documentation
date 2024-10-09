@@ -1,10 +1,10 @@
-<div id="fn_gz_uncompress" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ gz_uncompress — Uncompress a string using gzip algorithm
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_gz_uncompress" class="funcsynopsis">
+<div>
 
 |                            |                                   |
 |----------------------------|-----------------------------------|
 | ` `**`gz_uncompress`**` (` | in `str ` varchar ,               |
 |                            | out `str_out ` string_output `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ gz_uncompress — Uncompress a string using gzip algorithm
 
 </div>
 
-<div id="desc_gz_uncompress" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ algorithm, writing it to a string_output given as the second argument.
 
 </div>
 
-<div id="params_gz_uncompress" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90381" class="refsect2">
+<div>
 
 ### str
 
@@ -54,7 +54,7 @@ A <span class="type">string </span> to be uncompressed.
 
 </div>
 
-<div id="id90385" class="refsect2">
+<div>
 
 ### str_out
 
@@ -65,7 +65,7 @@ should be written.
 
 </div>
 
-<div id="ret_gz_uncompress" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,13 +73,13 @@ Always returns NULL.
 
 </div>
 
-<div id="errors_gz_uncompress" class="refsect1">
+<div>
 
 ## Errors
 
 </div>
 
-<div id="examples_gz_uncompress" class="refsect1">
+<div>
 
 ## Examples
 
@@ -88,7 +88,7 @@ class="function">gz_compress </code></a> .
 
 </div>
 
-<div id="seealso_gz_uncompress" class="refsect1">
+<div>
 
 ## See Also
 

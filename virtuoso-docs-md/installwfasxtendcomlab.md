@@ -1,6 +1,6 @@
-<div id="installwfasxtendcomlab" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ so that it will dereference external IRIs.
 
 <span class="emphasis">*Pre-requisites*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  A working copy of the RDFDemo application created in
     <a href="installwfasgetstart.html" class="link"
@@ -31,9 +31,9 @@ so that it will dereference external IRIs.
 
 </div>
 
-<div id="installwfasxtendcomlabextappl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -76,7 +76,7 @@ matching data.
 <span class="emphasis">*Step 1 - Add the alternative query to the
 ExtendedString Class.*</span>
 
-<div class="itemizedlist">
+<div>
 
 - Open the RDFDemo project in Visual Studio
 
@@ -148,15 +148,15 @@ ExtendedString Class.*</span>
 
 You will see the same starting form:
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf11" class="figure">
+<div>
 
 **Figure 2.146. Build and Run the Application**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Build and Run the Application](images/ui/sparqlwinf11.png)
 
@@ -174,15 +174,15 @@ Select a Customer and then select the link to the City in dbpedia. This
 will now open up another window displaying information about the city
 from dbpedia. Be patient as it may take a little while to open.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf12" class="figure">
+<div>
 
 **Figure 2.147. Customer**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Customer](images/ui/sparqlwinf12.png)
 
@@ -216,7 +216,7 @@ This worked well for the Northwind subjects but less well now we are
 getting data from other graphs. To change the title of the forms used to
 display the data:
 
-<div class="itemizedlist">
+<div>
 
 - Add an new member variable to hold the IRI that we exploring to the
   bock of member variables
@@ -257,15 +257,15 @@ display the data:
 
 - Build and run the application.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="sparqlwinf13" class="figure">
+  <div>
 
   **Figure 2.148. Build and run the application**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Build and run the application](images/ui/sparqlwinf13.png)
 

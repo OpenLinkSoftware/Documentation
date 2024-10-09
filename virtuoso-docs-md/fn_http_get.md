@@ -1,10 +1,10 @@
-<div id="fn_http_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_get — returns a varchar containing the body of the request uri
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_get" class="funcsynopsis">
+<div>
 
 |                              |                                |
 |------------------------------|--------------------------------|
@@ -27,7 +27,7 @@ http_get — returns a varchar containing the body of the request uri
 |                              | in `request_body ` varchar ,   |
 |                              | in `proxy ` varchar `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ http_get — returns a varchar containing the body of the request uri
 
 </div>
 
-<div id="desc_http_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ target_uri or NULL if the body is not received.
 
 </div>
 
-<div id="params_http_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92669" class="refsect2">
+<div>
 
 ### target_uri
 
@@ -59,7 +59,7 @@ HTTP target in form http://\<target_host\>:\<target_port\>/\<path\> (if
 
 </div>
 
-<div id="id92672" class="refsect2">
+<div>
 
 ### return_header
 
@@ -69,7 +69,7 @@ ignored.
 
 </div>
 
-<div id="id92675" class="refsect2">
+<div>
 
 ### http_method
 
@@ -78,7 +78,7 @@ values are: GET, POST, PUT, OPTIONS or see RFC2616\[5.1.1\] for details.
 
 </div>
 
-<div id="id92678" class="refsect2">
+<div>
 
 ### request_header
 
@@ -89,7 +89,7 @@ terminated with CR/LF pair!).
 
 </div>
 
-<div id="id92681" class="refsect2">
+<div>
 
 ### request_body
 
@@ -98,7 +98,7 @@ This string will be sent to the target server as the request body. The
 
 </div>
 
-<div id="id92684" class="refsect2">
+<div>
 
 ### proxy
 
@@ -136,15 +136,15 @@ Exception could be also 127.0.0.\* i.e. there could have also wildcard.
 
 </div>
 
-<div id="errors_http_get" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id92697" class="table">
+<div>
 
-**Table 24.40. Errors signalled by**
+**Table 24.39. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                        | Error Code                            | Error Text                                                             | Description |
 |---------------------------------|---------------------------------------|------------------------------------------------------------------------|-------------|
@@ -159,15 +159,15 @@ Exception could be also 127.0.0.\* i.e. there could have also wildcard.
 
 </div>
 
-<div id="examples_http_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_get" class="example">
+<div>
 
 **Example 24.163. Using http_get()**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare header any;

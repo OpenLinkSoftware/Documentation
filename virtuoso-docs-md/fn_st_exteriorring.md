@@ -1,10 +1,10 @@
-<div id="fn_st_exteriorring" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ polygon.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_exteriorring" class="funcsynopsis">
+<div>
 
 |                              |                        |
 |------------------------------|------------------------|
 | ` `**`ST_ExteriorRing`**` (` | in `poligon ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ polygon.
 
 </div>
 
-<div id="desc_st_exteriorring" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Returns an external (the very first) ring of a polygon.
 
 </div>
 
-<div id="params_st_exteriorring" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130899" class="refsect2">
+<div>
 
 ### poligon
 
@@ -55,7 +55,7 @@ A given poligon from a type shape.
 
 </div>
 
-<div id="ret_st_exteriorring" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_exteriorring" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_exteriorring" class="example">
+<div>
 
 **Example 24.659. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select ST_ExteriorRing (st_ewkt_read ('POLYGON((1 3,2 4,1 5,0 4,1 3),(1 3.5,1.5 4,1 4.5,0.5 4,1 3.5))'))
@@ -88,7 +88,7 @@ RING(1.0 3.0,2.0 4.0,1.0 5.0,0.0 4.0,1.0 3.0)
 
 </div>
 
-<div id="seealso_st_exteriorring" class="refsect1">
+<div>
 
 ## See Also
 

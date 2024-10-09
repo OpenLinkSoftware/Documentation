@@ -1,6 +1,6 @@
-<div id="rthclr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -66,9 +66,9 @@ be run directly from Virtuoso either from the filesystem or WebDAV. Each
 of these capabilities releases you from the Microsoft platforms without
 compromising your development platform.
 
-<div id="rthclrenvsetdotnet" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -85,7 +85,7 @@ compromising your development platform.
 Follow the steps below to configure the CLR runtime environment with
 Virtuoso:
 
-<div class="orderedlist">
+<div>
 
 1.  **Install .Net Framework SDK. ** The .Net Framework can be
     downloaded from the Microsoft web site.
@@ -119,7 +119,7 @@ Virtuoso:
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------|

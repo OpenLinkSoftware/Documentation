@@ -1,6 +1,6 @@
-<div id="runninglogger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

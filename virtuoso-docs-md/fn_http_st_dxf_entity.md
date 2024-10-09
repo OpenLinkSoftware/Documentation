@@ -1,10 +1,10 @@
-<div id="fn_http_st_dxf_entity" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ of shape into the given output session.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_st_dxf_entity" class="funcsynopsis">
+<div>
 
 |                                 |                      |
 |---------------------------------|----------------------|
@@ -25,7 +25,7 @@ of shape into the given output session.
 |                                 | in `attrs ` vector , |
 |                                 | in `sess ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ of shape into the given output session.
 
 </div>
 
-<div id="desc_http_st_dxf_entity" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ shape into the given output session.
 
 </div>
 
-<div id="params_http_st_dxf_entity" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130582" class="refsect2">
+<div>
 
 ### shape
 
@@ -57,7 +57,7 @@ shape.
 
 </div>
 
-<div id="id130585" class="refsect2">
+<div>
 
 ### attrs
 
@@ -68,7 +68,7 @@ Current version does not support ARCSTRINGs, CURVEs, nor CURVEPOLYGONs.
 
 </div>
 
-<div id="id130588" class="refsect2">
+<div>
 
 ### sess
 
@@ -78,15 +78,15 @@ Output session.
 
 </div>
 
-<div id="examples_http_st_dxf_entity" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_st_dxf_entity" class="example">
+<div>
 
 **Example 24.654. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure Example_http_st_dxf_entity ()

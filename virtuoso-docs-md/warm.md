@@ -1,6 +1,6 @@
-<div id="warm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,7 +24,7 @@ How accepted messages should be processed is not covered in this
 document.; What to do with the data and whether to send replies is at
 the discretion of the application.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:
 ">
@@ -64,7 +64,7 @@ Services Reliable Messaging Protocol".
 | <span class="emphasis">*ExactlyOnce*</span> - Every message sent will be delivered without duplication or an error will be raised on at least one endpoint. This delivery assurance is the logical "and" of the two prior delivery assurances.                                                                                |
 | <span class="emphasis">*InOrder*</span> - Messages will be delivered in the order that they were sent. This delivery assurance may be combined with any of the above delivery assurances. It requires that the sequence observed by the ultimate receiver be non-decreasing. It says nothing about duplications or omissions. |
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                           |
 |:--------------------------:|:----------------------------------------------------------|
@@ -75,9 +75,9 @@ Services Reliable Messaging Protocol".
 
 </div>
 
-<div id="wsrmsoapcliapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -229,11 +229,11 @@ soap_parameter and doesn't check its validity unless serialize is
 performed. The data-type Expanded QName also will be included into
 output of the get_call_param method.
 
-<div id="ex_wsrmtypes" class="example">
+<div>
 
 **Example 17.30. Complex WS Type Example**
 
-<div class="example-contents">
+<div>
 
 Consider the following complex type:
 
@@ -320,11 +320,11 @@ Explicitly sets the structure/array/simple type kept in the
 soap_parameter UDT. This can be used to disassemble a nested complex
 type into its components.
 
-<div id="ex_wsrmuseparam" class="example">
+<div>
 
 **Example 17.31. Example Using WS-RM**
 
-<div class="example-contents">
+<div>
 
 echoStruct invocation
 
@@ -374,7 +374,7 @@ return pa.get_attribute ('ID');
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                      |
 |:--------------------------:|:---------------------------------------------------------------------|

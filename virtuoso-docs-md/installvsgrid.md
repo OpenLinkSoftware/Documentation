@@ -1,6 +1,6 @@
-<div id="installvsgrid" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,19 +18,19 @@ This section details the steps required to create a simple Visual Studio
 2008 Windows Form application with associated DataGridView control for
 displaying data in selected tables from a Virtuoso database.
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg1" class="figure">
+    <div>
 
     **Figure 2.75. Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio](images/ui/insg1.png)
 
@@ -56,15 +56,15 @@ displaying data in selected tables from a Virtuoso database.
 5.  Choose a name for the project, for example VirtuosoDataGridApp, and
     click OK.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg5" class="figure">
+    <div>
 
     **Figure 2.76. name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![name for the project](images/ui/insg5.png)
 
@@ -81,15 +81,15 @@ displaying data in selected tables from a Virtuoso database.
 6.  From the Data, menu select the Show Data Sources menu item to
     display a list of available Data sources.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg6" class="figure">
+    <div>
 
     **Figure 2.77. Show Data Sources**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Show Data Sources](images/ui/insg6.png)
 
@@ -105,15 +105,15 @@ displaying data in selected tables from a Virtuoso database.
 
 7.  Click on the Add New Data Source link to add a new data source.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg7" class="figure">
+    <div>
 
     **Figure 2.78. Add New Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Data Source](images/ui/insg7.png)
 
@@ -130,15 +130,15 @@ displaying data in selected tables from a Virtuoso database.
 8.  In the Data Source Configuration Wizard dialog Choose Data Source
     Type page, select the Database data source type and click Next.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg8" class="figure">
+    <div>
 
     **Figure 2.79. Data Source Configuration Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Source Configuration Wizard](images/ui/insg8.png)
 
@@ -155,15 +155,15 @@ displaying data in selected tables from a Virtuoso database.
 9.  In the Data Source Configuration Wizard dialog Choose your Data
     Connection page, select the New Connection button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg9" class="figure">
+    <div>
 
     **Figure 2.80. Data Connection page**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Data Connection page](images/ui/insg9.png)
 
@@ -180,15 +180,15 @@ displaying data in selected tables from a Virtuoso database.
 10. In the Choose Data Source dialog, select OpenLink Virtuoso Data
     Source from the list and click Continue.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg10" class="figure">
+    <div>
 
     **Figure 2.81. OpenLink Virtuoso Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![OpenLink Virtuoso Data Source](images/ui/insg10.png)
 
@@ -206,15 +206,15 @@ displaying data in selected tables from a Virtuoso database.
     username, and password for the target Virtuoso Server and check the
     Save Password check box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg11" class="figure">
+    <div>
 
     **Figure 2.82. Add Connection dialog**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Connection dialog](images/ui/insg11.png)
 
@@ -231,15 +231,15 @@ displaying data in selected tables from a Virtuoso database.
 12. Select the Select Database From List radio button and choose School
     from the drop down list of available databases.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg12" class="figure">
+    <div>
 
     **Figure 2.83. Select Database From List**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Select Database From List](images/ui/insg12.png)
 
@@ -256,15 +256,15 @@ displaying data in selected tables from a Virtuoso database.
 13. Click the Test Connection button to verify the connection is
     successful and then click OK to add the connection.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg13" class="figure">
+    <div>
 
     **Figure 2.84. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/insg13.png)
 
@@ -281,15 +281,15 @@ displaying data in selected tables from a Virtuoso database.
 14. Select the Yes, include sensitive data in the connect string radio
     button and click Next to continue.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg14" class="figure">
+    <div>
 
     **Figure 2.85. connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![connect string](images/ui/insg14.png)
 
@@ -306,15 +306,15 @@ displaying data in selected tables from a Virtuoso database.
 15. In the Choose your Database Objects dialog select the table and
     columns to be queried, the shippers table is used in this example.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg15" class="figure">
+    <div>
 
     **Figure 2.86. Choose your Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose your Database Objects](images/ui/insg15.png)
 
@@ -330,15 +330,15 @@ displaying data in selected tables from a Virtuoso database.
 
 16. A DataSet for the shippers database object is created
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg16" class="figure">
+    <div>
 
     **Figure 2.87. shippers database**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![shippers database](images/ui/insg16.png)
 
@@ -355,15 +355,15 @@ displaying data in selected tables from a Virtuoso database.
 17. From the drop down list box next to the Shippers table ensure the
     DataGridView item is selected
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg17" class="figure">
+    <div>
 
     **Figure 2.88. DataGridView**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGridView](images/ui/insg17.png)
 
@@ -381,15 +381,15 @@ displaying data in selected tables from a Virtuoso database.
     and editable association of the Shippers table object with the Data
     Grid View automatically.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg18" class="figure">
+    <div>
 
     **Figure 2.89. Drag**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Drag](images/ui/insg18.png)
 
@@ -406,15 +406,15 @@ displaying data in selected tables from a Virtuoso database.
 19. From the Debug Menu select the Start Debugging menu item to run the
     application.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg19" class="figure">
+    <div>
 
     **Figure 2.90. Debug**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Debug](images/ui/insg19.png)
 
@@ -431,15 +431,15 @@ displaying data in selected tables from a Virtuoso database.
 20. The data in the Shippers table will be displayed in the DataGrid
     application created.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg20" class="figure">
+    <div>
 
     **Figure 2.91. DataGrid**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![DataGrid](images/ui/insg20.png)
 
@@ -457,15 +457,15 @@ displaying data in selected tables from a Virtuoso database.
     new DHL record inserted below and the save button clicked to save
     the change to the database.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg21" class="figure">
+    <div>
 
     **Figure 2.92. new row**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![new row](images/ui/insg21.png)
 
@@ -482,15 +482,15 @@ displaying data in selected tables from a Virtuoso database.
 22. The Virtuoso Interactive SQL tab of the Conductor can be used to run
     the query select \* from Demo..Shippers.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg22" class="figure">
+    <div>
 
     **Figure 2.93. Interactive SQL tab**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Interactive SQL tab](images/ui/insg22.png)
 
@@ -506,15 +506,15 @@ displaying data in selected tables from a Virtuoso database.
 
 23. To verify the change has been successfully made in the database.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="insg23" class="figure">
+    <div>
 
     **Figure 2.94. verify**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![verify](images/ui/insg23.png)
 

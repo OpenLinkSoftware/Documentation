@@ -1,10 +1,10 @@
-<div id="xpf_floor" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_floor" class="funcsynopsis">
+<div>
 
 |                           |                    |
 |---------------------------|--------------------|
 | `integer `**`floor`**` (` | `num ` number `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ argument.
 
 </div>
 
-<div id="xpf_desc_floor" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ words, it "rounds down" the given value.
 
 </div>
 
-<div id="xpf_params_floor" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127331" class="refsect2">
+<div>
 
 ### num
 
@@ -57,21 +57,21 @@ The value to be "rounded down"
 
 </div>
 
-<div id="xpf_ret_floor" class="refsect1">
+<div>
 
 ## Return Types
 
 </div>
 
-<div id="xpf_examples_floor" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_floor" class="example">
+<div>
 
 **Example 24.587. **
 
-<div class="example-contents">
+<div>
 
 The following expressions are true:
 
@@ -90,7 +90,7 @@ floor(-2) = -2
 
 </div>
 
-<div id="xpf_seealso_floor" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_geometrytype" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ GeometryType — returns EWKT type name of a shape.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_geometrytype" class="funcsynopsis">
+<div>
 
 |                           |                      |
 |---------------------------|----------------------|
 | ` `**`GeometryType`**` (` | in `shape ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ GeometryType — returns EWKT type name of a shape.
 
 </div>
 
-<div id="desc_geometrytype" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ GeometryType function returns EWKT type name of a given shape.
 
 </div>
 
-<div id="params_geometrytype" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130540" class="refsect2">
+<div>
 
 ### shape
 
@@ -54,7 +54,7 @@ Geometry.
 
 </div>
 
-<div id="ret_geometrytype" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -62,15 +62,15 @@ Returns varchar.
 
 </div>
 
-<div id="examples_geometrytype" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_geometrytype" class="example">
+<div>
 
 **Example 24.653. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.TTLP ('
@@ -118,7 +118,7 @@ http://geo-api-demo/polygon3       POLYGON
 
 </div>
 
-<div id="seealso_geometrytype" class="refsect1">
+<div>
 
 ## See Also
 

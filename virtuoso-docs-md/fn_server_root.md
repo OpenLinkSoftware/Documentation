@@ -1,10 +1,10 @@
-<div id="fn_server_root" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ server_root — Returns server working directory.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_server_root" class="funcsynopsis">
+<div>
 
 |                          |      |
 |--------------------------|------|
 | ` `**`server_root`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ server_root — Returns server working directory.
 
 </div>
 
-<div id="desc_62" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,15 +41,15 @@ directory.
 
 </div>
 
-<div id="examples_21" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_server_root" class="example">
+<div>
 
 **Example 24.445. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Show in the result the server working directory and INI file name:
 
@@ -72,7 +72,7 @@ C:\Program Files\OpenLink\Virtuoso 5.0\   C:\Program Files\OpenLink\Virtuoso 5.0
 
 </div>
 
-<div id="seealso_34" class="refsect1">
+<div>
 
 ## See Also
 

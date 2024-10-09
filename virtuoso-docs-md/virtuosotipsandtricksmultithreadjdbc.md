@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksmultithreadjdbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_jvm_ref_import" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ jvm_ref_import — Creates XML description of Java class
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_jvm_ref_import" class="funcsynopsis">
+<div>
 
 |                                    |                        |
 |------------------------------------|------------------------|
 | `varchar `**`jvm_ref_import`**` (` | in `files ` any ,      |
 |                                    | in `classes ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ jvm_ref_import — Creates XML description of Java class
 
 </div>
 
-<div id="desc_jvm_ref_import" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ IMPORT_JAR (in files any, in classes any)
 
 </div>
 
-<div id="params_jvm_ref_import" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94987" class="refsect2">
+<div>
 
 ### files
 
@@ -70,7 +70,7 @@ physical location.
 
 </div>
 
-<div id="id94990" class="refsect2">
+<div>
 
 ### classes
 
@@ -81,7 +81,7 @@ describe in the resulting XML.
 
 </div>
 
-<div id="ret_jvm_ref_import" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -89,15 +89,15 @@ A varchar of XML that describes the selected Java classes.
 
 </div>
 
-<div id="examples_jvm_ref_import" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_jvm_ref_import" class="example">
+<div>
 
 **Example 24.200. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 JVM_REF_IMPORT (NULL, vector ('java.lang.Object', 'java.lang.System'));
@@ -127,7 +127,7 @@ of the java.lang.System class.
 
 </div>
 
-<div id="seealso_jvm_ref_import" class="refsect1">
+<div>
 
 ## See Also
 

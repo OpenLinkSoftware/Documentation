@@ -1,10 +1,10 @@
-<div id="fn_vad_check" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAD_CHECK — Checks the package has not been altered since installation
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_check" class="funcsynopsis">
+<div>
 
 |                                     |                                 |
 |-------------------------------------|---------------------------------|
 | `array DB.DBA. `**`VAD_CHECK`**` (` | in `package_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ VAD_CHECK — Checks the package has not been altered since installation
 
 </div>
 
-<div id="desc_51" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ may be customized after installation.
 
 </div>
 
-<div id="params_18" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117428" class="refsect2">
+<div>
 
 ### package_name
 
@@ -58,7 +58,7 @@ name of package '/' version e.g: 'virtodp/1.0'
 
 </div>
 
-<div id="ret_05_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -67,7 +67,7 @@ structures: key, initial value, final value.
 
 </div>
 
-<div id="seealso_23" class="refsect1">
+<div>
 
 ## See Also
 

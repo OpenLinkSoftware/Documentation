@@ -1,10 +1,10 @@
-<div id="fn_read_log" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ read_log — reads Virtuoso log
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_read_log" class="funcsynopsis">
+<div>
 
 |                       |                        |
 |-----------------------|------------------------|
 | ` `**`read_log`**` (` | in `file ` varchar ,   |
 |                       | in `pos ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ read_log — reads Virtuoso log
 
 </div>
 
-<div id="desc_read_log" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ from a given position.
 
 </div>
 
-<div id="params_read_log" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96063" class="refsect2">
+<div>
 
 ### file
 
@@ -54,7 +54,7 @@ Virtuoso transaction log file.
 
 </div>
 
-<div id="id96066" class="refsect2">
+<div>
 
 ### pos
 
@@ -64,7 +64,7 @@ A given position from which the read to start from.
 
 </div>
 
-<div id="ret_read_log" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ The function returns array of transaction values.
 
 </div>
 
-<div id="examples_read_log" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_read_log" class="example">
+<div>
 
 **Example 24.211. Sample example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 -- insert sample data so to change the rdf_quad index:
@@ -161,7 +161,7 @@ No. of rows in result: 2
 
 </div>
 
-<div id="seealso_read_log" class="refsect1">
+<div>
 
 ## See Also
 

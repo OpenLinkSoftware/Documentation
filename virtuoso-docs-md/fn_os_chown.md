@@ -1,10 +1,10 @@
-<div id="fn_os_chown" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ os_chown — changes the owning group/user of a file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_os_chown" class="funcsynopsis">
+<div>
 
 |                       |                              |
 |-----------------------|------------------------------|
@@ -24,7 +24,7 @@ os_chown — changes the owning group/user of a file
 |                       | in `username ` varchar ,     |
 |                       | in `groupname ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ os_chown — changes the owning group/user of a file
 
 </div>
 
-<div id="desc_os_chown" class="refsect1">
+<div>
 
 ## Description
 
@@ -59,11 +59,11 @@ control disk access.
 
 </div>
 
-<div id="params_04" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98690" class="refsect2">
+<div>
 
 ### path
 
@@ -71,7 +71,7 @@ control disk access.
 
 </div>
 
-<div id="id98694" class="refsect2">
+<div>
 
 ### username
 
@@ -80,7 +80,7 @@ file.
 
 </div>
 
-<div id="id98698" class="refsect2">
+<div>
 
 ### groupname
 
@@ -91,15 +91,15 @@ file.
 
 </div>
 
-<div id="examples_04" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_os_chown" class="example">
+<div>
 
 **Example 24.243. Simple example**
 
-<div class="example-contents">
+<div>
 
 Sets the ownership of the virtuoso INI file to virtuoso user and group
 
@@ -120,7 +120,7 @@ NULL
 
 </div>
 
-<div id="seealso_08" class="refsect1">
+<div>
 
 ## See Also
 

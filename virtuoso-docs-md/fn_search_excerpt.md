@@ -1,10 +1,10 @@
-<div id="fn_search_excerpt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ search_excerpt — Returns excerpts with hit words from text
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_dirlist_01" class="funcsynopsis">
+<div>
 
 |                             |                                 |
 |-----------------------------|---------------------------------|
@@ -27,7 +27,7 @@ search_excerpt — Returns excerpts with hit words from text
 |                             | in `total ` int ,               |
 |                             | in `html_hit_tag ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ search_excerpt — Returns excerpts with hit words from text
 
 </div>
 
-<div id="desc_file_dirlist_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ disabled and hit words is not highlighted.
 
 </div>
 
-<div id="params_file_dirlist_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109102" class="refsect2">
+<div>
 
 ### hit_words
 
@@ -65,7 +65,7 @@ more than 10.
 
 </div>
 
-<div id="id109105" class="refsect2">
+<div>
 
 ### text
 
@@ -73,7 +73,7 @@ original text where hit words are searched
 
 </div>
 
-<div id="id109108" class="refsect2">
+<div>
 
 ### within_first
 
@@ -82,7 +82,7 @@ number of chars in text from the start to consider. Default value is
 
 </div>
 
-<div id="id109111" class="refsect2">
+<div>
 
 ### max_excerpt
 
@@ -90,7 +90,7 @@ maximum length of single excerpt phrase. Default value is 90.
 
 </div>
 
-<div id="id109114" class="refsect2">
+<div>
 
 ### total
 
@@ -98,7 +98,7 @@ maximum length of whole excerpt. Default value is 200.
 
 </div>
 
-<div id="id109117" class="refsect2">
+<div>
 
 ### html_hit_tag
 
@@ -109,7 +109,7 @@ is "b". If it is NULL text mode is used
 
 </div>
 
-<div id="ret_file_dirlist_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -117,15 +117,15 @@ varchar
 
 </div>
 
-<div id="examples_search_excerpt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_search_excerpt" class="example">
+<div>
 
 **Example 24.365. Creating search excerpt**
 
-<div class="example-contents">
+<div>
 
 creates a search excerpt from found DAV resource
 

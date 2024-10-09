@@ -1,10 +1,10 @@
-<div id="xpf_create_comment" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ create-comment — Creates a "comment" XML tree entity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_create_comment" class="funcsynopsis">
+<div>
 
 |                                   |                             |
 |-----------------------------------|-----------------------------|
 | `entity `**`create-comment`**` (` | `comment-text ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ create-comment — Creates a "comment" XML tree entity.
 
 </div>
 
-<div id="xpf_desc_create_comment" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ given text.
 
 </div>
 
-<div id="xpf_params_create_comment" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126503" class="refsect2">
+<div>
 
 ### comment-text
 
@@ -59,7 +59,7 @@ The text content of the comment
 
 </div>
 
-<div id="xpf_ret_create_comment" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -67,7 +67,7 @@ XML tree entity
 
 </div>
 
-<div id="xpf_seealso_create_comment" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_mime_body" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ mime_body — used to compose multipart/mixed MIME message body
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mime_body" class="funcsynopsis">
+<div>
 
 |                               |                           |
 |-------------------------------|---------------------------|
 | `varchar `**`mime_body`**` (` | in `mime_parts ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ mime_body — used to compose multipart/mixed MIME message body
 
 </div>
 
-<div id="desc_mime_body" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ elements such as those produced by the `mime_part() ` function.
 
 </div>
 
-<div id="params_mime_body" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96504" class="refsect2">
+<div>
 
 ### mime_parts
 
@@ -57,7 +57,7 @@ function.
 
 </div>
 
-<div id="ret_mime_body" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,15 +65,15 @@ The function returns a multipart mixed MIME body as text.
 
 </div>
 
-<div id="examples_mime_body" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_mime_body" class="example">
+<div>
 
 **Example 24.217. Creating a MIME message body**
 
-<div class="example-contents">
+<div>
 
 This example will show the output in ISQL of producing a two part MIME
 message using the mime_body() and mime_part() functions.
@@ -115,7 +115,7 @@ dGhpcyBpcyBhIHNlY29uZA==
 
 </div>
 
-<div id="seealso_mime_body" class="refsect1">
+<div>
 
 ## See Also
 

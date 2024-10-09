@@ -1,6 +1,6 @@
-<div id="rdfviewtranslationofpatterns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -51,11 +51,11 @@ of its fields and top-level <span class="emphasis">*graph map { ...
 fields and return one of three values: "failed", "passed", "full match",
 according to the following rules:
 
-<div id="id50850" class="table">
+<div>
 
 **Table 16.8. Matching Triple Field and Vertex Field**
 
-<div class="table-contents">
+<div>
 
 | Field of vertex          | Field in triple pattern                  | Result     |
 |--------------------------|------------------------------------------|------------|
@@ -173,7 +173,7 @@ the pattern. So if that is proven then the pattern is exclusive and it
 makes the query faster; when unsure, the compiler work like there is no
 option at all.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

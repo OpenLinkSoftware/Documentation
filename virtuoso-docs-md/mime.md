@@ -1,6 +1,6 @@
-<div id="mime" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="aboutinternetmsgs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,7 +32,7 @@
 
 RFC 822 messages have two major parts:
 
-<div class="itemizedlist">
+<div>
 
 - **Message envelope. ** The message envelope contains all the
   information needed to accomplish transmission and delivery of the
@@ -52,15 +52,15 @@ RFC 822 messages have two major parts:
 
 This structure can be seen in the following illustration:
 
-<div class="figure-float">
+<div>
 
-<div id="internetmailmsg" class="figure">
+<div>
 
 **Figure 19.2. The structure of an Internet mail**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The structure of an Internet mail](images/internetmailmsg.jpg)
 
@@ -74,11 +74,11 @@ This structure can be seen in the following illustration:
 
 </div>
 
-<div id="ex_simplemailmsg" class="example">
+<div>
 
 **Example 19.7. Simple Internet Mail Message**
 
-<div class="example-contents">
+<div>
 
 As you can see in the following sample of a message's contents, the
 format described in RFC 822 produces messages readable with little
@@ -115,7 +115,7 @@ Technical Support
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                  |
 |:--------------------------:|:-----------------------------------------------------------------|

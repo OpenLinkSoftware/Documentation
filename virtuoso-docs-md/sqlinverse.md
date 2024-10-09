@@ -1,6 +1,6 @@
-<div id="sqlinverse" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -340,9 +340,9 @@ class="function">sinv_create_key_mapping</code></a> , any value returned
 by the mapping function in a transaction that was successfully committed
 is valid and will retrieve the data intended.
 
-<div id="updthoughinverses" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -382,7 +382,7 @@ _______________________________________________________________________________
 SQL> update item_euro set i_price = 120 where i_id = 1234;
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                     |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

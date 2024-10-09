@@ -1,6 +1,6 @@
-<div id="commands" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="createlog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,9 +55,9 @@ create snapshot log for Orders;
 
 </div>
 
-<div id="droplog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -101,9 +101,9 @@ drop snapshot log for Orders;
 
 </div>
 
-<div id="purgelog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -145,9 +145,9 @@ purge snapshot log for Orders;
 
 </div>
 
-<div id="createnoninc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -189,9 +189,9 @@ create nonincremental snapshot sub_orders as
 
 </div>
 
-<div id="createinc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -238,9 +238,9 @@ CREATE SNAPSHOT sub_orders FROM Orders WHERE 'OrderID < 5'
 
 </div>
 
-<div id="updatesnap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -280,9 +280,9 @@ UPDATE SNAPSHOT sub_orders
 
 </div>
 
-<div id="dropsnap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_sequence_next" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ increments it by one.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sequence_next" class="funcsynopsis">
+<div>
 
 |                                   |                                 |
 |-----------------------------------|---------------------------------|
 | `integer `**`sequence_next`**` (` | in `name ` varchar ,            |
 |                                   | in `increment_by ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ increments it by one.
 
 </div>
 
-<div id="desc_sequence_next" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ sequence never involves locking.
 
 </div>
 
-<div id="params_sequence_next" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109261" class="refsect2">
+<div>
 
 ### name
 
@@ -59,7 +59,7 @@ The server-wide name of a sequence.
 
 </div>
 
-<div id="id109264" class="refsect2">
+<div>
 
 ### increment_by
 
@@ -70,7 +70,7 @@ greater than zero) If not specified defaults to 1.
 
 </div>
 
-<div id="ret_sequence_next" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,7 +78,7 @@ The function returns integer
 
 </div>
 
-<div id="seealso_sequence_next" class="refsect1">
+<div>
 
 ## See Also
 

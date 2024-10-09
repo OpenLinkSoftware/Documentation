@@ -1,10 +1,10 @@
-<div id="fn_stringtime" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ stringtime — converts string to a time
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_stringtime" class="funcsynopsis">
+<div>
 
 |                             |                        |
 |-----------------------------|------------------------|
 | `time `**`stringtime`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ stringtime — converts string to a time
 
 </div>
 
-<div id="desc_32" class="refsect1">
+<div>
 
 ## Description
 

@@ -1,6 +1,6 @@
-<div id="virtuosospongerfaceurilabels" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,22 +14,22 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://cname/fct
 
 2.  Enter a free text search pattern (for example, "Camcorder" as
     consumer product), and click Search:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst13_02" class="figure">
+    <div>
 
     **Figure 16.133. URI Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![URI Labels](images/ui/fb19.png)
 
@@ -46,15 +46,15 @@
 3.  Your initial query results page will display a list of literal value
     snippets where for each URL will be displayed a label:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst13_03" class="figure">
+    <div>
 
     **Figure 16.134. URI Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![URI Labels](images/ui/fb20.png)
 
@@ -74,15 +74,15 @@
     Attributes and Values will be presented. An URL label of the product
     also will be shown: "Charges Lithium Ion 800 series batteries":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst13_04" class="figure">
+    <div>
 
     **Figure 16.135. URI Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![URI Labels](images/ui/fb21.png)
 
@@ -96,15 +96,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst13_05" class="figure">
+    <div>
 
     **Figure 16.136. URI Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![URI Labels](images/ui/fb22.png)
 
@@ -118,15 +118,15 @@
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="fctinst13_06" class="figure">
+    <div>
 
     **Figure 16.137. URI Labels**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![URI Labels](images/ui/fb23.png)
 

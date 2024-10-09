@@ -1,10 +1,10 @@
-<div id="fn_soap_box_xml_entity" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ desired SQL type.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_box_xml_entity" class="funcsynopsis">
+<div>
 
 |                                     |                                 |
 |-------------------------------------|---------------------------------|
@@ -25,7 +25,7 @@ desired SQL type.
 |                                     | in `try_typed_as ` any ,        |
 |                                     | in `soap_version ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ desired SQL type.
 
 </div>
 
-<div id="desc_soap_box_xml_entity" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ is being processed by the SOAP server.
 
 </div>
 
-<div id="params_soap_box_xml_entity" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110347" class="refsect2">
+<div>
 
 ### entity
 
@@ -59,7 +59,7 @@ subpart of it).
 
 </div>
 
-<div id="id110351" class="refsect2">
+<div>
 
 ### try_typed_as
 
@@ -67,7 +67,7 @@ A sample value, whose type is taken as a desired type for conversion.
 
 </div>
 
-<div id="id110354" class="refsect2">
+<div>
 
 ### soap_version
 
@@ -78,7 +78,7 @@ Optional (default 1). The soap version (1 for SOAP 1.0, 11 for SOAP
 
 </div>
 
-<div id="ret_soap_box_xml_entity" class="refsect1">
+<div>
 
 ## Return Types
 

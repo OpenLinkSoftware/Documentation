@@ -1,10 +1,10 @@
-<div id="fn_smime_sign" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ smime_sign — Converts a MIME message to a signed S/MIME message
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_smime_sign" class="funcsynopsis">
+<div>
 
 |                                |                                  |
 |--------------------------------|----------------------------------|
@@ -27,7 +27,7 @@ smime_sign — Converts a MIME message to a signed S/MIME message
 |                                | in `signer_CA_certs ` any ,      |
 |                                | in `flags ` integer `)`;         |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ smime_sign — Converts a MIME message to a signed S/MIME message
 
 </div>
 
-<div id="desc_smime_sign" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ Converts a MIME message to a signed S/MIME message.
 
 </div>
 
-<div id="params_smime_sign" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110029" class="refsect2">
+<div>
 
 ### msg_text
 
@@ -57,7 +57,7 @@ The text of the message
 
 </div>
 
-<div id="id110032" class="refsect2">
+<div>
 
 ### signer_cert
 
@@ -65,7 +65,7 @@ Signer certificate.
 
 </div>
 
-<div id="id110035" class="refsect2">
+<div>
 
 ### private_key
 
@@ -73,7 +73,7 @@ Private Key
 
 </div>
 
-<div id="id110038" class="refsect2">
+<div>
 
 ### private_key_pass
 
@@ -81,7 +81,7 @@ Private Key Pass
 
 </div>
 
-<div id="id110041" class="refsect2">
+<div>
 
 ### signer_CA_certs
 
@@ -89,15 +89,15 @@ Array of strings of CA Certificates
 
 </div>
 
-<div id="id110044" class="refsect2">
+<div>
 
 ### flags
 
-<div id="id110046" class="table">
+<div>
 
-**Table 24.79. Bits defined in *`flags `***
+**Table 24.78. Bits defined in *`flags `***
 
-<div class="table-contents">
+<div>
 
 | Mask  | Name             | Description                                                                    |
 |-------|------------------|--------------------------------------------------------------------------------|
@@ -118,7 +118,7 @@ Array of strings of CA Certificates
 
 </div>
 
-<div id="ret_smime_sign" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -127,15 +127,15 @@ message based on the flags value (if supplied - default PKCS7_DETACHED).
 
 </div>
 
-<div id="examples_smime_sign" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_smime_verify" class="example">
+<div>
 
 **Example 24.373. Signing a MIME Message**
 
-<div class="example-contents">
+<div>
 
 Example (where signed.eml contains the output from smime_sign.
 
@@ -196,7 +196,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_smime_sign" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_rdf_datatype_of_obj" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ DB.DBA.RDF_DATATYPE_OF_OBJ — Returns the datatype of a given argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_datatype_of_obj" class="funcsynopsis">
+<div>
 
 |                                         |                         |
 |-----------------------------------------|-------------------------|
 | ` `**`DB.DBA.RDF_DATATYPE_OF_OBJ`**` (` | in `arg ` any ,         |
 |                                         | in `type_val ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ DB.DBA.RDF_DATATYPE_OF_OBJ — Returns the datatype of a given argument.
 
 </div>
 
-<div id="desc_rdf_datatype_of_obj" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Returns the datatype of a given argument.
 
 </div>
 
-<div id="params_rdf_datatype_of_obj" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id101213" class="refsect2">
+<div>
 
 ### arg
 
@@ -53,7 +53,7 @@ The argument which datatype should be returned.
 
 </div>
 
-<div id="id101216" class="refsect2">
+<div>
 
 ### type_val
 
@@ -64,7 +64,7 @@ its default value http://www.w3.org/2001/XMLSchema#string is used.
 
 </div>
 
-<div id="ret_rdf_datatype_of_obj" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ any
 
 </div>
 
-<div id="examples_rdf_datatype_of_obj" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_datatype_of_obj" class="example">
+<div>
 
 **Example 24.269. Usage Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 # Explicit typecast (insert)

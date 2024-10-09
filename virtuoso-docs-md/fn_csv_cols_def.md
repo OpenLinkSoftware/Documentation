@@ -1,10 +1,10 @@
-<div id="fn_csv_cols_def" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ csv_cols_def — Guess columns and column types from CSV file.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_csv_cols_def" class="funcsynopsis">
+<div>
 
 |                           |                              |
 |---------------------------|------------------------------|
 | ` `**`csv_cols_def`**` (` | in `file_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ csv_cols_def — Guess columns and column types from CSV file.
 
 </div>
 
-<div id="desc_csv_cols_def" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ work if CSV file begins with a header row.
 
 </div>
 
-<div id="params_csv_cols_def" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89895" class="refsect2">
+<div>
 
 ### file_name
 
@@ -55,15 +55,15 @@ The name of the CSV file.
 
 </div>
 
-<div id="examples_csv_cols_def" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_csv_cols_def" class="example">
+<div>
 
 **Example 24.130. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>create procedure my_csv_get_columns (in file_name varchar)
@@ -97,7 +97,7 @@ ss_Phone_Business_Fax_Pager_Company_Job_Title_Department_Office_Location_Notes' 
 
 </div>
 
-<div id="seealso_csv_cols_def" class="refsect1">
+<div>
 
 ## See Also
 

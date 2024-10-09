@@ -1,10 +1,10 @@
-<div id="fn_http_acl_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_acl_get — Test conditions against web server ACL's
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_acl_get" class="funcsynopsis">
+<div>
 
 |                                  |                                        |
 |----------------------------------|----------------------------------------|
@@ -26,7 +26,7 @@ http_acl_get — Test conditions against web server ACL's
 |                                  | in `object_id ` integer ,              |
 |                                  | in `read_write_flag ` integer `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ http_acl_get — Test conditions against web server ACL's
 
 </div>
 
-<div id="desc_http_acl_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ internet client would not violate the ACL.
 
 </div>
 
-<div id="params_http_acl_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92002" class="refsect2">
+<div>
 
 ### list_name
 
@@ -57,7 +57,7 @@ a string designating which list to be used for matching
 
 </div>
 
-<div id="id92005" class="refsect2">
+<div>
 
 ### source_ip
 
@@ -65,7 +65,7 @@ a string containing the IP number of client to test against rules
 
 </div>
 
-<div id="id92008" class="refsect2">
+<div>
 
 ### destination_ip_or_host
 
@@ -73,7 +73,7 @@ a string containing the IP number of destination requested by client
 
 </div>
 
-<div id="id92011" class="refsect2">
+<div>
 
 ### object_id
 
@@ -81,7 +81,7 @@ is a integer designating a object to match
 
 </div>
 
-<div id="id92014" class="refsect2">
+<div>
 
 ### read_write_flag
 
@@ -91,7 +91,7 @@ an integer designating action to match
 
 </div>
 
-<div id="ret_http_acl_get" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -100,7 +100,7 @@ rule. If no rule matches it returns -1.
 
 </div>
 
-<div id="seealso_http_acl_get" class="refsect1">
+<div>
 
 ## See Also
 

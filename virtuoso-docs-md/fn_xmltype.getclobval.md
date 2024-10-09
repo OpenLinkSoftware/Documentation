@@ -1,10 +1,10 @@
-<div id="fn_xmltype.getclobval" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,17 +14,17 @@ syntax.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.getclobval" class="funcsynopsis">
+<div>
 
 |                                 |      |
 |---------------------------------|------|
 | ` `**`XMLType.getClobVal`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ syntax.
 
 </div>
 
-<div id="desc_xmltype.getclobval" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ similar to the XPATH function 'serialize()', i.e. a text in XML syntax.
 
 </div>
 
-<div id="ret_xmltype.getclobval" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -51,15 +51,15 @@ The function returns wide string.
 
 </div>
 
-<div id="examples_xmltype.getclobval" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.getclobval" class="example">
+<div>
 
 **Example 24.549. A table with an XMLType column**
 
-<div class="example-contents">
+<div>
 
 This populates a table with XML data and then selects string
 representation of 'ename' element from the appropriate record.
@@ -91,7 +91,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.getclobval" class="refsect1">
+<div>
 
 ## See Also
 

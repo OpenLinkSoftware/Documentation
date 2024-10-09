@@ -1,6 +1,6 @@
-<div id="rdfperfcost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -133,7 +133,7 @@ column specs are:
 <col=414 P = $28 "-ns#type">
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                               |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -184,9 +184,9 @@ is not overridden by the `sql:select-option` clause since an index
 intersection is always a safe guess, regardless of the correctness of
 the cardinality guesses of the patterns involved.
 
-<div id="rdfperfcosttransanalyze" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -203,7 +203,7 @@ the cardinality guesses of the patterns involved.
 Virtuoso Release 6.4 ISQL offers 2 new modes for analyzing sparql
 queries:
 
-<div class="orderedlist">
+<div>
 
 1.  Translate a sparql query into the correspondent sql:
 
@@ -221,7 +221,7 @@ queries:
     SQL> SET EXPLAIN OFF;
     ```
 
-    <div class="itemizedlist">
+    <div>
 
     - <a href="fn_explain.html" class="link" title="explain"><code
       class="function">explain</code> ()</a> is much more difficult to
@@ -239,7 +239,7 @@ queries:
 Here is simple example of how to combine the two options to get a full
 explain plan for a simple SPARQL query:
 
-<div class="orderedlist">
+<div>
 
 1.  Assume the following query:
 

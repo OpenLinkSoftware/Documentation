@@ -1,10 +1,10 @@
-<div id="fn_curdatetime" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ seconds
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_curdatetime_01" class="funcsynopsis">
+<div>
 
 |                          |                                          |
 |--------------------------|------------------------------------------|
 | ` `**`curdatetime`**` (` | in `fraction_microseconds ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ seconds
 
 </div>
 
-<div id="desc_curdatetime" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ be adjusted by providing the number of "microseconds" as the argument.
 
 </div>
 
-<div id="params_curdatetime" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83694" class="refsect2">
+<div>
 
 ### fraction_microseconds
 
@@ -58,7 +58,7 @@ Microseconds.
 
 </div>
 
-<div id="ret_curdatetime" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,7 +66,7 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="errors_curdatetime" class="refsect1">
+<div>
 
 ## Errors
 
@@ -74,15 +74,15 @@ A <span class="type">DATETIME </span> timestamp.
 
 </div>
 
-<div id="examples_curdatetime" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_curdatetime_1" class="example">
+<div>
 
 **Example 24.63. Get a timestamp**
 
-<div class="example-contents">
+<div>
 
 Get a timestamp in human-readable form.
 
@@ -106,7 +106,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_curdatetime" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_http_request_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_request_get — Access to the HTTP request line
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_request_get" class="funcsynopsis">
+<div>
 
 |                               |                                  |
 |-------------------------------|----------------------------------|
 | ` `**`http_request_get`**` (` | in `variable_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_request_get — Access to the HTTP request line
 
 </div>
 
-<div id="desc_http_request_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,21 +42,21 @@ method and query string.
 
 </div>
 
-<div id="params_http_request_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id93420" class="refsect2">
+<div>
 
 ### variable_name
 
 A string designating what to return.
 
-<div id="id93423" class="table">
+<div>
 
-**Table 24.44. The variable_name keywords**
+**Table 24.43. The variable_name keywords**
 
-<div class="table-contents">
+<div>
 
 | Keyword         | Description                                             |
 |-----------------|---------------------------------------------------------|

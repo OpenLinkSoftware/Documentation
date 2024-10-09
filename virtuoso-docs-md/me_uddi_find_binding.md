@@ -1,10 +1,10 @@
-<div id="me_uddi_find_binding" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,7 +12,7 @@ uddi_find_binding — Retrieves matching bindings
 
 </div>
 
-<div id="syntax_uddi_find_binding_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -30,7 +30,7 @@ uddi_find_binding — Retrieves matching bindings
 
 </div>
 
-<div id="desc_uddi_find_binding_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ argument list.
 
 </div>
 
-<div id="params_uddi_find_binding_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
-<div id="id114758" class="refsect2">
+<div>
 
 ### maxRows
 
@@ -54,7 +54,7 @@ number of results returned.
 
 </div>
 
-<div id="id114761" class="refsect2">
+<div>
 
 ### serviceKey
 
@@ -65,7 +65,7 @@ passed will be searched.
 
 </div>
 
-<div id="id114768" class="refsect2">
+<div>
 
 ### findQualifiers
 
@@ -74,7 +74,7 @@ default behavior of search functionality.
 
 </div>
 
-<div id="id114772" class="refsect2">
+<div>
 
 ### tModelBag
 
@@ -92,7 +92,7 @@ followed by a known *`tModel `* uuid value.
 
 </div>
 
-<div id="ret_uddi_find_binding_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -114,7 +114,7 @@ structure.
 
 </div>
 
-<div id="errors_uddi_find_binding_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -122,11 +122,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id114804" class="table">
+<div>
 
-**Table 24.91. Errors signalled by uddi_find_binding**
+**Table 24.90. Errors signalled by uddi_find_binding**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                         | Description                                                                                                                                                                             |
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

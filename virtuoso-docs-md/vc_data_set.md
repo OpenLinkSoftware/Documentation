@@ -1,10 +1,10 @@
-<div id="vc_data_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ data-set — Scrollable, multi-row data bound grid.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_data_set" class="funcsynopsis">
+<div>
 
 |                          |                               |
 |--------------------------|-------------------------------|
@@ -41,7 +41,7 @@ data-set — Scrollable, multi-row data bound grid.
 |                          | `debug-srcline` (optional) ,  |
 |                          | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -51,7 +51,7 @@ data-set — Scrollable, multi-row data bound grid.
 
 </div>
 
-<div id="vc_desc_data_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -79,7 +79,7 @@ buttons - \[data-set name\]'\_edit' and \[data-set name\]'\_delete'.
 
 </div>
 
-<div id="vc_attrs_data_set" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -185,11 +185,11 @@ scrollable as such.
 
 **cursor-type. **
 
-<div id="id40109" class="table">
+<div>
 
 **Table 14.4. Allowed values of the 'cursor-type' attribute**
 
-<div class="table-contents">
+<div>
 
 |         |                           |
 |---------|---------------------------|
@@ -216,7 +216,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_data_set" class="refsect1">
+<div>
 
 ## Declaration of type vspx_data_set
 
@@ -252,16 +252,16 @@ as (
 
 </div>
 
-<div id="vc_ex_data_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_data_set__0" class="example">
+<div>
 
 **Example 14.27.  Editable multi-row data grid based on data-set
 control**
 
-<div class="example-contents">
+<div>
 
 This example will show a list of customers from the Northwind demo
 database. Allows editing, addtion and removal of existing records.
@@ -343,11 +343,11 @@ database. Allows editing, addtion and removal of existing records.
 
   
 
-<div id="vc_ex_data_set__1" class="example">
+<div>
 
 **Example 14.28.  Simple multi-row data grid based on data-set control**
 
-<div class="example-contents">
+<div>
 
 This example will show a list of customers from the Northwind demo
 database. Allows scrolling only of existing records.
@@ -394,7 +394,7 @@ database. Allows scrolling only of existing records.
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                        |
 |:--------------------------:|:-----------------------------------------------------------------------|

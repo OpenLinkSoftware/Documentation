@@ -1,6 +1,6 @@
-<div id="ch-rdfandsparql" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -32,7 +32,7 @@ language extensions and standard compliance are covered.
 
 In this chapter SPARQL and SPASQL are used as siblings.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -71,7 +71,7 @@ Data Types and Spatial Index Support</a></p></li>
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -587,9 +587,9 @@ calls](rdfgraphreplicationsql.html)</span>
 
 </div>
 
-<div id="rdfdatarepresentation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -609,9 +609,9 @@ for triple persistency. These details are mostly hidden from users of
 RDF, thus this section is not necessary reading for typical use of
 Virtuoso with RDF.
 
-<div id="rdfiriidtype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -671,7 +671,7 @@ normally not be exposed to IRI_ID's since the SPARQL implementation
 returns IRI's in their text form, not as internal id's. These will
 however be seen if reading the internal tables directly.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                           |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -731,9 +731,9 @@ http://demo.openlinksw.com/drupal_v
 
 </div>
 
-<div id="rdfboxtype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -762,9 +762,9 @@ operations use standard SQL datatypes for arguments and return values.
 
 </div>
 
-<div id="rdfquadtables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -873,9 +873,9 @@ tables for two different purposes. E.g. an integer 257 is for
 
 </div>
 
-<div id="rdfsqlmodes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -898,7 +898,7 @@ The short format is the format where an O is stored in RDF_QUAD.
 The long value is similar to short one but an rdf_box object, that
 consists of six fields:
 
-<div class="itemizedlist">
+<div>
 
 - short integer id of type referencing RDT_TWOBYTE, 257 if the type is
   not specified,
@@ -936,9 +936,9 @@ numeric comparison with, say, SQL literal constants.
 
 </div>
 
-<div id="rdfsqlsparqlresolve" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -959,7 +959,7 @@ When operating over RDF_QUAD table directly, in order to transform all
 values obtained from column O to the explicit SQL type in a programmatic
 way, should be used the following hints depending on the case:
 
-<div class="itemizedlist">
+<div>
 
 - The SQL value can be extracted as
 
@@ -1051,9 +1051,9 @@ OPTION (QUIETCAST)) AS "s-1-0_rbc"
 
 </div>
 
-<div id="rdfxmlschemacompat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1075,9 +1075,9 @@ for reasons of compactness and performance.
 
 </div>
 
-<div id="rdfquietcast" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1126,9 +1126,9 @@ scope is the enclosing procedure body.
 
 </div>
 
-<div id="rdfdynamiclocal" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

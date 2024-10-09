@@ -1,10 +1,10 @@
-<div id="fn_mts_set_timeout" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ mts_set_timeout — sets timeout of distributed transaction.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_mts_set_timeout" class="funcsynopsis">
+<div>
 
 |                              |                            |
 |------------------------------|----------------------------|
 | ` `**`mts_set_timeout`**` (` | in `timeout ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ mts_set_timeout — sets timeout of distributed transaction.
 
 </div>
 
-<div id="desc_mts_set_timeout" class="refsect1">
+<div>
 
 ## Description
 

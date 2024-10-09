@@ -1,10 +1,10 @@
-<div id="vc_expression" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ expression — An SQL statement that generates a rowset for v:data-source.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_expression" class="funcsynopsis">
+<div>
 
 |                            |                              |
 |----------------------------|------------------------------|
@@ -25,7 +25,7 @@ expression — An SQL statement that generates a rowset for v:data-source.
 |                            | `debug-srcline` (optional) , |
 |                            | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ expression — An SQL statement that generates a rowset for v:data-source.
 
 </div>
 
-<div id="vc_desc_expression" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ data-source).
 
 </div>
 
-<div id="vc_attrs_expression" class="refsect1">
+<div>
 
 ## Attributes
 

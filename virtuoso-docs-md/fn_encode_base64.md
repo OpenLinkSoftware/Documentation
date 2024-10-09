@@ -1,10 +1,10 @@
-<div id="fn_encode_base64" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ encode_base64 , decode_base64 — base64-encode/decode a string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_encode_base64" class="funcsynopsis">
+<div>
 
 |                            |                        |
 |----------------------------|------------------------|
 | ` `**`encode_base64`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -30,13 +30,13 @@ encode_base64 , decode_base64 — base64-encode/decode a string
 
 </div>
 
-<div id="fsyn_decode_base64" class="funcsynopsis">
+<div>
 
 |                            |                        |
 |----------------------------|------------------------|
 | ` `**`decode_base64`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -46,7 +46,7 @@ encode_base64 , decode_base64 — base64-encode/decode a string
 
 </div>
 
-<div id="desc_encode_base64" class="refsect1">
+<div>
 
 ## Description
 
@@ -54,11 +54,11 @@ These functions convert strings from/to base64-encoding.
 
 </div>
 
-<div id="params_encode_base64" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87633" class="refsect2">
+<div>
 
 ### *`str `*
 
@@ -68,7 +68,7 @@ A <span class="type">varchar </span> value.
 
 </div>
 
-<div id="ret_encode_base64" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -79,15 +79,15 @@ base64-decoding.
 
 </div>
 
-<div id="examples_encode_base64" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_encode_base64_1" class="example">
+<div>
 
 **Example 24.99. Simple Example**
 
-<div class="example-contents">
+<div>
 
 Base64-encode a string
 
@@ -108,11 +108,11 @@ UnV0YWJhZ2E=
 
   
 
-<div id="ex_encode_base64" class="example">
+<div>
 
 **Example 24.100. Web example**
 
-<div class="example-contents">
+<div>
 
 Using encode-base64 with serialize to persist complex data
 
@@ -135,7 +135,7 @@ declare n any; n := deserialize (decode_base64 (get_keyword ('saved', params, ''
 
 </div>
 
-<div id="seealso_encode_base64" class="refsect1">
+<div>
 
 ## See Also
 

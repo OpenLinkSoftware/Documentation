@@ -1,6 +1,6 @@
-<div id="parambatch" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

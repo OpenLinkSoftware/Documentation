@@ -1,10 +1,10 @@
-<div id="vc_item" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ item — Item representing a selection inside a select list.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_item" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
@@ -29,7 +29,7 @@ item — Item representing a selection inside a select list.
 |                      | `debug-srcline` (optional) ,  |
 |                      | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ item — Item representing a selection inside a select list.
 
 </div>
 
-<div id="vc_desc_item" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,7 +47,7 @@ Item representing a selection inside a select list.
 
 </div>
 
-<div id="vc_attrs_item" class="refsect1">
+<div>
 
 ## Attributes
 

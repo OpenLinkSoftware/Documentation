@@ -1,10 +1,10 @@
-<div id="vc_isql" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ statement and to see the result of its execution.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_isql" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
@@ -39,7 +39,7 @@ statement and to see the result of its execution.
 |                      | `debug-srcline` (optional) ,  |
 |                      | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -49,13 +49,13 @@ statement and to see the result of its execution.
 
 </div>
 
-<div id="vc_desc_isql" class="refsect1">
+<div>
 
 ## Description
 
 </div>
 
-<div id="vc_attrs_isql" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -108,11 +108,11 @@ attribute will not be used when the resulting HTML is rendered.
 
 **isolation. ** Transaction isolation level to be used.
 
-<div id="id40902" class="table">
+<div>
 
 **Table 14.7. Allowed values of the 'isolation' attribute**
 
-<div class="table-contents">
+<div>
 
 |              |                                            |
 |--------------|--------------------------------------------|
@@ -154,7 +154,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_isql" class="refsect1">
+<div>
 
 ## Declaration of type vspx_isql
 

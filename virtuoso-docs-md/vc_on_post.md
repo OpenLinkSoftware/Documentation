@@ -1,10 +1,10 @@
-<div id="vc_on_post" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ gets a post.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_on_post" class="funcsynopsis">
+<div>
 
 |                                                         |      |
 |---------------------------------------------------------|------|
 | ` <`**`on-post`**` >(EventHandler)</`**`on-post`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ gets a post.
 
 </div>
 
-<div id="vc_desc_on_post" class="refsect1">
+<div>
 
 ## Description
 

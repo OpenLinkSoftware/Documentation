@@ -1,10 +1,10 @@
-<div id="fn_covar_samp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ COVAR_SAMP — Returns the sample covariance of a set of number pairs.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_covar_samp" class="funcsynopsis">
+<div>
 
 |                                |                      |
 |--------------------------------|----------------------|
 | `numeric `**`COVAR_SAMP`**` (` | in `expr1 ` any ,    |
 |                                | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ COVAR_SAMP — Returns the sample covariance of a set of number pairs.
 
 </div>
 
-<div id="desc_covar_samp" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ expr2 is null.
 
 </div>
 
-<div id="params_covar_samp" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id79210" class="refsect2">
+<div>
 
 ### expr1
 
@@ -64,7 +64,7 @@ Number expression.
 
 </div>
 
-<div id="id79213" class="refsect2">
+<div>
 
 ### expr2
 
@@ -74,7 +74,7 @@ Number expression.
 
 </div>
 
-<div id="ret_covar_samp" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,7 +83,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_covar_samp" class="refsect1">
+<div>
 
 ## See Also
 

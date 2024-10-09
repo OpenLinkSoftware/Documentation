@@ -1,10 +1,10 @@
-<div id="xpf_doc" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ doc — Returns data from XML doc other than the main source document.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_doc" class="funcsynopsis">
+<div>
 
 |                          |                              |
 |--------------------------|------------------------------|
 | `node-set `**`doc`**` (` | `document_uri ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ doc — Returns data from XML doc other than the main source document.
 
 </div>
 
-<div id="xpf_desc_doc" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,11 +60,11 @@ operator'.
 
 </div>
 
-<div id="xpf_params_doc" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126818" class="refsect2">
+<div>
 
 ### document_uri
 
@@ -76,7 +76,7 @@ used to convert the given URI into absolute one.
 
 </div>
 
-<div id="xpf_ret_doc" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,7 +84,7 @@ Node-set
 
 </div>
 
-<div id="xpf_errors_doc" class="refsect1">
+<div>
 
 ## Errors
 
@@ -96,15 +96,15 @@ are locked by Virtuoso/PL procedure that invokes the XPATH processor.
 
 </div>
 
-<div id="xpf_examples_doc" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_doc1" class="example">
+<div>
 
 **Example 24.578. Simple reading of a standalone XML document**
 
-<div class="example-contents">
+<div>
 
 Read a standalone document from http://www.example.com/sales/prices.xml
 
@@ -120,7 +120,7 @@ doc("http://www.example.com/sales/prices.xml")
 
 </div>
 
-<div id="xpf_seealso_doc_01" class="refsect1">
+<div>
 
 ## See Also
 

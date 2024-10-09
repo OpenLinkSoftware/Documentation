@@ -1,10 +1,10 @@
-<div id="fn___xml_ns_iristr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___xml_ns_iristr" class="funcsynopsis">
+<div>
 
 |                              |                         |
 |------------------------------|-------------------------|
 | ` `**`__xml_ns_iristr`**` (` | in `str1 ` varchar ,    |
 |                              | in `str2 ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@
 
 </div>
 
-<div id="desc___xml_ns_iristr" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ an varchar with box flag set to BF_IRI.
 
 </div>
 
-<div id="params___xml_ns_iristr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103367" class="refsect2">
+<div>
 
 ### str1
 
@@ -54,7 +54,7 @@ Namespace prefix
 
 </div>
 
-<div id="id103370" class="refsect2">
+<div>
 
 ### str2
 
@@ -64,15 +64,15 @@ Local part (varchar)
 
 </div>
 
-<div id="examples__xml_ns_iristr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_ns_iristr_1" class="example">
+<div>
 
 **Example 24.297. Simple Example**
 
-<div class="example-contents">
+<div>
 
 Base64-encode a string
 
@@ -95,7 +95,7 @@ http://xmlns.com/foaf/0.1/knows
 
 </div>
 
-<div id="seealso__xml_ns_iristr" class="refsect1">
+<div>
 
 ## See Also
 

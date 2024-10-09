@@ -1,10 +1,10 @@
-<div id="xpf_position" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ context.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_position" class="funcsynopsis">
+<div>
 
 |                             |          |     |
 |-----------------------------|----------|-----|
 | `number `**`position`**` (` | `void)`; |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ context.
 
 </div>
 
-<div id="xpf_desc_position" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,7 +46,7 @@ context position cannot be greater than context size.
 
 </div>
 
-<div id="xpf_ret_last_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -54,15 +54,15 @@ Positive integer.
 
 </div>
 
-<div id="xpf_examples_last_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_last_01" class="example">
+<div>
 
 **Example 24.609. Explicit call of position() inside a predicate**
 
-<div class="example-contents">
+<div>
 
 For every waybill, find the last \<address\> child inside the
 \<waybill\> element.
@@ -77,11 +77,11 @@ For every waybill, find the last \<address\> child inside the
 
   
 
-<div id="xpf_ex_last_02" class="example">
+<div>
 
 **Example 24.610. Implicit call of position() inside a predicate**
 
-<div class="example-contents">
+<div>
 
 For every article, find up to three first paragraphs of the first
 section.
@@ -98,7 +98,7 @@ section.
 
 </div>
 
-<div id="xpf_seealso_last_01" class="refsect1">
+<div>
 
 ## See Also
 

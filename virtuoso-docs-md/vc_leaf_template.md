@@ -1,10 +1,10 @@
-<div id="vc_leaf_template" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ leaf-template
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_leaf_template" class="funcsynopsis">
+<div>
 
 |                               |                               |
 |-------------------------------|-------------------------------|
@@ -33,7 +33,7 @@ leaf-template
 |                               | `debug-srcline` (optional) ,  |
 |                               | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -43,13 +43,13 @@ leaf-template
 
 </div>
 
-<div id="vc_desc_leaf_template" class="refsect1">
+<div>
 
 ## Description
 
 </div>
 
-<div id="vc_attrs_leaf_template" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -110,7 +110,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_leaf_template" class="refsect1">
+<div>
 
 ## Declaration of type vspx_leaf_template
 

@@ -1,10 +1,10 @@
-<div id="fn_http_enable_gz" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ server
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_enable_gz" class="funcsynopsis">
+<div>
 
 |                                    |                         |
 |------------------------------------|-------------------------|
 | `integer `**`http_enable_gz`**` (` | in `mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ server
 
 </div>
 
-<div id="desc_http_enable_gz" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,15 +41,15 @@ Enable (1)/ Disable (0) "Content-Encoding: gzip" for HTTP server.
 
 </div>
 
-<div id="examples_http_enable_gz" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_enable_gz" class="example">
+<div>
 
 **Example 24.158. Using http_enable_gz()**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select http_enable_gz (1);

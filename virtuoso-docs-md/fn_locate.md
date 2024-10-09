@@ -1,10 +1,10 @@
-<div id="fn_locate" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ substring in a string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_locate" class="funcsynopsis">
+<div>
 
 |                            |                             |
 |----------------------------|-----------------------------|
@@ -25,7 +25,7 @@ substring in a string
 |                            | in `string_exp2 ` varchar , |
 |                            | in `start ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ substring in a string
 
 </div>
 
-<div id="desc_locate" class="refsect1">
+<div>
 
 ## Description
 

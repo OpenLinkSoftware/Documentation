@@ -1,6 +1,6 @@
-<div id="dbadmin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="dbusersandgroups" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -53,15 +53,15 @@ You can import users by adding LDAP Servers(s) from the "LDAP Servers"
 tab, and then from the "LDAP Import" to specify from which LDAP server
 the import should be done:
 
-<div class="figure-float">
+<div>
 
-<div id="id15239" class="figure">
+<div>
 
 **Figure 6.117. Users Accounts**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Users Accounts](images/ui/admtables_01a.png)
 
@@ -75,9 +75,9 @@ the import should be done:
 
 </div>
 
-<div id="dbusersandgroupsldap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -94,7 +94,7 @@ the import should be done:
 The following steps describe how to configure LDAP server and then
 import user(s) using the Conducor UI:
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://cname:port/conductor
 
@@ -102,15 +102,15 @@ import user(s) using the Conducor UI:
 
 3.  Go to System Admin -\> User Accounts -\> LDAP Servers
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap1" class="figure">
+    <div>
 
     **Figure 6.118. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap1.png)
 
@@ -126,7 +126,7 @@ import user(s) using the Conducor UI:
 
 4.  Enter in the LDAP servers form respectively:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Host Name: for ex.: ldap.example.com
 
@@ -148,15 +148,15 @@ import user(s) using the Conducor UI:
 
 5.  Check the connection by pressing "Test":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap2" class="figure">
+    <div>
 
     **Figure 6.119. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap2.png)
 
@@ -172,15 +172,15 @@ import user(s) using the Conducor UI:
 
 6.  If the test connection is successful, click "Add".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap3" class="figure">
+    <div>
 
     **Figure 6.120. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap3.png)
 
@@ -198,15 +198,15 @@ import user(s) using the Conducor UI:
 
 8.  Go to System Admin -\> User Accounts -\> LDAP Import
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap3a" class="figure">
+    <div>
 
     **Figure 6.121. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap3a.png)
 
@@ -222,15 +222,15 @@ import user(s) using the Conducor UI:
 
 9.  Select the LDAP server added from above:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap4" class="figure">
+    <div>
 
     **Figure 6.122. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap4.png)
 
@@ -246,15 +246,15 @@ import user(s) using the Conducor UI:
 
 10. Click "Search".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap5" class="figure">
+    <div>
 
     **Figure 6.123. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap5.png)
 
@@ -270,15 +270,15 @@ import user(s) using the Conducor UI:
 
 11. Click "Next".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap6" class="figure">
+    <div>
 
     **Figure 6.124. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap6.png)
 
@@ -295,7 +295,7 @@ import user(s) using the Conducor UI:
 12. Select the desired profiles to be imported and set prefered "LDAP
     Authentication" for selected user:
 
-    <div class="itemizedlist">
+    <div>
 
     - If set to "enabled", then on an attempt to log in into Virtuoso,
       the system tries to log in into the LDAP server with the given
@@ -309,15 +309,15 @@ import user(s) using the Conducor UI:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap7" class="figure">
+    <div>
 
     **Figure 6.125. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap7.png)
 
@@ -337,7 +337,7 @@ import user(s) using the Conducor UI:
     "WebDAV". To log in into iSQL with an imported LDAP user credentials
     you should:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Make sure you have set in Virtuoso ini the
         SQL_ENCRYPTION_ON_PASSWORD parameter to 1 in the \[Client\]
@@ -367,15 +367,15 @@ import user(s) using the Conducor UI:
 
 15. The imported profile(s) should be displayed in the Users tab:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ldap8" class="figure">
+    <div>
 
     **Figure 6.126. LDAP Servers Configure and Import**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![LDAP Servers Configure and Import](images/ui/ldap8.png)
 
@@ -395,9 +395,9 @@ import user(s) using the Conducor UI:
 
 </div>
 
-<div id="databases" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -416,16 +416,16 @@ Databases /Schema Objects. For each catalog you will be able to view and
 in some cases edit details about the tables, views, triggers, and store
 procedures stored within that catalog.
 
-<div class="figure-float">
+<div>
 
-<div id="id15357" class="figure">
+<div>
 
 **Figure 6.127. Viewing Tables details for the Demo catalogue in the
 Demo Database**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Viewing Tables details for the Demo catalogue in the Demo
 Database](images/ui/admtables_01.png)
@@ -440,16 +440,16 @@ Database](images/ui/admtables_01.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15362" class="figure">
+<div>
 
 **Figure 6.128. Viewing Views details for the Demo catalogue in the Demo
 Database**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Viewing Views details for the Demo catalogue in the Demo
 Database](images/ui/admviews_01.png)
@@ -464,9 +464,9 @@ Database](images/ui/admviews_01.png)
 
 </div>
 
-<div id="demodbinstallsteps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -485,16 +485,16 @@ by navigating to the "System Admin" -\> "Packages" tab where a list of
 available Virtuoso applications are displayed, one of which is for the
 "Demo" database package as shown below:
 
-<div class="figure-float">
+<div>
 
-<div id="id15370" class="figure">
+<div>
 
 **Figure 6.129. Install Demo db using Conductor UI: "System Admin" -\>
 "Packages"**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Install Demo db using Conductor UI: "System Admin" -\>
 "Packages"](images/ui/demodbinstall_01.png)
@@ -512,15 +512,15 @@ available Virtuoso applications are displayed, one of which is for the
 Select the "Demo" package and click on the "Install" button to commence
 the installation process:
 
-<div class="figure-float">
+<div>
 
-<div id="id15376" class="figure">
+<div>
 
 **Figure 6.130. Install Demo db: confirmation**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Install Demo db: confirmation](images/ui/demodbinstall_02.png)
 
@@ -537,15 +537,15 @@ the installation process:
 Click on the "proceed" button to install the indicated "Demo Database"
 application package:
 
-<div class="figure-float">
+<div>
 
-<div id="id15382" class="figure">
+<div>
 
 **Figure 6.131. Install Demo db: proceed**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Install Demo db: proceed](images/ui/demodbinstall_03.png)
 
@@ -562,15 +562,15 @@ application package:
 Once installed the demo database schema can be viewed from the
 "Database" -\> "Schema Objects" tab of the Conductor:
 
-<div class="figure-float">
+<div>
 
-<div id="id15388" class="figure">
+<div>
 
 **Figure 6.132. Install Demo db: view schema objects**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Install Demo db: view schema objects](images/ui/demodbinstall_04.png)
 
@@ -586,9 +586,9 @@ Once installed the demo database schema can be viewed from the
 
 </div>
 
-<div id="triggers" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -616,9 +616,9 @@ creation of a new trigger.
 
 </div>
 
-<div id="storedprocedures" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -639,15 +639,15 @@ or drop them. Adding new stored procedures can be done via the ISQL
 command-line interface or from the "Create Procedure" link shown above
 the list of objects for the relevant database.
 
-<div class="figure-float">
+<div>
 
-<div id="id15400" class="figure">
+<div>
 
 **Figure 6.133. Viewing Stored Procedures details for the DB catalogue**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Viewing Stored Procedures details for the DB
 catalogue](images/ui/admprocedures_01.png)
@@ -672,9 +672,9 @@ KeywordSearchRequest() and BrowseNodeSearchRequest().
 
 </div>
 
-<div id="externaldatabases" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -693,9 +693,9 @@ Virtual Database feature of Virtuoso. You are able to administer ODBC
 Data Sources, how to link remote tables and view, and already linked
 remote connections.
 
-<div id="connecteddsns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -714,15 +714,15 @@ there is no connection, will be shown the link"Connect". For the
 datasource for which there is already established connection, will be
 shown the links "Link objects", "Change Credentials" and "Disconnect".
 
-<div class="figure-float">
+<div>
 
-<div id="id15412" class="figure">
+<div>
 
 **Figure 6.134. Remote Datasources connected to Virtuoso**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Remote Datasources connected to
 Virtuoso](images/ui/rmtconnected_01.png)
@@ -743,9 +743,9 @@ new objects, select the "Link objects" link.
 
 </div>
 
-<div id="configureddsns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -766,15 +766,15 @@ either User or System data sources, however, Virtuoso will only be able
 to use the User data sources that belong to the user that started the
 Virtuoso Server.
 
-<div class="figure-float">
+<div>
 
-<div id="id15421" class="figure">
+<div>
 
 **Figure 6.135. Configuring ODBC Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Configuring ODBC Datasources](images/ui/odbcadm_01.png)
 
@@ -791,15 +791,15 @@ Virtuoso Server.
 Follow the buttons on the screen as to how you want to manage a data
 source. You can create new, edit or remove existing data sources.
 
-<div class="figure-float">
+<div>
 
-<div id="id15427" class="figure">
+<div>
 
 **Figure 6.136. Configuring A Virtuoso ODBC Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Configuring A Virtuoso ODBC Datasources](images/ui/virtdsn_01.png)
 
@@ -822,7 +822,7 @@ relinked. File DSN's are read from server's root directory. File DSN's
 can only be read if this directory is contained in the Virtuoso INI file
 parameter DirsAllows.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                    |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -833,9 +833,9 @@ parameter DirsAllows.
 
 </div>
 
-<div id="remotetables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -853,15 +853,15 @@ This page will allow you to manage the remote objects that are linked
 into Virtuoso. You can unlink objects by selecting them and pressing the
 "Unlink selected" button.
 
-<div class="figure-float">
+<div>
 
-<div id="id15439" class="figure">
+<div>
 
 **Figure 6.137. Linking Tables from Remote Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Tables from Remote Datasources](images/ui/admrmttbls_01.png)
 
@@ -912,9 +912,9 @@ list as Currently Linked.
 
 </div>
 
-<div id="remoteprocedures" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -945,15 +945,15 @@ list of procedures on the remote datasource. Check the check-box "Stored
 procedures" and click the "Apply" button to list the available stored
 procedures.
 
-<div class="figure-float">
+<div>
 
-<div id="id15456" class="figure">
+<div>
 
 **Figure 6.138. Linking Procedures from Remote Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Procedures from Remote
 Datasources](images/ui/admrmtprocs002.png)
@@ -972,15 +972,15 @@ When the page returns you will be presented with a list of available
 remote procedures. You should be able to link any of the listed
 procedures into Virtuoso.
 
-<div class="figure-float">
+<div>
 
-<div id="id15462" class="figure">
+<div>
 
 **Figure 6.139. Linking Procedures from Remote Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Procedures from Remote
 Datasources](images/ui/admrmtprocs003.png)
@@ -1008,15 +1008,15 @@ internally and for any future interactions with the SOAP server. If you
 do not want to specify any special type information the details can be
 left as default.
 
-<div class="figure-float">
+<div>
 
-<div id="id15470" class="figure">
+<div>
 
 **Figure 6.140. Linking Procedures from Remote Datasources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Linking Procedures from Remote
 Datasources](images/ui/admrmtprocs004.png)
@@ -1061,9 +1061,9 @@ applicable for PL Wrappers for SOAP execution.
 
 </div>
 
-<div id="eventscheduler" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1081,15 +1081,15 @@ The System Admin / Scheduler tab allows you to view, edit and remove
 events that can be scheduled to run from a particular time at a defined
 interval.
 
-<div class="figure-float">
+<div>
 
-<div id="id15492" class="figure">
+<div>
 
 **Figure 6.141. Event Scheduler**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Event Scheduler](images/ui/admevt_01.png)
 
@@ -1112,15 +1112,15 @@ the event again. SQL is a valid piece of SQL that you want to schedule
 to run. You can also check for "Enable Error Notification" and enter
 E-Mail for error notification.
 
-<div class="figure-float">
+<div>
 
-<div id="id15498" class="figure">
+<div>
 
 **Figure 6.142. Event Scheduler**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Event Scheduler](images/ui/admevt_01a.png)
 
@@ -1138,9 +1138,9 @@ Events write possible error messages into the Virtuoso log file.
 
 </div>
 
-<div id="virtiniadm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1157,15 +1157,15 @@ Events write possible error messages into the Virtuoso log file.
 From System Admin/Parameters you can change the Virtuoso Configuration
 settings:
 
-<div class="figure-float">
+<div>
 
-<div id="id15507" class="figure">
+<div>
 
 **Figure 6.143. Virtuoso (virtuoso.ini) Configuration File Editor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso (virtuoso.ini) Configuration File
 Editor](images/ui/db_strtp_01.png)
@@ -1180,15 +1180,15 @@ Editor](images/ui/db_strtp_01.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15512" class="figure">
+<div>
 
 **Figure 6.144. Virtuoso (virtuoso.ini) Configuration File Editor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso (virtuoso.ini) Configuration File
 Editor](images/ui/db_strtp_02.png)
@@ -1203,15 +1203,15 @@ Editor](images/ui/db_strtp_02.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15517" class="figure">
+<div>
 
 **Figure 6.145. Virtuoso (virtuoso.ini) Configuration File Editor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso (virtuoso.ini) Configuration File
 Editor](images/ui/db_strtp_03.png)
@@ -1226,15 +1226,15 @@ Editor](images/ui/db_strtp_03.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15522" class="figure">
+<div>
 
 **Figure 6.146. Virtuoso (virtuoso.ini) Configuration File Editor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso (virtuoso.ini) Configuration File
 Editor](images/ui/db_strtp_04.png)
@@ -1249,15 +1249,15 @@ Editor](images/ui/db_strtp_04.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15527" class="figure">
+<div>
 
 **Figure 6.147. Virtuoso (virtuoso.ini) Configuration File Editor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso (virtuoso.ini) Configuration File
 Editor](images/ui/db_strtp_05.png)
@@ -1272,15 +1272,15 @@ Editor](images/ui/db_strtp_05.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15532" class="figure">
+<div>
 
 **Figure 6.148. Virtuoso (virtuoso.ini) Configuration File Editor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso (virtuoso.ini) Configuration File
 Editor](images/ui/db_strtp_06.png)
@@ -1295,15 +1295,15 @@ Editor](images/ui/db_strtp_06.png)
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15537" class="figure">
+<div>
 
 **Figure 6.149. Virtuoso (virtuoso.ini) Configuration File Editor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso (virtuoso.ini) Configuration File
 Editor](images/ui/db_strtp_07.png)
@@ -1320,9 +1320,9 @@ Editor](images/ui/db_strtp_07.png)
 
 </div>
 
-<div id="statistics" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1340,15 +1340,15 @@ The System Admin/Dashboard consists of a collection of statistical
 information about your Virtuoso server. This includes general licensing
 information, locking, webserver hits statistics and more.
 
-<div class="figure-float">
+<div>
 
-<div id="id15545" class="figure">
+<div>
 
 **Figure 6.150. Dashboard**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Dashboard](images/ui/sts_dsk_01.png)
 
@@ -1365,15 +1365,15 @@ information, locking, webserver hits statistics and more.
 The System Admin/Monitor shows in details statistical information about
 your server.
 
-<div class="figure-float">
+<div>
 
-<div id="id15551" class="figure">
+<div>
 
 **Figure 6.151. Monitor - General Information**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Monitor - General Information](images/ui/sts_gen_01.png)
 
@@ -1387,15 +1387,15 @@ your server.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15556" class="figure">
+<div>
 
 **Figure 6.152. Monitor - HTTP Usage**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Monitor - HTTP Usage](images/ui/sts_httpsvr_01.png)
 
@@ -1409,15 +1409,15 @@ your server.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15561" class="figure">
+<div>
 
 **Figure 6.153. Monitor - Index Usage**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Monitor - Index Usage](images/ui/sts_idx_01.png)
 
@@ -1431,15 +1431,15 @@ your server.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="id15566" class="figure">
+<div>
 
 **Figure 6.154. Monitor - Profiling**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Monitor - Profiling](images/ui/sts_profile_01.png)
 

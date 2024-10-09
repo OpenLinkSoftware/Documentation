@@ -1,6 +1,6 @@
-<div id="installcrbrappl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 <span class="emphasis">*Step 1 - Create the Visual Studio
 Project.*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Open
 
@@ -29,15 +29,15 @@ Project.*</span>
 
     called RDFWebApp.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf28" class="figure">
+    <div>
 
     **Figure 2.163. New Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![New Web Application](images/ui/sparqlwinf28.png)
 
@@ -53,7 +53,7 @@ Project.*</span>
 
 2.  Create client side entities with datasvcutil.exe
 
-    <div class="itemizedlist">
+    <div>
 
     - Open a command prompt.
 
@@ -73,7 +73,7 @@ Project.*</span>
 
 3.  Add the classes to RDFWebApp.
 
-    <div class="itemizedlist">
+    <div>
 
     - Right click RDFWebApp
 
@@ -123,15 +123,15 @@ Compile and run RDFWebApp (ensuring that the service created above is
 still running). This will launch a browser and display the IRIs from
 sparqlview as a list of hyperlinks.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf29" class="figure">
+<div>
 
 **Figure 2.164. list of hyperlinks**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![list of hyperlinks](images/ui/sparqlwinf29.png)
 
@@ -153,15 +153,15 @@ the referenced resource. The description page is created using <a
 href="http://virtuoso.openlinksw.com/Whitepapers/html/vdld_html/VirtDeployingLinkedDataGuide_Glossary.html#mozTocId13075"
 class="ulink" target="_top">description.vsp</a> .
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf30" class="figure">
+<div>
 
 **Figure 2.165. Description page**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Description page](images/ui/sparqlwinf30.png)
 

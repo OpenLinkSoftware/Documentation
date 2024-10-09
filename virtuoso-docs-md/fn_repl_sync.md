@@ -1,10 +1,10 @@
-<div id="fn_repl_sync" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ repl_sync — starts the syncing process against an existing subscription
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_sync" class="funcsynopsis">
+<div>
 
 |                        |                             |
 |------------------------|-----------------------------|
@@ -25,7 +25,7 @@ repl_sync — starts the syncing process against an existing subscription
 |                        | in `uid ` varchar ,         |
 |                        | in `password ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ repl_sync — starts the syncing process against an existing subscription
 
 </div>
 
-<div id="desc_repl_sync" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ used to connect.
 
 </div>
 
-<div id="params_repl_sync" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id106608" class="refsect2">
+<div>
 
 ### publisher
 
@@ -64,7 +64,7 @@ The server name of the publisher.
 
 </div>
 
-<div id="id106611" class="refsect2">
+<div>
 
 ### publication
 
@@ -72,7 +72,7 @@ The name assigned to the publication.
 
 </div>
 
-<div id="id106614" class="refsect2">
+<div>
 
 ### uid
 
@@ -81,7 +81,7 @@ credentials will be required.
 
 </div>
 
-<div id="id106617" class="refsect2">
+<div>
 
 ### password
 
@@ -91,15 +91,15 @@ SQL account password.
 
 </div>
 
-<div id="examples_repl_sync" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_sync" class="example">
+<div>
 
 **Example 24.334. Synchronizing a subscription**
 
-<div class="example-contents">
+<div>
 
 The following shows requesting a sync from publisher for an existing
 subscription. The account for authentication is a 'repl_user' SQL
@@ -117,7 +117,7 @@ SQL> repl_sync ('demo-srv', 'demo-publication', 'repl_user', 'repl_passwd');
 
 </div>
 
-<div id="seealso_repl_sync" class="refsect1">
+<div>
 
 ## See Also
 

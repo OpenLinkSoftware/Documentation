@@ -1,10 +1,10 @@
-<div id="fn_nntp_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ nntp_get — Returns information about an NNTP server.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_nntp_get_01" class="funcsynopsis">
+<div>
 
 |                            |                                 |
 |----------------------------|---------------------------------|
@@ -26,7 +26,7 @@ nntp_get — Returns information about an NNTP server.
 |                            | in `first_message ` integer ,   |
 |                            | in `last_message ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ nntp_get — Returns information about an NNTP server.
 
 </div>
 
-<div id="desc_nntp_get_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ on the *`command`* parameter, thus:
 
 </div>
 
-<div id="params_nntp_get_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id97282" class="refsect2">
+<div>
 
 ### server
 
@@ -69,7 +69,7 @@ for NNTP, use \<hostname/IP address\>:119.
 
 </div>
 
-<div id="id97286" class="refsect2">
+<div>
 
 ### command
 
@@ -87,7 +87,7 @@ Command <span class="type">string </span> . Valid values are:
 
 </div>
 
-<div id="id97298" class="refsect2">
+<div>
 
 ### group
 
@@ -98,7 +98,7 @@ newsgroup.
 
 </div>
 
-<div id="ret_04" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -107,15 +107,15 @@ parameter.
 
 </div>
 
-<div id="errors_nntp_get_01" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id97308" class="table">
+<div>
 
-**Table 24.59. Errors signalled by**
+**Table 24.58. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                  |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|
@@ -134,15 +134,15 @@ parameter.
 
 </div>
 
-<div id="examples_nntp_get_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_nntp_get_1_01" class="example">
+<div>
 
 **Example 24.225. Get remote messages**
 
-<div class="example-contents">
+<div>
 
 This example retrieves messages from a remote NNTP server and stores
 them in a table.

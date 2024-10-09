@@ -1,6 +1,6 @@
-<div id="xq_precompilation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -46,11 +46,11 @@ The most important fact about pre-compilation is that passing parameters
 into XQuery statement is much more efficient than printing then into the
 text of the query. This is similar to SQL queries.
 
-<div id="ex_xq_precompilation" class="example">
+<div>
 
 **Example 15.22. Good and Poor Coding Practices**
 
-<div class="example-contents">
+<div>
 
 <span class="emphasis">*GOOD* </span> The expression is compiled once
 when SQL query is compiled:

@@ -1,10 +1,10 @@
-<div id="xpf_create_element" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ children
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_create_element" class="funcsynopsis">
+<div>
 
 |                                 |                    |
 |---------------------------------|--------------------|
@@ -27,7 +27,7 @@ children
 |                                 | `... ` ,           |
 |                                 | `childN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ children
 
 </div>
 
-<div id="xpf_desc_create_element" class="refsect1">
+<div>
 
 ## Description
 
@@ -79,11 +79,11 @@ that children.
 
 </div>
 
-<div id="xpf_params_create_element" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126564" class="refsect2">
+<div>
 
 ### head
 
@@ -91,7 +91,7 @@ Name of the element or a sequence of name and attributes of the element.
 
 </div>
 
-<div id="id126567" class="refsect2">
+<div>
 
 ### childI
 
@@ -101,7 +101,7 @@ Children node or sequence of children node.
 
 </div>
 
-<div id="xpf_ret_create_element" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -109,15 +109,15 @@ Node
 
 </div>
 
-<div id="xpf_errors_create_element" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id126575" class="table">
+<div>
 
-**Table 24.139. Errors signalled by**
+**Table 24.138. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                                                                | Description                                                                                                             |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
@@ -140,15 +140,15 @@ Node
 
 </div>
 
-<div id="xpf_examples_create_element" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_create_element" class="example">
+<div>
 
 **Example 24.574. **
 
-<div class="example-contents">
+<div>
 
 Two following XQUERY expressions are equivalent:
 
@@ -165,7 +165,7 @@ create-element('H1', 'Hello, ', create-element('B', 'world'))
 
 </div>
 
-<div id="xpf_seealso_create_element" class="refsect1">
+<div>
 
 ## See Also
 

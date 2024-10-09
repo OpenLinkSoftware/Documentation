@@ -1,10 +1,10 @@
-<div id="fn_csv_load_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ csv_load_file — Imports a CSV file into table.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_csv_load_file" class="funcsynopsis">
+<div>
 
 |                            |                              |
 |----------------------------|------------------------------|
@@ -27,7 +27,7 @@ csv_load_file — Imports a CSV file into table.
 |                            | in `trx_log_mode ` integer , |
 |                            | in `opts ` any `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ csv_load_file — Imports a CSV file into table.
 
 </div>
 
-<div id="desc_csv_load_file" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ Imports a CSV file into table.
 
 </div>
 
-<div id="params_csv_load_file" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89531" class="refsect2">
+<div>
 
 ### file_name
 
@@ -59,7 +59,7 @@ to_line offsets.
 
 </div>
 
-<div id="id89534" class="refsect2">
+<div>
 
 ### from_line
 
@@ -67,7 +67,7 @@ Default - 0, This means counted from the begining.
 
 </div>
 
-<div id="id89537" class="refsect2">
+<div>
 
 ### to_line
 
@@ -75,7 +75,7 @@ Default - null, This means counted to the end.
 
 </div>
 
-<div id="id89540" class="refsect2">
+<div>
 
 ### table_name
 
@@ -83,7 +83,7 @@ The table the data to be inserted into.
 
 </div>
 
-<div id="id89543" class="refsect2">
+<div>
 
 ### trx_log_mode
 
@@ -93,7 +93,7 @@ commit.
 
 </div>
 
-<div id="id89546" class="refsect2">
+<div>
 
 ### opts
 
@@ -108,7 +108,7 @@ vector ('csv-delimiter', self.delim, 'csv-quote', self.quot)
 
 </div>
 
-<div id="errors_csv_load_file" class="refsect1">
+<div>
 
 ## Errors
 
@@ -117,15 +117,15 @@ columns error will be signaled.
 
 </div>
 
-<div id="examples_csv_load_file" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_csv_load_file" class="example">
+<div>
 
 **Example 24.124. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>create procedure my_csv_lf (in file_name varchar)
@@ -182,7 +182,7 @@ Phone;Business Fax;Pager;Company;Job Title;Department;Office Location;Notes
 
 </div>
 
-<div id="seealso_csv_load_file" class="refsect1">
+<div>
 
 ## See Also
 

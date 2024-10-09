@@ -1,6 +1,6 @@
-<div id="rdfsqlfromsparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ code so SQL functions can be used even if <span class="emphasis">*define
 output:valmode 'LONG'*</span> forces the use of RDF representation in
 the result set.
 
-<div id="rdfsqlfromsparqlex1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -86,7 +86,7 @@ Timothy Berners-Lee TimBL
 1 Rows. -- 30 msec.
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -122,9 +122,9 @@ Usage Statistics Examples</a></p></li>
 
 </div>
 
-<div id="rdfsqlfromsparqlex2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -168,9 +168,9 @@ http://dbpedia.org/resource/West_Bromwich              West Bromwich            
 
 </div>
 
-<div id="rdfsqlfromsparqlex3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -199,7 +199,7 @@ _______________________________________________________________________________
 2 Rows. -- 2 msec.
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

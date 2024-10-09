@@ -1,6 +1,6 @@
-<div id="macosxodbcdsnconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,15 +27,15 @@ Once the iODBC Administrator window has appeared you can press the
 <span class="emphasis">*System DSN*</span> panel to add a new Data
 Source entry.
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig01" class="figure">
+<div>
 
 **Figure 2.54. ODBC Administrator**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ODBC Administrator](images/mac/config01.jpg)
 
@@ -52,15 +52,15 @@ Source entry.
 Choose the driver that you wish to create a Data Source for, in this
 case the Virtuoso Driver (3.0).
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig02" class="figure">
+<div>
 
 **Figure 2.55. ODBC Administrator - Choose Virtuoso Driver**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ODBC Administrator - Choose Virtuoso Driver](images/mac/config03.jpg)
 
@@ -76,15 +76,15 @@ case the Virtuoso Driver (3.0).
 
 Provide all required details in the fields provided by the setup panel.
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig03" class="figure">
+<div>
 
 **Figure 2.56. ODBC Administrator - Configure Virtuoso DSN**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ODBC Administrator - Configure Virtuoso DSN](images/mac/config04.jpg)
 
@@ -101,15 +101,15 @@ Provide all required details in the fields provided by the setup panel.
 The server can be picked from the list of Zero Configuration Datasources
 that is discovered.
 
-<div class="figure-float">
+<div>
 
-<div id="osximage23" class="figure">
+<div>
 
 **Figure 2.57. Pick Zero Config**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Pick Zero Config](images/mac/osximage23.gif)
 
@@ -125,15 +125,15 @@ that is discovered.
 
 Alternatively a manual selection can be made for the server.
 
-<div class="figure-float">
+<div>
 
-<div id="osximage25" class="figure">
+<div>
 
 **Figure 2.58. Pick manual mode**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Pick manual mode](images/mac/osximage25.gif)
 
@@ -149,15 +149,15 @@ Alternatively a manual selection can be made for the server.
 
 In this case enter the hostname (or IP) and port number.
 
-<div class="figure-float">
+<div>
 
-<div id="osximage34" class="figure">
+<div>
 
 **Figure 2.59. Manual Server Entry**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Manual Server Entry](images/mac/osximage34.gif)
 
@@ -171,15 +171,15 @@ In this case enter the hostname (or IP) and port number.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig04" class="figure">
+<div>
 
 **Figure 2.60. ODBC Administrator - Configure Virtuoso DSN**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ODBC Administrator - Configure Virtuoso DSN](images/mac/config05.jpg)
 
@@ -193,15 +193,15 @@ In this case enter the hostname (or IP) and port number.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig06" class="figure">
+<div>
 
 **Figure 2.61. ODBC Administrator - Configure Virtuoso DSN**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ODBC Administrator - Configure Virtuoso DSN](images/mac/config06.jpg)
 

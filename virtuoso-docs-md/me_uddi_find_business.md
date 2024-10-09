@@ -1,10 +1,10 @@
-<div id="me_uddi_find_business" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ supplied criteria.
 
 </div>
 
-<div id="syntax_uddi_find_business_01" class="refsect1">
+<div>
 
 ## Syntax
 
@@ -30,14 +30,14 @@ supplied criteria.
 
 </div>
 
-<div id="params_uddi_find_business_01" class="refsect1">
+<div>
 
 ## Attributes & Children
 
 All arguments listed here are mutually exclusive except
 *`findQualifiers`* .
 
-<div id="id114843" class="refsect2">
+<div>
 
 ### maxRows
 
@@ -46,7 +46,7 @@ number of results returned.
 
 </div>
 
-<div id="id114846" class="refsect2">
+<div>
 
 ### findQualifiers
 
@@ -55,7 +55,7 @@ default behavior of search functionality.
 
 </div>
 
-<div id="id114850" class="refsect2">
+<div>
 
 ### name
 
@@ -65,7 +65,7 @@ the value passed (leftmost match).
 
 </div>
 
-<div id="id114855" class="refsect2">
+<div>
 
 ### identifierBag
 
@@ -75,7 +75,7 @@ the identifiers passed (logical OR).
 
 </div>
 
-<div id="id114860" class="refsect2">
+<div>
 
 ### categoryBag
 
@@ -85,7 +85,7 @@ passed (logical AND).
 
 </div>
 
-<div id="id114865" class="refsect2">
+<div>
 
 ### tModelBag
 
@@ -99,7 +99,7 @@ formatted as URN qualified uuid values (e.g. prefixed with "uuid:")
 
 </div>
 
-<div id="id114877" class="refsect2">
+<div>
 
 ### discoveryURLs
 
@@ -117,7 +117,7 @@ OR).
 
 </div>
 
-<div id="ret_uddi_find_business_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -138,7 +138,7 @@ requirements will be returned.
 
 </div>
 
-<div id="errors_uddi_find_business_01" class="refsect1">
+<div>
 
 ## Errors
 
@@ -146,11 +146,11 @@ If an error occurs in processing this message, a *`dispositionReport`*
 structure will be returned to the caller in a SOAP Fault. The following
 error information will be relevant:
 
-<div id="id114912" class="table">
+<div>
 
-**Table 24.92. Errors signalled by get_authToken**
+**Table 24.91. Errors signalled by get_authToken**
 
-<div class="table-contents">
+<div>
 
 | Error Code                                       | Description                                                                                                         |
 |--------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|

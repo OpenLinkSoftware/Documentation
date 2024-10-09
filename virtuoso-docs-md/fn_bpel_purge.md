@@ -1,10 +1,10 @@
-<div id="fn_bpel_purge" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ BPEL.BPEL.purge_instance — removes old BPEL process instances
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_purge_01" class="funcsynopsis">
+<div>
 
 |                                       |                                         |
 |---------------------------------------|-----------------------------------------|
 | ` `**`BPEL.BPEL.purge_instance`**` (` | in `completed_before ` datetime ,       |
 |                                       | in `make_archive ` int (default 1) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,11 +33,11 @@ BPEL.BPEL.purge_instance — removes old BPEL process instances
 
 </div>
 
-<div id="params_purge_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130015" class="refsect2">
+<div>
 
 ### completed_before
 
@@ -46,7 +46,7 @@ date and time will be removed
 
 </div>
 
-<div id="id130019" class="refsect2">
+<div>
 
 ### make_archive
 
@@ -57,13 +57,13 @@ removal
 
 </div>
 
-<div id="ret_purge_01" class="refsect1">
+<div>
 
 ## Return Types
 
 </div>
 
-<div id="desc_purge_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -72,15 +72,15 @@ before the datetime specified.
 
 </div>
 
-<div id="examples_purge_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_purge_01" class="example">
+<div>
 
 **Example 24.642. Simple example**
 
-<div class="example-contents">
+<div>
 
 The following wil lremove all process instances completed before 10 of
 January 2004.

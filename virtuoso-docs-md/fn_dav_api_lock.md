@@ -1,10 +1,10 @@
-<div id="fn_dav_api_lock" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ locks of DAV collections and resources
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dav_lock" class="funcsynopsis">
+<div>
 
 |                              |                              |
 |------------------------------|------------------------------|
@@ -32,7 +32,7 @@ locks of DAV collections and resources
 |                              | in `auth_uname ` varchar ,   |
 |                              | in `auth_pwd ` varchar `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ locks of DAV collections and resources
 
 </div>
 
-<div id="fsyn_dav_unlock" class="funcsynopsis">
+<div>
 
 |                            |                             |
 |----------------------------|-----------------------------|
@@ -49,7 +49,7 @@ locks of DAV collections and resources
 |                            | in `auth_uname ` varchar ,  |
 |                            | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -57,7 +57,7 @@ locks of DAV collections and resources
 
 </div>
 
-<div id="fsyn_dav_is_locked" class="funcsynopsis">
+<div>
 
 |                                   |                                  |
 |-----------------------------------|----------------------------------|
@@ -65,7 +65,7 @@ locks of DAV collections and resources
 |                                   | in `type ` char(1) ,             |
 |                                   | in `owned_tokens ` any := 1 `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -73,14 +73,14 @@ locks of DAV collections and resources
 
 </div>
 
-<div id="fsyn_dav_list_locks" class="funcsynopsis">
+<div>
 
 |                                    |                         |
 |------------------------------------|-------------------------|
 | `integer `**`DAV_LIST_LOCKS`**` (` | in `id ` any ,          |
 |                                    | in `type ` char(1) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -90,7 +90,7 @@ locks of DAV collections and resources
 
 </div>
 
-<div id="desc_dav_api_lock" class="refsect1">
+<div>
 
 ## Description
 
@@ -110,11 +110,11 @@ subtle application errors that are hard to debug.
 
 </div>
 
-<div id="params_dav_api_lock" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84997" class="refsect2">
+<div>
 
 ### path
 
@@ -126,7 +126,7 @@ name in future.
 
 </div>
 
-<div id="id85000" class="refsect2">
+<div>
 
 ### locktype
 
@@ -136,7 +136,7 @@ never used, so the recommended value is an empty string.
 
 </div>
 
-<div id="id85003" class="refsect2">
+<div>
 
 ### scope
 
@@ -145,7 +145,7 @@ exclusive.
 
 </div>
 
-<div id="id85006" class="refsect2">
+<div>
 
 ### token
 
@@ -154,7 +154,7 @@ not an update of the existing one.
 
 </div>
 
-<div id="id85009" class="refsect2">
+<div>
 
 ### owner_name
 
@@ -165,7 +165,7 @@ locks.
 
 </div>
 
-<div id="id85012" class="refsect2">
+<div>
 
 ### owned_tokens
 
@@ -175,7 +175,7 @@ an integer, this will work as empty list of tokens.
 
 </div>
 
-<div id="id85015" class="refsect2">
+<div>
 
 ### depth
 
@@ -188,7 +188,7 @@ collection lock or '0' for resource lock.
 
 </div>
 
-<div id="id85018" class="refsect2">
+<div>
 
 ### timeout_sec
 
@@ -198,7 +198,7 @@ week).
 
 </div>
 
-<div id="id85021" class="refsect2">
+<div>
 
 ### auth_uname
 
@@ -212,7 +212,7 @@ access.
 
 </div>
 
-<div id="id85024" class="refsect2">
+<div>
 
 ### auth_pwd
 
@@ -220,7 +220,7 @@ User password. Default is NULL.
 
 </div>
 
-<div id="id85027" class="refsect2">
+<div>
 
 ### id
 
@@ -231,15 +231,15 @@ DAV_SEARCH_ID().
 
 </div>
 
-<div id="examples_dav_api_lock" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_dav_api_lock_1" class="example">
+<div>
 
 **Example 24.78. Two concurrent users**
 
-<div class="example-contents">
+<div>
 
 The following example shows how two users can prevent each other from
 undesired operations.
@@ -323,7 +323,7 @@ Second user adds a property to the resource:  1321
 
 </div>
 
-<div id="seealso_dav_api_add_01" class="refsect1">
+<div>
 
 ## See Also
 

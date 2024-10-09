@@ -1,6 +1,6 @@
-<div id="plref" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="createprocstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,7 +50,7 @@ startup. Stored procedures are thus always available for use and need be
 defined only once. New procedures created with the same name as existing
 procedures automatically replace their predecessor.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                            |
 |:--------------------------:|:---------------------------------------------------------------------------|

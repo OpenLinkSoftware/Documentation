@@ -1,10 +1,10 @@
-<div id="fn_sparql_rexec_with_meta" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ and a vector of vector s of 'long valmode' values.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_rexec_with_meta" class="funcsynopsis">
+<div>
 
 |                                            |                            |
 |--------------------------------------------|----------------------------|
@@ -32,7 +32,7 @@ and a vector of vector s of 'long valmode' values.
 |                                            | out `metadata ` any ,      |
 |                                            | out `resultset ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -42,7 +42,7 @@ and a vector of vector s of 'long valmode' values.
 
 </div>
 
-<div id="desc_sparql_rexec_with_meta" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,11 +52,11 @@ of 'long valmode' values.
 
 </div>
 
-<div id="params_sparql_rexec_with_meta" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103760" class="refsect2">
+<div>
 
 ### service
 
@@ -64,7 +64,7 @@ service URI to call via HTTP.
 
 </div>
 
-<div id="id103763" class="refsect2">
+<div>
 
 ### query
 
@@ -72,7 +72,7 @@ text of SPARQL query to execute.
 
 </div>
 
-<div id="id103766" class="refsect2">
+<div>
 
 ### dflt_graph
 
@@ -81,7 +81,7 @@ query
 
 </div>
 
-<div id="id103769" class="refsect2">
+<div>
 
 ### named_graphs
 
@@ -90,7 +90,7 @@ specified in query
 
 </div>
 
-<div id="id103772" class="refsect2">
+<div>
 
 ### req_hdr
 
@@ -99,7 +99,7 @@ additional HTTP header lines that should be passed to the service;
 
 </div>
 
-<div id="id103775" class="refsect2">
+<div>
 
 ### maxrows
 
@@ -107,7 +107,7 @@ limit on numbers of rows that should be returned.
 
 </div>
 
-<div id="id103778" class="refsect2">
+<div>
 
 ### bnode_dict
 
@@ -115,7 +115,7 @@ dictionary of bnode ID references.
 
 </div>
 
-<div id="id103781" class="refsect2">
+<div>
 
 ### metadata
 
@@ -123,7 +123,7 @@ metadata like exec () returns.
 
 </div>
 
-<div id="id103784" class="refsect2">
+<div>
 
 ### resultset
 
@@ -133,7 +133,7 @@ results as 'long valmode' value.
 
 </div>
 
-<div id="ret_sparql_rexec_with_meta" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -141,7 +141,7 @@ any
 
 </div>
 
-<div id="seealso_sparql_rexec_with_meta" class="refsect1">
+<div>
 
 ## See Also
 

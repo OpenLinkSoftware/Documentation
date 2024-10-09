@@ -1,10 +1,10 @@
-<div id="fn_rdf_suo_apply_patch" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,18 +14,18 @@ default_target_graph argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_suo_apply_patch" class="funcsynopsis">
+<div>
 
 |                                         |                                        |
 |-----------------------------------------|----------------------------------------|
 | ` `**`DB.DBA.RDF_SUO_APPLY_PATCH`**` (` | in `patch_graph ` IRI_ID ,             |
 |                                         | in `default_target_graph ` IRI_ID `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ default_target_graph argument.
 
 </div>
 
-<div id="desc_rdf_suo_apply_patch" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ the first argument to this patch function.
 
 </div>
 
-<div id="params_rdf_suo_apply_patch" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102302" class="refsect2">
+<div>
 
 ### patch_graph
 
@@ -67,7 +67,7 @@ IRI ID of the patch graph
 
 </div>
 
-<div id="id102305" class="refsect2">
+<div>
 
 ### default_target_graph
 
@@ -77,7 +77,7 @@ IRI ID of the default target graph
 
 </div>
 
-<div id="ret_rdf_suo_apply_patch" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,7 +85,7 @@ integer
 
 </div>
 
-<div id="seealso_rdf_suo_apply_patch" class="refsect1">
+<div>
 
 ## See Also
 

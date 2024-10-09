@@ -1,10 +1,10 @@
-<div id="fn_xml_tree" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ vectors.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_tree" class="funcsynopsis">
+<div>
 
 |                       |                                         |
 |-----------------------|-----------------------------------------|
@@ -28,7 +28,7 @@ vectors.
 |                       | in `content_language ` varchar ,        |
 |                       | in `dtd_validator_config ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ vectors.
 
 </div>
 
-<div id="desc_xml_tree" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ vectors.
 
 </div>
 
-<div id="params_xml_tree" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123356" class="refsect2">
+<div>
 
 ### document
 
@@ -60,7 +60,7 @@ vectors.
 
 </div>
 
-<div id="id123359" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -69,7 +69,7 @@ mode (with quiet recovery after any syntax error)
 
 </div>
 
-<div id="id123362" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -78,7 +78,7 @@ relative from given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id123365" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -87,7 +87,7 @@ relative from given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id123368" class="refsect2">
+<div>
 
 ### content_language
 
@@ -97,7 +97,7 @@ words from various human languages).
 
 </div>
 
-<div id="id123371" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -111,7 +111,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="ret_xml_tree" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -119,15 +119,15 @@ vector of vectors representing the parsed tree of XML.
 
 </div>
 
-<div id="examples_xml_tree" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_tree" class="example">
+<div>
 
 **Example 24.517. Making an XML tree**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 declare tree any;
@@ -146,7 +146,7 @@ tree := xml_tree (file_to_string ('doc.xml'));
 
 </div>
 
-<div id="seealso_xml_tree" class="refsect1">
+<div>
 
 ## See Also
 

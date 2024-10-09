@@ -1,6 +1,6 @@
-<div id="userstmtid" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ This sets the default qualifier for the connection in question. The
 identifier cannot be an expression. The identifier is subject to
 whatever case conversions may be in effect.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|

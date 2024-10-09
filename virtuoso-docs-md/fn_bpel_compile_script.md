@@ -1,10 +1,10 @@
-<div id="fn_bpel_compile_script" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ BPEL.BPEL.compile_script — Compile a BPEL script source
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_compile_script_01" class="funcsynopsis">
+<div>
 
 |                                       |                                     |
 |---------------------------------------|-------------------------------------|
@@ -25,7 +25,7 @@ BPEL.BPEL.compile_script — Compile a BPEL script source
 |                                       | in `opts ` any (default null) ,     |
 |                                       | in `no_check ` int (default 0) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,11 +35,11 @@ BPEL.BPEL.compile_script — Compile a BPEL script source
 
 </div>
 
-<div id="params_compile_script_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129869" class="refsect2">
+<div>
 
 ### scp_id
 
@@ -48,7 +48,7 @@ compiled
 
 </div>
 
-<div id="id129873" class="refsect2">
+<div>
 
 ### vdir
 
@@ -57,7 +57,7 @@ this process (absolute path)
 
 </div>
 
-<div id="id129877" class="refsect2">
+<div>
 
 ### opts
 
@@ -66,7 +66,7 @@ specified
 
 </div>
 
-<div id="id129881" class="refsect2">
+<div>
 
 ### no_check
 
@@ -78,7 +78,7 @@ have corresponding WSDL uploaded
 
 </div>
 
-<div id="ret_compile_script_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -86,7 +86,7 @@ this function has no return value
 
 </div>
 
-<div id="desc_compile_script_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -95,15 +95,15 @@ scp_id and link to it all WSDL definitions have been associated to it.
 
 </div>
 
-<div id="examples_compile_script_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_compile_script_01" class="example">
+<div>
 
 **Example 24.638. Simple example**
 
-<div class="example-contents">
+<div>
 
 The following will compile a BPEL script with identifier equals to 1
 

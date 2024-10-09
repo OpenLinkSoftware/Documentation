@@ -1,6 +1,6 @@
-<div id="triggers_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ cause the trigger code to be run. Update of non-sensitive columns will
 not invoke the trigger. If no column list is specified any update will
 invoke the trigger.
 
-<div id="createtrigger" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -142,11 +142,11 @@ old_alias
     | NEW AS NAME
 ```
 
-<div id="ex_createtrigger" class="example">
+<div>
 
 **Example 11.8. Creating a simple trigger**
 
-<div class="example-contents">
+<div>
 
 This trigger is a simple example of one that would cause an endless loop
 if further triggering were not disabled.
@@ -180,11 +180,11 @@ finishes no other triggers are effected by it.
 
   
 
-<div id="ex_createtriggerinsteadof" class="example">
+<div>
 
 **Example 11.9. Creating a simple trigger using INSTEAD OF**
 
-<div class="example-contents">
+<div>
 
 This trigger example will show how INSTEAD OF can be used to intercept
 the values of an insert statement and re-write it. In this case the

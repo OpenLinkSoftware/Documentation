@@ -1,6 +1,6 @@
-<div id="determiningactions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

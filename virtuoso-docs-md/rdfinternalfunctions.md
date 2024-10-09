@@ -1,6 +1,6 @@
-<div id="rdfinternalfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfinternalconversion" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,9 +43,9 @@ create function DB.DBA."http://www.w3.org/2001/XMLSchema#integer" (in strg varch
 
 </div>
 
-<div id="rdfinternalpredicates" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

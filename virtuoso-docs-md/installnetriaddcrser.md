@@ -1,6 +1,6 @@
-<div id="installnetriaddcrser" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 <span class="emphasis">*Step 1 - Create the Visual Studio
 Projects.*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Open
 
@@ -39,15 +39,15 @@ Projects.*</span>
 
     button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="ria1" class="figure">
+    <div>
 
     **Figure 2.171. .NET RIA Services Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![.NET RIA Services Application](images/ui/ria1.png)
 
@@ -71,7 +71,7 @@ ADO.NET entity data model to the server project.
 
 <span class="emphasis">*Step 2 - Add the Data Model*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Right click the server project in the
 
@@ -134,15 +134,15 @@ ADO.NET entity data model to the server project.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="ria2" class="figure">
+<div>
 
 **Figure 2.172. .NET RIA Services Application**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![.NET RIA Services Application](images/ui/ria2.png)
 
@@ -164,7 +164,7 @@ solution.
 
 <span class="emphasis">*Step 3 - Add a Domain Service.*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  First build the solution.
 
@@ -199,15 +199,15 @@ solution.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="ria3" class="figure">
+<div>
 
 **Figure 2.173. .NET RIA Services Application**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![.NET RIA Services Application](images/ui/ria3.png)
 
@@ -228,7 +228,7 @@ project. At this point you need to build the solution again.
 
 <span class="emphasis">*Step 4 - Display The Data*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  From the
 
@@ -289,15 +289,15 @@ project. At this point you need to build the solution again.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="ria4" class="figure">
+<div>
 
 **Figure 2.174. .NET RIA Services Application**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![.NET RIA Services Application](images/ui/ria4.png)
 

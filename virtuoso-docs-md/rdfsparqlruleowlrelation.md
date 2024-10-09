@@ -1,6 +1,6 @@
-<div id="rdfsparqlruleowlrelation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 This section provides queries usage for inference rules, owl support and
 Relationship Vocabulary.
 
-<div id="rdfsparqlruleowlrelationexample1" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -81,9 +81,9 @@ SELECT * FROM SYS_RDF_SCHEMA ;
 
 </div>
 
-<div id="rdfsparqlruleowlrelationexample2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -116,9 +116,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlruleowlrelationexample3" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -163,9 +163,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlruleowlrelationexample4" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -210,9 +210,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlruleowlrelationexample5" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -245,9 +245,9 @@ WHERE
 
 </div>
 
-<div id="rdfsparqlruleowlrelationexample6" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

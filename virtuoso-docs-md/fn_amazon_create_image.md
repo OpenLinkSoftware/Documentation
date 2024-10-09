@@ -1,10 +1,10 @@
-<div id="fn_amazon_create_image" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ Amazon EBS-backed instance that is either running or stopped.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_amazon_create_image" class="funcsynopsis">
+<div>
 
 |                                         |                                              |
 |-----------------------------------------|----------------------------------------------|
@@ -27,7 +27,7 @@ Amazon EBS-backed instance that is either running or stopped.
 |                                         | in `secret_key ` varchar ,                   |
 |                                         | in `http_proxy ` varchar (default null) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ Amazon EBS-backed instance that is either running or stopped.
 
 </div>
 
-<div id="desc_amazon_create_image" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ is either running or stopped.
 
 </div>
 
-<div id="params_amazon_create_image" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98032" class="refsect2">
+<div>
 
 ### aws_access_key
 
@@ -58,7 +58,7 @@ Amazon Access Key ID.
 
 </div>
 
-<div id="id98035" class="refsect2">
+<div>
 
 ### instance_id
 
@@ -66,7 +66,7 @@ Image instance ID (check Amazon list of instances).
 
 </div>
 
-<div id="id98038" class="refsect2">
+<div>
 
 ### image_name
 
@@ -74,7 +74,7 @@ New image ID (check Amazon list of images).
 
 </div>
 
-<div id="id98041" class="refsect2">
+<div>
 
 ### secret_key
 
@@ -82,7 +82,7 @@ AWS Security Token.
 
 </div>
 
-<div id="id98044" class="refsect2">
+<div>
 
 ### http_proxy
 
@@ -92,15 +92,15 @@ Proxy server, can be null or empty.
 
 </div>
 
-<div id="examples_amazon_create_image" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_amazon_create_image" class="example">
+<div>
 
 **Example 24.235. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure simple_test()
@@ -126,7 +126,7 @@ create procedure simple_test()
 
 </div>
 
-<div id="seealso_amazon_create_image" class="refsect1">
+<div>
 
 ## See Also
 

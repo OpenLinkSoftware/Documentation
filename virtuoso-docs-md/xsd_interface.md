@@ -1,6 +1,6 @@
-<div id="xsd_interface" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,7 +43,7 @@ Virtuoso is based on
 <a href="http://www.w3c.org/XML/Schema" class="ulink" target="_top">the
 W3C XML Schema Specification</a> .
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

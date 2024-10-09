@@ -1,6 +1,6 @@
-<div id="ch-sampleapps" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -32,7 +32,7 @@ explains how to use these applications.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -97,7 +97,7 @@ Providers for OLE-DB), thus separate ODBC & JDBC sample applications
 (including source code) have been packaged and integrated into the
 Virtuoso installer. The current list of sample applications include:
 
-<div class="itemizedlist">
+<div>
 
 - **C++ Demo. ** an ODBC based Interactive SQL processor written in C++.
 
@@ -113,7 +113,7 @@ Virtuoso installer. The current list of sample applications include:
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - **JDBCDemo. ** a JDBC sample application that demonstrates Virtuoso's
   SQL query.
@@ -135,9 +135,9 @@ Virtuoso installer. The current list of sample applications include:
 
 </div>
 
-<div id="binsrcloc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -151,9 +151,9 @@ Virtuoso installer. The current list of sample applications include:
 
 </div>
 
-<div id="odbcdemos" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -185,9 +185,9 @@ reside under the following directory structure, for example:
 
 </div>
 
-<div id="sampjdbcdemos" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

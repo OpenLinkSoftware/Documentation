@@ -1,6 +1,6 @@
-<div id="usinginparams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

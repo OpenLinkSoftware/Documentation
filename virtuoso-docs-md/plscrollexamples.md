@@ -1,6 +1,6 @@
-<div id="plscrollexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,12 +14,12 @@
 
 </div>
 
-<div id="id36109" class="example">
+<div>
 
 **Example 11.11. Procedure using scrollable cursor to read the keys in
 batches of 20**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure READ_KEYS_NEXT_20 (in mask varchar, inout bm any) returns integer

@@ -1,10 +1,10 @@
-<div id="fn_floor" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ floor — Round a number to negative infinity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_floor" class="funcsynopsis">
+<div>
 
 |                    |                               |
 |--------------------|-------------------------------|
 | ` `**`floor`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ floor — Round a number to negative infinity.
 
 </div>
 
-<div id="desc_floor" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ floor — Round a number to negative infinity.
 
 </div>
 
-<div id="params_floor" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89185" class="refsect2">
+<div>
 
 ### x
 
@@ -55,7 +55,7 @@ floor — Round a number to negative infinity.
 
 </div>
 
-<div id="ret_floor" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -63,15 +63,15 @@ floor — Round a number to negative infinity.
 
 </div>
 
-<div id="examples_floor" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_floor" class="example">
+<div>
 
 **Example 24.118. Simple Examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select floor (-0.513513), floor (0.513513), floor (123.4567);
@@ -92,7 +92,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_floor" class="refsect1">
+<div>
 
 ## See also
 

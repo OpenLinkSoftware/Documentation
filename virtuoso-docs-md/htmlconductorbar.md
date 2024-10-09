@@ -1,6 +1,6 @@
-<div id="htmlconductorbar" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -33,9 +33,9 @@ the various interfaces and features that Virtuoso has to offer.
 
 </div>
 
-<div id="conductorbar" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -52,15 +52,15 @@ the various interfaces and features that Virtuoso has to offer.
 The Main Navigation Bar provides different tabs that allow you to
 administrate your Virtuoso server or use one of the provided samples.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuimenucutout" class="figure">
+<div>
 
 **Figure 6.1. Navigation**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Navigation](images/menu-cutout.png)
 
@@ -79,15 +79,15 @@ manage user accounts; scheduler; Virtuoso Server parameter and Access
 Control Settings. You can also install /upgrade /uninstall Virtuoso
 packages and Monitor Virtuoso Server Statistics.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuisystemadmin" class="figure">
+<div>
 
 **Figure 6.2. System Administration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![System Administration](images/systemadmin.png)
 
@@ -105,15 +105,15 @@ From "Database" you can administrate your database, manage the Virtuoso
 Relational Database System, administrate views, tables, stored
 procedures, trigger definitions, user define types, backups.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuidatabase" class="figure">
+<div>
 
 **Figure 6.3. Database Administration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Database Administration](images/database.png)
 
@@ -131,15 +131,15 @@ From "Replication" you can create Snapshot Replications to copy sections
 of the Database to remote locations or use Transactional Replication to
 keep Virtuoso Servers in sync over a definable interval.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuireplication" class="figure">
+<div>
 
 **Figure 6.4. Replication**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Replication](images/replication.png)
 
@@ -157,15 +157,15 @@ From "Web Application Server" you can configure Virtuoso's WebDAV, and
 HTTP Server functionality, which includes management of Virtual Domains
 & Directories.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuiwebdav" class="figure">
+<div>
 
 **Figure 6.5. Web Application Server Administration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Web Application Server Administration](images/webdav.png)
 
@@ -182,15 +182,15 @@ HTTP Server functionality, which includes management of Virtual Domains
 From "XML" you can query Relational and XML Data using SQL, XQUERY,
 XPATH, and FREE TEXT.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuiquerytools" class="figure">
+<div>
 
 **Figure 6.6. Query Tools**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Query Tools](images/querytools.png)
 
@@ -207,15 +207,15 @@ XPATH, and FREE TEXT.
 From "Web Services" you can add/ edit/ remove Web Services Endpoints,
 perform WSDL Import/Export, manage your BPEL processes.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuiwebservices" class="figure">
+<div>
 
 **Figure 6.7. Web Services**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Web Services](images/webservices.png)
 
@@ -234,15 +234,15 @@ add/edit RDF Mapping, make statistics, manage graphs, import schemas and
 define namespaces, generated Linked Data Views, upload to the Quad
 Store:
 
-<div class="figure-float">
+<div>
 
-<div id="adminuirdf" class="figure">
+<div>
 
 **Figure 6.8. RDF**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![RDF](images/rdf.png)
 
@@ -259,15 +259,15 @@ Store:
 Virtuoso's NNTP support which includes linking third-party NNTP servers
 into Virtuoso and controlling access to these servers.
 
-<div class="figure-float">
+<div>
 
-<div id="adminuinntp" class="figure">
+<div>
 
 **Figure 6.9. NNTP Administration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![NNTP Administration](images/nntp.png)
 

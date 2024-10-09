@@ -1,6 +1,6 @@
-<div id="saveqrytoxmltemplatessql_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,15 +23,15 @@ First we will make a new WebDAV directory. From Web Application Server
 the shown form enter for "Folder Name": xmlt. Choose for "Owner" dav and
 click the "Create" button.
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate001x" class="figure">
+<div>
 
 **Figure 15.8. Creating a new directory (collection) in WebDAV**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Creating a new directory (collection) in
 WebDAV](images/xmltemplate001.png)
@@ -51,16 +51,16 @@ XML Templates can be executed later. Go to Web Application Server /
 Virtual Domains & Directories and for your {Default Web Site} click the
 link "New Directory". In the shown form click "Next".
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate004x" class="figure">
+<div>
 
 **Figure 15.9. Configuring a Virtual Directory to respond to XML
 Template requests from our Dav**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Configuring a Virtual Directory to respond to XML Template requests
 from our Dav](images/xmltemplate004.png)
@@ -103,15 +103,15 @@ We will start by testing the following query against the Demo database
 </bib>
 ```
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate007" class="figure">
+<div>
 
 **Figure 15.10. XQUERY query against the Demo database**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![XQUERY query against the Demo database](images/xmltemplate007.png)
 
@@ -129,15 +129,15 @@ Now we will save this as an XML template by pressing the Save button.
 The query we used will be copied to the save XML template page. We will
 ensure that the name of the file is `/DAV/xmlt/xquery-template.xml` :
 
-<div class="figure-float">
+<div>
 
-<div id="xmltemplate008" class="figure">
+<div>
 
 **Figure 15.11. Saving the XML template for the Xquery query**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Saving the XML template for the Xquery
 query](images/xmltemplate008.png)
@@ -152,7 +152,7 @@ query](images/xmltemplate008.png)
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                          |
 |:--------------------------:|:-----------------------------------------|

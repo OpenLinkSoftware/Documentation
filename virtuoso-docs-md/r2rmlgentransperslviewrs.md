@@ -1,6 +1,6 @@
-<div id="r2rmlgentransperslviewrs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 This section describes how you can generate R2RML Scripts from Linked
 Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure you have installed Conductor <a
     href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/conductor_dav.vad"
@@ -30,16 +30,16 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 
 4.  Go to Linked Data -\> Views:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="r0" class="figure">
+    <div>
 
     **Figure 16.74. Generating Transient and/or Persistent Linked Data
     Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating Transient and/or Persistent Linked Data
     Views](images/ui/r0.png)
@@ -56,16 +56,16 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 
 5.  Select Qualifier Demo:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="r00" class="figure">
+    <div>
 
     **Figure 16.75. Generating Transient and/or Persistent Linked Data
     Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating Transient and/or Persistent Linked Data
     Views](images/ui/r00.png)
@@ -85,16 +85,16 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
     DB: Categories, Customers, Employees, Order_Details, Orders,
     Products .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="r1g" class="figure">
+    <div>
 
     **Figure 16.76. Generating Transient and/or Persistent Linked Data
     Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating Transient and/or Persistent Linked Data
     Views](images/ui/r1g.png)
@@ -111,16 +111,16 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 
 7.  Click Generate via Wizard:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="r2g" class="figure">
+    <div>
 
     **Figure 16.77. Generating Transient and/or Persistent Linked Data
     Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating Transient and/or Persistent Linked Data
     Views](images/ui/r2g.png)
@@ -140,16 +140,16 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 9.  The R2RML script for the selected table(s) will be generated and
     displayed in the R2RML Graph text-area:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="r3g" class="figure">
+    <div>
 
     **Figure 16.78. Generating Transient and/or Persistent Linked Data
     Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating Transient and/or Persistent Linked Data
     Views](images/ui/r3g.png)
@@ -164,16 +164,16 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="r4g" class="figure">
+    <div>
 
     **Figure 16.79. Generating Transient and/or Persistent Linked Data
     Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating Transient and/or Persistent Linked Data
     Views](images/ui/r4g.png)
@@ -188,16 +188,16 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="r5g" class="figure">
+    <div>
 
     **Figure 16.80. Generating Transient and/or Persistent Linked Data
     Views**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Generating Transient and/or Persistent Linked Data
     Views](images/ui/r5g.png)

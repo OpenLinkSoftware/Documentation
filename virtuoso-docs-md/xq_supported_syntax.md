@@ -1,6 +1,6 @@
-<div id="xq_supported_syntax" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

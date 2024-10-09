@@ -1,10 +1,10 @@
-<div id="fn_http_header_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_header_get — returns header of current HTTP request
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_header_get" class="funcsynopsis">
+<div>
 
 |                                     |      |
 |-------------------------------------|------|
 | `varchar `**`http_header_get`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_header_get — returns header of current HTTP request
 
 </div>
 
-<div id="desc_http_header_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,7 +45,7 @@ processing of a URL.
 
 </div>
 
-<div id="ret_http_header_get" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -53,15 +53,15 @@ Varchar of the current headers
 
 </div>
 
-<div id="examples_http_header_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_header_get" class="example">
+<div>
 
 **Example 24.165. Retrieving the current header**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <?vsp

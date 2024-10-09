@@ -1,6 +1,6 @@
-<div id="installvsent" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,9 +23,9 @@ the School model, bind the query results to display controls to show the
 results of the queries, and then make updates to objects and persist the
 changes to the database.
 
-<div id="installvsentprereq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,7 +42,7 @@ changes to the database.
 In order to create an Entity Framework Application in your own
 environment you will need:
 
-<div class="orderedlist">
+<div>
 
 1.  Microsoft Visual Studio 2008 SP1, the ADO.NET Entity Framework
     runtime and associated tools are included in Visual Studio 2008 SP1.

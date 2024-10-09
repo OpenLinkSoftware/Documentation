@@ -1,6 +1,6 @@
-<div id="dropindex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

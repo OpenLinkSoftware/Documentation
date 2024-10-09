@@ -1,6 +1,6 @@
-<div id="jvmapisecurity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -49,7 +49,7 @@ class="function">import_jar()</code></a> function can also be used to
 import classes, its third optional parameter can be used to define the
 security mode.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                          |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -58,11 +58,11 @@ security mode.
 
 </div>
 
-<div id="ex_javasecurity" class="example">
+<div>
 
 **Example 18.1. Java Security**
 
-<div class="example-contents">
+<div>
 
 The class Write_file, shown below, will attempt to write to a file on
 the file system. This class will be used to create a user defined type

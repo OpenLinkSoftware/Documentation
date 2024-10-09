@@ -1,6 +1,6 @@
-<div id="asmxhosting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,12 +22,12 @@ directory to the required location and then make a Virtual Directory
 pointing to it. If the location is in WebDAV then ensure that execute
 permissions are set for any .asmx files.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|
 | ![\[Tip\]](images/tip.png) | See Also:                                                                |
-|                            | <a href="rthwritaspxapps.html" class="link" shape="rect"                 
+|                            | <a href="rthwritaspxapps.html" class="link"                              
                               title="14.5. Deploying ASP.Net Web Applications">ASP.Net Web Application  
                               Hosting</a>                                                               |
 

@@ -1,6 +1,6 @@
-<div id="installcrweb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,9 +21,9 @@ RDF data by clicking on dereferenceable
 <a href="ch-rdfandsparql.html#rdfiriidtype" class="link"
 title="16.1.1. IRI_ID Type">IRIs</a> .
 
-<div id="installcrwebintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,7 +37,7 @@ title="16.1.1. IRI_ID Type">IRIs</a> .
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  The example assumes that you have a local Virtuoso server with the
     Northwind demo database installed. If the demo database is not

@@ -1,6 +1,6 @@
-<div id="msdtcsample2" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -23,9 +23,9 @@ The MS DTC OLE DB demo is located in the
 folder. This demo shows usage of distributed transactions driven by MS
 DTC through OLE DB.
 
-<div id="msdtcdemo2setup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -48,9 +48,9 @@ The test needs two Virtuoso server instances running on ports 1111 and
 
 </div>
 
-<div id="msdtcdemostart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -74,9 +74,9 @@ voledbtest.exe
 
 </div>
 
-<div id="msdtcdemodescription" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

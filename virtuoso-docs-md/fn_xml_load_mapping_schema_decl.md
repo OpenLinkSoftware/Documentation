@@ -1,10 +1,10 @@
-<div id="fn_xml_load_mapping_schema_decl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xml_load_mapping_schema_decl — creates a xml view from mapping schema.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_load_mapping_schema_decl" class="funcsynopsis">
+<div>
 
 |                                           |                                     |
 |-------------------------------------------|-------------------------------------|
@@ -25,7 +25,7 @@ xml_load_mapping_schema_decl — creates a xml view from mapping schema.
 |                                           | in `content_encoding ` varchar ,    |
 |                                           | in `content_language ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ xml_load_mapping_schema_decl — creates a xml view from mapping schema.
 
 </div>
 
-<div id="desc_66" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ and creates a xml view.
 
 </div>
 
-<div id="params_31" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123107" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -57,7 +57,7 @@ given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id123110" class="refsect2">
+<div>
 
 ### mapping_schema_file
 
@@ -65,7 +65,7 @@ well formed XML document containing a mapping schema
 
 </div>
 
-<div id="id123113" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -75,7 +75,7 @@ mode and 'LATIN-1' for HTML mode
 
 </div>
 
-<div id="id123116" class="refsect2">
+<div>
 
 ### content_language
 
@@ -87,15 +87,15 @@ various human languages)
 
 </div>
 
-<div id="examples_15_01" class="refsect1">
+<div>
 
 ## 
 
-<div id="ex_xml_load_mapping_schema_decl" class="example">
+<div>
 
 **Example 24.514. Creating a xml view from a mapping schema**
 
-<div class="example-contents">
+<div>
 
 The xml view created by
 
@@ -159,7 +159,7 @@ create xml view "cat" as
 
 </div>
 
-<div id="seealso_40" class="refsect1">
+<div>
 
 ## See Also
 

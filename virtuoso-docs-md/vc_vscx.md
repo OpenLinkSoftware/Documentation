@@ -1,10 +1,10 @@
-<div id="vc_vscx" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ vscx
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_vscx" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
@@ -34,7 +34,7 @@ vscx
 |                      | `debug-srcline` (optional) ,  |
 |                      | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -44,7 +44,7 @@ vscx
 
 </div>
 
-<div id="vc_desc_vscx" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,7 +58,7 @@ page and value is an expression to be assigned.
 
 </div>
 
-<div id="vc_attrs_vscx" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -121,7 +121,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_vscx" class="refsect1">
+<div>
 
 ## Declaration of type vspx_vscx
 
@@ -134,16 +134,16 @@ overriding method vc_pre_render (stream any, n int) returns any
 
 </div>
 
-<div id="vc_ex_vscx" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_vscx__0" class="example">
+<div>
 
 **Example 14.48.  Outer page, including a navigation bar via
 vscx\_\_1.vspx**
 
-<div class="example-contents">
+<div>
 
 This page will embed another page twice, but not as simple inclusion.
 The second page is treated as a control and it's page class will be
@@ -180,11 +180,11 @@ instantiated twice as as a child of outer page.
 
   
 
-<div id="vc_ex_vscx__1" class="example">
+<div>
 
 **Example 14.49.  Simple navigation bar used as custom control**
 
-<div class="example-contents">
+<div>
 
 This page is used inside vscx\_\_0.vspx one as a custom control.
 

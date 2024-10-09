@@ -1,10 +1,10 @@
-<div id="vc_form" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ input.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_form" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
@@ -42,7 +42,7 @@ input.
 |                      | `debug-srcline` (optional) ,  |
 |                      | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -52,7 +52,7 @@ input.
 
 </div>
 
-<div id="vc_desc_form" class="refsect1">
+<div>
 
 ## Description
 
@@ -66,7 +66,7 @@ render pass.
 
 </div>
 
-<div id="vc_attrs_form" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -121,11 +121,11 @@ attribute will not be used when the resulting HTML is rendered.
 'simple' the vspx_form class will be instantiated, otherwise in case of
 'update' vspx_update_form subclass will be used.
 
-<div id="id40564" class="table">
+<div>
 
 **Table 14.6. Allowed values of the 'type' attribute**
 
-<div class="table-contents">
+<div>
 
 |        |                                                               |
 |--------|---------------------------------------------------------------|
@@ -196,7 +196,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_form" class="refsect1">
+<div>
 
 ## Declaration of type vspx_form
 
@@ -220,15 +220,15 @@ create type vspx_form under vspx_control
 
 </div>
 
-<div id="vc_ex_form" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_form__0" class="example">
+<div>
 
 **Example 14.32.  Simple entry form**
 
-<div class="example-contents">
+<div>
 
 The OK button of the form submits data from the form back to the same
 page.
@@ -257,11 +257,11 @@ page.
 
   
 
-<div id="vc_ex_form__1" class="example">
+<div>
 
 **Example 14.33.  Simple entry form containing various controls**
 
-<div class="example-contents">
+<div>
 
 The OK button of the form submits data from the form back to the same
 page. The check-box is validated against ragio group:
@@ -305,7 +305,7 @@ page. The check-box is validated against ragio group:
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0"
 data-summary="Tip: See Also: Reference Material in the Tutorial:">

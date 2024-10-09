@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtrickconstrprst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

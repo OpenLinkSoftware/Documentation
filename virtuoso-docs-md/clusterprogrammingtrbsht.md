@@ -1,6 +1,6 @@
-<div id="clusterprogrammingtrbsht" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,7 +18,7 @@ If an operation seems to hang, see the output of status ().
 
 Check for the presence of the following conditions:
 
-<div class="itemizedlist">
+<div>
 
 - The cluster line shows 0% CPU, no message traffic and an unchanging
   number of buffers wired, this is probably a bug. To reset, restart the
@@ -49,7 +49,7 @@ Check for the presence of the following conditions:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

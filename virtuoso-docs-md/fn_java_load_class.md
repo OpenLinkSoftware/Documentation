@@ -1,10 +1,10 @@
-<div id="fn_java_load_class" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ java_load_class — Declares a Java class to a Java VM
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_java_load_class" class="funcsynopsis">
+<div>
 
 |                              |                                        |
 |------------------------------|----------------------------------------|
 | ` `**`java_load_class`**` (` | in `java_class_name ` varchar ,        |
 |                              | in `java_class_bytecode ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ java_load_class — Declares a Java class to a Java VM
 
 </div>
 
-<div id="desc_java_load_class" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ WebDAV repository.
 
 </div>
 
-<div id="params_java_load_class" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94763" class="refsect2">
+<div>
 
 ### java_class_name
 
@@ -55,7 +55,7 @@ the name under which the class is to be defined
 
 </div>
 
-<div id="id94766" class="refsect2">
+<div>
 
 ### java_class_bytecode
 
@@ -65,15 +65,15 @@ the contents of the .class file.
 
 </div>
 
-<div id="examples_java_load_class" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_java_load_class" class="example">
+<div>
 
 **Example 24.197. Loading a Java Class**
 
-<div class="example-contents">
+<div>
 
 Some sample Java code:
 
@@ -100,7 +100,7 @@ follows:
 
 </div>
 
-<div id="seealso_java_load_class" class="refsect1">
+<div>
 
 ## See Also
 

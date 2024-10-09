@@ -1,10 +1,10 @@
-<div id="xpf_assign" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ assign — Creates a local variable and assign a value to it.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_assign" class="funcsynopsis">
+<div>
 
 |                         |                       |
 |-------------------------|-----------------------|
 | `null `**`assign`**` (` | `var_name ` string ,  |
 |                         | `var_value ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ assign — Creates a local variable and assign a value to it.
 
 </div>
 
-<div id="xpf_desc_assign" class="refsect1">
+<div>
 
 ## Description
 
@@ -65,11 +65,11 @@ the risk of undesired effects.
 
 </div>
 
-<div id="xpf_params_assign" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126044" class="refsect2">
+<div>
 
 ### var_name
 
@@ -77,7 +77,7 @@ The name of variable which must be found or created.
 
 </div>
 
-<div id="id126047" class="refsect2">
+<div>
 
 ### var_value
 
@@ -87,7 +87,7 @@ The value which should be assigned to the variable.
 
 </div>
 
-<div id="xpf_ret_assign" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -95,15 +95,15 @@ Null
 
 </div>
 
-<div id="xpf_examples_assign" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_assign" class="example">
+<div>
 
 **Example 24.564. **
 
-<div class="example-contents">
+<div>
 
 Increment local variable \$counter by 1.
 
@@ -119,7 +119,7 @@ Increment local variable \$counter by 1.
 
 </div>
 
-<div id="xpf_seealso_assign" class="refsect1">
+<div>
 
 ## See Also
 

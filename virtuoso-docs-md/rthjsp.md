@@ -1,6 +1,6 @@
-<div id="rthjsp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,15 +20,15 @@ provide such an engine that can be hosted inside Virtuoso with Java
 support. This section describes how JSP's can be executed using Jakarta
 Tomcat JSP implementation.
 
-<div class="figure-float">
+<div>
 
-<div id="http_handler_jsp" class="figure">
+<div>
 
 **Figure 14.54. The HTTP JSP handler using Jakarta Tomcat**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![The HTTP JSP handler using Jakarta
 Tomcat](images/http_handler_jsp.jpg)
@@ -43,9 +43,9 @@ Tomcat](images/http_handler_jsp.jpg)
 
 </div>
 
-<div id="rthjspprelim" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -80,7 +80,7 @@ JavaVMOption4 = -Djava.io.tmpdir=<tomcat install dir>/temp
 .....
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                     |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -114,7 +114,7 @@ of choice to `http://example.com:8890/tomcat/` (assuming you are working
 on your local machine). Run some of JSP examples provided with Tomcat
 distribution to verify that they are executed without errors.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                           |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------|
@@ -123,7 +123,7 @@ distribution to verify that they are executed without errors.
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                |
 |:--------------------------:|:---------------------------------------------------------------|

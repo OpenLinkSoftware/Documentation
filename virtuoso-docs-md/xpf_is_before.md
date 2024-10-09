@@ -1,10 +1,10 @@
-<div id="xpf_is_before" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ entity in document order, otherwise returns false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_is_before" class="funcsynopsis">
+<div>
 
 |                               |                     |
 |-------------------------------|---------------------|
 | `boolean `**`is_before`**` (` | `ent1 ` entity ,    |
 |                               | `ent2 ` entity `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ entity in document order, otherwise returns false.
 
 </div>
 
-<div id="xpf_desc_is_before" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ order.
 
 </div>
 
-<div id="xpf_params_is_before" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127824" class="refsect2">
+<div>
 
 ### ent1
 
@@ -60,7 +60,7 @@ An XML entity or an node-set whose first node is compared.
 
 </div>
 
-<div id="id127827" class="refsect2">
+<div>
 
 ### ent2
 
@@ -70,7 +70,7 @@ An XML entity or an node-set whose first node is compared.
 
 </div>
 
-<div id="xpf_ret_is_before" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,15 +78,15 @@ Boolean
 
 </div>
 
-<div id="xpf_errors_is_before" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id127835" class="table">
+<div>
 
-**Table 24.146. Errors signalled by is_before()**
+**Table 24.145. Errors signalled by is_before()**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                     | Description                                                                                             |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -101,15 +101,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_is_before" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_is_before" class="example">
+<div>
 
 **Example 24.595. **
 
-<div class="example-contents">
+<div>
 
 Find all chapters that have table of content before title
 
@@ -125,7 +125,7 @@ Find all chapters that have table of content before title
 
 </div>
 
-<div id="xpf_seealso_is_before" class="refsect1">
+<div>
 
 ## See Also
 

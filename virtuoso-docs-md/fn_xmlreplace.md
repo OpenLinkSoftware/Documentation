@@ -1,10 +1,10 @@
-<div id="fn_xmlreplace" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ XMLReplace — Modify a given XML document by replacing some nodes.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlreplace" class="funcsynopsis">
+<div>
 
 |                            |                             |
 |----------------------------|-----------------------------|
@@ -29,7 +29,7 @@ XMLReplace — Modify a given XML document by replacing some nodes.
 |                            | in `locationN ` any ,       |
 |                            | in `replacementN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -39,7 +39,7 @@ XMLReplace — Modify a given XML document by replacing some nodes.
 
 </div>
 
-<div id="desc_xmlreplace" class="refsect1">
+<div>
 
 ## Description
 
@@ -118,11 +118,11 @@ declared schema even if the original document matched.
 
 </div>
 
-<div id="params_xmlreplace" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122639" class="refsect2">
+<div>
 
 ### source
 
@@ -131,7 +131,7 @@ as an argument.
 
 </div>
 
-<div id="id122642" class="refsect2">
+<div>
 
 ### locationI
 
@@ -141,7 +141,7 @@ ignored in this case.
 
 </div>
 
-<div id="id122645" class="refsect2">
+<div>
 
 ### replacementI
 
@@ -153,7 +153,7 @@ persistent XML entity.
 
 </div>
 
-<div id="ret_xmlreplace" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -161,15 +161,15 @@ The function returns NULL.
 
 </div>
 
-<div id="examples_xmlreplace" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlreplace_1" class="example">
+<div>
 
 **Example 24.506. XMLReplace in a Virtuoso/PL procedure**
 
-<div class="example-contents">
+<div>
 
 The sample procedure contains two calls of `XMLReplace ` . First call
 replaces element 'c' with a copy of element 'replacement'. Second call
@@ -226,7 +226,7 @@ The document after modification:           <a><b>world1<c2>Hello2</c2>world3</b>
 
 </div>
 
-<div id="seealso_xmlreplace" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="vc_local_variable" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ temporary value.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_local_variable" class="funcsynopsis">
+<div>
 
 |                                |                                      |
 |--------------------------------|--------------------------------------|
@@ -43,7 +43,7 @@ temporary value.
 |                                | `debug-srcline` (optional) ,         |
 |                                | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -53,7 +53,7 @@ temporary value.
 
 </div>
 
-<div id="vc_desc_local_variable" class="refsect1">
+<div>
 
 ## Description
 
@@ -68,7 +68,7 @@ calculate their values.
 
 </div>
 
-<div id="vc_attrs_local_variable" class="refsect1">
+<div>
 
 ## Attributes
 

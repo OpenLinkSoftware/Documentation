@@ -1,10 +1,10 @@
-<div id="fn_sequence_set" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sequence_set — Sets and returns the state of a sequence object.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sequence_set" class="funcsynopsis">
+<div>
 
 |                                  |                         |
 |----------------------------------|-------------------------|
@@ -24,7 +24,7 @@ sequence_set — Sets and returns the state of a sequence object.
 |                                  | in `state ` integer ,   |
 |                                  | in `mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ sequence_set — Sets and returns the state of a sequence object.
 
 </div>
 
-<div id="desc_sequence_set" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ occasional 'rewind' the sequence back to values that are already in use.
 
 </div>
 
-<div id="params_sequence_set" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109386" class="refsect2">
+<div>
 
 ### name
 
@@ -59,7 +59,7 @@ The server-wide name of a sequence.
 
 </div>
 
-<div id="id109389" class="refsect2">
+<div>
 
 ### state
 
@@ -67,7 +67,7 @@ A new state of the sequence.
 
 </div>
 
-<div id="id109392" class="refsect2">
+<div>
 
 ### mode
 
@@ -78,7 +78,7 @@ than the current one.
 
 </div>
 
-<div id="ret_sequence_set" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -87,15 +87,15 @@ The function returns an integer that is equal to what the next call to
 
 </div>
 
-<div id="examples_sequence_set" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sequence_set" class="example">
+<div>
 
 **Example 24.368. Different modes of sequence_set()**
 
-<div class="example-contents">
+<div>
 
 The sequence of calls demonstrates various calls of `sequence_set ` ().
 
@@ -146,7 +146,7 @@ select sequence_next ('sample');
 
 </div>
 
-<div id="seealso_sequence_set" class="refsect1">
+<div>
 
 ## See Also
 

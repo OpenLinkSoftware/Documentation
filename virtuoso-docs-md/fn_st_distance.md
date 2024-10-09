@@ -1,10 +1,10 @@
-<div id="fn_st_distance" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ st_distance — Returns the shortest distance between two points.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_distance" class="funcsynopsis">
+<div>
 
 |                          |                   |
 |--------------------------|-------------------|
 | ` `**`st_distance`**` (` | in `g1 ` any ,    |
 |                          | in `g2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ st_distance — Returns the shortest distance between two points.
 
 </div>
 
-<div id="desc_st_distance" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ is calculated as on a flat Euclidean plane.
 
 </div>
 
-<div id="params_st_distance" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90771" class="refsect2">
+<div>
 
 ### g1
 
@@ -57,7 +57,7 @@ Geometry.
 
 </div>
 
-<div id="id90774" class="refsect2">
+<div>
 
 ### g2
 
@@ -67,7 +67,7 @@ Geometry.
 
 </div>
 
-<div id="ret_st_distance" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ Returns double precision.
 
 </div>
 
-<div id="examples_st_distance" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_distance" class="example">
+<div>
 
 **Example 24.139. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>SELECT st_distance (st_point(0, 52),st_point(0, 70));
@@ -102,7 +102,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_st_distance" class="refsect1">
+<div>
 
 ## See Also
 

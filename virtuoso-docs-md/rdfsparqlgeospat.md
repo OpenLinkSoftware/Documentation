@@ -1,6 +1,6 @@
-<div id="rdfsparqlgeospat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -134,7 +134,7 @@ variables as anything else returned from SPARQL. The
 <span class="emphasis">*st\_*</span> functions can then be used for
 retrieving properties of these objects.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also">
 <colgroup>
@@ -185,9 +185,9 @@ class="function">geo_delete</code></a></p></td>
 
 </div>
 
-<div id="rdfsparqlgeospatprog" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

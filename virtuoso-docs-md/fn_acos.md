@@ -1,10 +1,10 @@
-<div id="fn_acos" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ pi — trigonometric functions
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_acos" class="funcsynopsis">
+<div>
 
 |                   |                               |
 |-------------------|-------------------------------|
 | ` `**`acos`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -31,13 +31,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_asin" class="funcsynopsis">
+<div>
 
 |                   |                               |
 |-------------------|-------------------------------|
 | ` `**`asin`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -45,13 +45,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_atan" class="funcsynopsis">
+<div>
 
 |                   |                               |
 |-------------------|-------------------------------|
 | ` `**`atan`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -59,13 +59,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_cos" class="funcsynopsis">
+<div>
 
 |                  |                               |
 |------------------|-------------------------------|
 | ` `**`cos`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -73,13 +73,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_sin" class="funcsynopsis">
+<div>
 
 |                  |                               |
 |------------------|-------------------------------|
 | ` `**`sin`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -87,13 +87,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_tan" class="funcsynopsis">
+<div>
 
 |                  |                               |
 |------------------|-------------------------------|
 | ` `**`tan`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -101,13 +101,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_cot" class="funcsynopsis">
+<div>
 
 |                  |                               |
 |------------------|-------------------------------|
 | ` `**`cot`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -115,13 +115,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_degrees" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
 | ` `**`degrees`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -129,13 +129,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_radians" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
 | ` `**`radians`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -143,14 +143,14 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_atan2" class="funcsynopsis">
+<div>
 
 |                    |                               |
 |--------------------|-------------------------------|
 | ` `**`atan2`**` (` | in `x ` double precision ,    |
 |                    | in `y ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -158,13 +158,13 @@ pi — trigonometric functions
 
 </div>
 
-<div id="fsyn_pi" class="funcsynopsis">
+<div>
 
 |                 |      |
 |-----------------|------|
 | ` `**`pi`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -174,7 +174,7 @@ pi — trigonometric functions
 
 </div>
 
-<div id="desc_43" class="refsect1">
+<div>
 
 ## Description
 

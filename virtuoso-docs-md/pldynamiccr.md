@@ -1,6 +1,6 @@
-<div id="pldynamiccr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="id36119" class="example">
+<div>
 
 **Example 11.13. Procedure using dynamic cursor**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure TEST_DYNAMIC ()

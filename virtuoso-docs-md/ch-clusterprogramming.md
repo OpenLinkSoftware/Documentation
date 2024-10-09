@@ -1,6 +1,6 @@
-<div id="ch-clusterprogramming" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -31,7 +31,7 @@ These sections apply to Virtuoso as of version 6.0.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -73,9 +73,9 @@ Replication](clusterprogrammingvirtdbandrepl.html)</span>
 
 </div>
 
-<div id="clusterprogrammingsqlexmod" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

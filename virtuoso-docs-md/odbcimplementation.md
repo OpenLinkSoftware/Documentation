@@ -1,6 +1,6 @@
-<div id="odbcimplementation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtdsnsetup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -39,7 +39,7 @@ a local Virtuoso server for the Virtuoso demonstration database.
 The process of creating additional ODBC DSN's for you Virtuoso drivers
 for ODBC is explained in the steps that follow:
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the Windows <span class="emphasis">*Control panel*</span> .
 
@@ -64,15 +64,15 @@ for ODBC is explained in the steps that follow:
 6.  Enter values into the fields presented by the Virtuoso Driver's DSN
     configuration dialog:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdsn001" class="figure">
+    <div>
 
     **Figure 7.30. Virtuoso ODBC Driver Setup Dialogue for Windows**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso ODBC Driver Setup Dialogue for
     Windows](images/virtdsn001.png)
@@ -107,15 +107,15 @@ for ODBC is explained in the steps that follow:
 7.  Press the <span class="emphasis">*Next*</span> button to configure
     more details about the connection
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdsn002" class="figure">
+    <div>
 
     **Figure 7.31. Virtuoso ODBC Driver Setup Dialogue for Windows**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso ODBC Driver Setup Dialogue for
     Windows](images/virtdsn002.ong)
@@ -146,15 +146,15 @@ for ODBC is explained in the steps that follow:
     <span class="emphasis">*Charset:*</span> lets you choose the default
     character set for the connection.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virtdsn003" class="figure">
+    <div>
 
     **Figure 7.32. Virtuoso ODBC Driver Setup Dialogue for Windows**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso ODBC Driver Setup Dialogue for
     Windows](images/virtdsn003.png)

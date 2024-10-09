@@ -1,10 +1,10 @@
-<div id="fn_vt_batch" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ vt_batch — Returns a vt batch object.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_batch_01" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | `batch object `**`vt_batch`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ vt_batch — Returns a vt batch object.
 
 </div>
 
-<div id="desc_vt_batch_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ title="20.2.1. The CREATE TEXT INDEX statement">CREATE TEXT INDEX</a> .
 
 </div>
 
-<div id="seealso_vt_batch_01" class="refsect1">
+<div>
 
 ## See Also
 

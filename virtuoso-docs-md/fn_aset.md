@@ -1,10 +1,10 @@
-<div id="fn_aset" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ aset — set array element
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_aset" class="funcsynopsis">
+<div>
 
 |                   |                         |
 |-------------------|-------------------------|
@@ -24,7 +24,7 @@ aset — set array element
 |                   | in `nth ` integer ,     |
 |                   | in `new_elem ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ aset — set array element
 
 </div>
 
-<div id="desc_aset" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ elem.
 
 </div>
 
-<div id="params_aset" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80508" class="refsect2">
+<div>
 
 ### arg
 
@@ -57,7 +57,7 @@ A string, array or vector.
 
 </div>
 
-<div id="id80511" class="refsect2">
+<div>
 
 ### nth
 
@@ -65,7 +65,7 @@ Zero-based element index.
 
 </div>
 
-<div id="id80514" class="refsect2">
+<div>
 
 ### nelem
 
@@ -76,7 +76,7 @@ replaced by the ASCII value given in *`new_elem `* .
 
 </div>
 
-<div id="ret_aset" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -84,15 +84,15 @@ replaced by the ASCII value given in *`new_elem `* .
 
 </div>
 
-<div id="errors_aset" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id80526" class="table">
+<div>
 
 **Table 24.4. Errors signalled by aset**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                      | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------|-------------|
@@ -106,15 +106,15 @@ replaced by the ASCII value given in *`new_elem `* .
 
 </div>
 
-<div id="examples_aset" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_aset_1" class="example">
+<div>
 
 **Example 24.15. Using `make_string ` and `aref`**
 
-<div class="example-contents">
+<div>
 
 Make a string, fill with character sequence from A to Z.
 
@@ -153,11 +153,11 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
   
 
-<div id="ex_aset_2" class="example">
+<div>
 
 **Example 24.16. Reverse a string using aset**
 
-<div class="example-contents">
+<div>
 
 Note that str is modified by aset.
 
@@ -208,7 +208,7 @@ diaper    !allitapap ulup apat ,illA
 
 </div>
 
-<div id="seealso_aset" class="refsect1">
+<div>
 
 ## See Also
 

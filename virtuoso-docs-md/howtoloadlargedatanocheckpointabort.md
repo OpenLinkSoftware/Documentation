@@ -1,6 +1,6 @@
-<div id="howtoloadlargedatanocheckpointabort" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_rdf_repl_graph_del" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ RDF_REPL_GRAPH_DEL — Deletes graph from RDF publication.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_repl_graph_del" class="funcsynopsis">
+<div>
 
 |                                 |                          |
 |---------------------------------|--------------------------|
 | ` `**`RDF_REPL_GRAPH_DEL`**` (` | in `graph ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ RDF_REPL_GRAPH_DEL — Deletes graph from RDF publication.
 
 </div>
 
-<div id="desc_rdf_repl_graph_del" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ This function deletes graph from RDF Replication.
 
 </div>
 
-<div id="params_rdf_repl_graph_del" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108412" class="refsect2">
+<div>
 
 ### graph
 
@@ -54,15 +54,15 @@ Graph URI to be deleted.
 
 </div>
 
-<div id="examples_rdf_repl_graph_del" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_rdf_repl_graph_del" class="example">
+<div>
 
 **Example 24.357. Delete graph from RDF replication**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.RDF_RDF_REPL_GRAPH_DEL ('http://test.org');
@@ -76,7 +76,7 @@ SQL> DB.DBA.RDF_RDF_REPL_GRAPH_DEL ('http://test.org');
 
 </div>
 
-<div id="seealso_rdf_repl_graph_del" class="refsect1">
+<div>
 
 ## See Also
 

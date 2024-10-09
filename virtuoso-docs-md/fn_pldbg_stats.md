@@ -1,10 +1,10 @@
-<div id="fn_pldbg_stats" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ coverage.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_pldbg_stats" class="funcsynopsis">
+<div>
 
 |                             |                                  |
 |-----------------------------|----------------------------------|
 | `any `**`pldbg_stats`**` (` | in `name ` varchar ,             |
 |                             | in `add_line_info ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ coverage.
 
 </div>
 
-<div id="desc_pldbg_stats" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ on line info.
 
 </div>
 
-<div id="params_pldbg_stats" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98805" class="refsect2">
+<div>
 
 ### name
 
@@ -60,7 +60,7 @@ Optional name of procedure for producing selective information.
 
 </div>
 
-<div id="id98808" class="refsect2">
+<div>
 
 ### outdir
 
@@ -71,7 +71,7 @@ code excerpts will be contained in the output.
 
 </div>
 
-<div id="ret_pldbg_stats" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -89,7 +89,7 @@ of the selected coverage data. The format is as follows:
 
 </div>
 
-<div id="seealso_pldbg_stats" class="refsect1">
+<div>
 
 ## See Also
 

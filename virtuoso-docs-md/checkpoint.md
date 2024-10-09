@@ -1,6 +1,6 @@
-<div id="checkpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,11 +42,11 @@ upon completion.
 
 BACKUP is an alternate notation for backup().
 
-<div id="id34075" class="example">
+<div>
 
 **Example 9.38. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 checkpoint 'new.log';
@@ -76,7 +76,7 @@ These statements executed on an empty database will recreate the state
 in effect after the last transaction to commit before the SHUTDOWN
 statement of the previous example.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                  |
 |:--------------------------:|:-----------------------------------------------------------------------------------------------------------------|
@@ -85,11 +85,11 @@ statement of the previous example.
 
 </div>
 
-<div id="id34085" class="example">
+<div>
 
 **Example 9.39. Example for control the transaction logging:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure log_test ()
@@ -114,9 +114,9 @@ create procedure log_test ()
 
   
 
-<div id="checkpointparams" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -185,7 +185,7 @@ maximum checkpoint remap to zero in such a situation causes the next
 checkpoint to unremap all checkpoint remapped pages, restoring physical
 sequence and freeing disk space.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                               |
 |:--------------------------:|:----------------------------------------------------------------------------------------------|

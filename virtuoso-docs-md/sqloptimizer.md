@@ -1,6 +1,6 @@
-<div id="sqloptimizer" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -71,12 +71,12 @@ DB.DBA.SYS_COL_HIST system table. The default value of prec, in both
 cases, is 5, which implies that a five percent sample of the table will
 be used. A percentage of 0 means that the whole table will be read.
 
-<div id="ex_sqlopt1" class="example">
+<div>
 
 **Example 9.43. Demonstration of the STAT_ANALYSE & STAT_HISTOGRAM
 Procedures**
 
-<div class="example-contents">
+<div>
 
 The following script is intended for use with the ISQL program as the
 user dba, in the DB qualifier. The foreach statement is a special
@@ -119,9 +119,9 @@ DB.DBA.DTTEST     id                10                0
 
   
 
-<div id="opttechniques" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -135,9 +135,9 @@ DB.DBA.DTTEST     id                10                0
 
 </div>
 
-<div id="joinorder" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -167,9 +167,9 @@ order by the programmer may save compilation time.
 
 </div>
 
-<div id="loopinvariants" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -200,9 +200,9 @@ removal of the invariant.
 
 </div>
 
-<div id="openderivedtablesviews" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -221,11 +221,11 @@ table in a FROM clause is sufficiently simple, i.e. has no distinct,
 top, group by, and is not a multiple query expression such as a union,
 it can be in-lined.
 
-<div id="ex_derivedtablesviews" class="example">
+<div>
 
 **Example 9.44. Derived Tables & Views**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create view i as select * from item;
@@ -257,9 +257,9 @@ tables joined in the view will not have to be laid out contiguously.
 
 </div>
 
-<div id="migencpreds" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -279,11 +279,11 @@ the enclosing WHERE phrase are migrated into the derived table itself.
 The set of predicates that may be thus migrated will be a function of
 the join order, thus different combinations will be tried.
 
-<div id="ex_migpreds" class="example">
+<div>
 
 **Example 9.45. Example of Migrating Predicates**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select i_id from (select * from item1 union all select * from item2) f where i_id = 11;
@@ -304,9 +304,9 @@ select i_id from (select i_id from item1
 
 </div>
 
-<div id="dropunrefed" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -327,9 +327,9 @@ these. (see above for example)
 
 </div>
 
-<div id="detoffalsepreds" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -384,9 +384,9 @@ select * from (select * from item where i_type = 2 ) xx where i_type = 2;
 
 </div>
 
-<div id="indexselect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -422,9 +422,9 @@ The general rules for index selection based on predicates are:
 
 </div>
 
-<div id="grpcolocatedtables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -492,9 +492,9 @@ taken into account when compiling.
 
 </div>
 
-<div id="jointypeselect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -518,7 +518,7 @@ making a hash table from the join columns. This is only possible for
 joins involving equality, but most joins tend to have equalities in
 practice.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                    |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------|

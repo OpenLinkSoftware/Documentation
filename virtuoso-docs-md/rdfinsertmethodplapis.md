@@ -1,6 +1,6 @@
-<div id="rdfinsertmethodplapis" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rdfinsertmethodplapissimpleexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -87,7 +87,7 @@ INSERT SOFT DB.DBA.SYS_RDF_MAPPERS (RM_PATTERN, RM_TYPE, RM_HOOK, RM_KEY, RM_DES
 update DB.DBA.SYS_RDF_MAPPERS set RM_ID = 2000 WHERE RM_HOOK = 'DB.DBA.RDF_LOAD_TXT_META';
 ```
 
-<div class="orderedlist">
+<div>
 
 1.  Paste the whole of this code into Conductor's iSQL interface and
     execute it to define and register the cartridge.
@@ -99,7 +99,7 @@ update DB.DBA.SYS_RDF_MAPPERS set RM_ID = 2000 WHERE RM_HOOK = 'DB.DBA.RDF_LOAD_
     this is to expose it as a WebDAV resource using Virtuoso's built-in
     WebDAV support:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Log in to Virtuoso's ODS Briefcase application;
 
@@ -151,7 +151,7 @@ be the case. If not, you must manually grant this permission. As with
 most Virtuoso DBA tasks, the Conductor provides the simplest means of
 doing this.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

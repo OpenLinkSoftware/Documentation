@@ -1,6 +1,6 @@
-<div id="rdfiridereferencingfacet" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -89,7 +89,7 @@ and often involving aggregation over millions of subjects, specially at
 the initial stages of query composition. To make this work with in
 interactive time, two things are needed:
 
-<div class="orderedlist">
+<div>
 
 1.  a query optimizer that can almost infallibly produce the right join
     order based on cardinalities of the specific constants in the query
@@ -113,7 +113,7 @@ on a composite of text match score and link density.
 
 The section is divided into the following parts:
 
-<div class="itemizedlist">
+<div>
 
 - SPARQL query optimization and execution adapted for run time inference
   over large subclass structures.
@@ -135,9 +135,9 @@ The section is divided into the following parts:
 
 </div>
 
-<div id="rdfiridereferencingfacetprlh" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -314,9 +314,9 @@ that repeated queries will not redo the sampling.
 
 </div>
 
-<div id="rdfiridereferencingfacetinvfpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -437,9 +437,9 @@ can be turned on and off query by query.
 
 </div>
 
-<div id="rdfiridereferencingfaceter" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -580,9 +580,9 @@ procedure is part of this vad.
 
 </div>
 
-<div id="rdfiridereferencingfacetqel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -701,9 +701,9 @@ number of nested aggregations or subqueries.
 
 </div>
 
-<div id="rdfiridereferencingfacetws" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -746,7 +746,7 @@ showing facets, not a replacement for SPARQL.
 Consider composing a map of locations involved with Napoleon. Below we
 list user actions and the resulting XML query descriptions.
 
-<div class="itemizedlist">
+<div>
 
 - Enter in the search form "Napoleon":
 
@@ -828,7 +828,7 @@ in it, then filters for military conflicts and Napoleonic wars, then
 takes all objects related to these where the related object has a
 location. The map has the objects and their locations.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -862,9 +862,9 @@ APIs for Faceted REST services</a></p></li>
 
 </div>
 
-<div id="rdfiridereferencingfacetvd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -886,9 +886,9 @@ Turtle representation of a given graph's voiD statistics.
 
 </div>
 
-<div id="rdfiridereferencingfacet_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -910,7 +910,7 @@ is managed by a separate server process.
 
 The test database has the following data sets:
 
-<div class="itemizedlist">
+<div>
 
 - DBpedia 3.2
 
@@ -931,7 +931,7 @@ The test database has the following data sets:
 
 Ontologies:
 
-<div class="itemizedlist">
+<div>
 
 - Yago
 
@@ -945,7 +945,7 @@ Ontologies:
 
 The database is 2.2 billion triples with 356 million distinct URIs.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

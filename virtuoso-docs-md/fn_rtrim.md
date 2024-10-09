@@ -1,10 +1,10 @@
-<div id="fn_rtrim" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ rtrim — trims given characters from right of given string
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rtrim" class="funcsynopsis">
+<div>
 
 |                    |                          |
 |--------------------|--------------------------|
 | ` `**`rtrim`**` (` | `str ` string ,          |
 |                    | `trimchars ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ rtrim — trims given characters from right of given string
 
 </div>
 
-<div id="desc_16" class="refsect1">
+<div>
 
 ## Description
 

@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtrickssparulupdatestrl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,7 +41,7 @@ TransactionAfterImageLimit = N bytes default 50000000
 ...
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

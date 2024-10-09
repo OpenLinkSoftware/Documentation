@@ -1,6 +1,6 @@
-<div id="clusterprogrammingvirtdbandrepl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_cl_exec" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ cl_exec — executes things on all nodes of a cluster
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cl_exec" class="funcsynopsis">
+<div>
 
 |                      |                            |
 |----------------------|----------------------------|
@@ -24,7 +24,7 @@ cl_exec — executes things on all nodes of a cluster
 |                      | in `params ` any := NULL , |
 |                      | in `is_txn ` int := 0 `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ cl_exec — executes things on all nodes of a cluster
 
 </div>
 
-<div id="desc_cl_exec" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ of a cluster.
 
 </div>
 
-<div id="params_cl_exec" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86176" class="refsect2">
+<div>
 
 ### cmd
 
@@ -56,7 +56,7 @@ used for assigning values, left to right.
 
 </div>
 
-<div id="id86179" class="refsect2">
+<div>
 
 ### params
 
@@ -64,7 +64,7 @@ Any params.
 
 </div>
 
-<div id="id86182" class="refsect2">
+<div>
 
 ### is_txn
 
@@ -76,15 +76,15 @@ as part of a containing distributed transaction.
 
 </div>
 
-<div id="examples_cl_exec" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_cl_exec" class="example">
+<div>
 
 **Example 24.90. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> cl_exec ('shutdown')
@@ -102,7 +102,7 @@ SQL> cl_exec ('dbg_obj_print (?)', vector ('hello'));
 
 </div>
 
-<div id="seealso_rdf_loader_run" class="refsect1">
+<div>
 
 ## See Also
 

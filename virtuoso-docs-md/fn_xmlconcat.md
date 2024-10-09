@@ -1,10 +1,10 @@
-<div id="fn_xmlconcat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ values
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmlconcat" class="funcsynopsis">
+<div>
 
 |                        |                             |
 |------------------------|-----------------------------|
@@ -26,7 +26,7 @@ values
 |                        | `... ` ,                    |
 |                        | `value_exprN ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ values
 
 </div>
 
-<div id="desc_xmlconcat" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ expressions are null, then the function returns NULL.
 
 </div>
 
-<div id="xmlconcat" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122200" class="refsect2">
+<div>
 
 ### value_expr1
 
@@ -66,15 +66,15 @@ entity object must not be an attribute.
 
 </div>
 
-<div id="errors_xmlconcat" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id122211" class="table">
+<div>
 
-**Table 24.127. Errors signalled by `XMLCONCAT `**
+**Table 24.126. Errors signalled by `XMLCONCAT `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                      | Description                                                           |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------|-----------------------------------------------------------------------|
@@ -90,15 +90,15 @@ entity object must not be an attribute.
 
 </div>
 
-<div id="xmlconcat_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmlconcat" class="example">
+<div>
 
 **Example 24.499. XMLCONCAT() with two parameters**
 
-<div class="example-contents">
+<div>
 
 The following example produces an XML elements for the 'FName', 'LName',
 'country' and 'nationality', concatenates the result, and creates a
@@ -132,7 +132,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmlconcat" class="refsect1">
+<div>
 
 ## See Also
 

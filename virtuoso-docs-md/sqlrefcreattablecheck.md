@@ -1,6 +1,6 @@
-<div id="sqlrefcreattablecheck" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,11 +25,11 @@ CHECK (search-condition)
 The search condition can be simple and comparative, or quite complicated
 involving regular expressions.
 
-<div id="ex_sqlrefcreatecheck" class="example">
+<div>
 
 **Example 9.25. Creating a table with the CHECK constraint**
 
-<div class="example-contents">
+<div>
 
 Here a simple table will be created with two CHECK constraints. One the
 check constraints is a simple comparison ensuring participants are over
@@ -63,7 +63,7 @@ INSERT INTO test_check (name, age, email) VALUES ('Jack and Jill', 37, 'ouch/!^^
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                      |
 |:--------------------------:|:---------------------------------------------------------------------|

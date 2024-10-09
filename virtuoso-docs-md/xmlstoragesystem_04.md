@@ -1,6 +1,6 @@
-<div id="xmlstoragesystem_04" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

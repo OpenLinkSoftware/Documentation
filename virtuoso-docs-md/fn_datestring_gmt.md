@@ -1,10 +1,10 @@
-<div id="fn_datestring_gmt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ datestring_GMT — convert a timestamp to external format string in GMT
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_datestring_gmt_01" class="funcsynopsis">
+<div>
 
 |                             |                        |
 |-----------------------------|------------------------|
 | ` `**`datestring_GMT`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ datestring_GMT — convert a timestamp to external format string in GMT
 
 </div>
 
-<div id="desc_datestring_gmt" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ representation as a string.
 
 </div>
 
-<div id="params_datestring_gmt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84344" class="refsect2">
+<div>
 
 ### dt
 
@@ -55,7 +55,7 @@ A <span class="type">datetime </span> value.
 
 </div>
 
-<div id="ret_datestring_gmt" class="refsect1">
+<div>
 
 ## Return values
 
@@ -64,15 +64,15 @@ representation.
 
 </div>
 
-<div id="examples_datestring_gmt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_datestring_gmt" class="example">
+<div>
 
 **Example 24.75. Example with datestring_GMT**
 
-<div class="example-contents">
+<div>
 
 We are at central european time zone CET(GMT+1).
 
@@ -98,7 +98,7 @@ SQL> use Demo;
 
 </div>
 
-<div id="seealso_datestring_gmt" class="refsect1">
+<div>
 
 ## See Also
 

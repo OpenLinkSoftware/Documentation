@@ -1,10 +1,10 @@
-<div id="xpf_collection" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ fn:collection — Returns parsed documents contained in given collections.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_collection" class="funcsynopsis">
+<div>
 
 |                                   |                           |
 |-----------------------------------|---------------------------|
@@ -28,7 +28,7 @@ fn:collection — Returns parsed documents contained in given collections.
 |                                   | `language ` string ,      |
 |                                   | `dtd_config ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ fn:collection — Returns parsed documents contained in given collections.
 
 </div>
 
-<div id="xpf_desc_collection" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ in the default collection in the dynamic context. The default collection
 is a home DAV collection. If user does not have default DAV collection,
 an error is signalled.
 
-<div id="xpf_collection_types" class="refsect2">
+<div>
 
 ### Local DAV collections
 
@@ -60,7 +60,7 @@ Local DAV collections can be accessed either by providing
 not enabled. The "http://localhost:PORT" URI is less efficient and takes
 the data over HTTP, so "http://local.virt/DAV/" is preferred.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                             |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -71,7 +71,7 @@ the data over HTTP, so "http://local.virt/DAV/" is preferred.
 
 </div>
 
-<div id="xpf_collection_types_01" class="refsect2">
+<div>
 
 ### Table Collections
 
@@ -98,7 +98,7 @@ virt://DB.DBA.XML_EXAMPLE.XE_ID.XE_ENTITY
 
 </div>
 
-<div id="xpf_collection_types2" class="refsect2">
+<div>
 
 ### Home path in local DAV collections
 
@@ -109,7 +109,7 @@ parsed as http://local.virt/DAV/home/john/test/test2 URI.
 
 </div>
 
-<div id="xpf_collection_types3" class="refsect2">
+<div>
 
 ### Remote DAV collections, WEB collections
 
@@ -122,7 +122,7 @@ this case the function makes two http requests.
 
 </div>
 
-<div id="xpf_collection_impl1" class="refsect2">
+<div>
 
 ### 
 
@@ -131,7 +131,7 @@ searches \<a href=...\> tags and returns downloaded and parsed documents
 referenced in href. If href contains relative reference it is resolved
 using web page address as base uri.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                               |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -142,7 +142,7 @@ using web page address as base uri.
 
 </div>
 
-<div id="xpf_collection_impl2" class="refsect2">
+<div>
 
 ### 
 
@@ -167,7 +167,7 @@ xtree_doc() .
 
 </div>
 
-<div id="xpf_collection_auth" class="refsect2">
+<div>
 
 ### Authentication
 
@@ -227,11 +227,11 @@ select xquery_eval ('
 
 </div>
 
-<div id="xpf_params_collection" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126276" class="refsect2">
+<div>
 
 ### uri
 
@@ -241,7 +241,7 @@ from *`base_uri `* .
 
 </div>
 
-<div id="id126281" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -250,7 +250,7 @@ If *`uri `* is an relative URI string, not an absolute one then
 
 </div>
 
-<div id="id126286" class="refsect2">
+<div>
 
 ### parser_mode
 
@@ -260,7 +260,7 @@ any syntax error).
 
 </div>
 
-<div id="id126289" class="refsect2">
+<div>
 
 ### encoding
 
@@ -270,7 +270,7 @@ mode and 'LATIN-1' for HTML mode.
 
 </div>
 
-<div id="id126292" class="refsect2">
+<div>
 
 ### language
 
@@ -280,7 +280,7 @@ various human languages')
 
 </div>
 
-<div id="id126295" class="refsect2">
+<div>
 
 ### dtd_config
 
@@ -294,7 +294,7 @@ Options of the DTD Validator</a> for details.
 
 </div>
 
-<div id="xpf_ret_collection" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -302,15 +302,15 @@ node\*
 
 </div>
 
-<div id="xpf_examples_collection" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex1_collection" class="example">
+<div>
 
 **Example 24.568. Example of using remote DAV collection:**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 <result>
@@ -327,11 +327,11 @@ node\*
 
   
 
-<div id="xpf_ex2_collection" class="example">
+<div>
 
 **Example 24.569. Example of using relative URI:**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 xquery_eval('
@@ -349,11 +349,11 @@ xquery_eval('
 
   
 
-<div id="xpf_ex3_collection" class="example">
+<div>
 
 **Example 24.570. Example of using default collection:**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 xquery_eval('
@@ -372,7 +372,7 @@ xquery_eval('
 
 </div>
 
-<div id="xpf_seealso_doc" class="refsect1">
+<div>
 
 ## See Also
 

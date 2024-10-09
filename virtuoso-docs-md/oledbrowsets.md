@@ -1,6 +1,6 @@
-<div id="oledbrowsets" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="oledbrowsetproperties" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,11 +30,11 @@
 
 </div>
 
-<div id="id22704" class="table">
+<div>
 
 **Table 7.26. Supported Rowset Properties**
 
-<div class="table-contents">
+<div>
 
 | Property                                                                                                                                                                                                                                                                                                                      | R/W        | Default                                                                                                                      | Notes |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------------------------------------------------------------------------------------------------------------------|-------|
@@ -113,9 +113,9 @@
 
 </div>
 
-<div id="rowset-interfaces" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -131,11 +131,11 @@
 
 VIRTOLEDB supports the following rowset interfaces.
 
-<div id="id23047" class="table">
+<div>
 
 **Table 7.27. Supported Rowset Interfaces**
 
-<div class="table-contents">
+<div>
 
 | Interface         | Description |
 |-------------------|-------------|

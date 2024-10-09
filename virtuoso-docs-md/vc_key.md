@@ -1,10 +1,10 @@
-<div id="vc_key" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ key — A key value of the vspx:form of type 'update'.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_key" class="funcsynopsis">
+<div>
 
 |                     |                               |
 |---------------------|-------------------------------|
@@ -31,7 +31,7 @@ key — A key value of the vspx:form of type 'update'.
 |                     | `debug-srcline` (optional) ,  |
 |                     | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -41,7 +41,7 @@ key — A key value of the vspx:form of type 'update'.
 
 </div>
 
-<div id="vc_desc_key" class="refsect1">
+<div>
 
 ## Description
 
@@ -52,7 +52,7 @@ row.
 
 </div>
 
-<div id="vc_attrs_key" class="refsect1">
+<div>
 
 ## Attributes
 

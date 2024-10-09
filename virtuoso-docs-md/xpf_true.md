@@ -1,10 +1,10 @@
-<div id="xpf_true" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ true — Returns true
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_true" class="funcsynopsis">
+<div>
 
 |                          |          |     |
 |--------------------------|----------|-----|
 | `boolean `**`true`**` (` | `void)`; |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ true — Returns true
 
 </div>
 
-<div id="xpf_desc_true" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,7 +40,7 @@ This function returns boolean constant "true"
 
 </div>
 
-<div id="xpf_ret_true" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -48,7 +48,7 @@ Boolean
 
 </div>
 
-<div id="xpf_seealso_true" class="refsect1">
+<div>
 
 ## See Also
 

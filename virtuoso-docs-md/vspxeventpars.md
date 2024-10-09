@@ -1,6 +1,6 @@
-<div id="vspxeventpars" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

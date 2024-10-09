@@ -1,6 +1,6 @@
-<div id="virtpljvmtypemapp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,11 +19,11 @@ a type mapping system has been established to allow the passage of data
 to and from Java. All Java simple types are mapped to a corresponding
 Virtuoso type as follows:
 
-<div id="id64706" class="table">
+<div>
 
 **Table 18.1. Java - Virtuoso Data Type Mapping**
 
-<div class="table-contents">
+<div>
 
 | Java Type/Class  | Virtuoso Internal Type |
 |------------------|------------------------|

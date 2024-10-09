@@ -1,6 +1,6 @@
-<div id="forstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,11 +33,11 @@ freely nested. If a WHENEVER NOT FOUND declaration is in effect before
 the FOR it will be canceled by it, so that it is not in effect after the
 loop's body.
 
-<div id="id35698" class="example">
+<div>
 
 **Example 11.2. Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 for select C_NAME, sum (O_VALUE) as value  from CUSTOMER, ORDER group by C_NAME DO

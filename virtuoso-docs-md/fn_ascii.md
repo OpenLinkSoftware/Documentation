@@ -1,10 +1,10 @@
-<div id="fn_ascii" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ ascii — Get ASCII value of a character
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ascii" class="funcsynopsis">
+<div>
 
 |                           |                 |
 |---------------------------|-----------------|
 | `integer `**`ascii`**` (` | `arg ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ ascii — Get ASCII value of a character
 
 </div>
 
-<div id="desc_ascii" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ an empty string is given, then zero is returned.
 
 </div>
 
-<div id="params_ascii" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id80444" class="refsect2">
+<div>
 
 ### *`arg `*
 
@@ -55,7 +55,7 @@ A <span class="type">string </span>
 
 </div>
 
-<div id="ret_ascii" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -65,15 +65,15 @@ then zero is returned
 
 </div>
 
-<div id="errors_ascii" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id80455" class="table">
+<div>
 
 **Table 24.3. Errors signalled by ascii**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                      | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------|-------------|
@@ -87,15 +87,15 @@ then zero is returned
 
 </div>
 
-<div id="examples_ascii" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ascii_1" class="example">
+<div>
 
 **Example 24.14. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select ascii('Zardoz');
@@ -116,7 +116,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_ascii" class="refsect1">
+<div>
 
 ## See Also
 

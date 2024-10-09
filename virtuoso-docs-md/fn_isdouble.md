@@ -1,10 +1,10 @@
-<div id="fn_isdouble" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ isdouble — returns true is argument is a double
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isdouble" class="funcsynopsis">
+<div>
 
 |                       |                      |
 |-----------------------|----------------------|
 | ` `**`isdouble`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ isdouble — returns true is argument is a double
 
 </div>
 
-<div id="desc_isdouble" class="refsect1">
+<div>
 
 ## Description
 

@@ -1,6 +1,6 @@
-<div id="qshostingplugs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,7 +21,7 @@ do that too. Virtuoso has been designed with open-design in mind giving
 ultimate flexibility. These are the systems current available (linked to
 the appropriate section of this documentation):
 
-<div class="itemizedlist">
+<div>
 
 - Runtime Hosting
 
@@ -29,7 +29,7 @@ the appropriate section of this documentation):
   and utilizing Virtuoso storage methods such as DAV for replication and
   roll-out benefits.
 
-  <div class="itemizedlist">
+  <div>
 
   - <a href="rthclr.html" class="link"
     title="18.2. CLR, .Net &amp; ASPX Host">CLR</a> &
@@ -51,7 +51,7 @@ the appropriate section of this documentation):
 
   enable support for other scripting langauges.
 
-  <div class="itemizedlist">
+  <div>
 
   - <a href="perlhosting.html" class="link"
     title="14.10. Perl Hosting">Perl</a>
@@ -71,7 +71,7 @@ the appropriate section of this documentation):
   interfaces, which are provided so that you have the potential to
   enhance Virtuoso further for more custom requirements.
 
-  <div class="itemizedlist">
+  <div>
 
   - <a href="cinterface.html" class="link"
     title="18.5. Virtuoso Server Extension Interface (VSEI) (C Interface)">Virtuoso
@@ -94,7 +94,7 @@ the appropriate section of this documentation):
   every part of Virtuoso can be view, interacted with or consumed by
   some third-party via a plethora of interfaces, to name a few:
 
-  <div class="itemizedlist">
+  <div>
 
   - <a href="ch-functions.html#soap" class="link">SOAP</a>
 

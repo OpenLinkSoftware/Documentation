@@ -1,6 +1,6 @@
-<div id="ptrs30" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Bug 3889*</span> Change label of tab "XML
   Services/Queues".

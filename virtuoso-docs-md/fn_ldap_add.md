@@ -1,10 +1,10 @@
-<div id="fn_ldap_add" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ldap_add — Adds a new entry to an LDAP directory.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ldap_add" class="funcsynopsis">
+<div>
 
 |                          |                             |
 |--------------------------|-----------------------------|
@@ -26,7 +26,7 @@ ldap_add — Adds a new entry to an LDAP directory.
 |                          | in `username ` varchar ,    |
 |                          | in `password ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ ldap_add — Adds a new entry to an LDAP directory.
 
 </div>
 
-<div id="desc_ldap_add" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ This function adds a new entry to the LDAP directory.
 
 </div>
 
-<div id="params_ldap_add" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95335" class="refsect2">
+<div>
 
 ### server_url
 
@@ -63,7 +63,7 @@ Missing parameters will be defaulted to:
 
 </div>
 
-<div id="id95339" class="refsect2">
+<div>
 
 ### try_tls
 
@@ -74,7 +74,7 @@ fails, the client will fall back to insecure connect.
 
 </div>
 
-<div id="id95343" class="refsect2">
+<div>
 
 ### data
 
@@ -83,7 +83,7 @@ added.
 
 </div>
 
-<div id="id95347" class="refsect2">
+<div>
 
 ### username
 
@@ -91,7 +91,7 @@ username authorization credential
 
 </div>
 
-<div id="id95350" class="refsect2">
+<div>
 
 ### password
 
@@ -101,7 +101,7 @@ password authorization credential
 
 </div>
 
-<div id="ret_ldap_add" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -109,15 +109,15 @@ The error status code is returned. Zero for success.
 
 </div>
 
-<div id="errors_ldap_add" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id95358" class="table">
+<div>
 
-**Table 24.49. Errors signalled by `ldap_add `**
+**Table 24.48. Errors signalled by `ldap_add `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                               | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -136,15 +136,15 @@ The error status code is returned. Zero for success.
 
 </div>
 
-<div id="examples_ldap_add" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ldap_add" class="example">
+<div>
 
 **Example 24.203. Using ldap_add**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure
@@ -173,7 +173,7 @@ sam_ldap_add (in s1 varchar, in s2 varchar)
 
 </div>
 
-<div id="seealso_ldap_add" class="refsect1">
+<div>
 
 ## See Also
 

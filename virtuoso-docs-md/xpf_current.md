@@ -1,10 +1,10 @@
-<div id="xpf_current" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ member.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_current" class="funcsynopsis">
+<div>
 
 |                              |          |     |
 |------------------------------|----------|-----|
 | `node-set `**`current`**` (` | `void)`; |     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ member.
 
 </div>
 
-<div id="xpf_desc_current" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,7 +55,7 @@ node if current node is not set.
 
 </div>
 
-<div id="xpf_ret_current" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -63,15 +63,15 @@ Node-set that has exactly one member.
 
 </div>
 
-<div id="xpf_examples_current" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_current" class="example">
+<div>
 
 **Example 24.575. Function current() in top-level expression.**
 
-<div class="example-contents">
+<div>
 
 These two elements produce the same result:
 
@@ -87,11 +87,11 @@ These two elements produce the same result:
 
   
 
-<div id="xpf_ex_current_01" class="example">
+<div>
 
 **Example 24.576. Function current() inside the path.**
 
-<div class="example-contents">
+<div>
 
 For current node, which is equal to context node of whole
 \<xsl:apply-templates\> key, try to find such item of glossary in the

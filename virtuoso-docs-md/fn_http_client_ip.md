@@ -1,10 +1,10 @@
-<div id="fn_http_client_ip" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_client_ip — Returns the IP address of the calling client.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_client_ip" class="funcsynopsis">
+<div>
 
 |                                    |                         |
 |------------------------------------|-------------------------|
 | `varchar `**`http_client_ip`**` (` | in `what ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_client_ip — Returns the IP address of the calling client.
 
 </div>
 
-<div id="desc_http_client_ip" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ advisable to use IP addresses to to make applications faster.
 
 </div>
 
-<div id="params_http_client_ip" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92325" class="refsect2">
+<div>
 
 ### what
 
@@ -63,7 +63,7 @@ a flag designating what to return:
 
 </div>
 
-<div id="ret_http_client_ip" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,7 +72,7 @@ If what=1 then the DNS name will be returned.
 
 </div>
 
-<div id="seealso_http_client_ip" class="refsect1">
+<div>
 
 ## See Also
 
@@ -91,15 +91,15 @@ class="function">http_rewrite</code></a> .
 
 </div>
 
-<div id="examples_http_client_ip" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_client_ip" class="example">
+<div>
 
 **Example 24.155. Obtaining the Client IP Address**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   <?vsp

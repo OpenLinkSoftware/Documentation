@@ -1,10 +1,10 @@
-<div id="fn_sparql_eval" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ produces a result set of SQL values.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sparql_eval" class="funcsynopsis">
+<div>
 
 |                                 |                            |
 |---------------------------------|----------------------------|
@@ -25,7 +25,7 @@ produces a result set of SQL values.
 |                                 | in `dflt_graph ` varchar , |
 |                                 | in `maxrows ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ produces a result set of SQL values.
 
 </div>
 
-<div id="desc_sparql_eval" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ SQL values.
 
 </div>
 
-<div id="params_sparql_eval" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103458" class="refsect2">
+<div>
 
 ### query
 
@@ -56,7 +56,7 @@ text of SPARQL query to execute.
 
 </div>
 
-<div id="id103461" class="refsect2">
+<div>
 
 ### dflt_graph
 
@@ -65,7 +65,7 @@ query
 
 </div>
 
-<div id="id103464" class="refsect2">
+<div>
 
 ### maxrows
 
@@ -75,7 +75,7 @@ limit on numbers of rows that should be returned.
 
 </div>
 
-<div id="ret_sparql_eval" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,15 +83,15 @@ any
 
 </div>
 
-<div id="examples_sparql_eval" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sparql_eval" class="example">
+<div>
 
 **Example 24.302. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>DB.DBA.SPARQL_EVAL('SELECT * WHERE {?s ?p ?o}','http://example/bookStore' ,10);
@@ -115,7 +115,7 @@ http://example/book2  http://purl.org/dc/elements/1.1/date   2001-01-01T00:00:00
 
 </div>
 
-<div id="seealso_sparql_eval" class="refsect1">
+<div>
 
 ## See Also
 

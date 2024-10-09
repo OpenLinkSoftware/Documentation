@@ -1,10 +1,10 @@
-<div id="xpf_or" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_or" class="funcsynopsis">
+<div>
 
 |                        |                      |
 |------------------------|----------------------|
@@ -26,7 +26,7 @@ false.
 |                        | `... ` ,             |
 |                        | `valN ` boolean `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ false.
 
 </div>
 
-<div id="xpf_desc_or" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ standard, so it cannot be used if portability is important.
 
 </div>
 
-<div id="xpf_params_or" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128453" class="refsect2">
+<div>
 
 ### valI
 
@@ -67,7 +67,7 @@ Value of boolean expression argument
 
 </div>
 
-<div id="xpf_ret_or" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ boolean
 
 </div>
 
-<div id="xpf_examples_or" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_and_01" class="example">
+<div>
 
 **Example 24.608. Control over sequence of search operations**
 
-<div class="example-contents">
+<div>
 
 If two conditions must be checked, where one is simple and another is
 hard to calculate, then "and" may be used to calculate second condition
@@ -102,7 +102,7 @@ only if first is false, to reduce average time of processing
 
 </div>
 
-<div id="xpf_seealso_or" class="refsect1">
+<div>
 
 ## See Also
 

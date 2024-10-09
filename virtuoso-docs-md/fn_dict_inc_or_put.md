@@ -1,10 +1,10 @@
-<div id="fn_dict_inc_or_put" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ key and a dictionary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_inc_or_put" class="funcsynopsis">
+<div>
 
 |                              |                                    |
 |------------------------------|------------------------------------|
@@ -25,7 +25,7 @@ key and a dictionary.
 |                              | in `key ` any ,                    |
 |                              | in `value_increment ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ key and a dictionary.
 
 </div>
 
-<div id="desc_dict_inc_or_put" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ then a new item is added to the *`dict `* in order to associate the
 
 </div>
 
-<div id="params_dict_inc_or_put" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86461" class="refsect2">
+<div>
 
 ### dict
 
@@ -63,7 +63,7 @@ immediately returns zero.
 
 </div>
 
-<div id="id86464" class="refsect2">
+<div>
 
 ### key
 
@@ -71,7 +71,7 @@ Key of a dictionary item to process.
 
 </div>
 
-<div id="id86467" class="refsect2">
+<div>
 
 ### value decrement
 
@@ -83,7 +83,7 @@ counter.
 
 </div>
 
-<div id="ret_dict_inc_or_put" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -92,15 +92,15 @@ added) value associated with the *`key `* .
 
 </div>
 
-<div id="examples_dict_inc_or_put" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_dict_inc_or_put" class="example">
+<div>
 
 **Example 24.91. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The function is convenient to deal with multisets, i.e., sets with
 repeating elements. In this case the dictionary contains distinct items
@@ -137,7 +137,7 @@ create function DB.DBA.SUM_MULTISETS (inout msets any) returns any
 
 </div>
 
-<div id="seealso_dict_inc_or_put" class="refsect1">
+<div>
 
 ## See Also
 

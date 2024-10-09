@@ -1,6 +1,6 @@
-<div id="ldap_overview_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,9 +63,9 @@ collaboration.
 Virtuoso has the ability to act as an LDAP client, using built-in
 functions, and has been tested as a back end for the OpenLDAP server.
 
-<div id="vldapclient" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

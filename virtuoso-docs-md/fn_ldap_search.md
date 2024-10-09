@@ -1,10 +1,10 @@
-<div id="fn_ldap_search" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ldap_search — Search in an LDAP server.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ldap_search" class="funcsynopsis">
+<div>
 
 |                             |                             |
 |-----------------------------|-----------------------------|
@@ -27,7 +27,7 @@ ldap_search — Search in an LDAP server.
 |                             | in `username ` varchar ,    |
 |                             | in `password ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ ldap_search — Search in an LDAP server.
 
 </div>
 
-<div id="desc_ldap_search" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ can be passed as an array.
 
 </div>
 
-<div id="params_ldap_search" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95057" class="refsect2">
+<div>
 
 ### server_url
 
@@ -69,7 +69,7 @@ Missing parameters will be defaulted to
 
 </div>
 
-<div id="id95061" class="refsect2">
+<div>
 
 ### try_tls
 
@@ -80,7 +80,7 @@ made, the connection will be insecure.
 
 </div>
 
-<div id="id95065" class="refsect2">
+<div>
 
 ### base
 
@@ -88,7 +88,7 @@ made, the connection will be insecure.
 
 </div>
 
-<div id="id95069" class="refsect2">
+<div>
 
 ### filter
 
@@ -110,7 +110,7 @@ following BNF:
 
 </div>
 
-<div id="id95074" class="refsect2">
+<div>
 
 ### username
 
@@ -118,7 +118,7 @@ username authorization credential
 
 </div>
 
-<div id="id95077" class="refsect2">
+<div>
 
 ### password
 
@@ -128,7 +128,7 @@ password authorization credential
 
 </div>
 
-<div id="ret_ldap_search" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -146,15 +146,15 @@ error codes and error descriptions.
 
 </div>
 
-<div id="errors_ldap_search" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id95088" class="table">
+<div>
 
-**Table 24.47. Errors signalled by `ldap_search `**
+**Table 24.46. Errors signalled by `ldap_search `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                               | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -176,15 +176,15 @@ error codes and error descriptions.
 
 </div>
 
-<div id="examples_ldap_search" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ldap_search" class="example">
+<div>
 
 **Example 24.201. Using ldap_search**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 ....
@@ -222,7 +222,7 @@ result := ldap_search ('ldap://localhost', 0, 'c=US', '(cn=SomeBody*)',
 
 </div>
 
-<div id="seealso_ldap_search" class="refsect1">
+<div>
 
 ## See Also
 

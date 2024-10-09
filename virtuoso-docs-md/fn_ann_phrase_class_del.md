@@ -1,10 +1,10 @@
-<div id="fn_ann_phrase_class_del" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.ANN_PHRASE_CLASS_DEL — Deletes phrase set.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ann_phrase_class_del" class="funcsynopsis">
+<div>
 
 |                                          |                             |
 |------------------------------------------|-----------------------------|
@@ -24,7 +24,7 @@ DB.DBA.ANN_PHRASE_CLASS_DEL — Deletes phrase set.
 |                                          | in `auth_uname ` varchar ,  |
 |                                          | in `auth_pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ DB.DBA.ANN_PHRASE_CLASS_DEL — Deletes phrase set.
 
 </div>
 
-<div id="desc_ann_phrase_class_del" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ title="9.33.3. Advertisers and Advertisement Rules">here</a> ).
 
 </div>
 
-<div id="params_ann_phrase_class_del" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103082" class="refsect2">
+<div>
 
 ### \_name
 
@@ -58,7 +58,7 @@ a name of phrase set to delete
 
 </div>
 
-<div id="id103085" class="refsect2">
+<div>
 
 ### auth_uname
 
@@ -66,7 +66,7 @@ Authentication name
 
 </div>
 
-<div id="id103088" class="refsect2">
+<div>
 
 ### auth_pwd
 
@@ -76,15 +76,15 @@ Authentication password
 
 </div>
 
-<div id="examples_ann_phrase_class_del" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ann_phrase_class_del" class="example">
+<div>
 
 **Example 24.293. ANN_PHRASE_CLASS_DEL**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>select ANN_PHRASE_CLASS_ADD ('simple test', null, null, null, '123', '', 'dba', 'dba');
@@ -114,7 +114,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_ann_phrase_class_del" class="refsect1">
+<div>
 
 ## See Also
 

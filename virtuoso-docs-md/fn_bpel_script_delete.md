@@ -1,10 +1,10 @@
-<div id="fn_bpel_script_delete" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ BPEL.BPEL.script_delete — Remove a BPEL process
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_script_delete_01" class="funcsynopsis">
+<div>
 
 |                                      |                                 |
 |--------------------------------------|---------------------------------|
 | ` `**`BPEL.BPEL.script_delete`**` (` | in `script ` varchar ,          |
 |                                      | in `delete_instances ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,11 +33,11 @@ BPEL.BPEL.script_delete — Remove a BPEL process
 
 </div>
 
-<div id="params_script_delete_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130054" class="refsect2">
+<div>
 
 ### script
 
@@ -46,7 +46,7 @@ deleted
 
 </div>
 
-<div id="id130058" class="refsect2">
+<div>
 
 ### delete_instances
 
@@ -57,7 +57,7 @@ instances of the given process
 
 </div>
 
-<div id="ret_script_delete_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -65,7 +65,7 @@ this function has no return value
 
 </div>
 
-<div id="desc_script_delete_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -76,15 +76,15 @@ the function signals an error and does nothing
 
 </div>
 
-<div id="examples_script_delete_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_script_delete_01" class="example">
+<div>
 
 **Example 24.643. Simple example**
 
-<div class="example-contents">
+<div>
 
 The following will delete script with ID equal of 3 and all it's
 instances

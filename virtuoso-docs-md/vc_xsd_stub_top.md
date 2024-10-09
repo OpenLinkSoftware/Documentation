@@ -1,10 +1,10 @@
-<div id="vc_xsd_stub_top" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xsd-stub-top — This is for internal use only.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_xsd_stub_top" class="funcsynopsis">
+<div>
 
 |                              |                              |
 |------------------------------|------------------------------|
@@ -24,7 +24,7 @@ xsd-stub-top — This is for internal use only.
 |                              | `debug-srcline` (optional) , |
 |                              | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ xsd-stub-top — This is for internal use only.
 
 </div>
 
-<div id="vc_desc_xsd_stub_top" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ replaces non-VSPX tags with this one when they reside outside v:page.
 
 </div>
 
-<div id="vc_attrs_xsd_stub_top" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -58,7 +58,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_xsd_stub_top" class="refsect1">
+<div>
 
 ## Declaration of type vspx_xsd_stub_top
 

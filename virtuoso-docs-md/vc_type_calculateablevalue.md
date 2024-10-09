@@ -1,10 +1,10 @@
-<div id="vc_type_calculateablevalue" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ to be calculated at run time.
 
 </div>
 
-<div id="vc_desc_calculateablevalue" class="refsect1">
+<div>
 
 ## Description
 

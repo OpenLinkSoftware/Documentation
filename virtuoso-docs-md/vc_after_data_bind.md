@@ -1,10 +1,10 @@
-<div id="vc_after_data_bind" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ bind.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_after_data_bind" class="funcsynopsis">
+<div>
 
 |                                                                         |      |
 |-------------------------------------------------------------------------|------|
 | ` <`**`after-data-bind`**` >(EventHandler)</`**`after-data-bind`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ bind.
 
 </div>
 
-<div id="vc_desc_after_data_bind" class="refsect1">
+<div>
 
 ## Description
 

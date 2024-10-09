@@ -1,10 +1,10 @@
-<div id="xpf_processxslt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ result.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_processxslt_01" class="funcsynopsis">
+<div>
 
 |                                |                            |
 |--------------------------------|----------------------------|
@@ -28,7 +28,7 @@ result.
 |                                | `paramN_name` string,      |
 |                                | `paramN_value` any`)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ result.
 
 </div>
 
-<div id="xpf_desc_processxslt_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -74,11 +74,11 @@ For compatibility, the `processXSLT()` function can also be called as
 
 </div>
 
-<div id="xpf_params_processxslt_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128631" class="refsect2">
+<div>
 
 ### stylesheet_uri
 
@@ -94,7 +94,7 @@ the expression is neither in a stylesheet nor in a module.
 
 </div>
 
-<div id="id128635" class="refsect2">
+<div>
 
 ### source
 
@@ -103,7 +103,7 @@ called with only one argument then the context node is used as a source.
 
 </div>
 
-<div id="id128638" class="refsect2">
+<div>
 
 ### paramI_name
 
@@ -112,7 +112,7 @@ transformation.
 
 </div>
 
-<div id="id128641" class="refsect2">
+<div>
 
 ### paramI_value
 
@@ -122,7 +122,7 @@ Value of parameter with name specified by *`paramI_name `* .
 
 </div>
 
-<div id="xpf_ret_processxslt_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -131,15 +131,15 @@ resulting document of an XSL transformation.
 
 </div>
 
-<div id="xpf_examples_processxslt_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_processxslt_01" class="example">
+<div>
 
 **Example 24.612. XSLT inside XQuery expression**
 
-<div class="example-contents">
+<div>
 
 The query composes a single document that contain a list of labels for
 parcels. Depending on destination country and the state value of the
@@ -168,7 +168,7 @@ for $order in $orders let $customer := $customers/customer [ @CustId = $order/@C
 
 </div>
 
-<div id="xpf_seealso_processxslt_01" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="vspx" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,9 +43,9 @@ The VSPX development cycle consists of editing .vspx resources in the
 file system or Virtuoso DAV. The editing can take place using a regular
 text editor or a supporting HTML editor.
 
-<div id="vspxprocmodel" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -69,15 +69,15 @@ with HTML children are called templates, as these will process their
 HTML contents at run time, typically modifying these based on run time
 data.
 
-<div class="figure-float">
+<div>
 
-<div id="vspxconcept" class="figure">
+<div>
 
 **Figure 14.15. VSPX Conceptual Diagram**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![VSPX Conceptual Diagram](images/vspxconcept.jpg)
 
@@ -125,7 +125,7 @@ this is a string rather than a number.
 Any VSPX page invocation, whether through the GET or POST HTTP request,
 consists of the following steps:
 
-<div class="itemizedlist">
+<div>
 
 - **Instantiation. ** The tree of widgets is built according to the page
   description. The possibly saved state of controls is restored when

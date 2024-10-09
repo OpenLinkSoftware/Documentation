@@ -1,6 +1,6 @@
-<div id="transreplpublishfunctions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ replication entry with its unique number.
 
 These functions are available to the publishing Virtuoso server:
 
-<div class="itemizedlist">
+<div>
 
 - <a href="fn_repl_publish.html" class="link" title="REPL_PUBLISH"><code
   class="function">repl_publish()</code></a>

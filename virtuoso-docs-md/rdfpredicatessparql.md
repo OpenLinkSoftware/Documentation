@@ -1,6 +1,6 @@
-<div id="rdfpredicatessparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 Starting from Version 5.0, Virtuoso supports filtering RDF objects
 triples by a given predicate.
 
-<div id="rdfpredicatessparqlexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

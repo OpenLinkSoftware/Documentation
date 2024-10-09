@@ -1,6 +1,6 @@
-<div id="trxobj" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

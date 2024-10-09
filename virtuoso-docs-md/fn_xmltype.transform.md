@@ -1,10 +1,10 @@
-<div id="fn_xmltype.transform" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ XMLType.transform
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.transform" class="funcsynopsis">
+<div>
 
 |                                |                           |
 |--------------------------------|---------------------------|
 | ` `**`XMLType.transform`**` (` | `stylesheet ` XMLType ,   |
 |                                | `params_map ` vector `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ XMLType.transform
 
 </div>
 
-<div id="desc_xmltype.transform" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ Use `xslt() ` built-in function instead.
 
 </div>
 
-<div id="seealso_xmltype.transform" class="refsect1">
+<div>
 
 ## See Also
 

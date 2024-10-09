@@ -1,10 +1,10 @@
-<div id="fn_smime_decrypt" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ smime_decrypt — Decryption of a PKCS7 encrypted smime msg
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_smime_decrypt" class="funcsynopsis">
+<div>
 
 |                                   |                                         |
 |-----------------------------------|-----------------------------------------|
@@ -25,7 +25,7 @@ smime_decrypt — Decryption of a PKCS7 encrypted smime msg
 |                                   | in `recipient_key ` varchar ,           |
 |                                   | in `password_for_the_key ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ smime_decrypt — Decryption of a PKCS7 encrypted smime msg
 
 </div>
 
-<div id="desc_smime_decrypt" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ This function performs decryption of a PKCS7 encrypted smime msg
 
 </div>
 
-<div id="params_smime_decrypt" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110261" class="refsect2">
+<div>
 
 ### encrypted_mail_message
 
@@ -55,7 +55,7 @@ The text of the encrypted smime message
 
 </div>
 
-<div id="id110264" class="refsect2">
+<div>
 
 ### recipient_certificate
 
@@ -63,7 +63,7 @@ The certificate of the recipient (pem format)
 
 </div>
 
-<div id="id110267" class="refsect2">
+<div>
 
 ### recipient_key
 
@@ -72,7 +72,7 @@ format)
 
 </div>
 
-<div id="id110270" class="refsect2">
+<div>
 
 ### password_for_the_key
 
@@ -82,7 +82,7 @@ The secret to open the recipient_key (if key is encrypted)
 
 </div>
 
-<div id="ret_smime_decrypt" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -90,15 +90,15 @@ varchar
 
 </div>
 
-<div id="examples_smime_decrypt" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_smime_decrypt" class="example">
+<div>
 
 **Example 24.376. Decryption a PKCS7 encrypted smime msg**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select smime_decrypt (file_to_string ('test.p7m'), 
@@ -122,7 +122,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_smime_decrypt" class="refsect1">
+<div>
 
 ## See Also
 

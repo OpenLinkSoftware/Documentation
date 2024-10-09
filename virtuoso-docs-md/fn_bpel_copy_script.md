@@ -1,10 +1,10 @@
-<div id="fn_bpel_copy_script" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ BPEL.BPEL.copy_script — Makes a copy of an existing script
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_copy_script_01" class="funcsynopsis">
+<div>
 
 |                                    |                       |
 |------------------------------------|-----------------------|
 | ` `**`BPEL.BPEL.copy_script`**` (` | in `scp_id ` int `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,11 +32,11 @@ BPEL.BPEL.copy_script — Makes a copy of an existing script
 
 </div>
 
-<div id="params_copy_script_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129914" class="refsect2">
+<div>
 
 ### scp_id
 
@@ -46,7 +46,7 @@ BPEL.BPEL.copy_script — Makes a copy of an existing script
 
 </div>
 
-<div id="ret_copy_script_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -54,7 +54,7 @@ returns a unique integer identifier for the script copy
 
 </div>
 
-<div id="desc_copy_script_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -63,15 +63,15 @@ in edit mode.
 
 </div>
 
-<div id="examples_copy_script_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_copy_script_01" class="example">
+<div>
 
 **Example 24.639. Simple example**
 
-<div class="example-contents">
+<div>
 
 This will copy a script with identifier equal to 1, the copy have Id
 equal to 2

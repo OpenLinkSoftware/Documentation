@@ -1,10 +1,10 @@
-<div id="fn_xmltype.extract" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ XMLType.extract — Evaluates given XPATH expression.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.extract" class="funcsynopsis">
+<div>
 
 |                              |                                  |
 |------------------------------|----------------------------------|
 | ` `**`XMLType.extract`**` (` | in `xpath_expn ` varchar ,       |
 |                              | in `namespace_map ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ XMLType.extract — Evaluates given XPATH expression.
 
 </div>
 
-<div id="desc_xmltype.extract" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ instance of XMLType.
 
 </div>
 
-<div id="params_xmltype.extract" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125404" class="refsect2">
+<div>
 
 ### xpath_expn
 
@@ -60,7 +60,7 @@ A text of XPATH expression to evaluate.
 
 </div>
 
-<div id="id125407" class="refsect2">
+<div>
 
 ### namespace_map
 
@@ -72,7 +72,7 @@ list of declarations then these two lists are concatenated.
 
 </div>
 
-<div id="ret_xmltype.extract" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -81,15 +81,15 @@ value of any other type
 
 </div>
 
-<div id="examples_xmltype.extract" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.extract" class="example">
+<div>
 
 **Example 24.548. A table with an XMLType column**
 
-<div class="example-contents">
+<div>
 
 This populates a table with XML data and then selects 'ename' element
 from the appropriate record.
@@ -121,7 +121,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.extract" class="refsect1">
+<div>
 
 ## See Also
 

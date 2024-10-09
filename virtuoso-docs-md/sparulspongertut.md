@@ -1,6 +1,6 @@
-<div id="sparulspongertut" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="sparulspongertutwhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,9 +35,9 @@ ontology/vocabulary extension.
 
 </div>
 
-<div id="sparulspongertutwhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -61,9 +61,9 @@ contemporary Linked Data aware browsers.
 
 </div>
 
-<div id="sparulspongertuthow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -92,9 +92,9 @@ WHERE
   }
 ```
 
-<div id="sparulspongertutex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -108,7 +108,7 @@ WHERE
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Load Quad Named Graph via Sponger based query:
 
@@ -138,7 +138,7 @@ WHERE
 3.  Via Conductor or Command-line iSQL courtesy of SPASQL execute the
     following statements:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Remove an existing graph:
 
@@ -182,7 +182,7 @@ WHERE
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

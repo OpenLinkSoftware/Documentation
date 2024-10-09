@@ -1,10 +1,10 @@
-<div id="fn_monthname" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ monthname — get name of month from a datetime
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_monthname_01" class="funcsynopsis">
+<div>
 
 |                        |                        |
 |------------------------|------------------------|
 | ` `**`monthname`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ monthname — get name of month from a datetime
 
 </div>
 
-<div id="desc_monthname" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ represented by the datetime
 
 </div>
 
-<div id="params_monthname" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id96787" class="refsect2">
+<div>
 
 ### dt
 
@@ -56,7 +56,7 @@ A <span class="type">datetime </span> .
 
 </div>
 
-<div id="ret_monthname" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ A <span class="type">VARCHAR </span> containing name of the month.
 
 </div>
 
-<div id="examples_monthname" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_monthname" class="example">
+<div>
 
 **Example 24.221. Simple example**
 
-<div class="example-contents">
+<div>
 
 Get name of current month.
 
@@ -93,7 +93,7 @@ October
 
 </div>
 
-<div id="seealso_monthname" class="refsect1">
+<div>
 
 ## See Also
 

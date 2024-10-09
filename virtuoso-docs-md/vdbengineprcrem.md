@@ -1,6 +1,6 @@
-<div id="vdbengineprcrem" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,19 +17,19 @@
 The following steps can be used to create an Entity Data Model (EDM) for
 the Progress isports database:
 
-<div class="orderedlist">
+<div>
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro1" class="figure">
+    <div>
 
     **Figure 8.80. Visual Studio 2008 SP1 IDE**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Visual Studio 2008 SP1 IDE](images/ui/dora1.png)
 
@@ -57,15 +57,15 @@ the Progress isports database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro2_02" class="figure">
+    <div>
 
     **Figure 8.81. Web Application**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Web Application](images/ui/epro2.png)
 
@@ -109,15 +109,15 @@ the Progress isports database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro3" class="figure">
+    <div>
 
     **Figure 8.82. Name for the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Name for the project](images/ui/epro3.png)
 
@@ -137,15 +137,15 @@ the Progress isports database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro4" class="figure">
+    <div>
 
     **Figure 8.83. create a new project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![create a new project](images/ui/epro4.png)
 
@@ -161,15 +161,15 @@ the Progress isports database:
 
 7.  Select the Project -\> Add New Item menu option.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro5" class="figure">
+    <div>
 
     **Figure 8.84. New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![New Item](images/ui/einf4.png)
 
@@ -201,15 +201,15 @@ the Progress isports database:
 
     to start the creation of the ADO.Net Entity Data Model.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro6" class="figure">
+    <div>
 
     **Figure 8.85. Add New Item**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add New Item](images/ui/epro6.png)
 
@@ -241,15 +241,15 @@ the Progress isports database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="eora6_01" class="figure">
+    <div>
 
     **Figure 8.86. Choose Model Contents**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Model Contents](images/ui/eora6.png)
 
@@ -275,15 +275,15 @@ the Progress isports database:
 
     <span class="emphasis">*New Connection button*</span>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro8" class="figure">
+    <div>
 
     **Figure 8.87. Entity Data Model Wizard**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity Data Model Wizard](images/ui/dora8.png)
 
@@ -311,15 +311,15 @@ the Progress isports database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro9" class="figure">
+    <div>
 
     **Figure 8.88. Choose Data Source**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Choose Data Source](images/ui/dora9.png)
 
@@ -345,15 +345,15 @@ the Progress isports database:
     for the target Virtuoso Server and check the Save Password check
     box.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="dora10_02" class="figure">
+    <div>
 
     **Figure 8.89. Connection Properties**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connection Properties](images/ui/dora10.png)
 
@@ -377,15 +377,15 @@ the Progress isports database:
 
     database from the drop down list.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro11" class="figure">
+    <div>
 
     **Figure 8.90. Add connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add connection](images/ui/epro11.png)
 
@@ -405,15 +405,15 @@ the Progress isports database:
 
     dialog to verify that the database is accessible.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro12" class="figure">
+    <div>
 
     **Figure 8.91. Test Connection**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Test Connection](images/ui/dora12.png)
 
@@ -442,15 +442,15 @@ the Progress isports database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro13" class="figure">
+    <div>
 
     **Figure 8.92. entity connect string**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![entity connect string](images/ui/epro13.png)
 
@@ -487,15 +487,15 @@ the Progress isports database:
 
     .
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro14" class="figure">
+    <div>
 
     **Figure 8.93. Database Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Database Objects](images/ui/epro14.png)
 
@@ -516,15 +516,15 @@ the Progress isports database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="epro15" class="figure">
+    <div>
 
     **Figure 8.94. Virtuoso.edmx**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Virtuoso.edmx](images/ui/epro15.png)
 

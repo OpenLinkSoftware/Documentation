@@ -1,6 +1,6 @@
-<div id="altertable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -106,11 +106,11 @@ keys between the foreign key and primary key tables.
 
 ALTER TABLE cannot be applied to an attached table.
 
-<div id="ex_altertable" class="example">
+<div>
 
 **Example 9.27. ALTER TABLE Examples**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 ALTER TABLE DISTRICT
@@ -131,9 +131,9 @@ ALTER TABLE idt DROP FOREIGN KEY (d) REFERENCES idt (d);
 
   
 
-<div id="sqlrefalttabcheck" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -151,11 +151,11 @@ A CHECK constraint can be added to a table after it has been created and
 populated providing that none of the tables contents would violate the
 constraint.
 
-<div id="ex_alttabcheck" class="example">
+<div>
 
 **Example 9.28. Adding a CHECK constraint to an existing table.**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE TABLE test_add_check (
@@ -173,13 +173,13 @@ ALTER TABLE test_add_check ADD CONSTRAINT chkage CHECK (age > 18);
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
-|                            |                                                                |
-|:--------------------------:|:---------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                      |
-|                            | <a href="sqlrefcreattablecheck.html" class="link" shape="rect" 
-                              title="9.8.8. The CHECK Constraint">The CHECK constraint</a>    |
+|                            |                                                              |
+|:--------------------------:|:-------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                    |
+|                            | <a href="sqlrefcreattablecheck.html" class="link"            
+                              title="9.8.8. The CHECK Constraint">The CHECK constraint</a>  |
 
 </div>
 

@@ -1,10 +1,10 @@
-<div id="vc_include" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ inserted.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_include" class="funcsynopsis">
+<div>
 
 |                         |                               |
 |-------------------------|-------------------------------|
@@ -28,7 +28,7 @@ inserted.
 |                         | `debug-srcline` (optional) ,  |
 |                         | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ inserted.
 
 </div>
 
-<div id="vc_desc_include" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,7 +58,7 @@ level page or other included content.
 
 </div>
 
-<div id="vc_attrs_include" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -91,15 +91,15 @@ debugging log.
 
 </div>
 
-<div id="vc_ex_include" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_include__0" class="example">
+<div>
 
 **Example 14.34.  Include a common back-link into the end of page**
 
-<div class="example-contents">
+<div>
 
 If the file footer.xml is placed in the same directory where this sample
 page is located and contains the paragraph \<P\>\<a

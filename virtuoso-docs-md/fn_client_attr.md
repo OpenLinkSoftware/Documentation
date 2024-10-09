@@ -1,10 +1,10 @@
-<div id="fn_client_attr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ from the connection
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_client_attr" class="funcsynopsis">
+<div>
 
 |                                 |                         |
 |---------------------------------|-------------------------|
 | `varchar `**`client_attr`**` (` | in `attr ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,11 +33,11 @@ from the connection
 
 </div>
 
-<div id="params_client_attr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82313" class="refsect2">
+<div>
 
 ### attr
 
@@ -58,15 +58,15 @@ can by one of the following:
 
 </div>
 
-<div id="errors_client_attr" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id82334" class="table">
+<div>
 
-**Table 24.11. Errors signalled by `client_attr `**
+**Table 24.10. Errors signalled by `client_attr `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                  |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------|

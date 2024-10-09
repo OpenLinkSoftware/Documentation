@@ -1,6 +1,6 @@
-<div id="serverphpexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="ex_serverphpstr" class="example">
+<div>
 
 **Example 14.65. Examples of the php_str() usage**
 
-<div class="example-contents">
+<div>
 
 Unless the examples are shown as executed in the ISQL tool, this can be
 made also in the Virtuoso/PL code.
@@ -82,11 +82,11 @@ _______________________________________________________________________________
 
   
 
-<div id="serverphpredir" class="example">
+<div>
 
 **Example 14.66. Examples of the php redirect page**
 
-<div class="example-contents">
+<div>
 
 This is test how the PHP processor can instruct the HTTP server to send
 a custom response and header to the user agent. The following page can

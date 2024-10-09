@@ -1,10 +1,10 @@
-<div id="fn_sinv_drop_inverse" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -15,17 +15,17 @@ class="function">sinv_create_inverse </code></a> procedure.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sinv_drop_inverse" class="funcsynopsis">
+<div>
 
 |                                |                                   |
 |--------------------------------|-----------------------------------|
 | ` `**`sinv_drop_inverse`**` (` | in `_SINVM_NAME_IN ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ class="function">sinv_create_inverse </code></a> procedure.
 
 </div>
 
-<div id="desc_sinv_drop_inverse" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ class="function">sinv_create_inverse </code></a> procedure.
 
 </div>
 
-<div id="params_sinv_drop_inverse" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109990" class="refsect2">
+<div>
 
 ### \_SINVM_NAME_IN
 
@@ -60,7 +60,7 @@ the name of the forward function
 
 </div>
 
-<div id="seealso_sinv_drop_inverse" class="refsect1">
+<div>
 
 ## See Also
 

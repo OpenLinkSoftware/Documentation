@@ -1,10 +1,10 @@
-<div id="fn_java_set_property" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ java_set_property — Sets a Java class property
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_java_set_property" class="funcsynopsis">
+<div>
 
 |                                |                                    |
 |--------------------------------|------------------------------------|
@@ -26,7 +26,7 @@ java_set_property — Sets a Java class property
 |                                | in `field_ret_type_sig ` varchar , |
 |                                | in `field_new_value ` any `)`;     |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ java_set_property — Sets a Java class property
 
 </div>
 
-<div id="desc_java_set_property" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ static Java class property.
 
 </div>
 
-<div id="params_java_set_property" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id94642" class="refsect2">
+<div>
 
 ### class_name
 
@@ -58,7 +58,7 @@ the name of the java class to set property for.
 
 </div>
 
-<div id="id94645" class="refsect2">
+<div>
 
 ### instance_obj
 
@@ -67,7 +67,7 @@ java_new_object VSEI). Can be NULL.
 
 </div>
 
-<div id="id94648" class="refsect2">
+<div>
 
 ### field_name
 
@@ -75,7 +75,7 @@ the name of the field in the java class.
 
 </div>
 
-<div id="id94651" class="refsect2">
+<div>
 
 ### field_ret_type_sig
 
@@ -83,7 +83,7 @@ the JNI type signature of the field.
 
 </div>
 
-<div id="id94654" class="refsect2">
+<div>
 
 ### field_new_value
 
@@ -93,7 +93,7 @@ the value to be set.
 
 </div>
 
-<div id="seealso_java_set_property" class="refsect1">
+<div>
 
 ## See Also
 

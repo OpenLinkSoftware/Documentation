@@ -1,6 +1,6 @@
-<div id="qslocalvsremotegrps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

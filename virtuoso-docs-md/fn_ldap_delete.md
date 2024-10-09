@@ -1,10 +1,10 @@
-<div id="fn_ldap_delete" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ Tree.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ldap_delete" class="funcsynopsis">
+<div>
 
 |                             |                             |
 |-----------------------------|-----------------------------|
@@ -27,7 +27,7 @@ Tree.
 |                             | in `username ` varchar ,    |
 |                             | in `password ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ Tree.
 
 </div>
 
-<div id="desc_ldap_delete" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ Tree.
 
 </div>
 
-<div id="params_ldap_delete" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95212" class="refsect2">
+<div>
 
 ### server_url
 
@@ -65,7 +65,7 @@ Missing parameters will be defaulted to
 
 </div>
 
-<div id="id95216" class="refsect2">
+<div>
 
 ### try_tls
 
@@ -76,7 +76,7 @@ made, the client will fall back to using an insecure connection.
 
 </div>
 
-<div id="id95220" class="refsect2">
+<div>
 
 ### entrydn
 
@@ -85,7 +85,7 @@ be deleted.
 
 </div>
 
-<div id="id95224" class="refsect2">
+<div>
 
 ### username
 
@@ -93,7 +93,7 @@ username authorization credential
 
 </div>
 
-<div id="id95227" class="refsect2">
+<div>
 
 ### password
 
@@ -103,7 +103,7 @@ password authorization credential
 
 </div>
 
-<div id="ret_ldap_delete" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -111,15 +111,15 @@ Zero for success or error code.
 
 </div>
 
-<div id="errors_ldap_delete" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id95235" class="table">
+<div>
 
-**Table 24.48. Errors signalled by `ldap_delete `**
+**Table 24.47. Errors signalled by `ldap_delete `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                               | Description |
 |---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -138,15 +138,15 @@ Zero for success or error code.
 
 </div>
 
-<div id="examples_ldap_delete" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ldap_delete" class="example">
+<div>
 
 **Example 24.202. Using ldap_delete**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
   if (not ldap_delete ('ldap://localhost', 0,
@@ -164,7 +164,7 @@ Zero for success or error code.
 
 </div>
 
-<div id="seealso_ldap_delete" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="faultfaulttolerinterprt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -40,7 +40,7 @@ If a host is not in the online state, an extra line in the cluster
 status report describes the state in more detail. The state can be one
 of:
 
-<div class="itemizedlist">
+<div>
 
 - roll forward - The host is recovering from log. The count of
   transactions replayed to date is shown after this.
@@ -57,7 +57,7 @@ the status report mentions it.
 
 Applications see cluster failures through the following SQL states:
 
-<div class="itemizedlist">
+<div>
 
 - 08C01 - A host cannot be contacted or can be contacted but is not in
   the online state

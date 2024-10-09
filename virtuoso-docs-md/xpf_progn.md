@@ -1,10 +1,10 @@
-<div id="xpf_progn" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ by the last one.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_progn" class="funcsynopsis">
+<div>
 
 |                       |                   |
 |-----------------------|-------------------|
@@ -26,7 +26,7 @@ by the last one.
 |                       | ... ,             |
 |                       | `expnN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ by the last one.
 
 </div>
 
-<div id="xpf_desc_progn" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ This function is not a part of library of standard XQuery 1.0 functions.
 
 </div>
 
-<div id="xpf_params_progn" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128735" class="refsect2">
+<div>
 
 ### expn1, expn2, ... expnN
 
@@ -63,7 +63,7 @@ Expressions to be calculated.
 
 </div>
 
-<div id="xpf_ret_progn" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,15 +71,15 @@ Any (according to the type of *`expnN `* )
 
 </div>
 
-<div id="xpf_examples_progn" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_progn" class="example">
+<div>
 
 **Example 24.614. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 [xmlns:fileio='http://www.example.com/file-io']
@@ -100,7 +100,7 @@ if (function-available ('fileio:printf'),
 
 </div>
 
-<div id="xpf_seealso_progn" class="refsect1">
+<div>
 
 ## See Also
 

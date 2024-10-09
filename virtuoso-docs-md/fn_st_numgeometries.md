@@ -1,10 +1,10 @@
-<div id="fn_st_numgeometries" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ ST_NumGeometries — returns number of members of a MULTI... or
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_numgeometries" class="funcsynopsis">
+<div>
 
 |                               |                      |
 |-------------------------------|----------------------|
 | ` `**`ST_NumGeometries`**` (` | in `shape ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ ST_NumGeometries — returns number of members of a MULTI... or
 
 </div>
 
-<div id="desc_st_numgeometries" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ other sorts of shapes.
 
 </div>
 
-<div id="params_st_numgeometries" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131807" class="refsect2">
+<div>
 
 ### shape
 
@@ -56,7 +56,7 @@ MULTI... or ...COLLECTION shape
 
 </div>
 
-<div id="ret_st_numgeometries" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Returns int.
 
 </div>
 
-<div id="examples_st_numgeometries" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_numgeometries" class="example">
+<div>
 
 **Example 24.670. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.TTLP ('
@@ -119,7 +119,7 @@ http://geo-api-demo/polygon3      POLYGON             1
 
 </div>
 
-<div id="seealso_st_numgeometries" class="refsect1">
+<div>
 
 ## See Also
 

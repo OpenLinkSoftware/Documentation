@@ -1,6 +1,6 @@
-<div id="uriqainifile" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="xpf_distinct" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ distinct — Removes double entities from the input sequence
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_distinct" class="funcsynopsis">
+<div>
 
 |                               |                        |
 |-------------------------------|------------------------|
 | `sequence `**`distinct`**` (` | `input ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ distinct — Removes double entities from the input sequence
 
 </div>
 
-<div id="xpf_desc_distinct" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ standard library, it is rather a generalization of standard
 
 </div>
 
-<div id="xpf_params_distinct" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126777" class="refsect2">
+<div>
 
 ### input
 
@@ -62,7 +62,7 @@ The sequence of XML entities
 
 </div>
 
-<div id="xpf_ret_distinct" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -70,15 +70,15 @@ Sequence
 
 </div>
 
-<div id="xpf_examples_distinct" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_distinct" class="example">
+<div>
 
 **Example 24.577. Removing double entities**
 
-<div class="example-contents">
+<div>
 
 In the following example the file example.xml is
 

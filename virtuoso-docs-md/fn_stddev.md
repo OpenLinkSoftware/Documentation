@@ -1,10 +1,10 @@
-<div id="fn_stddev" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ STDDEV — Returns the standard deviation.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_stddev" class="funcsynopsis">
+<div>
 
 |                            |                      |
 |----------------------------|----------------------|
 | `numeric `**`STDDEV`**` (` | in `expr1 ` any ,    |
 |                            | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ STDDEV — Returns the standard deviation.
 
 </div>
 
-<div id="desc_stddev" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ of pairs is more than one, or NULL.
 
 </div>
 
-<div id="params_stddev" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78173" class="refsect2">
+<div>
 
 ### expr1
 
@@ -54,7 +54,7 @@ Number expression.
 
 </div>
 
-<div id="id78176" class="refsect2">
+<div>
 
 ### expr2
 
@@ -64,7 +64,7 @@ Number expression.
 
 </div>
 
-<div id="ret_stddev" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -73,7 +73,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_stddev" class="refsect1">
+<div>
 
 ## See Also
 

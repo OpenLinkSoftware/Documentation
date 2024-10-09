@@ -1,10 +1,10 @@
-<div id="fn_replay" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ replay — starts the roll forward of the given log
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_replay" class="funcsynopsis">
+<div>
 
 |                     |                             |
 |---------------------|-----------------------------|
 | ` `**`replay`**` (` | in `log_file ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ replay — starts the roll forward of the given log
 
 </div>
 
-<div id="desc_14" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,22 +51,21 @@ are not affected.
 
 </div>
 
-<div id="errors_replay" class="refsect1">
+<div>
 
 ## Errors
 
 <a href="datatypeerror.html" class="link"
 title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
-<div id="id104952" class="table">
+<div>
 
-**Table 24.76. Errors signalled by**
+**Table 24.75. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
-|                                       |                                       |                                                                                                    |
-|---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------|
 | sqlstate                              | error code                            | error text                                                                                         |
+|---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------|
 | <span class="errorcode">25000 </span> | <span class="errorcode">SR074 </span> | <span class="errortext">replay must be run in a fresh transaction. </span>                         |
 | <span class="errorcode">42000 </span> | <span class="errorcode">FA002 </span> | <span class="errortext">Can't open file \<fname\>, error \<OS errno\> (\<OS description\>) </span> |
 
@@ -78,11 +77,11 @@ title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
 </div>
 
-<div id="params_01_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id104976" class="refsect2">
+<div>
 
 ### log_file
 
@@ -94,7 +93,7 @@ file must be produced by
 
 </div>
 
-<div id="ret_08" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -102,15 +101,15 @@ Zero, if no error is signalled.
 
 </div>
 
-<div id="examples_06" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="backupreplay" class="example">
+<div>
 
 **Example 24.318. Replaying A Log File**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 checkpoint 'new.log';
@@ -142,7 +141,7 @@ statement of the previous example.
 
 </div>
 
-<div id="seealso_11" class="refsect1">
+<div>
 
 ## See Also
 

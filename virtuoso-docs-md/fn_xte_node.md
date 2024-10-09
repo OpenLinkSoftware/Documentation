@@ -1,10 +1,10 @@
-<div id="fn_xte_node" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xte_node — Returns the vector corresponding to a XML element
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xte_node" class="funcsynopsis">
+<div>
 
 |                       |                     |
 |-----------------------|---------------------|
@@ -25,7 +25,7 @@ xte_node — Returns the vector corresponding to a XML element
 |                       | `... ` ,            |
 |                       | in `argN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ xte_node — Returns the vector corresponding to a XML element
 
 </div>
 
-<div id="desc_xte_node" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ Two or more successive strings are concatenated.
 
 </div>
 
-<div id="xte_node" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121579" class="refsect2">
+<div>
 
 ### argI
 
@@ -60,15 +60,15 @@ A XML element or a string
 
 </div>
 
-<div id="errors_xte_node" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121584" class="table">
+<div>
 
-**Table 24.122. Errors signalled by `xte_node `**
+**Table 24.121. Errors signalled by `xte_node `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                           | Description |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------|-------------|
@@ -82,15 +82,15 @@ A XML element or a string
 
 </div>
 
-<div id="xte_node_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xte_node" class="example">
+<div>
 
 **Example 24.488. Simple Use**
 
-<div class="example-contents">
+<div>
 
 The xte_node() call
 
@@ -111,7 +111,7 @@ it \</supplier\>
 
 </div>
 
-<div id="seealso_xte_node" class="refsect1">
+<div>
 
 ## See Also
 

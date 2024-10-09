@@ -1,6 +1,6 @@
-<div id="ch-vdbengine" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -27,7 +27,7 @@ ODBC, JDBC, ADO.NET, SQLX, XPath/XQuery, Linked Data Views.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -279,9 +279,9 @@ with Remote Tables](vdbparallelopandrtables.html)</span>
 
 </div>
 
-<div id="thevdb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -295,9 +295,9 @@ with Remote Tables](vdbparallelopandrtables.html)</span>
 
 </div>
 
-<div id="consneed4vdb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -311,9 +311,9 @@ with Remote Tables](vdbparallelopandrtables.html)</span>
 
 </div>
 
-<div id="conssitanal" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -360,9 +360,9 @@ solution.
 
 </div>
 
-<div id="consvdbedef" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -391,9 +391,9 @@ intricacies of heterogeneous data access.
 
 </div>
 
-<div id="dsns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -414,16 +414,16 @@ developers and end-users alike. Applications no longer need to be
 inextricably linked to specific database names or specific database
 engines.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp01" class="figure">
+<div>
 
 **Figure 8.1. Distributed Computing Infrastructure Incorporating A
 Virtual Database Engine**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Distributed Computing Infrastructure Incorporating A Virtual Database
 Engine](images/wpImage18.gif)
@@ -442,9 +442,9 @@ Engine](images/wpImage18.gif)
 
 </div>
 
-<div id="consfirstvdbps" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -463,9 +463,9 @@ products that have been around for a while that attempt to address VDB
 issues. The list of such products includes The Microsoft JET Engine,
 Borland Database Engine (BDE), and IBM DataJoiner.
 
-<div id="msjet" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -494,9 +494,9 @@ benefits of the JET VDB transparently.
 
 </div>
 
-<div id="borlandbde" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -522,9 +522,9 @@ Microsoft applications.
 
 </div>
 
-<div id="ibmdj" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -547,9 +547,9 @@ access for external Data I/O.
 
 </div>
 
-<div id="vdbimpliss" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -567,9 +567,9 @@ The essential components that affect the implementation of VDB Engines
 are, High-Level Data Access Interfaces, Low-Level Data Access Interfaces
 and Traditional Database Functionality.
 
-<div id="hilevdai" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -618,9 +618,9 @@ part of the VDB deliverable.
 
 </div>
 
-<div id="lowlevdai" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -656,9 +656,9 @@ OpenLink Software are all derived from the X/Open SQL CLI.
 
 </div>
 
-<div id="traddbfunc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -754,9 +754,9 @@ encryption.
 
 </div>
 
-<div id="vdbcomponents" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -777,9 +777,9 @@ VDB architectures has been derived.
 
 The components that comprise a VDB Engine framework are as follows:
 
-<div id="dadrvr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -802,9 +802,9 @@ VDB engine.
 
 </div>
 
-<div id="secman" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -826,9 +826,9 @@ of VDB data and metadata.
 
 </div>
 
-<div id="qrymangr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -852,9 +852,9 @@ specifications, the most notable being the Structured Query Language
 
 </div>
 
-<div id="metadmngr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -876,9 +876,9 @@ Query Processor to the appropriate Data I/O manager.
 
 </div>
 
-<div id="tranmgr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -905,9 +905,9 @@ a two-phase commit protocol.
 
 </div>
 
-<div id="concmngr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -930,9 +930,9 @@ the response times desired by VDB client applications or services.
 
 </div>
 
-<div id="localiomngr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -952,9 +952,9 @@ database engine data storage services.
 
 </div>
 
-<div id="extiomngr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -975,9 +975,9 @@ source interfaces.
 
 </div>
 
-<div id="rplmgr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -999,15 +999,15 @@ Replication Manager enables a VDB Engine offer automated bi-directional
 data, and metadata transformation services across heterogeneous data
 sources without end-user or developer intervention.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp02" class="figure">
+<div>
 
 **Figure 8.2. Virtual Database Engine Architecture & Components**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtual Database Engine Architecture &
 Components](images/wpImage19.gif)
@@ -1024,9 +1024,9 @@ Components](images/wpImage19.gif)
 
 </div>
 
-<div id="vdbimplappro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1051,11 +1051,11 @@ independent of host operating system and underlying database engines ".
 
 VDB implementations can be categorized as follows:
 
-<div id="id23336" class="decimalstyle">
+<div>
 
 **Table 8.1. VDB Implementation Categories**
 
-<div class="decimalstyle-contents">
+<div>
 
 |         | VDB Data Access Interface | VDB External Data I/O     | Traditional Database Functionality |
 |:--------|---------------------------|---------------------------|------------------------------------|
@@ -1080,9 +1080,9 @@ The sections that follow provide illustrations of the different VDB
 formats, depicting the components that provide the basis for the
 categorization used in the table above.
 
-<div id="t1vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1102,15 +1102,15 @@ native, proprietary, and data source specific low-level data access
 interfaces. This category of VDB does not possess a complete set of
 traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp03" class="figure">
+<div>
 
 **Figure 8.3. Type 1 VDB Engine Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 1 VDB Engine Architecture](images/wpImage20.gif)
 
@@ -1126,9 +1126,9 @@ traditional database engine components.
 
 </div>
 
-<div id="t2vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1148,15 +1148,15 @@ achieved via native, proprietary, and data source specific low-level
 data access interfaces. This category of VDB possesses a complete set of
 traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp04" class="figure">
+<div>
 
 **Figure 8.4. Type 2 VDB Engine Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 2 VDB Engine Architecture](images/wpImage21.gif)
 
@@ -1172,9 +1172,9 @@ traditional database engine components.
 
 </div>
 
-<div id="t3vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1194,15 +1194,15 @@ Open, Standards based, and Database Independent low-level data access
 interfaces. This category of VDB does not possess a complete set of
 traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp05" class="figure">
+<div>
 
 **Figure 8.5. Type 3 VDB Engine Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 3 VDB Engine Architecture](images/wpImage22.gif)
 
@@ -1218,9 +1218,9 @@ traditional database engine components.
 
 </div>
 
-<div id="t4vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1240,15 +1240,15 @@ achieved via Open, Standards based, and Database Independent low-level
 data access interfaces. This category of VDB possesses a complete set of
 traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp06" class="figure">
+<div>
 
 **Figure 8.6. Type 4 VDB Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 4 VDB Architecture](images/wpImage23.gif)
 
@@ -1264,9 +1264,9 @@ traditional database engine components.
 
 </div>
 
-<div id="t5vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1286,15 +1286,15 @@ via native, proprietary, and data source specific low-level interfaces.
 This category of VDB does not possess a complete set of traditional
 database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp07" class="figure">
+<div>
 
 **Figure 8.7. Type 5 VDB Engine Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 5 VDB Engine Architecture](images/wpImage24.gif)
 
@@ -1310,9 +1310,9 @@ database engine components.
 
 </div>
 
-<div id="t6vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1332,15 +1332,15 @@ native, proprietary, and data source specific low-level interfaces. This
 category of VDB possesses a complete set of traditional database engine
 components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp08" class="figure">
+<div>
 
 **Figure 8.8. Type 6 - VDB Engine Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 6 - VDB Engine Architecture](images/wpImage25.gif)
 
@@ -1356,9 +1356,9 @@ components.
 
 </div>
 
-<div id="t7vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1378,15 +1378,15 @@ Standards based, and Database Independent low-level data access
 interfaces. This category of VDB does not possess a complete set of
 traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp09" class="figure">
+<div>
 
 **Figure 8.9. Type 7 VDB Engine Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 7 VDB Engine Architecture](images/wpImage26.gif)
 
@@ -1402,9 +1402,9 @@ traditional database engine components.
 
 </div>
 
-<div id="t8vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1424,15 +1424,15 @@ Standards based, and Database Independent low-level data access
 interfaces. This category of VDB does possess a complete set of
 traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp10" class="figure">
+<div>
 
 **Figure 8.10. Type 8 VDB Engine Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 8 VDB Engine Architecture](images/wpImage27.gif)
 
@@ -1448,9 +1448,9 @@ traditional database engine components.
 
 </div>
 
-<div id="t9vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1471,15 +1471,15 @@ interfaces or Native, Proprietary, and Database Specific low-level data
 access interfaces. This category of VDB does not possess a complete set
 of traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp11" class="figure">
+<div>
 
 **Figure 8.11. Type 9 VDB Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 9 VDB Architecture](images/wpImage28.gif)
 
@@ -1495,9 +1495,9 @@ of traditional database engine components.
 
 </div>
 
-<div id="t10vdbngin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1518,15 +1518,15 @@ data access interfaces or Native, Proprietary, and Database Specific
 low-level data access interfaces. This category of VDB possesses a
 complete set of traditional database engine components.
 
-<div class="figure-float">
+<div>
 
-<div id="imagewp12" class="figure">
+<div>
 
 **Figure 8.12. Type 10 VDB Architecture**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Type 10 VDB Architecture](images/wpImage29.gif)
 

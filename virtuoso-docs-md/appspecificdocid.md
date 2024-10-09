@@ -1,6 +1,6 @@
-<div id="appspecificdocid" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,15 +21,14 @@ unique ID that will be stored in conjunction with each distinct word in
 the indexed column in the text index. For space efficiency this should
 be as short as possible. If nothing else is specified the
 <a href="creatingtxtidxs.html#createtxtidxstmt" class="link"
-shape="rect" title="20.2.1. The CREATE TEXT INDEX statement">CREATE TEXT
-INDEX</a> statement makes such a unique column and fills it
-automatically from a sequence producing unique numbers. If a single part
-integer primary key exists then this key is used as the free text index
-document ID. Note However that the values \<= 0 are prohibited. This is
-however not always optimal, hence the application may specify what
-column is used to identify the row for text indexing. Such a unique
-column is referred to as the <span class="emphasis">*Free Text Document
-ID*</span> .
+title="20.2.1. The CREATE TEXT INDEX statement">CREATE TEXT INDEX</a>
+statement makes such a unique column and fills it automatically from a
+sequence producing unique numbers. If a single part integer primary key
+exists then this key is used as the free text index document ID. Note
+However that the values \<= 0 are prohibited. This is however not always
+optimal, hence the application may specify what column is used to
+identify the row for text indexing. Such a unique column is referred to
+as the <span class="emphasis">*Free Text Document ID*</span> .
 
 Suppose that a table contains news articles that should most frequently
 be retrieved latest first, in descending order of a datetime field. This
@@ -42,7 +41,7 @@ for each text hit. The sorting can be totally avoided if the document ID
 that is used to refer to the table from the index is itself ordered by
 date. This has several advantages:
 
-<div class="itemizedlist">
+<div>
 
 - To retrieve the n latest, one just takes the n first hits produced by
   the contains search, no sorting required.

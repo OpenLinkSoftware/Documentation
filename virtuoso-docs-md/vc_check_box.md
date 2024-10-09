@@ -1,10 +1,10 @@
-<div id="vc_check_box" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ check-box — Scriptable check-box.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_check_box" class="funcsynopsis">
+<div>
 
 |                           |                                      |
 |---------------------------|--------------------------------------|
@@ -51,7 +51,7 @@ check-box — Scriptable check-box.
 |                           | `debug-srcline` (optional) ,         |
 |                           | `debug-log` (optional) `)`;          |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -61,7 +61,7 @@ check-box — Scriptable check-box.
 
 </div>
 
-<div id="vc_desc_check_box" class="refsect1">
+<div>
 
 ## Description
 
@@ -69,7 +69,7 @@ is a represantation of HTML check box. Scriptable, databindable.
 
 </div>
 
-<div id="vc_attrs_check_box" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -302,7 +302,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_check_box" class="refsect1">
+<div>
 
 ## Declaration of type vspx_check_box
 
@@ -319,15 +319,15 @@ overriding method vc_set_model () returns any
 
 </div>
 
-<div id="vc_ex_check_box" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_check_box__0" class="example">
+<div>
 
 **Example 14.22.  Entry form with a checkbox**
 
-<div class="example-contents">
+<div>
 
 Depending on the state of the checkbox, the submitted value is either
 'checked' or 'unchecked'.
@@ -354,7 +354,7 @@ Depending on the state of the checkbox, the submitted value is either
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                         |
 |:--------------------------:|:------------------------------------------------------------------------|

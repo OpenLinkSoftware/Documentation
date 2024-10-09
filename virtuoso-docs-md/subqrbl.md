@@ -1,6 +1,6 @@
-<div id="subqrbl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="subqrblwhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ Use of subqueries to enable literal values based joins.
 
 </div>
 
-<div id="subqrblwhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -56,9 +56,9 @@ generation.
 
 </div>
 
-<div id="subqrblhow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -75,9 +75,9 @@ generation.
 Use select list variables from subqueries to produce literal object
 values in sparql graph patterns.
 
-<div id="subqrblhowex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="ch-appendixa" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -31,7 +31,7 @@ definitions.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -116,9 +116,9 @@ compatibility](apndxclientcompilance.html)</span>
 
 </div>
 
-<div id="yacc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

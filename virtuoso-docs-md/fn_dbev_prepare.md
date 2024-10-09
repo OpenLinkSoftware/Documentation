@@ -1,6 +1,6 @@
-<div id="fn_dbev_prepare" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,11 +41,11 @@ unmodified parse tree is used. To signal an error to a user it is
 possible to change the parse tree into a call to the signal SQL
 function.
 
-<div id="id36538" class="example">
+<div>
 
 **Example 12.7. SQL Prepare Hook**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE TABLE REPORT (

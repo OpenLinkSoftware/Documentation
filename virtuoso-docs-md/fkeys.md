@@ -1,6 +1,6 @@
-<div id="fkeys" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -49,11 +49,11 @@ Columns can be defined as having foreign keys and a default value,
 however, the default value must not violate the constraint at the time
 of insert or update as this will be rejected in the normal way.
 
-<div id="ex_fkeysinuse" class="example">
+<div>
 
 **Example 9.22. Creating tables with foreign key constraints**
 
-<div class="example-contents">
+<div>
 
 First the Primary key table must be defined before it can be referenced:
 
@@ -96,11 +96,11 @@ CREATE TABLE T2 (
 
   
 
-<div id="ex_nwdemofk" class="example">
+<div>
 
 **Example 9.23. Assumed Foreign Key Columns**
 
-<div class="example-contents">
+<div>
 
 This CREATE TABLE statement was used for creating part of Demo database.
 This statement does not describe the columns to be used as foreign keys
@@ -128,9 +128,9 @@ CREATE TABLE Order_Details(
 
   
 
-<div id="fkeyactions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -162,11 +162,11 @@ The actions available for both types of activity are:
 | SET DEFAULT - sets the referenced data to whatever was defined as its default value. |
 | NO ACTION - to not perform any action at all.                                        |
 
-<div id="fkeyactions_01" class="example">
+<div>
 
 **Example 9.24. Foreign Key Constraint Actions**
 
-<div class="example-contents">
+<div>
 
 Now, the foreign key table defined again, but this time with referential
 rules which control how data is managed when rows are updated or deleted

@@ -1,6 +1,6 @@
-<div id="jdbcurl4mat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -124,7 +124,7 @@ pool; 0 - do not use (Only for Java 1.6 and above)
 **/pstmtpoolsize. ** integer attribute, PreparedStatement pool size
 (default is 25)
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                 |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|

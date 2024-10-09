@@ -1,10 +1,10 @@
-<div id="fn_http_body_read" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ returns it as a string.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_body_read" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | `string `**`http_body_read`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ returns it as a string.
 
 </div>
 
-<div id="desc_http_body_read" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,15 +45,15 @@ body is encoded as `text/xml` ).
 
 </div>
 
-<div id="examples_http_body_read" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_http_body_read_1" class="example">
+<div>
 
 **Example 24.154. Reading a HTTP request entity body**
 
-<div class="example-contents">
+<div>
 
 Suppose we have the following HTTP request
 

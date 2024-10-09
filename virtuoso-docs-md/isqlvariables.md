@@ -1,6 +1,6 @@
-<div id="isqlvariables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,11 +26,11 @@ numbers and sometimes as booleans. Generally an on/off choice is
 represented by the values ON/OFF. The ON/OFF values are case
 insensitive.
 
-<div id="id20575" class="example">
+<div>
 
 **Example 7.4. Example:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> SET AUTOCOMMIT ON;
@@ -51,11 +51,11 @@ regardless of SQL syntactic context.
 
   
 
-<div id="id20579" class="example">
+<div>
 
 **Example 7.5. Example:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 set u{table} SYS_KEYS;
@@ -68,9 +68,9 @@ select count (*) from $u{table};
 
   
 
-<div id="varref" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

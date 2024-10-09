@@ -1,6 +1,6 @@
-<div id="rdfviewsenterprohd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,7 +16,7 @@
 
 <span class="emphasis">*Live links to a sample instance*</span>
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;should-sponge=&amp;query=%20prefix%20hr%3A%20%3Chttp%3A%2F%2Fdemo.openlinksw.com%2Fschemas%2Foraclehr%2F%3E%20select%20*%20from%20%3Chttp%3A%2F%2Fdemo.openlinksw.com%2Foraclehr%3E%20WHERE%20%7B%3Fs%20a%20hr%3Aemployees%7D&amp;format=text%2Fhtml&amp;debug=on"

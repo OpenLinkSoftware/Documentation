@@ -1,6 +1,6 @@
-<div id="splitrdfview" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_xenc_set_primary_key" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xenc_set_primary_key — Associate a X.509 certificate with a key
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_set_primary_key" class="funcsynopsis">
+<div>
 
 |                                   |                         |
 |-----------------------------------|-------------------------|
 | ` `**`xenc_set_primary_key`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xenc_set_primary_key — Associate a X.509 certificate with a key
 
 </div>
 
-<div id="desc_xenc_set_primary_key" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ a X.509 certificate.
 
 </div>
 
-<div id="params_xenc_set_primary_key" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120774" class="refsect2">
+<div>
 
 ### name
 
@@ -56,7 +56,7 @@ Name of the key to be processed.
 
 </div>
 
-<div id="ret_xenc_set_primary_key" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ No return value.
 
 </div>
 
-<div id="examples_xenc_set_primary_key" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_set_primary_key" class="example">
+<div>
 
 **Example 24.477. Importing a key from X.509 certificate**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ...
@@ -89,7 +89,7 @@ xenc_set_primary_key (key_name);
 
 </div>
 
-<div id="seealso_xenc_set_primary_key" class="refsect1">
+<div>
 
 ## See Also
 

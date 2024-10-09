@@ -1,6 +1,6 @@
-<div id="clusterstcnfconfig" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Set "FAST_START=1" in the viruoso-start.sh file and then run:
 

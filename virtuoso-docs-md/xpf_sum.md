@@ -1,10 +1,10 @@
-<div id="xpf_sum" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sum — Returns sum of all its arguments
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_sum" class="funcsynopsis">
+<div>
 
 |                        |                  |
 |------------------------|------------------|
@@ -25,7 +25,7 @@ sum — Returns sum of all its arguments
 |                        | `... ` ,         |
 |                        | `argN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ sum — Returns sum of all its arguments
 
 </div>
 
-<div id="xpf_desc_sum" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ Being called without arguments, sum() will return zero.
 
 </div>
 
-<div id="xpf_params_sum" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id129368" class="refsect2">
+<div>
 
 ### argI
 
@@ -68,21 +68,21 @@ added to the result, or single value.
 
 </div>
 
-<div id="xpf_ret_sum" class="refsect1">
+<div>
 
 ## Return Types
 
 </div>
 
-<div id="xpf_examples_sum" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_sum" class="example">
+<div>
 
 **Example 24.626. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 sum(/bill[@type="sale"]/total,/bill[@type="leasing"]/income)
@@ -96,7 +96,7 @@ sum(/bill[@type="sale"]/total,/bill[@type="leasing"]/income)
 
 </div>
 
-<div id="xpf_seealso_sum" class="refsect1">
+<div>
 
 ## See Also
 

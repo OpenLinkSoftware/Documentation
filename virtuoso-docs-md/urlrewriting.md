@@ -1,6 +1,6 @@
-<div id="urlrewriting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ processing of that URL by a Web Server.
 The ability to rewrite URLs may be desirable for many reasons that
 include:
 
-<div class="itemizedlist">
+<div>
 
 - Changing Web information resource URLs on the a Web Server without
   breaking existing bookmarks held in User Agents (e.g., Web browsers)
@@ -34,9 +34,9 @@ include:
 
 </div>
 
-<div id="usingurlrewritesolelinkdpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,11 +67,11 @@ order.
 
 An example of such a pipeline is depicted in the table below.
 
-<div id="id56916" class="table">
+<div>
 
 **Table 16.17. Pre-processing source URIs**
 
-<div class="table-contents">
+<div>
 
 | URI Source(Regular Expression Pattern) | HTTP Accept Headers(Regular Expression) | HTTPResponse Code                                              | HTTP Response Headers                                                                                                            | Rule Processing Order                                                       |
 |----------------------------------------|-----------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
@@ -140,9 +140,9 @@ requested entity.
 
 </div>
 
-<div id="virtuosorulebasedurlrewriter" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -162,7 +162,7 @@ response codes, Data-Web server administrators can configure highly
 flexible rules for driving content negotiation and URL rewriting. The
 key elements of the URL rewriter are:
 
-<div class="itemizedlist">
+<div>
 
 - Rewriting rule
 
@@ -195,9 +195,9 @@ key elements of the URL rewriter are:
 
 </div>
 
-<div id="urlrewritevirtdomains" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -217,7 +217,7 @@ locations to be hidden or simply reorganised. Virtual directory
 definitions are held in the system table DB.DBA.HTTP_PATH. Virtual
 directories can be administered in three basic ways:
 
-<div class="itemizedlist">
+<div>
 
 - Using the Visual Administration Interface via a Web browser;
 
@@ -229,9 +229,9 @@ directories can be administered in three basic ways:
 
 </div>
 
-<div id="urlrewriteniceurlsvslongurls" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -257,9 +257,9 @@ identifies the page that should actually be retrieved.
 
 </div>
 
-<div id="urlrewriterulesprocessmechanic" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -282,7 +282,7 @@ traversal of any rulelist associated with it. For every rule in the
 rulelist, the same logic is applied (only the logic for regex-based
 rules is described; that for sprintf-based rules is very similar):
 
-<div class="itemizedlist">
+<div>
 
 - The input for the rule is the resource URL as received from the HTTP
   header, i.e., the portion of the URL from the first '/' after the
@@ -325,9 +325,9 @@ functionality using the DB.DBA.URLREWRITE_APPLY API call.
 
 </div>
 
-<div id="urlrewriteruleconductor" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -361,7 +361,7 @@ Virtuoso Stored Procedure Language (PL)-based APIs.
 The steps for configuring URL Rewrite rules via the Virtuoso Conductor
 are as follows:
 
-<div class="itemizedlist">
+<div>
 
 - Assuming you are using the local demonstration database, load
   http://example.com/conductor into your browser, and then proceed
@@ -387,15 +387,15 @@ are as follows:
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="urlrewriteimg1" class="figure">
+<div>
 
 **Figure 16.184. URL-rewrite UI using Conductor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![URL-rewrite UI using Conductor](images/ui/urlrw1.png)
 
@@ -411,9 +411,9 @@ are as follows:
 
 </div>
 
-<div id="urlrewriterulevirtusopl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -434,9 +434,9 @@ field-value pairs. Numerous fields are recognized for controlling
 different options. The field value url_rewrite controls URL rewriting.
 The corresponding field value is the IRI of a rule list to apply.
 
-<div id="urlrewriterulevirtusoplcontrolapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -478,9 +478,9 @@ DB.DBA.URLREWRITE_ENUMERATE_RULELISTS
 
 </div>
 
-<div id="urlrewriterulecreaterewriterule" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -511,9 +511,9 @@ Regex rules are created using the
 
 </div>
 
-<div id="urlrewriteruleexamplenorthwind" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -541,7 +541,7 @@ rules from the prior section.
 
 The components used in the example are as follows:
 
-<div class="itemizedlist">
+<div>
 
 - Virtuoso SPARQL Endpoint: http://demo.openlinksw.com/sparql
 
@@ -557,9 +557,9 @@ The components used in the example are as follows:
 
 </div>
 
-<div id="urlrewriterulenorthwindverificationcurl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -644,9 +644,9 @@ ALFKI#this in Example 3 becomes the same as that for ALFKI in Example 1.
 
 </div>
 
-<div id="urlrewritetransperantcontent" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -665,9 +665,9 @@ deployment with excessive detail, the description of content negotiation
 presented thus far was kept deliberately brief. This section discusses
 content negotiation in more detail.
 
-<div id="urlrewritetransperantcontenthttp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -700,9 +700,9 @@ made by the server, this scheme is classed as server-driven negotiation.
 
 </div>
 
-<div id="urlrewritetransperantcontenttransperant" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -731,9 +731,9 @@ is the only option. RFC2295 addresses this issue.)
 
 </div>
 
-<div id="urlrewritetransperantcontentdefic" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -750,7 +750,7 @@ is the only option. RFC2295 addresses this issue.)
 Weaknesses of server-driven negotiation highlighted by RFCs 2295 and
 2616 include:
 
-<div class="itemizedlist">
+<div>
 
 - Inefficiency - Sending details of a user agent's capabilities and
   preferences with every request is very inefficient, not least because
@@ -767,9 +767,9 @@ Weaknesses of server-driven negotiation highlighted by RFCs 2295 and
 
 </div>
 
-<div id="urlrewritetransperantcontentvariantagent" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -802,9 +802,9 @@ is acceptable.)
 
 </div>
 
-<div id="urlrewritetransperantcontentvariantserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -828,9 +828,9 @@ as defined in RFC2296.
 
 </div>
 
-<div id="urlrewritetransperantcontentvariantuser" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -856,9 +856,9 @@ currently responds this way.)
 
 </div>
 
-<div id="urlrewritetransperantcontentserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -881,9 +881,9 @@ negotiation (whereby server-side selection is the only option - the
 server selects the best variant and returns a list of variants in an
 Alternates response header).
 
-<div id="urlrewritetransperantcontentserverdesc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -922,9 +922,9 @@ create unique index HTTP_VARIANT_MAP_ID on DB.DBA.HTTP_VARIANT_MAP (VM_ID)
 
 </div>
 
-<div id="urlrewritetransperantcontentserveconfgpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -967,7 +967,7 @@ DB.DBA.HTTP_VARIANT_REMOVE (
 <div id="urlrewritetransperantcontentserveconfgconductor"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -992,11 +992,11 @@ The input fields reflect the supported 'dimensions' of negotiation which
 include content type, language and encoding. Quality values
 corresponding to the options for 'Source Quality' are as follows:
 
-<div id="id57131" class="table">
+<div>
 
 **Table 16.18. Source Quality**
 
-<div class="table-contents">
+<div>
 
 | Source Quality                               | Quality Value |
 |----------------------------------------------|---------------|
@@ -1018,7 +1018,7 @@ corresponding to the options for 'Source Quality' are as follows:
 <div id="urlrewritetransperantcontentserveconfgvarselalgr"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1038,7 +1038,7 @@ Virtuoso does so using the selection algorithm below:
 If a virtual directory has URL rewriting enabled (has the 'url_rewrite'
 option set), the web server:
 
-<div class="itemizedlist">
+<div>
 
 - Looks in DB.DBA.HTTP_VARIANT_MAP for a VM_RULELIST matching the one
   specified in the 'url_rewrite' option
@@ -1070,7 +1070,7 @@ agent asks for a variant list, the server returns the TCN header "list".
 <div id="urlrewritetransperantcontentserveconfgexamples"
 class="section">
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1088,7 +1088,7 @@ In this example we assume the following files have been uploaded to the
 Virtuoso WebDAV server, with each containing the same information but in
 different formats:
 
-<div class="itemizedlist">
+<div>
 
 - /DAV/TCN/page.xml - a XML variant
 
@@ -1116,7 +1116,7 @@ in this case the curl command line utility. In the following examples,
 the curl client supplies Negotiate request headers containing content
 negotiation directives which include:
 
-<div class="itemizedlist">
+<div>
 
 - "trans" - The user agent supports transparent content negotiation for
   the current request.

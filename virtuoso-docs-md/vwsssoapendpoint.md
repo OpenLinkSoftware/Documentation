@@ -1,6 +1,6 @@
-<div id="vwsssoapendpoint" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,7 +35,7 @@ the response will not be encrypted or signed.
 Here are the steps involved in processing a message to a secure end
 point.
 
-<div class="orderedlist">
+<div>
 
 1.  SOAP server receives a message on a secure endpoint
 
@@ -48,7 +48,7 @@ point.
     of this end point run. If any key does not exist in the user space,
     the requested processing will fail.
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div>
 
     <table data-border="0" data-summary="Note: Note:
     ">

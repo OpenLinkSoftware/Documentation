@@ -1,10 +1,10 @@
-<div id="fn_user_set_qualifier" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ a user account.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_set_qualifier" class="funcsynopsis">
+<div>
 
 |                                 |                         |
 |---------------------------------|-------------------------|
 | ` `**`USER_SET_QUALIFIER`**` (` | in `name ` varchar ,    |
 |                                 | in `qual ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ a user account.
 
 </div>
 
-<div id="desc_user_set_qualifier" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ of a given user account.
 
 </div>
 
-<div id="params_user_set_qualifier" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116789" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ A string containing the name of the user account.
 
 </div>
 
-<div id="id116792" class="refsect2">
+<div>
 
 ### qual
 
@@ -66,7 +66,7 @@ SQL client login.
 
 </div>
 
-<div id="ret_user_set_qualifier" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,7 +74,7 @@ None
 
 </div>
 
-<div id="seealso_user_set_qualifier" class="refsect1">
+<div>
 
 ## See Also
 

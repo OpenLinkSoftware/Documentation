@@ -1,6 +1,6 @@
-<div id="vspxexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="ex_vspxsimplepage" class="example">
+<div>
 
 **Example 14.15. Simple VSPX Page**
 
-<div class="example-contents">
+<div>
 
 The fragment below shows us a VSPX page with a few labels. A label is a
 simple control that renders as HTML text, using a data bindable

@@ -1,10 +1,10 @@
-<div id="fn_end_result" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ end_result — End the current result set.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_end_result" class="funcsynopsis">
+<div>
 
 |                         |      |
 |-------------------------|------|
 | ` `**`end_result`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ end_result — End the current result set.
 
 </div>
 
-<div id="desc_end_result" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,7 +50,7 @@ knows what columns and their types are to be returned.
 
 </div>
 
-<div id="seealso_end_result" class="refsect1">
+<div>
 
 ## See Also
 

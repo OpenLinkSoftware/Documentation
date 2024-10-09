@@ -1,6 +1,6 @@
-<div id="rdfviewquadmapatternsvalueandiriclasses" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,7 +25,7 @@ neither part of a primary or foreign key.
 Strictly equating a subject value to a row and each column to a
 predicate is often good but is too restrictive for the general case.
 
-<div class="itemizedlist">
+<div>
 
 - Multiple triples with the same subject and predicate can exist.
 
@@ -92,7 +92,7 @@ Patterns" below.
 Quad map values refer to schema elements of two further types: "IRI
 classes" and "literal classes".
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -101,9 +101,9 @@ classes" and "literal classes".
 
 </div>
 
-<div id="rdfviewiriclasses" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -206,9 +206,9 @@ mybank:XpressXfer_iri*</span> .
 
 </div>
 
-<div id="rdfviewliteralclasses" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -251,9 +251,9 @@ query.
 
 </div>
 
-<div id="rdfviewsimplequadmappatterns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -296,9 +296,9 @@ graph <http://myhost/sys>
 
 </div>
 
-<div id="rdfviewassigningnamestoquadmappatterns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -348,9 +348,9 @@ also reserved.
 
 </div>
 
-<div id="rdfviewgroupingmappatterns" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

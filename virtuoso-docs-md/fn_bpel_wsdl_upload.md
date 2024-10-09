@@ -1,10 +1,10 @@
-<div id="fn_bpel_wsdl_upload" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ script
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_wsdl_upload_01" class="funcsynopsis">
+<div>
 
 |                                    |                                      |
 |------------------------------------|--------------------------------------|
@@ -26,7 +26,7 @@ script
 |                                    | in `content ` any ,                  |
 |                                    | in `pl ` varchar default 'wsdl' `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,11 +36,11 @@ script
 
 </div>
 
-<div id="params_wsdl_upload_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130220" class="refsect2">
+<div>
 
 ### scp_id
 
@@ -48,7 +48,7 @@ script
 
 </div>
 
-<div id="id130224" class="refsect2">
+<div>
 
 ### url
 
@@ -56,7 +56,7 @@ script
 
 </div>
 
-<div id="id130228" class="refsect2">
+<div>
 
 ### content
 
@@ -66,7 +66,7 @@ from the URL specified
 
 </div>
 
-<div id="id130232" class="refsect2">
+<div>
 
 ### pl
 
@@ -78,7 +78,7 @@ itself the default value MUST be used.
 
 </div>
 
-<div id="ret_wsdl_upload_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -86,7 +86,7 @@ this function has no return value
 
 </div>
 
-<div id="desc_wsdl_upload_03" class="refsect1">
+<div>
 
 ## Description
 
@@ -98,15 +98,15 @@ includes in WSDL and XMLSchema namespaces.
 
 </div>
 
-<div id="examples_wsdl_upload_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_wsdl_upload_03" class="example">
+<div>
 
 **Example 24.647. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
       SQL> BPEL.BPEL.wsdl_upload (1, 'file:/LoanFlow.wsdl', null, 'wsdl');

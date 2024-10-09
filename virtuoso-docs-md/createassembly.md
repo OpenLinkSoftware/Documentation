@@ -1,6 +1,6 @@
-<div id="createassembly" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -77,7 +77,7 @@ code that infringes upon any of the following permissions:
 If the assembly generates a security exception the error text will be
 returned to the client.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                              |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -101,7 +101,7 @@ You can remove assemblies using the familiar SQL DROP statement:
 DROP ASSEMBLY <assembly_name>;
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                           |
 |:--------------------------:|:------------------------------------------|
@@ -111,11 +111,11 @@ DROP ASSEMBLY <assembly_name>;
 
 </div>
 
-<div id="ex_createassembly" class="example">
+<div>
 
 **Example 11.3. Working with assemblies**
 
-<div class="example-contents">
+<div>
 
 This example is based on the tutorial HO_S_10. we start by obtaining a
 C# library compile from the following code (included in the tutorial):
@@ -233,16 +233,16 @@ S3
 
   
 
-<div id="ex_createassembly2" class="example">
+<div>
 
 **Example 11.4. Using CREATE ASSEMBLY**
 
-<div class="example-contents">
+<div>
 
 This example demonstrates the creation of trivial CLR classes and
 referencing them from Virtuoso.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*lib.cs*</span>
 
@@ -297,11 +297,11 @@ referencing them from Virtuoso.
 
   
 
-<div id="ex_ctasspermset" class="example">
+<div>
 
 **Example 11.5. Creating Assemblies with Permission Sets**
 
-<div class="example-contents">
+<div>
 
 These examples will use an assembly called test.dll, whose source code
 is:

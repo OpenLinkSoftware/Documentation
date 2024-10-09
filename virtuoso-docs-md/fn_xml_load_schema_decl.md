@@ -1,10 +1,10 @@
-<div id="fn_xml_load_schema_decl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ XML Schema processor on reading given XML Schema definition document.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xml_load_schema_decl" class="funcsynopsis">
+<div>
 
 |                                   |                                     |
 |-----------------------------------|-------------------------------------|
@@ -26,7 +26,7 @@ XML Schema processor on reading given XML Schema definition document.
 |                                   | in `content_encoding ` varchar ,    |
 |                                   | in `content_language ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ XML Schema processor on reading given XML Schema definition document.
 
 </div>
 
-<div id="desc_xml_load_schema_decl" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ definition and check it for correctness to XML Schema specification.
 
 </div>
 
-<div id="params_30" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id123047" class="refsect2">
+<div>
 
 ### base_uri
 
@@ -58,7 +58,7 @@ given base_uri (http://\<host\>:\<port\>/\<path\>)
 
 </div>
 
-<div id="id123050" class="refsect2">
+<div>
 
 ### content_encoding
 
@@ -68,7 +68,7 @@ mode and 'LATIN-1' for HTML mode
 
 </div>
 
-<div id="id123053" class="refsect2">
+<div>
 
 ### content_language
 
@@ -78,7 +78,7 @@ various human languages)
 
 </div>
 
-<div id="id123056" class="refsect2">
+<div>
 
 ### dtd_validator_config
 
@@ -90,7 +90,7 @@ should be reported
 
 </div>
 
-<div id="ret_08_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -98,15 +98,15 @@ Human readable list of errors if applicable as a varchar.
 
 </div>
 
-<div id="examples_14_01" class="refsect1">
+<div>
 
 ## Validating XML Against a XML Schema
 
-<div id="ex_xml_load_schema_decl" class="example">
+<div>
 
 **Example 24.513. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 declare _result varchar;
@@ -125,7 +125,7 @@ if (_result = '') _result := 'NO ERRORS DETECTED';
 
 </div>
 
-<div id="seealso_39" class="refsect1">
+<div>
 
 ## See Also
 

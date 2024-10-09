@@ -1,10 +1,10 @@
-<div id="fn_st_may_intersect" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ or some of its points are within the specified proximity.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_may_intersect" class="funcsynopsis">
+<div>
 
 |                               |                          |
 |-------------------------------|--------------------------|
@@ -25,7 +25,7 @@ or some of its points are within the specified proximity.
 |                               | in `shape2 ` any ,       |
 |                               | in `proximity ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ or some of its points are within the specified proximity.
 
 </div>
 
-<div id="desc_st_may_intersect" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ class="function">st_intersects() </code></a> check.
 
 </div>
 
-<div id="params_st_may_intersect" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131591" class="refsect2">
+<div>
 
 ### shape1
 
@@ -58,7 +58,7 @@ Given shape
 
 </div>
 
-<div id="id131594" class="refsect2">
+<div>
 
 ### shape2
 
@@ -66,7 +66,7 @@ Given shape
 
 </div>
 
-<div id="id131597" class="refsect2">
+<div>
 
 ### proximity
 
@@ -76,7 +76,7 @@ A proximity.
 
 </div>
 
-<div id="ret_st_may_intersect" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,15 +84,15 @@ Returns any.
 
 </div>
 
-<div id="examples_st_may_intersect" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_may_intersect" class="example">
+<div>
 
 **Example 24.667. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> SPARQL
@@ -128,7 +128,7 @@ http://geo-api-demo/collection   http://geo-api-demo/multipolygon
 
 </div>
 
-<div id="seealso_st_may_intersect" class="refsect1">
+<div>
 
 ## See Also
 

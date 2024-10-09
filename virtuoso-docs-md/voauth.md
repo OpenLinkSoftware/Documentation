@@ -1,6 +1,6 @@
-<div id="voauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,7 +63,7 @@ This was intentional and is viewed by the authors as a benefit. As the
 name implies, Core deals only with the most fundamental aspects of the
 protocol:
 
-<div class="itemizedlist">
+<div>
 
 - Establish a mechanism for exchanging a username and password for a
   token with defined rights
@@ -76,9 +76,9 @@ More details can be found
 <a href="http://oauth.net/documentation/getting-started" class="ulink"
 target="_top">here</a> .
 
-<div id="voauthtokens" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -97,9 +97,9 @@ tokenized form in cases where HTTP redirection to a browser plus human
 interaction is unavailable or unsuitable. For example, intermediary
 intelligent agents, mobile phones, or set-top devices.
 
-<div id="voauthtokensreqauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -122,9 +122,9 @@ request should be performed using TLS, and should use HTTP POST.
 
 </div>
 
-<div id="voauthtokensrecauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -148,9 +148,9 @@ HTTP response body.
 
 </div>
 
-<div id="voauthtokensacpr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

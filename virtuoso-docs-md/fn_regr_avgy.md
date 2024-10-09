@@ -1,10 +1,10 @@
-<div id="fn_regr_avgy" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ the regression line.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_regr_avgy" class="funcsynopsis">
+<div>
 
 |                               |                      |
 |-------------------------------|----------------------|
 | `numeric `**`REGR_AVGY`**` (` | in `expr1 ` any ,    |
 |                               | in `expr2 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ the regression line.
 
 </div>
 
-<div id="desc_regr_avgy" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ AVG(expr1)
 
 </div>
 
-<div id="params_regr_avgy" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id78770" class="refsect2">
+<div>
 
 ### expr1
 
@@ -60,7 +60,7 @@ Number expression.
 
 </div>
 
-<div id="id78773" class="refsect2">
+<div>
 
 ### expr2
 
@@ -70,7 +70,7 @@ Number expression.
 
 </div>
 
-<div id="ret_regr_avgy" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -79,7 +79,7 @@ to an empty set, then it returns null.
 
 </div>
 
-<div id="seealso_regr_avgy" class="refsect1">
+<div>
 
 ## See Also
 

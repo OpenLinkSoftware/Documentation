@@ -1,10 +1,10 @@
-<div id="fn_xmlstoragesystem.getservercapabilities" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ information.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
@@ -25,7 +25,7 @@ class="funcsynopsis">
 | `structure `**`xmlStorageSystem.getServerCapabilities`**` (` | in `email ` string ,       |
 |                                                              | in `password ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ class="funcsynopsis">
 
 </div>
 
-<div id="desc_xmlstoragesystem.getservercapabilities" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,7 +49,7 @@ class="refsect1">
 
 ## Parameters
 
-<div id="id124999" class="refsect2">
+<div>
 
 ### email
 
@@ -57,7 +57,7 @@ For user identification, this should be a valid email account.
 
 </div>
 
-<div id="id125002" class="refsect2">
+<div>
 
 ### password
 
@@ -67,7 +67,7 @@ The MD5 hash of the password.
 
 </div>
 
-<div id="ret_xmlstoragesystem.getservercapabilities" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -90,11 +90,11 @@ class="refsect1">
 
 ## Examples
 
-<div id="ex_xmlstoragesystem.getservercapabilities" class="example">
+<div>
 
 **Example 24.540. Retrieving the XML Storage System Capabilities**
 
-<div class="example-contents">
+<div>
 
 Simple example of fetching the server capabilities.
 

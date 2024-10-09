@@ -1,10 +1,10 @@
-<div id="xpf_contains" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ argument string, and otherwise returns false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_contains" class="funcsynopsis">
+<div>
 
 |                              |                       |
 |------------------------------|-----------------------|
 | `boolean `**`contains`**` (` | `haystack ` string ,  |
 |                              | `needle ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ argument string, and otherwise returns false.
 
 </div>
 
-<div id="xpf_desc_contains" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ be converted to an empty string first.
 
 </div>
 
-<div id="xpf_params_contains" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126385" class="refsect2">
+<div>
 
 ### haystack
 
@@ -58,7 +58,7 @@ String where the search is performed
 
 </div>
 
-<div id="id126388" class="refsect2">
+<div>
 
 ### needle
 
@@ -68,7 +68,7 @@ String to search
 
 </div>
 
-<div id="xpf_ret_contains" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -76,15 +76,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_contains" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_contains" class="example">
+<div>
 
 **Example 24.572. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 contains ('OpenLink Virtuoso', 'Link')
@@ -98,7 +98,7 @@ contains ('OpenLink Virtuoso', 'Link')
 
 </div>
 
-<div id="xpf_seealso_contains" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_repl_subscribe" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_SUBSCRIBE — add a subscription
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_subscribe" class="funcsynopsis">
+<div>
 
 |                             |                                      |
 |-----------------------------|--------------------------------------|
@@ -28,7 +28,7 @@ REPL_SUBSCRIBE — add a subscription
 |                             | in `replication_password ` varchar , |
 |                             | in `sync_user ` varchar `)`;         |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ REPL_SUBSCRIBE — add a subscription
 
 </div>
 
-<div id="desc_repl_subscribe" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ image has been loaded.
 
 </div>
 
-<div id="params_repl_subscribe" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id106490" class="refsect2">
+<div>
 
 ### server_name
 
@@ -65,7 +65,7 @@ target publisher server name.
 
 </div>
 
-<div id="id106493" class="refsect2">
+<div>
 
 ### publication
 
@@ -73,7 +73,7 @@ publication account name.
 
 </div>
 
-<div id="id106496" class="refsect2">
+<div>
 
 ### dav_user
 
@@ -83,7 +83,7 @@ by default.
 
 </div>
 
-<div id="id106499" class="refsect2">
+<div>
 
 ### dav_group
 
@@ -91,7 +91,7 @@ A valid local WebDAV group name to own the local copy.
 
 </div>
 
-<div id="id106502" class="refsect2">
+<div>
 
 ### replication_user
 
@@ -100,7 +100,7 @@ account on publisher.
 
 </div>
 
-<div id="id106505" class="refsect2">
+<div>
 
 ### replication_password
 
@@ -109,7 +109,7 @@ password for *`replication_user `* on publisher.
 
 </div>
 
-<div id="id106509" class="refsect2">
+<div>
 
 ### sync_user
 
@@ -119,15 +119,15 @@ A local DB account used to replay replication feeds.
 
 </div>
 
-<div id="examples_repl_subscribe" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_repl_subscribe_1" class="example">
+<div>
 
 **Example 24.333. Subscribing to a publication**
 
-<div class="example-contents">
+<div>
 
 This example shows making a subscription to the 'table_publication'
 published on a 'demo-srv' server. The WebDAV items will belong to the
@@ -145,7 +145,7 @@ SQL> DB.DBA.REPL_SUBSCRIBE ('demo-srv','demo-publication', 'dav', 'dav', 'demo',
 
 </div>
 
-<div id="seealso_repl_subscribe" class="refsect1">
+<div>
 
 ## See Also
 

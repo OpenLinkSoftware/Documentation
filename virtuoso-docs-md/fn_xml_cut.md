@@ -1,10 +1,10 @@
-<div id="fn_xml_cut" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ pointed by given XML tree- or XPER- entity
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ml_cut" class="funcsynopsis">
+<div>
 
 |                      |                                           |
 |----------------------|-------------------------------------------|
 | ` `**`xml_cut`**` (` | in `source_entity ` any (XML entity) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ pointed by given XML tree- or XPER- entity
 
 </div>
 
-<div id="desc_65" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ Another way to use this functionality is passing of some XML entity to a
 function, when function uses XPath operations with references to the
 "document's root".
 
-<div id="ex_xml_cut" class="example">
+<div>
 
 **Example 24.511. A sample of hidden bug**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure get_C (inout b any)
@@ -127,11 +127,11 @@ With XPER entity given, xml_cut() works exactly as xper_cut().
 
 </div>
 
-<div id="params_29" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id122957" class="refsect2">
+<div>
 
 ### source_xper
 
@@ -141,7 +141,7 @@ XML Entity to be converted into new document
 
 </div>
 
-<div id="seealso_38" class="refsect1">
+<div>
 
 ## See Also
 

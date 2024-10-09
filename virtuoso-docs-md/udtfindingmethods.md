@@ -1,6 +1,6 @@
-<div id="udtfindingmethods" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -44,11 +44,11 @@ anywhere during the compilation. All of the type checks are done at
 runtime. The method/constructor invocation breaks that practice by using
 the calculated compile time types for the scalar expressions.
 
-<div id="ex_udtpoorsignature" class="example">
+<div>
 
 **Example 9.7. Method Signatures**
 
-<div class="example-contents">
+<div>
 
 Consider a method `m1` of type `t1` taking an INTEGER parameter and
 returning an integer value:

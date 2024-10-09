@@ -1,6 +1,6 @@
-<div id="vfoafsslconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Log in to your ODS account, and edit your profile.
 

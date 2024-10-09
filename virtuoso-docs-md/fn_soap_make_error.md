@@ -1,10 +1,10 @@
-<div id="fn_soap_make_error" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ parameters.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_make_error" class="funcsynopsis">
+<div>
 
 |                                     |                               |
 |-------------------------------------|-------------------------------|
@@ -27,7 +27,7 @@ parameters.
 |                                     | in `soap_version ` integer ,  |
 |                                     | in `do_uddi ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ parameters.
 
 </div>
 
-<div id="desc_make_error" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ It returns the generated XML as a varchar value.
 
 </div>
 
-<div id="params_make_error" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110739" class="refsect2">
+<div>
 
 ### soap_code
 
@@ -58,7 +58,7 @@ Required. The fault code according to the SOAP specification.
 
 </div>
 
-<div id="id110742" class="refsect2">
+<div>
 
 ### sql_state
 
@@ -66,7 +66,7 @@ Required. The error's SQL state.
 
 </div>
 
-<div id="id110745" class="refsect2">
+<div>
 
 ### error_message
 
@@ -74,7 +74,7 @@ Required. The error text.
 
 </div>
 
-<div id="id110748" class="refsect2">
+<div>
 
 ### soap_version
 
@@ -83,7 +83,7 @@ reply.
 
 </div>
 
-<div id="id110751" class="refsect2">
+<div>
 
 ### do_uddi
 
@@ -94,7 +94,7 @@ format.
 
 </div>
 
-<div id="ret_make_error" class="refsect1">
+<div>
 
 ## Return Types
 

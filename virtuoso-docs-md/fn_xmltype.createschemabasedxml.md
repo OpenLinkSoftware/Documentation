@@ -1,10 +1,10 @@
-<div id="fn_xmltype.createschemabasedxml" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ new schema reference.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.createschemabasedxml" class="funcsynopsis">
+<div>
 
 |                                           |                               |
 |-------------------------------------------|-------------------------------|
 | ` `**`XMLType.createSchemaBasedXML`**` (` | in `schema_url ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ new schema reference.
 
 </div>
 
-<div id="desc_xmltype.createschemabasedxml" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ new URL is equal to the URL of the original instance.
 
 </div>
 
-<div id="params_xmltype.createschemabasedxml" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125259" class="refsect2">
+<div>
 
 ### schema_url
 
@@ -63,7 +63,7 @@ The location of a schema of a new instance.
 
 </div>
 
-<div id="ret_xmltype.createschemabasedxml" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -71,16 +71,16 @@ The member function returns a new instance of XMLType.
 
 </div>
 
-<div id="examples_xmltype.createschemabasedxml" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.createschemabasedxml" class="example">
+<div>
 
 **Example 24.545. Converting a non schema-based instance to schema-based
 one**
 
-<div class="example-contents">
+<div>
 
 The procedure creates a schema-based copy of a sample non schema-based
 instance.
@@ -122,7 +122,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_xmltype.createschemabasedxml" class="refsect1">
+<div>
 
 ## See Also
 

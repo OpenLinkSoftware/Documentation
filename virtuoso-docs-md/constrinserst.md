@@ -1,6 +1,6 @@
-<div id="constrinserst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ keyword with the INSERT INTO phrase.
 
 <span class="emphasis">*Example:*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  Assume new triples need to be added for the equivalentClass:
 

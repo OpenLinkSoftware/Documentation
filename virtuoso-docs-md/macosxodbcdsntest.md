@@ -1,6 +1,6 @@
-<div id="macosxodbcdsntest" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,15 +20,15 @@ Select the Data Source from the DSN list, and press the
 You will be prompted for a username and password to establish a
 connection with the Data Source.
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig07" class="figure">
+<div>
 
 **Figure 2.62. Login - Identity Tab**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Login - Identity Tab](images/mac/config07.jpg)
 
@@ -48,15 +48,15 @@ required.
 Under the Connection Tab are the fields for the remote server, and the
 authentication method. Typically the defaults are used.
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig30" class="figure">
+<div>
 
 **Figure 2.63. Login - Connection Tab**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Login - Connection Tab](images/mac/osximage30.gif)
 
@@ -73,15 +73,15 @@ authentication method. Typically the defaults are used.
 The Options page has Database, Charset and daylight savings
 configuration. Typically the defaults are used.
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig31" class="figure">
+<div>
 
 **Figure 2.64. Login - Options Tab**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Login - Options Tab](images/mac/osximage31.gif)
 
@@ -97,15 +97,15 @@ configuration. Typically the defaults are used.
 
 The About page shows the software details.
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig32" class="figure">
+<div>
 
 **Figure 2.65. Login - About**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Login - About](images/mac/osximage32.gif)
 
@@ -121,15 +121,15 @@ The About page shows the software details.
 
 The result of the test is shown in a popup window.
 
-<div class="figure-float">
+<div>
 
-<div id="macconfig33" class="figure">
+<div>
 
 **Figure 2.66. Test Result**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Test Result](images/mac/osximage33.gif)
 

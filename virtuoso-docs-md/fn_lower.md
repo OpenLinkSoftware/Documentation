@@ -1,10 +1,10 @@
-<div id="fn_lower" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ lower — returns a lower case version of its argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_lower" class="funcsynopsis">
+<div>
 
 |                    |                    |
 |--------------------|--------------------|
 | ` `**`lower`**` (` | `str ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ lower — returns a lower case version of its argument
 
 </div>
 
-<div id="desc_lower" class="refsect1">
+<div>
 
 ## Description
 

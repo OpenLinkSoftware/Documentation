@@ -1,6 +1,6 @@
-<div id="wsacl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,7 +25,7 @@ The patterns for designating a range of IP addresses follow the syntax
 of the SQL 'LIKE' predicate; i.e. '%.foo.bar' or '\*.foo.bar' for
 example.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                     |
 |:--------------------------:|:--------------------------------------------------------------------|
@@ -45,9 +45,9 @@ default:
 | <span class="emphasis">*Web Proxy server ACL*</span> - controls access to the Web proxy server                     |
 | <span class="emphasis">*News Server ACL*</span> - controls access to the Internet news groups (reading or posting) |
 
-<div id="wsaclgenpurpacl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -81,7 +81,7 @@ Columns for DB.DBA.HTTP_ACL:
 The primary key covers columns HA_LIST, HA_ORDER, HA_CLIENT_IP and
 HA_FLAG.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                 |
 |:--------------------------:|:----------------------------------------------------------------------------------------------------------------|
@@ -136,7 +136,7 @@ hit rate average and compares with limit for http acl rule. If it is
 larger then will drop connection. Once per day the statistics will be
 reset.
 
-<div class="itemizedlist">
+<div>
 
 - Regular expressions are not supported.
 

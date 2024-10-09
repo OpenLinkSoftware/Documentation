@@ -1,6 +1,6 @@
-<div id="webdavadmin" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ Virtuoso implements the DAV protocol, allowing you to create and manage
 resources either directly through repository manipulations or
 indirectly, through a variety of WebDAV services.
 
-<div id="resourcetypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -48,15 +48,15 @@ used with that file a list or file types are maintained in the server.
 This list is used when sending any content via the HTTP server which
 include content in DAV and under VSP.
 
-<div class="figure-float">
+<div>
 
-<div id="id14689" class="figure">
+<div>
 
 **Figure 6.75. DAV Resource Types**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![DAV Resource Types](images/ui/dav_resrctyp_01.png)
 
@@ -80,9 +80,9 @@ pressing the <span class="emphasis">*Save*</span> button.
 
 </div>
 
-<div id="contentmanagement" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -104,15 +104,15 @@ upload or remove files, or edit documents.
 The Repository tab lists the current location within the tree and the
 current login name. The root of the repository is usually `/DAV/` .
 
-<div class="figure-float">
+<div>
 
-<div id="id14702" class="figure">
+<div>
 
 **Figure 6.76. Content Management**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Content Management](images/webdav.png)
 
@@ -126,9 +126,9 @@ current login name. The root of the repository is usually `/DAV/` .
 
 </div>
 
-<div id="davcontresnames" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -151,9 +151,9 @@ not, it is replaced with a dash.
 
 </div>
 
-<div id="davcontresperm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -179,9 +179,9 @@ indexing.
 
 </div>
 
-<div id="davcontresug" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -201,9 +201,9 @@ of the user who was logged in when the resource was created.
 
 </div>
 
-<div id="davconterssize" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -225,9 +225,9 @@ character.
 
 </div>
 
-<div id="davcontrestype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -250,9 +250,9 @@ the default type of `application/octet-stream` .
 
 </div>
 
-<div id="davcontpropedt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -271,15 +271,15 @@ properties of a resource, other than its name, by selecting the resource
 via the checkbox to the left of the icon, and pressing the "Properties"
 button.
 
-<div class="figure-float">
+<div>
 
-<div id="editres" class="figure">
+<div>
 
 **Figure 6.77. Edit Resource Properties**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Edit Resource Properties](images/ui/editres.png)
 
@@ -297,9 +297,9 @@ XML documents also permit you to edit their XML properties specifically.
 This can be done on any document of type text/xml by clicking on the
 icon for the document.
 
-<div id="davcontresprops" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -321,15 +321,15 @@ The owner, group, permissions, and indexing controls on this form apply
 to the appropriate properties of resources, as documented above. Changes
 to the type of a collection (folder) are ignored.
 
-<div class="figure-float">
+<div>
 
-<div id="meditres" class="figure">
+<div>
 
 **Figure 6.78. Multiple Resources Edit Properties**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Multiple Resources Edit Properties](images/ui/meditres.png)
 
@@ -347,15 +347,15 @@ The "Property" control permits you to change or add additional
 properties. There is a pulldown of predefined XML-related properties, or
 you may create your own property.
 
-<div class="figure-float">
+<div>
 
-<div id="meditres2" class="figure">
+<div>
 
 **Figure 6.79. Multiple Resources Edit Properties**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Multiple Resources Edit Properties](images/ui/meditres2.png)
 
@@ -371,9 +371,9 @@ you may create your own property.
 
 </div>
 
-<div id="davcontdavprop" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -402,9 +402,9 @@ element for the document.
 
 </div>
 
-<div id="davaddnewres" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -427,15 +427,15 @@ name of the collection (folder), its owner and group, and the initial
 permissions. You may also turn on indexing for the folder's contents at
 this point.
 
-<div class="figure-float">
+<div>
 
-<div id="cfolder" class="figure">
+<div>
 
 **Figure 6.80. Create Folder**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Create Folder](images/ui/cfolder.png)
 
@@ -455,15 +455,15 @@ into the DAV repository. You need to specify the name of the resource in
 the repository and give it a type. You can also set the basic repository
 properties here.
 
-<div class="figure-float">
+<div>
 
-<div id="ufile" class="figure">
+<div>
 
 **Figure 6.81. Upload File**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Upload File](images/ui/ufile.png)
 
@@ -481,9 +481,9 @@ properties here.
 
 </div>
 
-<div id="freetext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -497,9 +497,9 @@ properties here.
 
 </div>
 
-<div id="contentidxmode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -523,15 +523,15 @@ consuming if you frequently insert or update text files. For this reason
 Virtuoso can be set to index in batch mode at a particular interval in
 minutes.
 
-<div class="figure-float">
+<div>
 
-<div id="id14775" class="figure">
+<div>
 
 **Figure 6.82. DAV Free Text Index Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![DAV Free Text Index Configuration](images/ui/dav_idxprprty_01.png)
 

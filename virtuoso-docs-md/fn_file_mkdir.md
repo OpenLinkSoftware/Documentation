@@ -1,10 +1,10 @@
-<div id="fn_file_mkdir" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ file_mkdir — Creates a directory in the file system
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_file_mkdir" class="funcsynopsis">
+<div>
 
 |                         |                       |
 |-------------------------|-----------------------|
 | ` `**`file_mkdir`**` (` | in `path ` varchar ,  |
 |                         | out `error ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ file_mkdir — Creates a directory in the file system
 
 </div>
 
-<div id="desc_file_mkdir" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ This function creates a file system directory.
 
 </div>
 
-<div id="params_file_mkdir" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88736" class="refsect2">
+<div>
 
 ### path
 
@@ -56,7 +56,7 @@ relative to server working directory.
 
 </div>
 
-<div id="id88739" class="refsect2">
+<div>
 
 ### error
 
@@ -67,7 +67,7 @@ not signalled.
 
 </div>
 
-<div id="ret_file_mkdir" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ On success returns zero.
 
 </div>
 
-<div id="errors_file_mkdir" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id88747" class="table">
+<div>
 
-**Table 24.34. Errors signalled by**
+**Table 24.33. Errors signalled by**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                               | Description |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------------------------|-------------|
@@ -98,7 +98,7 @@ On success returns zero.
 
 </div>
 
-<div id="seealso_file_mkdir" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksgraphsecurity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,7 +26,7 @@ href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSecurityW
 class="ulink" target="_top">WebID to protect Virtuoso SPARQL
 endpoints</a> .
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                           |
 |:--------------------------:|:----------------------------------------------------------|

@@ -1,10 +1,10 @@
-<div id="fn_vad_uninstall" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAD_UNINSTALL — Vad package uninstallation
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_uninstall" class="funcsynopsis">
+<div>
 
 |                                           |                                 |
 |-------------------------------------------|---------------------------------|
 | `varchar DB.DBA. `**`VAD_UNINSTALL`**` (` | in `package_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,14 +32,14 @@ VAD_UNINSTALL — Vad package uninstallation
 
 </div>
 
-<div id="desc_60" class="refsect1">
+<div>
 
 ## Description
 
 Invokes the uninstall operation from interactive SQL or from the web
 user interface. This will:
 
-<div class="itemizedlist">
+<div>
 
 - enter into atomic mode
 
@@ -64,11 +64,11 @@ user interface. This will:
 
 </div>
 
-<div id="params_26" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117932" class="refsect2">
+<div>
 
 ### package_name
 
@@ -78,7 +78,7 @@ name of package '/' version e.g: 'virtodp/1.0'
 
 </div>
 
-<div id="seealso_32" class="refsect1">
+<div>
 
 ## See Also
 

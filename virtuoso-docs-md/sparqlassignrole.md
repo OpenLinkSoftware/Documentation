@@ -1,6 +1,6 @@
-<div id="sparqlassignrole" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 This section a sample scenario how to assign SPARQL ( for ex.
 SPARQL_SELECT ) role to Virtuoso SQL user:
 
-<div class="orderedlist">
+<div>
 
 1.  Go to <a href="http://cname/conductor" class="ulink"
     target="_top">http://cname/conductor</a> .
@@ -26,15 +26,15 @@ SPARQL_SELECT ) role to Virtuoso SQL user:
 
 3.  Go to System Admin -\> User Accounts:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="role1" class="figure">
+    <div>
 
     **Figure 1.7. Assign SPARQL Role to SQL User**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Assign SPARQL Role to SQL User](images/ui/ag1.png)
 
@@ -50,15 +50,15 @@ SPARQL_SELECT ) role to Virtuoso SQL user:
 
 4.  Click "Edit" for a given user from the very last right column:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="role2" class="figure">
+    <div>
 
     **Figure 1.8. Assign SPARQL Role to SQL User**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Assign SPARQL Role to SQL User](images/ui/ag2.png)
 
@@ -78,15 +78,15 @@ SPARQL_SELECT ) role to Virtuoso SQL user:
 
     and click the "\>\>" button:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="role1_01" class="figure">
+    <div>
 
     **Figure 1.9. Assign SPARQL Role to SQL User**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Assign SPARQL Role to SQL User](images/ui/ag3.png)
 

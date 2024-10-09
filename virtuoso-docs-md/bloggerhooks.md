@@ -1,6 +1,6 @@
-<div id="bloggerhooks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -27,12 +27,12 @@ server. The following hooks are available for definition:
 | getPost\_\<appkey\> (in req blogRequest)                              |
 | getRecentPosts\_\<appkey\> (in req blogRequest, in numberOfPosts int) |
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                    |
 |:--------------------------:|:---------------------------------------------------|
 | ![\[Tip\]](images/tip.png) | See Also:                                          |
-|                            | <a href="xmlrpc.html" class="link" shape="rect"    
+|                            | <a href="xmlrpc.html" class="link"                 
                               title="17.10. XML-RPC support">XML-RPC section</a>  |
 
 </div>
@@ -71,11 +71,11 @@ constructor method blogRequest (
 ;
 ```
 
-<div id="ex_customblog" class="example">
+<div>
 
 **Example 14.61. Customizing the BLOG Server**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 -- SIMPLE BLOG APPLICATION

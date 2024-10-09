@@ -1,10 +1,10 @@
-<div id="fn_bpel_script_obsolete" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ BPEL.BPEL.script_obsolete — mark a BPEL script as obsoleted
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_script_obsolete_01" class="funcsynopsis">
+<div>
 
 |                                        |                           |
 |----------------------------------------|---------------------------|
 | ` `**`BPEL.BPEL.script_obsolete`**` (` | in `script ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,11 +32,11 @@ BPEL.BPEL.script_obsolete — mark a BPEL script as obsoleted
 
 </div>
 
-<div id="params_script_obsolete_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id130091" class="refsect2">
+<div>
 
 ### script
 
@@ -46,7 +46,7 @@ BPEL.BPEL.script_obsolete — mark a BPEL script as obsoleted
 
 </div>
 
-<div id="ret_script_obsolete_01" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -54,7 +54,7 @@ this function has no return value
 
 </div>
 
-<div id="desc_script_obsolete_01" class="refsect1">
+<div>
 
 ## Description
 
@@ -66,15 +66,15 @@ will be no current version but there may be a version being edited.
 
 </div>
 
-<div id="examples_script_obsolete_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_script_obsolete_01" class="example">
+<div>
 
 **Example 24.644. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
         SQL> BPEL.BPEL.script_obsolete (5);

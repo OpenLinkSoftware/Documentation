@@ -1,6 +1,6 @@
-<div id="xaservopeninfo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

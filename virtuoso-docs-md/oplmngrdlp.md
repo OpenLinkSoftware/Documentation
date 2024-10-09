@@ -1,6 +1,6 @@
-<div id="oplmngrdlp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ Virtuoso license problems are easy to debug. The following information
 provides a conceptual framework and troubleshooting tips suitable for
 all licensing problems.
 
-<div id="oplmngrdlpil" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,9 +47,9 @@ be used.
 
 </div>
 
-<div id="oplmngrdlpsl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,7 +65,7 @@ be used.
 
 Licenses problems appear under the following circumstances:
 
-<div class="itemizedlist">
+<div>
 
 - A license file is ftp'd in ASCII.
 
@@ -90,9 +90,9 @@ Licenses problems appear under the following circumstances:
 
 </div>
 
-<div id="oplmngrdlptl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -109,7 +109,7 @@ Licenses problems appear under the following circumstances:
 Use the following tips to resolve your licensing tips or supply OpenLink
 Technical Services with your findings:
 
-<div class="itemizedlist">
+<div>
 
 - FTP all licenses (virtuoso.lic) in binary mode.
 

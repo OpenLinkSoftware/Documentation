@@ -1,10 +1,10 @@
-<div id="fn_rdf_repl_start" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ RDF_REPL_START — Enables RDF Replication.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_repl_start" class="funcsynopsis">
+<div>
 
 |                             |      |
 |-----------------------------|------|
 | ` `**`RDF_REPL_START`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ RDF_REPL_START — Enables RDF Replication.
 
 </div>
 
-<div id="desc_rdf_repl_start" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,15 +40,15 @@ This function is called to enable (start) RDF Publication.
 
 </div>
 
-<div id="examples_rdf_repl_start" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_rdf_repl_start" class="example">
+<div>
 
 **Example 24.352. Enable RDF Publication**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.RDF_REPL_START();
@@ -62,7 +62,7 @@ SQL> DB.DBA.RDF_REPL_START();
 
 </div>
 
-<div id="seealso_rdf_repl_start" class="refsect1">
+<div>
 
 ## See Also
 

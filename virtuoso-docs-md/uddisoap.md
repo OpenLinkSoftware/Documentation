@@ -1,6 +1,6 @@
-<div id="uddisoap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,11 +19,11 @@ protocol. In version 1, the `SOAPAction` HTTP Header is required. The
 value passed in this HTTP Header must be an empty string that is
 surrounded by double quotes.
 
-<div id="ex_uddisoap" class="example">
+<div>
 
 **Example 17.39. UDDI and Soap**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 POST /UDDI/inquiry HTTP/1.1
@@ -46,7 +46,7 @@ passing XML messages to UDDI-enabled servers using a standard HTTP-POST
 protocol. Unless specified, all responses will be returned in the normal
 HTTP response document.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                            |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------|

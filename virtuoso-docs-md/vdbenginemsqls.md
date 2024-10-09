@@ -1,6 +1,6 @@
-<div id="vdbenginemsqls" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -97,9 +97,9 @@ before attempting to generate an EDM. In the case of the Microsoft SQL
 Server Northwind database all tables are not nullable, thus this should
 not be an issue in this case.
 
-<div id="vdbenginemsqlsinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -124,7 +124,7 @@ used.
 Installation instructions for the OpenLink ODBC Driver for Microsoft SQL
 Server are available from:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC"

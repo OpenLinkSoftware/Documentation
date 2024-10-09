@@ -1,6 +1,6 @@
-<div id="virtuosotipsandtricksrdftriggersoptions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,7 +26,7 @@ Note: Using these options when the RFViews have already been created is
 not currently possible via the Conductor UI. Instead you should be able
 to add them manually from isql:
 
-<div class="orderedlist">
+<div>
 
 1.  Drop the Linked Data View graph and Quad Map.
 
@@ -34,7 +34,7 @@ to add them manually from isql:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                         |
 |:--------------------------:|:--------------------------------------------------------|

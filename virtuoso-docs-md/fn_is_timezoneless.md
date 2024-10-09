@@ -1,10 +1,10 @@
-<div id="fn_is_timezoneless" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ timezoned
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_is_timezoneless" class="funcsynopsis">
+<div>
 
 |                                      |                        |
 |--------------------------------------|------------------------|
 | `datetime `**`is_timezoneless`**` (` | in `dt ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ timezoned
 
 </div>
 
-<div id="desc_is_timezoneless" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ The function returns 1 for timezoneless arguments, zero for timezoned.
 
 </div>
 
-<div id="params_is_timezoneless" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83401" class="refsect2">
+<div>
 
 ### dt
 
@@ -55,15 +55,15 @@ Datetime value.
 
 </div>
 
-<div id="examples_is_timezoneless" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_is_timezoneless" class="example">
+<div>
 
 **Example 24.59. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select is_timezoneless (cast ('1999-12-31 11:59' as datetime));
@@ -80,7 +80,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_is_timezoneless" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_http_map_table" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ http_map_table — Update internal HTTP mapping table
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_map_table" class="funcsynopsis">
+<div>
 
 |                             |                                                   |
 |-----------------------------|---------------------------------------------------|
@@ -37,7 +37,7 @@ http_map_table — Update internal HTTP mapping table
 |                             | in `soap_options ` any ,                          |
 |                             | in `auth_options ` any `)`;                       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ http_map_table — Update internal HTTP mapping table
 
 </div>
 
-<div id="desc_http_map_table" class="refsect1">
+<div>
 
 ## Description
 
@@ -58,11 +58,11 @@ HTTP maps table.
 
 </div>
 
-<div id="params_http_map_table" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id92972" class="refsect2">
+<div>
 
 ### logical_path
 
@@ -71,7 +71,7 @@ path part of URI
 
 </div>
 
-<div id="id92975" class="refsect2">
+<div>
 
 ### physical_path
 
@@ -81,7 +81,7 @@ the point will be treated as a file (or resource).
 
 </div>
 
-<div id="id92978" class="refsect2">
+<div>
 
 ### vhost
 
@@ -92,7 +92,7 @@ which will be replaced with hostname and port from INI file.
 
 </div>
 
-<div id="id92981" class="refsect2">
+<div>
 
 ### listen_host
 
@@ -105,7 +105,7 @@ class="function">http_listen_host </code></a> ).
 
 </div>
 
-<div id="id92986" class="refsect2">
+<div>
 
 ### stored_in_dav
 
@@ -114,7 +114,7 @@ Can accept zero or one (1) integer values.
 
 </div>
 
-<div id="id92989" class="refsect2">
+<div>
 
 ### is_browseable
 
@@ -126,7 +126,7 @@ response to the user-agent.
 
 </div>
 
-<div id="id92992" class="refsect2">
+<div>
 
 ### default_page
 
@@ -135,7 +135,7 @@ File name of default page that will be sent to the user-agent if
 
 </div>
 
-<div id="id92996" class="refsect2">
+<div>
 
 ### security_restriction
 
@@ -147,7 +147,7 @@ class="function">http_map_get </code></a> .
 
 </div>
 
-<div id="id93002" class="refsect2">
+<div>
 
 ### authentication
 
@@ -156,7 +156,7 @@ A string value that will be passed as a parameter to the
 
 </div>
 
-<div id="id93006" class="refsect2">
+<div>
 
 ### auth_function
 
@@ -168,7 +168,7 @@ function will cause the HTTP request to be rejected.
 
 </div>
 
-<div id="id93010" class="refsect2">
+<div>
 
 ### postprocess_function
 
@@ -178,7 +178,7 @@ session table.
 
 </div>
 
-<div id="id93013" class="refsect2">
+<div>
 
 ### execute_vsp_as
 
@@ -187,7 +187,7 @@ not specified (is null), execution is forbidden.
 
 </div>
 
-<div id="id93016" class="refsect2">
+<div>
 
 ### execute_soap_as
 
@@ -196,7 +196,7 @@ execution of SOAP calls is forbidden.
 
 </div>
 
-<div id="id93019" class="refsect2">
+<div>
 
 ### have_persistent_session_variables
 
@@ -207,7 +207,7 @@ class="function">http_map_get </code></a> .
 
 </div>
 
-<div id="id93024" class="refsect2">
+<div>
 
 ### soap_options
 
@@ -218,7 +218,7 @@ of the SOAP service. See example.
 
 </div>
 
-<div id="id93027" class="refsect2">
+<div>
 
 ### auth_options
 
@@ -233,15 +233,15 @@ class="function">http_map_get('auth_opts')</code></a> function.
 
 </div>
 
-<div id="examples_http_map_table" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_map_table" class="example">
+<div>
 
 **Example 24.168. Inserting A Map Entry**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 http_map_table ('/vdir', '/admin/', 'www.foo.com', 'host.foo.com');
@@ -253,11 +253,11 @@ http_map_table ('/vdir', '/admin/', 'www.foo.com', 'host.foo.com');
 
   
 
-<div id="ex_http_map_table_01" class="example">
+<div>
 
 **Example 24.169. Create entry for a SOAP service**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 http_map_table ('/soapapp', '/soapapp/', 'www.foo.com', 'host.foo.com', NULL,
@@ -274,7 +274,7 @@ http_map_table ('/soapapp', '/soapapp/', 'www.foo.com', 'host.foo.com', NULL,
 
 </div>
 
-<div id="seealso_http_map_table" class="refsect1">
+<div>
 
 ## See Also
 

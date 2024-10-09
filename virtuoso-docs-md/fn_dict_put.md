@@ -1,10 +1,10 @@
-<div id="fn_dict_put" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ dict_put — Adds a key-value pair to a dictionary
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_put" class="funcsynopsis">
+<div>
 
 |                          |                            |
 |--------------------------|----------------------------|
@@ -24,7 +24,7 @@ dict_put — Adds a key-value pair to a dictionary
 |                          | in `key ` any ,            |
 |                          | in `value ` any `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ dict_put — Adds a key-value pair to a dictionary
 
 </div>
 
-<div id="desc_dict_put" class="refsect1">
+<div>
 
 ## Description
 
@@ -45,11 +45,11 @@ pair is added to the dictionary.
 
 </div>
 
-<div id="params_dict_put" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id86965" class="refsect2">
+<div>
 
 ### dict
 
@@ -57,7 +57,7 @@ The dictionary to be updated or extended.
 
 </div>
 
-<div id="id86968" class="refsect2">
+<div>
 
 ### key
 
@@ -65,7 +65,7 @@ The key part of the dictionary pair to be added or updated.
 
 </div>
 
-<div id="id86971" class="refsect2">
+<div>
 
 ### value
 
@@ -75,7 +75,7 @@ The dependent part of the pair.
 
 </div>
 
-<div id="ret_dict_put" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,7 +84,7 @@ as counted after the modification.
 
 </div>
 
-<div id="seealso_dict_put" class="refsect1">
+<div>
 
 ## See Also
 

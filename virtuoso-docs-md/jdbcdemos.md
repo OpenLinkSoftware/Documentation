@@ -1,6 +1,6 @@
-<div id="jdbcdemos" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="jdbcdemo" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,21 +30,21 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the Virtuoso "Start Menu" program group and then follow the
     JDBC Samples--\>JDBCDemo (JDK1.1&1.2) menu path, this will execute a
     DOS batch program that initializes the Java demo application.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="vjdemo1" class="figure">
+    <div>
 
     **Figure 4.13. JDBC Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JDBC Demo](images/vjdemo1.gif)
 
@@ -64,15 +64,15 @@
     "virtuoso.jdbc.Driver", which is the Virtuoso Driver for JDBC 1.0.
     The "Connection URL" field requires a valid Virtuoso JDBC URL.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="vjdemo2" class="figure">
+    <div>
 
     **Figure 4.14. JDBC Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JDBC Demo](images/vjdemo2.gif)
 
@@ -91,15 +91,15 @@
     requesting all records from the "Demo" database table "Customers"
     owned by the Virtuoso user "DBA".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="vjdemo3" class="figure">
+    <div>
 
     **Figure 4.15. JDBC Demo**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![JDBC Demo](images/vjdemo3.gif)
 

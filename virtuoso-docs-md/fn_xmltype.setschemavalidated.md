@@ -1,10 +1,10 @@
-<div id="fn_xmltype.setschemavalidated" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ the given XMLType instance.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.setschemavalidated" class="funcsynopsis">
+<div>
 
 |                                         |                                   |
 |-----------------------------------------|-----------------------------------|
 | ` `**`XMLType.setSchemaValidated`**` (` | in `flag ` integer default 1 `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ the given XMLType instance.
 
 </div>
 
-<div id="desc_xmltype.setschemavalidated" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,11 +48,11 @@ possible to reset this flag to 0 in order to force the next call of
 
 </div>
 
-<div id="params_xmltype.setschemavalidated" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125831" class="refsect2">
+<div>
 
 ### flag
 
@@ -62,7 +62,7 @@ An integer that becomes a new value of the flag.
 
 </div>
 
-<div id="ret_xmltype.setschemavalidated" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -70,15 +70,15 @@ The function returns a new value of the flag.
 
 </div>
 
-<div id="examples_xmltype.setschemavalidated" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.setschemavalidated" class="example">
+<div>
 
 **Example 24.560. Default use**
 
-<div class="example-contents">
+<div>
 
 This call prevents the value of myXMLinstance from being validated in
 the future.
@@ -95,7 +95,7 @@ myXMLinstance.setSchemaValidated();
 
 </div>
 
-<div id="seealso_xmltype.setschemavalidated" class="refsect1">
+<div>
 
 ## See Also
 

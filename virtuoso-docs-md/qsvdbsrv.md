@@ -1,6 +1,6 @@
-<div id="qsvdbsrv" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ title="External Linked Objects">Visual Server Administration
 Interface</a> section to see how to link tables into Virtuoso, or follow
 the small example below to get you started:
 
-<div id="confodbcdsn" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -71,16 +71,16 @@ go to Administrative Tools and then click the Data Sources (ODBC) icon.
 This first datasource uses OpenLink Generic ODBC Driver V6.0 to create
 DSN to a MySQL 5.x database.
 
-<div class="figure-float">
+<div>
 
-<div id="image01" class="figure">
+<div>
 
 **Figure 3.7. OpenLink Mutli Tier DSN Configuration with database MySQL
 5.x**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![OpenLink Mutli Tier DSN Configuration with database MySQL
 5.x](images/virttour1.png)
@@ -98,15 +98,15 @@ DSN to a MySQL 5.x database.
 The next example is an Informix 7 datasource using the driver from
 Informix Software, Inc.
 
-<div class="figure-float">
+<div>
 
-<div id="image02" class="figure">
+<div>
 
 **Figure 3.8. Informix Driver DSN Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Informix Driver DSN Configuration](images/virttour2.gif)
 
@@ -123,15 +123,15 @@ Informix Software, Inc.
 The next few images show a Microsoft SQL Server 6.5 datasource using the
 Microsoft Corporation SQL Server driver.
 
-<div class="figure-float">
+<div>
 
-<div id="image03" class="figure">
+<div>
 
 **Figure 3.9. MS SQL Server DSN Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![MS SQL Server DSN Configuration](images/virttour3.gif)
 
@@ -145,15 +145,15 @@ Microsoft Corporation SQL Server driver.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="image04" class="figure">
+<div>
 
 **Figure 3.10. MS SQL Server DSN Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![MS SQL Server DSN Configuration](images/virttour4.gif)
 
@@ -167,15 +167,15 @@ Microsoft Corporation SQL Server driver.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="image05" class="figure">
+<div>
 
 **Figure 3.11. MS SQL Server DSN Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![MS SQL Server DSN Configuration](images/virttour5.gif)
 
@@ -189,15 +189,15 @@ Microsoft Corporation SQL Server driver.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="image06" class="figure">
+<div>
 
 **Figure 3.12. MS SQL Server DSN Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![MS SQL Server DSN Configuration](images/virttour6.gif)
 
@@ -211,15 +211,15 @@ Microsoft Corporation SQL Server driver.
 
 </div>
 
-<div class="figure-float">
+<div>
 
-<div id="image07" class="figure">
+<div>
 
 **Figure 3.13. MS SQL Server DSN Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![MS SQL Server DSN Configuration](images/virttour7.gif)
 
@@ -237,15 +237,15 @@ Finally, review the configuration information for your default local
 Virtuoso datasource, named "<span class="emphasis">*Local
 Virtuoso*</span> ".
 
-<div class="figure-float">
+<div>
 
-<div id="image08" class="figure">
+<div>
 
 **Figure 3.14. OpenLink Virtuoso DSN Configuration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![OpenLink Virtuoso DSN Configuration](images/virttour8.png)
 
@@ -264,15 +264,15 @@ DSNs can be created and configured within the Virtuoso Conductor. Go to
 Data Sources" tab. Click the "Add System DSN", or "Add User DSN", or
 "Add File DSN" button.
 
-<div class="figure-float">
+<div>
 
-<div id="newdsn" class="figure">
+<div>
 
 **Figure 3.15. Creating a new DSN**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Creating a new DSN](images/newdsn.png)
 

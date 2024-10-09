@@ -1,6 +1,6 @@
-<div id="pkeycons" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,11 +26,11 @@ primary key constraint exists for the purpose of guaranteeing uniqueness
 of a row and hence should be respected. A unique index is not a primary
 key and should never substitute one.
 
-<div id="ex_pkeyfullconstraint" class="example">
+<div>
 
 **Example 9.18. Primary Key using Constraint**
 
-<div class="example-contents">
+<div>
 
 This example shows how to create a table with a primary key defined in
 full as a named primary key table constraint
@@ -57,11 +57,11 @@ columns do not permit NULL values. This means that no members of a
 combination of columns that constitute a primary key can have a NULL
 value.
 
-<div id="ex_pkeyshort" class="example">
+<div>
 
 **Example 9.19. Primary Key shorthand**
 
-<div class="example-contents">
+<div>
 
 This example shows how to create a table with a primary key defined
 using shorthand:
@@ -93,7 +93,7 @@ CREATE TABLE demo_table (
 If a table definition has no PRIMARY KEY clause, Virtuoso will generate
 a default primary key column called "\_IDN".
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                                        |                                                                                                                                  |
 |:--------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------|
@@ -110,11 +110,11 @@ primary key from Virtuoso will reduce the overall efficiency because an
 extra column will be used per row that would be redundant to the data
 itself.
 
-<div id="ex_pkeydefault" class="example">
+<div>
 
 **Example 9.20. Default Virtuoso Primary Key**
 
-<div class="example-contents">
+<div>
 
 In the absence of a PRIMARY KEY definition:
 
@@ -156,7 +156,7 @@ The PRIMARY KEY option may not coexist with UNDER in a CREATE TABLE
 statement because a subtable always inherits the supertable's primary
 key.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                              |
 |:--------------------------:|:-----------------------------------------------------------------------------|

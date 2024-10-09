@@ -1,6 +1,6 @@
-<div id="vspforumsapp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ a theme, post new messages to an existing theme or reply to an existing
 message. Unregistered users can only search, browse, and read existing
 themes and messages.
 
-<div id="forumsprinciples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,9 +55,9 @@ with a free-text index applied over them.
 
 </div>
 
-<div id="forumsnav" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -73,7 +73,7 @@ with a free-text index applied over them.
 
 The application consists of four main pages:
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*home.vsp*</span> - the main page introduces
     the forums with the following information:
@@ -134,9 +134,9 @@ The application consists of four main pages:
 
 </div>
 
-<div id="forumsremarks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -169,9 +169,9 @@ address that would be displayed if they were logged in.
 
 </div>
 
-<div id="forumssrchpg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -267,9 +267,9 @@ including messages and titles.
 
 </div>
 
-<div id="forumssrchdesc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -455,7 +455,7 @@ a:hover{color:#a2a2a2}
 The page sources are available in the default distribution under the
 samples directory.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

@@ -1,6 +1,6 @@
-<div id="debuggingparsetree" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,6 +1,6 @@
-<div id="wsrmmsgexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="ex_wsrminitreq" class="example">
+<div>
 
 **Example 17.33. Example: Initial request**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 <SOAP:Envelope>

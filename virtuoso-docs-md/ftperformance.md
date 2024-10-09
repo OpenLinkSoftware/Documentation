@@ -1,6 +1,6 @@
-<div id="ftperformance" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -41,9 +41,9 @@ between index refreshes. The table name must be fully qualified and is
 case sensitive. The correct case is seen in the administration interface
 tables list of the isql tables command etc.
 
-<div id="restrictions" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

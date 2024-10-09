@@ -1,10 +1,10 @@
-<div id="fn_rdf_load_stop" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ rdf_load_stop — Stops RDF Loader threads.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_load_stop" class="funcsynopsis">
+<div>
 
 |                            |      |
 |----------------------------|------|
 | ` `**`rdf_load_stop`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ rdf_load_stop — Stops RDF Loader threads.
 
 </div>
 
-<div id="desc_rdf_load_stop" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,21 +42,21 @@ and then exit.
 
 </div>
 
-<div id="params_rdf_load_stop" class="refsect1">
+<div>
 
 ## Parameters
 
 </div>
 
-<div id="examples_rdf_load_stop" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_load_stop" class="example">
+<div>
 
 **Example 24.259. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> rdf_load_stop();
@@ -70,7 +70,7 @@ SQL> rdf_load_stop();
 
 </div>
 
-<div id="seealso_rdf_load_stop" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="vc_hidden" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ content.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_hidden" class="funcsynopsis">
+<div>
 
 |                        |                               |
 |------------------------|-------------------------------|
@@ -28,7 +28,7 @@ content.
 |                        | `debug-srcline` (optional) ,  |
 |                        | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -38,7 +38,7 @@ content.
 
 </div>
 
-<div id="vc_desc_hidden" class="refsect1">
+<div>
 
 ## Description
 
@@ -48,7 +48,7 @@ the page fragment from the editor's drawing area.
 
 </div>
 
-<div id="vc_attrs_hidden" class="refsect1">
+<div>
 
 ## Attributes
 

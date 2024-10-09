@@ -1,6 +1,6 @@
-<div id="davsystables" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 All Web Server and DAV related tables and procedures are held in the WS
 catalogue. This reference section illustrates their structure.
 
-<div id="davcollections" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,9 +50,9 @@ create table WS.WS.SYS_DAV_COL (
 
 </div>
 
-<div id="davgroups" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -68,9 +68,9 @@ create table WS.WS.SYS_DAV_COL (
 
 </div>
 
-<div id="davlocks" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -104,9 +104,9 @@ create table WS.WS.SYS_DAV_LOCK (
 
 </div>
 
-<div id="davproperties" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -135,9 +135,9 @@ create table WS.WS.SYS_DAV_PROP (
 
 </div>
 
-<div id="davresources" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -172,9 +172,9 @@ create table WS.WS.SYS_DAV_RES (
 
 </div>
 
-<div id="davrestypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -198,7 +198,7 @@ create table WS.WS.SYS_DAV_RES_TYPES (
 ;
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                            |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -209,9 +209,9 @@ create table WS.WS.SYS_DAV_RES_TYPES (
 
 </div>
 
-<div id="davhttppath" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -253,9 +253,9 @@ create table DB.DBA.HTTP_PATH (
 
 </div>
 
-<div id="tables.db.dba.http_acl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

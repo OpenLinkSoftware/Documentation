@@ -1,6 +1,6 @@
-<div id="vdbenginesybinstmedm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -24,22 +24,22 @@ following steps.
 <span class="emphasis">*Note:*</span> These steps will need to be
 repeated for each association.
 
-<div class="orderedlist">
+<div>
 
 1.  The first Association will deal with is the relationship between
     publishers and titles, identified by the presence of the scalar
     property pub_id in both entities. This is a one-to-many
     relationship, as a Customer may have any number of Invoices.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro1" class="figure">
+    <div>
 
     **Figure 8.351. Association**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Association](images/ui/spro1.png)
 
@@ -59,15 +59,15 @@ repeated for each association.
 2.  To add the Association, right click on the publishers entity then
     Add -\> Association.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro2" class="figure">
+    <div>
 
     **Figure 8.352. add the Association**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![add the Association](images/ui/spro2.png)
 
@@ -83,15 +83,15 @@ repeated for each association.
 
 3.  You will now see the Add Association dialog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro3" class="figure">
+    <div>
 
     **Figure 8.353. Add Association dialog**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add Association dialog](images/ui/spro3.png)
 
@@ -113,15 +113,15 @@ repeated for each association.
     such that a publisher is associated with zero or many titles
     (plural).
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro4" class="figure">
+    <div>
 
     **Figure 8.354. Navigation Property name**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Navigation Property name](images/ui/spro4.png)
 
@@ -138,15 +138,15 @@ repeated for each association.
 5.  Once you then hit OK the diagram is refreshed to include the newly
     created association.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro5" class="figure">
+    <div>
 
     **Figure 8.355. diagram**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![diagram](images/ui/spro5.png)
 
@@ -164,15 +164,15 @@ repeated for each association.
     association, so right-click the association on the diagram, and
     select Table Mapping to display the Mapping Details pane.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro6" class="figure">
+    <div>
 
     **Figure 8.356. Table Mapping**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Table Mapping](images/ui/spro6.png)
 
@@ -189,15 +189,15 @@ repeated for each association.
 7.  Click that line reading \<Add a Table or View\> to reveal a drop
     down list of all entities.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro7" class="figure">
+    <div>
 
     **Figure 8.357. Add a Table or View**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add a Table or View](images/ui/spro7.png)
 
@@ -215,15 +215,15 @@ repeated for each association.
     association (the entity where the foreign key exists). In this
     example, it is the titles entity.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro8" class="figure">
+    <div>
 
     **Figure 8.358. Entity**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Entity](images/ui/spro8.png)
 
@@ -241,15 +241,15 @@ repeated for each association.
     association, requiring that you provide relevant target store data
     types in the Column column for the key fields, as depicted here.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro9" class="figure">
+    <div>
 
     **Figure 8.359. Mapping Details**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mapping Details](images/ui/spro9.png)
 
@@ -268,15 +268,15 @@ repeated for each association.
     association is made, since the error messages can be a little
     confusing.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro10" class="figure">
+    <div>
 
     **Figure 8.360. Build the project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build the project](images/ui/spro10.png)
 
@@ -292,15 +292,15 @@ repeated for each association.
 
 11. This should result in the following error:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro11" class="figure">
+    <div>
 
     **Figure 8.361. Error**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Error](images/ui/spro11.png)
 
@@ -323,15 +323,15 @@ repeated for each association.
     publishers in the Invoice entity, both map to the Sybase table
     column titles.pub_id - which is not supported
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro12" class="figure">
+    <div>
 
     **Figure 8.362. Error**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Error](images/ui/spro12.png)
 
@@ -353,15 +353,15 @@ repeated for each association.
 
     Right click on titles.pub_id then Delete.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro13" class="figure">
+    <div>
 
     **Figure 8.363. delete the mapping**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![delete the mapping](images/ui/spro13.png)
 
@@ -377,15 +377,15 @@ repeated for each association.
 
 13. The model diagram will refresh to reflect this change.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro14" class="figure">
+    <div>
 
     **Figure 8.364. Model Diagram**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Model Diagram](images/ui/spro14.png)
 
@@ -401,15 +401,15 @@ repeated for each association.
 
 14. Build the project, again, using Build -\> Build Solution.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro15" class="figure">
+    <div>
 
     **Figure 8.365. Build project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build project](images/ui/spro15.png)
 
@@ -425,15 +425,15 @@ repeated for each association.
 
 15. The project should now be fine.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="spro16" class="figure">
+    <div>
 
     **Figure 8.366. Build Project**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Build Project](images/ui/spro16.png)
 
@@ -452,15 +452,15 @@ repeated for each association.
 You will need to repeat these steps for each association until you have
 a completed Entity Data Model.
 
-<div class="figure-float">
+<div>
 
-<div id="spro17" class="figure">
+<div>
 
 **Figure 8.367. Entity Data Model**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Entity Data Model](images/ui/spro17.png)
 

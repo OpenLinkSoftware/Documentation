@@ -1,10 +1,10 @@
-<div id="fn_isfinitenumeric" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ value is plain valid numeric value.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_isfinitenumeric" class="funcsynopsis">
+<div>
 
 |                              |                      |
 |------------------------------|----------------------|
 | ` `**`isfinitenumeric`**` (` | `arg ` anything `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ value is plain valid numeric value.
 
 </div>
 
-<div id="desc_isfinitenumeric" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,15 +43,15 @@ not-a-number.
 
 </div>
 
-<div id="examples_isfinitenumeric" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_isfinitenumeric" class="example">
+<div>
 
 **Example 24.189. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL>  SPARQL

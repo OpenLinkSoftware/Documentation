@@ -1,6 +1,6 @@
-<div id="vspx_attr_types" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

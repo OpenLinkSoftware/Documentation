@@ -1,10 +1,10 @@
-<div id="vc_on_init_container" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ on-init-container — This is identical to v:on-init.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_on_init_container" class="funcsynopsis">
+<div>
 
 |                                                                             |      |
 |-----------------------------------------------------------------------------|------|
 | ` <`**`on-init-container`**` >(EventHandler)</`**`on-init-container`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ on-init-container — This is identical to v:on-init.
 
 </div>
 
-<div id="vc_desc_on_init_container" class="refsect1">
+<div>
 
 ## Description
 

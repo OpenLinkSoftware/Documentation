@@ -1,6 +1,6 @@
-<div id="knowthywinvirt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,9 +17,9 @@
 Virtuoso is made up of several components, these components fall into
 two distinct categories: Client Components and Server Components.
 
-<div id="clicomppack" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -47,9 +47,9 @@ remote Virtuoso server, this includes:
 
 </div>
 
-<div id="srvcomp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

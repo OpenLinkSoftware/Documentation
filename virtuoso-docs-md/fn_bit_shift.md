@@ -1,10 +1,10 @@
-<div id="fn_bit_shift" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ bit_shift — Returns the result of bitwise shift operation over two
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_bit_shift" class="funcsynopsis">
+<div>
 
 |                        |                             |
 |------------------------|-----------------------------|
 | ` `**`bit_shift`**` (` | in `value ` integer ,       |
 |                        | in `distance ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ bit_shift — Returns the result of bitwise shift operation over two
 
 </div>
 
-<div id="desc_bit_shift" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ bits and the shift is restricted to 32 bits to maintain compatibility.
 
 </div>
 
-<div id="params_bit_shift" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81284" class="refsect2">
+<div>
 
 ### value
 
@@ -59,7 +59,7 @@ The value to be shifted.
 
 </div>
 
-<div id="id81287" class="refsect2">
+<div>
 
 ### distance
 
@@ -73,7 +73,7 @@ of the first argument.
 
 </div>
 
-<div id="ret_bit_shift" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -81,15 +81,15 @@ Integer.
 
 </div>
 
-<div id="examples_bit_shift" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_bit_shift" class="example">
+<div>
 
 **Example 24.26. Bitwise-shifting**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select bit_shift (18, 6);
@@ -113,7 +113,7 @@ select bit_shift (-1152, -6);
 
 </div>
 
-<div id="seealso_bit_shift" class="refsect1">
+<div>
 
 ## See Also
 

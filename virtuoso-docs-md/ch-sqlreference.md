@@ -1,6 +1,6 @@
-<div id="ch-sqlreference" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -26,7 +26,7 @@ SQL Reference.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -391,9 +391,9 @@ Transactions](sqlbulkloadoperationsftableparallel.html)</span>
 
 </div>
 
-<div id="sqlrefdatatypes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -407,7 +407,7 @@ Transactions](sqlbulkloadoperationsftableparallel.html)</span>
 
 </div>
 
-<div class="variablelist">
+<div>
 
 <span class="term">CHARACTER</span>  
 CHARACTER
@@ -482,7 +482,7 @@ LONG XML BLOB-like data type.
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                         |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -491,9 +491,9 @@ LONG XML BLOB-like data type.
 
 </div>
 
-<div id="dt_dateliterals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -521,9 +521,9 @@ assume a string as a date, see below.
 
 </div>
 
-<div id="dtcasting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -567,11 +567,11 @@ CAST is the recommended way of converting between data types, including
 any conversion between strings, different number types and datetime
 types.
 
-<div id="id32624" class="example">
+<div>
 
 **Example 9.1. Examples:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select cast ('2000-1-3' as date);
@@ -588,9 +588,9 @@ select cast (cast ('2000-1-3' as date) as varchar);
 
 </div>
 
-<div id="sqldatemanus" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -624,11 +624,11 @@ appropriate target type.
 Dates and times should be input or compared as literals in a standard
 format. The following table describes the proper methods available:
 
-<div id="id32647" class="table">
+<div>
 
 **Table 9.1. Time & date syntax**
 
-<div class="table-contents">
+<div>
 
 | Datatype           | ODBC Syntax                         |
 |--------------------|-------------------------------------|
@@ -642,11 +642,11 @@ format. The following table describes the proper methods available:
 
   
 
-<div id="ex_comparingdates" class="example">
+<div>
 
 **Example 9.2. Example: comparing dates**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select datecol from table
@@ -664,9 +664,9 @@ now() is cast for explicit compatibility although not required.
 
 </div>
 
-<div id="deccolexp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

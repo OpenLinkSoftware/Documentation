@@ -1,10 +1,10 @@
-<div id="fn_soap_dt_define" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ definition for SOAP calls
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_dt_define" class="funcsynopsis">
+<div>
 
 |                             |                                  |
 |-----------------------------|----------------------------------|
 | ` `**`soap_dt_define`**` (` | in `name ` varchar ,             |
 |                             | in `schema_string ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ definition for SOAP calls
 
 </div>
 
-<div id="desc_20" class="refsect1">
+<div>
 
 ## Description
 
@@ -51,11 +51,11 @@ element is wrong.
 
 </div>
 
-<div id="params__01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110394" class="refsect2">
+<div>
 
 ### name
 
@@ -71,7 +71,7 @@ catalogue cannot be guaranteed to be DB.
 
 </div>
 
-<div id="id110398" class="refsect2">
+<div>
 
 ### schema_string
 
@@ -81,7 +81,7 @@ XMLSchema excerpt as varchar or NULL (null is used for removal).
 
 </div>
 
-<div id="ret_" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -89,15 +89,15 @@ This function returns a varchar of the name of the registered SOAP type.
 
 </div>
 
-<div id="errors_" class="refsect1">
+<div>
 
 ## Errors
 
 This function can generate the following errors:
 
-<div class="msgentry">
+<div>
 
-<div class="msg">
+<div>
 
 <span class="errorcode">SODT1 </span> <span class="errortype">22023
 </span> <span class="errortext">The element \<element name\> is not
@@ -109,15 +109,15 @@ supported \[\<as child of complexContent\>\] </span>
 
 </div>
 
-<div id="examples_07" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vdocs-soap-dt-01" class="example">
+<div>
 
 **Example 24.379. Definition of an Array**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 
@@ -152,11 +152,11 @@ SQL> DB.DBA.soap_dt_define ('ArrayOffloat', file_to_string ('float_array.xsd'));
 
   
 
-<div id="vdocs-soap-dt-02" class="example">
+<div>
 
 **Example 24.380. Definition of an Structure**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 
@@ -189,11 +189,11 @@ SQL> DB.DBA.soap_dt_define ('PERSON', file_to_string ('struct.xsd'));
 
   
 
-<div id="vdocs-soap-dt-03" class="example">
+<div>
 
 **Example 24.381. Definition of composite type array of structures**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 

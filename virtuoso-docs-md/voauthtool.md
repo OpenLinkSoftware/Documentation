@@ -1,6 +1,6 @@
-<div id="voauthtool" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -35,9 +35,9 @@ access to the requested resource.
 
 To tool is accessible via http://host:port/ods/oauth_test.vsp
 
-<div id="voauthtoolexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -55,7 +55,7 @@ The following example demonstrates creating and getting contact info by
 the ODS REST APIs weblog.post.new and weblog.post.get using the OAuth
 Test Tool.
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://demo.openlinksw.com/ods
 
@@ -63,15 +63,15 @@ Test Tool.
 
 3.  Go to Settings-\>OAuth Keys
 
-    <div class="figure-float">
+    <div>
 
-    <div id="keys11" class="figure">
+    <div>
 
     **Figure 17.38. Weblog OAuth**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Weblog OAuth](images/ui/keys11.png)
 
@@ -96,7 +96,7 @@ Test Tool.
 
 6.  In the shown form enter for:
 
-    <div class="orderedlist">
+    <div>
 
     1.  Server: http://demo.openlinksw.com/ods/api
 
@@ -110,7 +110,7 @@ Test Tool.
         inst_id=44&description=my test&title=my first post
         ```
 
-        <div class="itemizedlist">
+        <div>
 
         - An easy way to get the instance id is using the ODS ubiquity
           commands sequence:
@@ -126,15 +126,15 @@ Test Tool.
 
     5.  Select for Query options: "Generate URI and Submit".
 
-        <div class="figure-float">
+        <div>
 
-        <div id="keys12" class="figure">
+        <div>
 
         **Figure 17.39. Weblog OAuth**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Weblog OAuth](images/ui/keys12.png)
 
@@ -152,15 +152,15 @@ Test Tool.
 
     7.  In the shown authorization form click the "Authorize" button.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="keys13" class="figure">
+        <div>
 
         **Figure 17.40. Weblog OAuth**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Weblog OAuth](images/ui/keys13.png)
 
@@ -178,15 +178,15 @@ Test Tool.
         of executing the ODS REST API. In our case, the id of the new
         created post will be: 37
 
-        <div class="figure-float">
+        <div>
 
-        <div id="keys14" class="figure">
+        <div>
 
         **Figure 17.41. Weblog OAuth**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Weblog OAuth](images/ui/keys14.png)
 
@@ -202,7 +202,7 @@ Test Tool.
 
     9.  Now let's get the data for the created post. In the form enter:
 
-        <div class="orderedlist">
+        <div>
 
         1.  API method: weblog.get
 
@@ -217,15 +217,15 @@ Test Tool.
     11. As result in the "Response Body" text-area will be shown the
         retrieved details for the posts with the given above id.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="keys15" class="figure">
+        <div>
 
         **Figure 17.42. Weblog OAuth**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Weblog OAuth](images/ui/keys15.png)
 

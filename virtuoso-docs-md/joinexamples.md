@@ -1,6 +1,6 @@
-<div id="joinexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -25,7 +25,7 @@ select Orders.OrderID, ProductID
     from Orders,  Order_Details where Orders.OrderID = Order_Details.OrderID
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                                                                                   |
 |:----------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

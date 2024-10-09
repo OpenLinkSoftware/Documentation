@@ -1,10 +1,10 @@
-<div id="vc_type_sqlname" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ UDT instance that should be created for the control.
 
 </div>
 
-<div id="vc_desc_sqlname" class="refsect1">
+<div>
 
 ## Description
 

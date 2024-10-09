@@ -1,6 +1,6 @@
-<div id="dbinteraction" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,9 +19,9 @@ Unless the required tables already exist, new ones will need to be
 created. This example will involve a simple table of people and a series
 of pages for adding, editing, viewing, and deleting its entries.
 
-<div id="basiccreatetable" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -45,7 +45,7 @@ Sometimes one or more of the columns of data are naturally unique either
 singularly or in composite; other times it is necessary to add a column
 to contain unique codes for each row.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                        |
 |:--------------------------:|:-------------------------------------------------------|
@@ -69,9 +69,9 @@ The email address has been selected as a primary key.
 
 </div>
 
-<div id="insertingvalues" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -135,9 +135,9 @@ and page variables visibly distinguishable.
 
 </div>
 
-<div id="retrtabvals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -179,9 +179,9 @@ FOR ... DO construct is used to construct the insides of an HTML table:
 
 </div>
 
-<div id="deletevals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -237,9 +237,9 @@ the URL. This is then intercepted by the IF condition looking for the
 
 </div>
 
-<div id="editvals" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

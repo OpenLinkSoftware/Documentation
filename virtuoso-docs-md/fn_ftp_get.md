@@ -1,10 +1,10 @@
-<div id="fn_ftp_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ftp_get — FTP get command; Virtuoso FTP client
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ftp_get" class="funcsynopsis">
+<div>
 
 |                             |                                  |
 |-----------------------------|----------------------------------|
@@ -27,7 +27,7 @@ ftp_get — FTP get command; Virtuoso FTP client
 |                             | in `local_file_name ` varchar ,  |
 |                             | in `is_pasv ` integer `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ ftp_get — FTP get command; Virtuoso FTP client
 
 </div>
 
-<div id="desc_ftp_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ any PL, this can be combined with Web Services and SOAP.
 
 </div>
 
-<div id="params_ftp_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89233" class="refsect2">
+<div>
 
 ### server
 
@@ -59,7 +59,7 @@ The remote server address or IP Address.
 
 </div>
 
-<div id="id89236" class="refsect2">
+<div>
 
 ### user
 
@@ -67,7 +67,7 @@ The username for authentication at the FTP server.
 
 </div>
 
-<div id="id89239" class="refsect2">
+<div>
 
 ### pass
 
@@ -75,7 +75,7 @@ The accompanying password for authentication at the FTP server.
 
 </div>
 
-<div id="id89242" class="refsect2">
+<div>
 
 ### remote_file_name
 
@@ -83,7 +83,7 @@ Full path and file name to the file on the FTP server to be downloaded.
 
 </div>
 
-<div id="id89245" class="refsect2">
+<div>
 
 ### local_file_name
 
@@ -93,7 +93,7 @@ DirsAllowed ACL list in the Virtuoso.INI file.
 
 </div>
 
-<div id="id89248" class="refsect2">
+<div>
 
 ### is_pasv
 
@@ -105,7 +105,7 @@ default.
 
 </div>
 
-<div id="ret_ftp_get" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -114,7 +114,7 @@ system.
 
 </div>
 
-<div id="errors_ftp_get" class="refsect1">
+<div>
 
 ## Errors
 
@@ -122,15 +122,15 @@ This function will return any errors returned by the remote FTP server.
 
 </div>
 
-<div id="examples_ftp_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ftp_get" class="example">
+<div>
 
 **Example 24.119. Retrieving a file from an FTP server**
 
-<div class="example-contents">
+<div>
 
 To get the file virtuoso30.tar.gz from the ftp server
 ftp.openlinksw.com, one can use:
@@ -150,7 +150,7 @@ server, and save it to the local server root directory.
 
 </div>
 
-<div id="seealso_ftp_get" class="refsect1">
+<div>
 
 ## See Also
 

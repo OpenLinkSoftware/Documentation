@@ -1,6 +1,6 @@
-<div id="clusternetmeter" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,7 +33,7 @@ net_meter (
 
 The parameters have the following meaning:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*n_threads*</span>
 
@@ -59,9 +59,9 @@ The parameters have the following meaning:
 
 </div>
 
-<div id="clusternetmeterex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

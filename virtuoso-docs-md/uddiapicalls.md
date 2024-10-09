@@ -1,6 +1,6 @@
-<div id="uddiapicalls" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -18,9 +18,9 @@ This section describes the Virtuoso UDDI-related messages. These
 messages are divided into APIs for authentication, inquiry, and
 publication.
 
-<div id="authapis" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ publication.
 
 </div>
 
-<div id="me_uddi_get_authtoken_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -59,9 +59,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_get_registeredinfo_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -84,9 +84,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_discard_authtoken_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -111,9 +111,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="uddisearchapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -140,7 +140,7 @@ of the individual UDDI-enabled server or compatible registry.
 
 The publicly accessible queries are:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*find_binding:*</span> Used to locate specific
   bindings within a registered *`businessService`*. Returns a
@@ -180,9 +180,9 @@ The publicly accessible queries are:
 
 </div>
 
-<div id="me_uddi_find_binding_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -205,9 +205,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_find_business_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -230,9 +230,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_find_service_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -255,9 +255,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_find_tmodel_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -280,9 +280,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_get_bindingdetail_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -305,9 +305,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_get_businessdetail_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -330,9 +330,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_get_businessdetailext_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -355,9 +355,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_get_servicedetail_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -380,9 +380,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_get_tmodeldetail_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -407,9 +407,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="uddipublishingfuncs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -432,7 +432,7 @@ The messages defined in this section all behave synchronously and are
 only callable via HTTP-POST. HTTPS is used exclusively for all the calls
 defined in this publisher's API.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*save_binding:*</span> Used to register new
   *`bindingTemplate`* information or update existing *`bindingTemplate`*
@@ -470,9 +470,9 @@ defined in this publisher's API.
 
 </div>
 
-<div id="me_uddi_save_binding_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -495,9 +495,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_save_business_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -520,9 +520,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_save_service_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -545,9 +545,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_save_tmodel_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -570,9 +570,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_delete_binding_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -595,9 +595,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_delete_business_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -620,9 +620,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_delete_service_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -645,9 +645,9 @@ Reference Guide</a>.
 
 </div>
 
-<div id="me_uddi_delete_tmodel_dedup" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

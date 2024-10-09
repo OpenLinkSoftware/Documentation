@@ -1,10 +1,10 @@
-<div id="vc_node" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ node — A place holder for rendering a tree node.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_node" class="funcsynopsis">
+<div>
 
 |                      |                              |
 |----------------------|------------------------------|
@@ -25,7 +25,7 @@ node — A place holder for rendering a tree node.
 |                      | `debug-srcline` (optional) , |
 |                      | `debug-log` (optional) `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ node — A place holder for rendering a tree node.
 
 </div>
 
-<div id="vc_desc_node" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,7 +43,7 @@ This control indicates the place of a subtree inside a node template.
 
 </div>
 
-<div id="vc_attrs_node" class="refsect1">
+<div>
 
 ## Attributes
 

@@ -1,10 +1,10 @@
-<div id="fn_cov_load" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ cov_load — Load test coverage data from file.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cov_load" class="funcsynopsis">
+<div>
 
 |                       |                          |
 |-----------------------|--------------------------|
 | ` `**`cov_load`**` (` | in `fname ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ cov_load — Load test coverage data from file.
 
 </div>
 
-<div id="desc_cov_load" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ files.
 
 </div>
 
-<div id="params_cov_load" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83081" class="refsect2">
+<div>
 
 ### fname
 
@@ -60,7 +60,7 @@ Name of coverage file to load.
 
 </div>
 
-<div id="ret_cov_load" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -68,7 +68,7 @@ None.
 
 </div>
 
-<div id="seealso_cov_load" class="refsect1">
+<div>
 
 ## See Also
 

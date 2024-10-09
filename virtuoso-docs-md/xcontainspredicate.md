@@ -1,6 +1,6 @@
-<div id="xcontainspredicate" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -103,11 +103,11 @@ The xcontains predicate must be a part of the top level AND of the WHERE
 clause of the containing select. It may not for example be a term of an
 OR predicate in the select but can be AND'ed with an OR expression.
 
-<div id="id46202" class="example">
+<div>
 
 **Example 15.13. Selecting Title Elements Called 'Key'**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 select xt_file from xml_text2 where
@@ -143,7 +143,7 @@ The query retrieves each title element from each row of *`xml_text2`*
 where the *`xt_text`* contains title elements with the text value "AS
 Declaration - Column Aliasing."
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                          |
 |:----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -158,7 +158,7 @@ Declaration - Column Aliasing."
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                  |
 |:--------------------------:|:-----------------------------------------------------------------|

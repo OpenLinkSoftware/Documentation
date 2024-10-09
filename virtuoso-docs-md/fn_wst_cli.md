@@ -1,10 +1,10 @@
-<div id="fn_wst_cli" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ wst_cli — Request a security token from WST endpoint
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_wst_cli" class="funcsynopsis">
+<div>
 
 |                           |                             |
 |---------------------------|-----------------------------|
 | `token `**`wst_cli`**` (` | in `req ` soap_client_req , |
 |                           | in `policy ` any `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ wst_cli — Request a security token from WST endpoint
 
 </div>
 
-<div id="desc_wst_cli" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ endpoint for a security token.
 
 </div>
 
-<div id="params_wst_cli" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id119333" class="refsect2">
+<div>
 
 ### req
 
@@ -54,7 +54,7 @@ A UDT containing soap_client parameters as described in WS-RM.
 
 </div>
 
-<div id="id119336" class="refsect2">
+<div>
 
 ### policy
 
@@ -77,7 +77,7 @@ create type policy_struct as
 
 </div>
 
-<div id="ret_wst_cli" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -85,7 +85,7 @@ A security token.
 
 </div>
 
-<div id="seealso_wst_cli" class="refsect1">
+<div>
 
 ## See Also
 

@@ -1,10 +1,10 @@
-<div id="fn_sql_columns" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ sql_columns — get column information from table on a remote DSN
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sql_columns" class="funcsynopsis">
+<div>
 
 |                                |                            |
 |--------------------------------|----------------------------|
@@ -26,7 +26,7 @@ sql_columns — get column information from table on a remote DSN
 |                                | in `table_name ` varchar , |
 |                                | in `column ` varchar `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ sql_columns — get column information from table on a remote DSN
 
 </div>
 
-<div id="desc_columns" class="refsect1">
+<div>
 
 ## Description
 
@@ -54,7 +54,7 @@ signs, which are interpreted as in LIKE.
 
 </div>
 
-<div id="params_sql_columns" class="refsect1">
+<div>
 
 ## Parameters
 
@@ -62,7 +62,7 @@ As defined in ODBC API for the corresponding catalog call.
 
 </div>
 
-<div id="ret_sql_columns" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -74,15 +74,15 @@ each column.
 
 </div>
 
-<div id="examples_sql_columns" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sql_columns" class="example">
+<div>
 
 **Example 24.393. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 dbg_obj_print (sql_columns ('Local Virtuoso', 'Demo', NULL, 'Orders', NULL));
@@ -113,7 +113,7 @@ dbg_obj_print (sql_columns ('Local Virtuoso', 'Demo', NULL, 'Orders', NULL));
 
 </div>
 
-<div id="seealso_sql_columns" class="refsect1">
+<div>
 
 ## See Also
 

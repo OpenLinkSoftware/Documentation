@@ -1,10 +1,10 @@
-<div id="fn_string_to_file" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ string_to_file — writes a varchar to a file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_string_to_file" class="funcsynopsis">
+<div>
 
 |                             |                         |
 |-----------------------------|-------------------------|
@@ -24,7 +24,7 @@ string_to_file — writes a varchar to a file
 |                             | in `string ` varchar ,  |
 |                             | in `mode ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ string_to_file — writes a varchar to a file
 
 </div>
 
-<div id="desc_36" class="refsect1">
+<div>
 
 ## Description
 
@@ -62,11 +62,11 @@ explicitly allowed.
 
 </div>
 
-<div id="params_10" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112503" class="refsect2">
+<div>
 
 ### path
 
@@ -74,7 +74,7 @@ explicitly allowed.
 
 </div>
 
-<div id="id112507" class="refsect2">
+<div>
 
 ### string
 
@@ -83,7 +83,7 @@ explicitly allowed.
 
 </div>
 
-<div id="id112512" class="refsect2">
+<div>
 
 ### mode
 
@@ -99,15 +99,15 @@ explicitly allowed.
 
 </div>
 
-<div id="examples_07_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_string_to_file" class="example">
+<div>
 
 **Example 24.411. Simple example**
 
-<div class="example-contents">
+<div>
 
 Write an entry to an application log
 
@@ -130,7 +130,7 @@ bash$
 
 </div>
 
-<div id="seealso_17" class="refsect1">
+<div>
 
 ## See Also
 

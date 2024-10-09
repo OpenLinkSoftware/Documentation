@@ -1,6 +1,6 @@
-<div id="charescaping" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,9 +21,9 @@ that are normally not typable in a string literal such as tab or crlf.
 Backslash support can be turned on or off at the statement level, the
 connection level or server default level.
 
-<div id="backslashstmt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

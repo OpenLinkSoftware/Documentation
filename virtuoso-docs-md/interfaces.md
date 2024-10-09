@@ -1,6 +1,6 @@
-<div id="interfaces" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -16,11 +16,11 @@
 
 VIRTOLEDB supports the interfaces listed in the following table.
 
-<div id="id22125" class="table">
+<div>
 
 **Table 7.20. Supported Interfaces**
 
-<div class="table-contents">
+<div>
 
 | Object           | Interface                 | Notes                        |
 |------------------|---------------------------|------------------------------|

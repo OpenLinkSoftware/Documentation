@@ -1,10 +1,10 @@
-<div id="fn_rdf_suo_diff_ttl" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ diff.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_suo_diff_ttl" class="funcsynopsis">
+<div>
 
 |                                      |                                  |
 |--------------------------------------|----------------------------------|
@@ -30,7 +30,7 @@ diff.
 |                                      | in `equiv_map ` any := null ,    |
 |                                      | in `equiv_rev ` any := null `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ diff.
 
 </div>
 
-<div id="desc_rdf_suo_diff_ttl" class="refsect1">
+<div>
 
 ## Description
 
@@ -53,11 +53,11 @@ syntax.
 
 </div>
 
-<div id="params_rdf_suo_diff_ttl" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id102358" class="refsect2">
+<div>
 
 ### gfrom
 
@@ -65,7 +65,7 @@ varchar or UNAME or IRI_ID of the from graph
 
 </div>
 
-<div id="id102361" class="refsect2">
+<div>
 
 ### gto
 
@@ -73,7 +73,7 @@ varchar or UNAME or IRI_ID of the destination graph
 
 </div>
 
-<div id="id102364" class="refsect2">
+<div>
 
 ### accuracy
 
@@ -88,7 +88,7 @@ zipper style. In this case rest of arguments comes to play.
 
 </div>
 
-<div id="id102367" class="refsect2">
+<div>
 
 ### target_graph
 
@@ -100,7 +100,7 @@ used.
 
 </div>
 
-<div id="id102372" class="refsect2">
+<div>
 
 ### fp_list
 
@@ -110,7 +110,7 @@ predicate.
 
 </div>
 
-<div id="id102375" class="refsect2">
+<div>
 
 ### invfp_list
 
@@ -122,7 +122,7 @@ owl:inverseFunctionalProperty will provide truly "meaningful" lists of
 predicates that will provide really "meaningful" patch. Meaningful
 patches have three important advantages:
 
-<div class="itemizedlist">
+<div>
 
 - they''re as compact as possible;
 
@@ -147,7 +147,7 @@ patches have three important advantages:
 
 </div>
 
-<div id="id102386" class="refsect2">
+<div>
 
 ### fp_list
 
@@ -158,7 +158,7 @@ internally, using graphs gfrom and gto as specimens.
 
 </div>
 
-<div id="id102390" class="refsect2">
+<div>
 
 ### invfp_list
 
@@ -169,7 +169,7 @@ internally, using graphs gfrom and gto as specimens.
 
 </div>
 
-<div id="id102394" class="refsect2">
+<div>
 
 ### gfrom_rules
 
@@ -178,7 +178,7 @@ moved along chains of predicates.
 
 </div>
 
-<div id="id102397" class="refsect2">
+<div>
 
 ### gto_rules
 
@@ -190,7 +190,7 @@ followed when the patch will scan its input graph for bnodes to edit.
 
 </div>
 
-<div id="id102401" class="refsect2">
+<div>
 
 ### equiv_map
 
@@ -200,7 +200,7 @@ values.
 
 </div>
 
-<div id="id102404" class="refsect2">
+<div>
 
 ### equiv_rev
 
@@ -214,7 +214,7 @@ them blindly.
 
 </div>
 
-<div id="seealso_rdf_suo_diff_ttl" class="refsect1">
+<div>
 
 ## See Also
 

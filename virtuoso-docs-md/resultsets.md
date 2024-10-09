@@ -1,6 +1,6 @@
-<div id="resultsets" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -31,7 +31,7 @@ alter the structure of the next result set.
 The `result_names()` call can be omitted if the application already
 knows what columns and their types are to be returned.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                 |
 |:--------------------------:|:----------------------------------------------------------------------------------------------------------------|

@@ -1,6 +1,6 @@
-<div id="listunlnktabs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -19,15 +19,15 @@ go to <span class="emphasis">*Databases/ External Data Sources/ External
 Linked Objects*</span> . A table may be unlinked by pressing its
 "Unlink" icon.
 
-<div class="figure-float">
+<div>
 
-<div id="conndsn2" class="figure">
+<div>
 
 **Figure 3.20. List of Connected Data Sources**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![List of Connected Data Sources](images/conndsn2.png)
 

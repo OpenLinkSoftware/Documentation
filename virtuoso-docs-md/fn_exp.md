@@ -1,10 +1,10 @@
-<div id="fn_exp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ exp — calculate exponent
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_exp" class="funcsynopsis">
+<div>
 
 |                  |                               |
 |------------------|-------------------------------|
 | ` `**`exp`**` (` | in `x ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ exp — calculate exponent
 
 </div>
 
-<div id="desc_exp" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ precision floating point numbers, converts its argument to an IEEE
 
 </div>
 
-<div id="params_exp" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id88288" class="refsect2">
+<div>
 
 ### x
 
@@ -56,7 +56,7 @@ precision floating point numbers, converts its argument to an IEEE
 
 </div>
 
-<div id="ret_exp" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,15 +64,15 @@ precision floating point numbers, converts its argument to an IEEE
 
 </div>
 
-<div id="examples_exp" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_exp" class="example">
+<div>
 
 **Example 24.107. Simple Examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select concat ('the EXP of 0.513513 is: ', cast (exp (0.513513) as varchar));
@@ -93,7 +93,7 @@ the EXP of 0.513513 is: 1.671152
 
 </div>
 
-<div id="seealso_exp" class="refsect1">
+<div>
 
 ## See Also
 

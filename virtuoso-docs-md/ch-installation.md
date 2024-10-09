@@ -1,6 +1,6 @@
-<div id="ch-installation" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -59,7 +59,7 @@ Files</a> section.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -292,9 +292,9 @@ Tips](clusterstcnftrsh.html)</span>
 
 </div>
 
-<div id="installallplatforms" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -308,9 +308,9 @@ Tips](clusterstcnftrsh.html)</span>
 
 </div>
 
-<div id="srvadminstallreqt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -334,9 +334,9 @@ The spare space will however be reclaimed for later use.
 
 </div>
 
-<div id="srvadmopreq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -370,9 +370,9 @@ See the following Parameter section for more details.
 
 </div>
 
-<div id="srvadmossupport" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -397,9 +397,9 @@ Virtuoso runs on the following operating systems:
 
 </div>
 
-<div id="limitsandparameters" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -419,11 +419,11 @@ individual data types, see
 <a href="ch-server.html#spaceconsump" class="link"
 title="Space Consumption">Space Consumption</a> .
 
-<div id="id3739" class="decimalstyle">
+<div>
 
 **Table 2.1. Limits**
 
-<div class="decimalstyle-contents">
+<div>
 
 | Limit Description             | Value                                                                                                                                                    |
 |:------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -1,10 +1,10 @@
-<div id="fn_udt_defines_field" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ specified member.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_udt_defines_field" class="funcsynopsis">
+<div>
 
 |                                       |                                |
 |---------------------------------------|--------------------------------|
 | `integer `**`udt_defines_field`**` (` | in `udt ` any ,                |
 |                                       | in `member_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ specified member.
 
 </div>
 
-<div id="desc_udt_defines_field" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ member contained by the supplied udt.
 
 </div>
 
-<div id="params_udt_defines_field" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id115882" class="refsect2">
+<div>
 
 ### udt
 
@@ -55,7 +55,7 @@ A user defined type name as varchar or type instance.
 
 </div>
 
-<div id="id115885" class="refsect2">
+<div>
 
 ### member_name
 
@@ -65,7 +65,7 @@ The requested member name.
 
 </div>
 
-<div id="ret_udt_defines_field" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -75,15 +75,15 @@ member_name, or 0 otherwise.
 
 </div>
 
-<div id="examples_udt_defines_field" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_udt_defines_field" class="example">
+<div>
 
 **Example 24.425. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 select udt_defines_field (new SER_UDT(), 'A');
@@ -111,7 +111,7 @@ returns 0;
 
 </div>
 
-<div id="seealso_udt_defines_field" class="refsect1">
+<div>
 
 ## See Also
 

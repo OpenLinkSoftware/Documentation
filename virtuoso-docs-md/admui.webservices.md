@@ -1,6 +1,6 @@
-<div id="admui.webservices" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="contentcrawler" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -32,21 +32,21 @@
 
 Some of the supported features are:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*Import Targets*</span> : Virtuoso can be set
   up to retrieve content from external web sites and host it in its own
   WebDAV repository via this page.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="id13962" class="figure">
+  <div>
 
   **Figure 6.13. Web Robot - Crawl Job**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Web Robot - Crawl Job](images/ui/dav_rbt_trgt_01.png)
 
@@ -60,15 +60,15 @@ Some of the supported features are:
 
   </div>
 
-  <div class="figure-float">
+  <div>
 
-  <div id="id13967" class="figure">
+  <div>
 
   **Figure 6.14. Web Robot - Crawl Job**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Web Robot - Crawl Job](images/ui/dav_rbt_trgt_02.png)
 
@@ -82,7 +82,7 @@ Some of the supported features are:
 
   </div>
 
-  <div class="itemizedlist">
+  <div>
 
   - <span class="emphasis">*Target description* </span> lets you provide
     a friendly name for the target that you are defining.
@@ -149,15 +149,14 @@ Some of the supported features are:
 - <span class="emphasis">*Store Function*</span> allows to be used a
   specific stored function for ex. in Semantic Sitemaps crawling.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                                                                                  |
   |:--------------------------:|:-----------------------------------------------------------------------------------------------------------------|
   | ![\[Tip\]](images/tip.png) | See Also:                                                                                                        |
   |                            | <a                                                                                                               
                                 href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetCrawlerJobsGuideSemanticSitemapsFuncExample"  
-                                class="ulink" target="_top" shape="rect">Example of Stored                                                        
-                                Functions.</a>                                                                                                    |
+                                class="ulink" target="_top">Example of Stored Functions.</a>                                                      |
 
   </div>
 
@@ -165,15 +164,14 @@ Some of the supported features are:
   specific extract function for ex. in Semantic Sitemaps crawling. If
   left empty, will be used a system Store function.
 
-  <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                            |                                                                                                                  |
   |:--------------------------:|:-----------------------------------------------------------------------------------------------------------------|
   | ![\[Tip\]](images/tip.png) | See Also:                                                                                                        |
   |                            | <a                                                                                                               
                                 href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetCrawlerJobsGuideSemanticSitemapsFuncExample"  
-                                class="ulink" target="_top" shape="rect">Example of Stored                                                        
-                                Functions.</a>                                                                                                    |
+                                class="ulink" target="_top">Example of Stored Functions.</a>                                                      |
 
   </div>
 
@@ -228,15 +226,15 @@ Some of the supported features are:
   scheduled updates taking place by pressing the Stop link. To reset the
   details of the web copy item press the Reset link.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="id14076" class="figure">
+  <div>
 
   **Figure 6.15. Web Robot - Queues**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Web Robot - Queues](images/ui/dav_rbt_que_01.png)
 
@@ -255,15 +253,15 @@ Some of the supported features are:
   able to remove some of the content from this page by following the
   Edit link.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="id14084" class="figure">
+  <div>
 
   **Figure 6.16. Web Robot - Retrieved Links**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Web Robot - Retrieved Links](images/ui/dav_rbt_rtrd_01.png)
 
@@ -290,15 +288,15 @@ Some of the supported features are:
   <span class="emphasis">*Export*</span> button to export. A
   confirmation will be supplied once the operation is complete.
 
-  <div class="figure-float">
+  <div>
 
-  <div id="dav_rbt_expt_02" class="figure">
+  <div>
 
   **Figure 6.17. Web Robot - Exporting Content**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Web Robot - Exporting Content](images/ui/dav_rbt_expt_02.png)
 
@@ -312,7 +310,7 @@ Some of the supported features are:
 
   </div>
 
-  <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+  <div>
 
   |                              |                                                                                                                                                                                                                                                                                               |
   |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -338,9 +336,9 @@ Some of the supported features are:
 
 </div>
 
-<div id="contentcrawlerrdf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -357,9 +355,9 @@ Some of the supported features are:
 The Virtuoso Conductor can be used to set up various Content Crawler
 Jobs:
 
-<div id="contentcrawlerrdfquad" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -373,17 +371,16 @@ Jobs:
 
 </div>
 
-See
-<a href="rdfinsertmethodvirtuosocrawler.html" class="link" shape="rect"
+See <a href="rdfinsertmethodvirtuosocrawler.html" class="link"
 title="16.9.8. Using Virtuoso Crawler">details</a> how to use Virtuoso
 Crawler for including the Sponger options so you crawl non-RDF but get
 RDF and this to the Quad Store.
 
 </div>
 
-<div id="contentcrawlerrdfsm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -400,23 +397,23 @@ RDF and this to the Quad Store.
 The following section describes how to set up a crawler job for getting
 content of a basic Sitemap where the source includes RDFa.
 
-<div class="orderedlist">
+<div>
 
 1.  From the Virtuoso Conductor User Interface i.e.
     http://cname:port/conductor, login as the "dba" user.
 
 2.  Go to the "Web Application Server" tab.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr1" class="figure">
+    <div>
 
     **Figure 6.18. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr1.png)
@@ -433,16 +430,16 @@ content of a basic Sitemap where the source includes RDFa.
 
 3.  Go to the "Content Imports" tab.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr2" class="figure">
+    <div>
 
     **Figure 6.19. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr2.png)
@@ -459,16 +456,16 @@ content of a basic Sitemap where the source includes RDFa.
 
 4.  Click on the "New Target" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr3" class="figure">
+    <div>
 
     **Figure 6.20. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr3.png)
@@ -485,7 +482,7 @@ content of a basic Sitemap where the source includes RDFa.
 
 5.  In the form displayed:
 
-    <div class="itemizedlist">
+    <div>
 
     - Enter a name of choice in the "Target description" text box:
 
@@ -518,16 +515,16 @@ content of a basic Sitemap where the source includes RDFa.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr11" class="figure">
+    <div>
 
     **Figure 6.21. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr11.png)
@@ -542,16 +539,16 @@ content of a basic Sitemap where the source includes RDFa.
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr11a" class="figure">
+    <div>
 
     **Figure 6.22. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr11a.png)
@@ -568,16 +565,16 @@ content of a basic Sitemap where the source includes RDFa.
 
 6.  Click the "Create" button to create the import.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr11a_01" class="figure">
+    <div>
 
     **Figure 6.23. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr11ab.png)
@@ -594,16 +591,16 @@ content of a basic Sitemap where the source includes RDFa.
 
 7.  Click the "Import Queues" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr12" class="figure">
+    <div>
 
     **Figure 6.24. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr12.png)
@@ -625,16 +622,16 @@ content of a basic Sitemap where the source includes RDFa.
     pages stored locally in DAV and any network resource triples being
     fetched in the RDF Quad store.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr12a" class="figure">
+    <div>
 
     **Figure 6.25. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr12a.png)
@@ -658,16 +655,16 @@ content of a basic Sitemap where the source includes RDFa.
 
 11. The retrieved content will be shown:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr15" class="figure">
+    <div>
 
     **Figure 6.26. Setting up a Content Crawler Job to Retrieve
     Sitemaps**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve
     Sitemaps](images/ui/cr15.png)
@@ -686,9 +683,9 @@ content of a basic Sitemap where the source includes RDFa.
 
 </div>
 
-<div id="contentcrawlerrdfssm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -705,23 +702,23 @@ content of a basic Sitemap where the source includes RDFa.
 The following section describes how to set up crawler job for getting
 Semantic Sitemap's content: a variation of standard sitemap:
 
-<div class="orderedlist">
+<div>
 
 1.  From the Virtuoso Conductor User Interface i.e.
     http://cname:port/conductor, login as the "dba" user.
 
 2.  Go to "Web Application Server".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr1_01" class="figure">
+    <div>
 
     **Figure 6.27. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr1.png)
@@ -738,16 +735,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 3.  Go to "Content Imports".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr2_01" class="figure">
+    <div>
 
     **Figure 6.28. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr2.png)
@@ -764,16 +761,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 4.  Click "New Target".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr3_01" class="figure">
+    <div>
 
     **Figure 6.29. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr3.png)
@@ -790,7 +787,7 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 5.  In the shown form:
 
-    <div class="itemizedlist">
+    <div>
 
     - Enter for "Target description":
 
@@ -817,11 +814,11 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
     - Hatch "Semantic Web Crawling"
 
-      <div class="itemizedlist">
+      <div>
 
       - Note: when you select this option, you can either:
 
-        <div class="orderedlist">
+        <div>
 
         1.  Leave the Store Function and Extract Function empty - in
             this case the system Store and Extract functions will be
@@ -961,16 +958,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 7.  Hatch "Accept RDF"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr16" class="figure">
+    <div>
 
     **Figure 6.30. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr16.png)
@@ -985,16 +982,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr17" class="figure">
+    <div>
 
     **Figure 6.31. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr17.png)
@@ -1009,16 +1006,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr17_01" class="figure">
+    <div>
 
     **Figure 6.32. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr17b.png)
@@ -1036,16 +1033,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 8.  Optionally you can hatch "Store metadata \*" and specify which RDF
     Cartridges to be included from the Sponger:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr17a" class="figure">
+    <div>
 
     **Figure 6.33. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr17a.png)
@@ -1062,16 +1059,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 9.  Click the button "Create".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr18" class="figure">
+    <div>
 
     **Figure 6.34. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr18.png)
@@ -1088,16 +1085,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 10. Click "Import Queues".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr19" class="figure">
+    <div>
 
     **Figure 6.35. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr19.png)
@@ -1117,16 +1114,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 12. As result should be shown the number of the pages retrieved.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr20" class="figure">
+    <div>
 
     **Figure 6.36. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr20.png)
@@ -1155,16 +1152,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
       }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr21" class="figure">
+    <div>
 
     **Figure 6.37. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr21.png)
@@ -1179,16 +1176,16 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr22" class="figure">
+    <div>
 
     **Figure 6.38. Setting up a Content Crawler Job to Retrieve Semantic
     Sitemap content**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
     content](images/ui/cr22.png)
@@ -1207,9 +1204,9 @@ Semantic Sitemap's content: a variation of standard sitemap:
 
 </div>
 
-<div id="contentcrawlerrdfsd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1226,23 +1223,23 @@ Semantic Sitemap's content: a variation of standard sitemap:
 The following section describes how to set up crawler job for getting
 directories using Conductor.
 
-<div class="orderedlist">
+<div>
 
 1.  From the Virtuoso Conductor User Interface i.e.
     http://cname:port/conductor, login as the "dba" user.
 
 2.  Go to "Web Application Server".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr1_02" class="figure">
+    <div>
 
     **Figure 6.39. Setting up a Content Crawler Job to Retrieve Content
     from Specific Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Content from Specific
     Directories](images/ui/cr1.png)
@@ -1259,16 +1256,16 @@ directories using Conductor.
 
 3.  Go to "Content Imports".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr2_02" class="figure">
+    <div>
 
     **Figure 6.40. Setting up a Content Crawler Job to Retrieve Content
     from Specific Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Content from Specific
     Directories](images/ui/cr2.png)
@@ -1285,16 +1282,16 @@ directories using Conductor.
 
 4.  Click "New Target".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr3_02" class="figure">
+    <div>
 
     **Figure 6.41. Setting up a Content Crawler Job to Retrieve Content
     from Specific Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Content from Specific
     Directories](images/ui/cr3.png)
@@ -1311,7 +1308,7 @@ directories using Conductor.
 
 5.  In the shown form:
 
-    <div class="itemizedlist">
+    <div>
 
     - Enter for "Target description":
 
@@ -1335,16 +1332,16 @@ directories using Conductor.
     - Choose from the available list "Local resources owner" an user,
       for ex. demo.
 
-      <div class="figure-float">
+      <div>
 
-      <div id="d1" class="figure">
+      <div>
 
       **Figure 6.42. Setting up a Content Crawler Job to Retrieve
       Content from Specific Directories**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Setting up a Content Crawler Job to Retrieve Content from
       Specific Directories](images/ui/d1.png)
@@ -1359,16 +1356,16 @@ directories using Conductor.
 
       </div>
 
-      <div class="figure-float">
+      <div>
 
-      <div id="d1a" class="figure">
+      <div>
 
       **Figure 6.43. Setting up a Content Crawler Job to Retrieve
       Content from Specific Directories**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Setting up a Content Crawler Job to Retrieve Content from
       Specific Directories](images/ui/d1a.png)
@@ -1392,16 +1389,16 @@ directories using Conductor.
 
 6.  As result the Robot target will be created:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="d2" class="figure">
+    <div>
 
     **Figure 6.44. Setting up a Content Crawler Job to Retrieve Content
     from Specific Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Content from Specific
     Directories](images/ui/d2.png)
@@ -1418,16 +1415,16 @@ directories using Conductor.
 
 7.  Click "Import Queues".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="d3" class="figure">
+    <div>
 
     **Figure 6.45. Setting up a Content Crawler Job to Retrieve Content
     from Specific Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Content from Specific
     Directories](images/ui/d3.png)
@@ -1446,16 +1443,16 @@ directories using Conductor.
 
 9.  As result should be shown the number of the total pages retrieved.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="d5" class="figure">
+    <div>
 
     **Figure 6.46. Setting up a Content Crawler Job to Retrieve Content
     from Specific Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Content from Specific
     Directories](images/ui/d5.png)
@@ -1479,16 +1476,16 @@ directories using Conductor.
 
 11. As result the retrieved content will be shown:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="d7" class="figure">
+    <div>
 
     **Figure 6.47. Setting up a Content Crawler Job to Retrieve Content
     from Specific Directories**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Setting up a Content Crawler Job to Retrieve Content from Specific
     Directories](images/ui/d7.png)
@@ -1507,9 +1504,9 @@ directories using Conductor.
 
 </div>
 
-<div id="contentcrawleratom" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1536,7 +1533,7 @@ To populate the Virtuoso Quad Store, in this Guide we will use a XPAth
 expression for the URLs of the RDF resources references in a given ATOM
 feed. For ex. this one of the "National Bibliography" Store.
 
-<div class="orderedlist">
+<div>
 
 1.  Go to http://cname/conductor
 
@@ -1545,15 +1542,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 3.  Go to Web Application Server -\> Content Management -\> Content
     Imports:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cra1" class="figure">
+    <div>
 
     **Figure 6.48. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cra1.png)
 
@@ -1569,15 +1566,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 4.  Click "New Target":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr3_03" class="figure">
+    <div>
 
     **Figure 6.49. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cr3.png)
 
@@ -1593,7 +1590,7 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 5.  In the presented form specify respectively:
 
-    <div class="itemizedlist">
+    <div>
 
     - "Target description": for ex. National Bibliography ;
 
@@ -1628,15 +1625,15 @@ feed. For ex. this one of the "National Bibliography" Store.
     - "RDF Cartridge": hatch this check-box and specify what cartridges
       will be used.
 
-      <div class="figure-float">
+      <div>
 
-      <div id="cra3" class="figure">
+      <div>
 
       **Figure 6.50. Crawling ATOM feed**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Crawling ATOM feed](images/ui/cra3.png)
 
@@ -1650,15 +1647,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 
       </div>
 
-      <div class="figure-float">
+      <div>
 
-      <div id="cra4" class="figure">
+      <div>
 
       **Figure 6.51. Crawling ATOM feed**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Crawling ATOM feed](images/ui/cra4.png)
 
@@ -1679,15 +1676,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 7.  The new created target should be displayed in the list of available
     Targets:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cra7" class="figure">
+    <div>
 
     **Figure 6.52. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cra7.png)
 
@@ -1703,15 +1700,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 8.  Click "Import Queues":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cra8" class="figure">
+    <div>
 
     **Figure 6.53. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cra8.png)
 
@@ -1730,15 +1727,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 10. Should be presented list of Top pending URLs:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cra9" class="figure">
+    <div>
 
     **Figure 6.54. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cra9.png)
 
@@ -1754,15 +1751,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 11. Go to "Retrieved Sites" to check the total URLs that were processed:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cra10" class="figure">
+    <div>
 
     **Figure 6.55. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cra10.png)
 
@@ -1788,15 +1785,15 @@ feed. For ex. this one of the "National Bibliography" Store.
       }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cra14" class="figure">
+    <div>
 
     **Figure 6.56. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cra14.png)
 
@@ -1814,15 +1811,15 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 14. The imported RDF data triples should be shown:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cra15" class="figure">
+    <div>
 
     **Figure 6.57. Crawling ATOM feed**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling ATOM feed](images/ui/cra15.png)
 
@@ -1840,9 +1837,9 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 </div>
 
-<div id="contentcrawlersparqlendp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1858,7 +1855,7 @@ feed. For ex. this one of the "National Bibliography" Store.
 
 The following step-by section walks you through the process of:
 
-<div class="itemizedlist">
+<div>
 
 - Populating a Virtuoso Quad Store with data from a 3rd party SPARQL
   endpoint
@@ -1868,7 +1865,7 @@ The following step-by section walks you through the process of:
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Sample SPARQL query producing a list SPARQL endpoints:
 
@@ -1936,15 +1933,15 @@ The following step-by section walks you through the process of:
 5.  Go to "Web Application Server"-\> "Content Management" -\> "Content
     Imports"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp2" class="figure">
+    <div>
 
     **Figure 6.58. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/cra1.png)
 
@@ -1960,15 +1957,15 @@ The following step-by section walks you through the process of:
 
 6.  Click "New Target":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="cr3_04" class="figure">
+    <div>
 
     **Figure 6.59. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/cr3.png)
 
@@ -1984,7 +1981,7 @@ The following step-by section walks you through the process of:
 
 7.  In the presented form enter for ex.:
 
-    <div class="orderedlist">
+    <div>
 
     1.  "Target description": voiD store
 
@@ -2027,15 +2024,15 @@ The following step-by section walks you through the process of:
 
     10. Hatch "Run "Sponger" and "Accept RDF"
 
-        <div class="figure-float">
+        <div>
 
-        <div id="scp4" class="figure">
+        <div>
 
         **Figure 6.60. Crawling SPARQL Endpoints**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Crawling SPARQL Endpoints](images/ui/scp4.png)
 
@@ -2049,15 +2046,15 @@ The following step-by section walks you through the process of:
 
         </div>
 
-        <div class="figure-float">
+        <div>
 
-        <div id="scp5" class="figure">
+        <div>
 
         **Figure 6.61. Crawling SPARQL Endpoints**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![Crawling SPARQL Endpoints](images/ui/scp5.png)
 
@@ -2078,15 +2075,15 @@ The following step-by section walks you through the process of:
 9.  The target should be created and presented in the list of available
     targets:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp7" class="figure">
+    <div>
 
     **Figure 6.62. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp7.png)
 
@@ -2102,15 +2099,15 @@ The following step-by section walks you through the process of:
 
 10. Click "Import Queues":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp8" class="figure">
+    <div>
 
     **Figure 6.63. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp8.png)
 
@@ -2126,15 +2123,15 @@ The following step-by section walks you through the process of:
 
 11. Click "Run" for the imported target:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp9" class="figure">
+    <div>
 
     **Figure 6.64. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp9.png)
 
@@ -2151,15 +2148,15 @@ The following step-by section walks you through the process of:
 12. To check the retrieved content go to "Web Application Server"-\>
     "Content Management" -\> "Content Imports" -\> "Retrieved Sites":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp11" class="figure">
+    <div>
 
     **Figure 6.65. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp11.png)
 
@@ -2175,15 +2172,15 @@ The following step-by section walks you through the process of:
 
 13. Click "voiD store" -\> "Edit":
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp12" class="figure">
+    <div>
 
     **Figure 6.66. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp12.png)
 
@@ -2201,15 +2198,15 @@ The following step-by section walks you through the process of:
     "Content Management" -\> "Repository" path
     DAV/void.rkbexplorer.com/content/:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp10" class="figure">
+    <div>
 
     **Figure 6.67. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp10.png)
 
@@ -2235,15 +2232,15 @@ The following step-by section walks you through the process of:
       }
     ```
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp13" class="figure">
+    <div>
 
     **Figure 6.68. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp13.png)
 
@@ -2257,15 +2254,15 @@ The following step-by section walks you through the process of:
 
     </div>
 
-    <div class="figure-float">
+    <div>
 
-    <div id="scp14" class="figure">
+    <div>
 
     **Figure 6.69. Crawling SPARQL Endpoints**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Crawling SPARQL Endpoints](images/ui/scp14.png)
 
@@ -2287,9 +2284,9 @@ The following step-by section walks you through the process of:
 
 </div>
 
-<div id="admiui.accesscontrol" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2307,18 +2304,17 @@ From "System Admin" -\> Security -\> "Access Controls" you can manage
 Rules and ACL respectively for HTTP, News, Proxy. The tabs PSH and
 PSH-SSL are available only when the <a
 href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/pubsubhub_dav.vad"
-class="ulink" target="_top" shape="rect">pubsubhub_dav.vad</a> is
-installed.
+class="ulink" target="_top">pubsubhub_dav.vad</a> is installed.
 
-<div class="figure-float">
+<div>
 
-<div id="acl001" class="figure">
+<div>
 
 **Figure 6.70. Access Control Lists**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Access Control Lists](images/ui/acl001.png)
 
@@ -2336,15 +2332,15 @@ For each of the tabs "HTTP", "NEWS", "PROXY" the created rules will be
 shown in a list with Filter, Access, Destination, Object, Mode, Rate
 values. You can also add/delete rules, re-arrange rules order.
 
-<div class="figure-float">
+<div>
 
-<div id="acl002" class="figure">
+<div>
 
 **Figure 6.71. Access Control List for HTTP**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Access Control List for HTTP](images/ui/acl002.png)
 
@@ -2361,15 +2357,15 @@ values. You can also add/delete rules, re-arrange rules order.
 Click the link "Edit" for a rule. Then specify the filter and access
 values.
 
-<div class="figure-float">
+<div>
 
-<div id="acl003" class="figure">
+<div>
 
 **Figure 6.72. Access Control Lists**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Access Control Lists](images/ui/acl003.png)
 
@@ -2385,9 +2381,9 @@ values.
 
 </div>
 
-<div id="admiui.wsdl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2408,15 +2404,15 @@ user-defined types that are callable within Virtuoso while the
 processing and mechanics of the services are actually handled at the
 source.
 
-<div class="figure-float">
+<div>
 
-<div id="wsdlimp001" class="figure">
+<div>
 
 **Figure 6.73. WSDL Import**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![WSDL Import](images/ui/wsdlimp001.png)
 
@@ -2436,15 +2432,15 @@ to be created. You have the chance to edit the code for more specific
 needs and then you can either save this to a file for later work, or
 execute it in Virtuoso to create the procedures and types.
 
-<div class="figure-float">
+<div>
 
-<div id="wsdlimp002" class="figure">
+<div>
 
 **Figure 6.74. WSDL Import**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![WSDL Import](images/ui/wsdlimp002.png)
 

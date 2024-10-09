@@ -1,6 +1,6 @@
-<div id="vdbengineodtjd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -98,9 +98,9 @@ before attempting to generate an EDM. In the case of the ODBC to JDBC
 Bridge Virtuoso Northwind Demo database all tables are not nullable,
 thus this should not be an issue in this case.
 
-<div id="vdbengineodtjdinst" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -124,7 +124,7 @@ theory any ODBC to JDBC Bridge Driver can be used.
 Installation instructions for the OpenLink ODBC Driver for ODBC to JDBC
 Bridge are available from:
 
-<div class="itemizedlist">
+<div>
 
 - <a
   href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC"

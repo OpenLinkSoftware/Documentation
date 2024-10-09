@@ -1,10 +1,10 @@
-<div id="xpf_create_attribute" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ create-attribute — Creates a special "attribute descriptor" object.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_create_attribute" class="funcsynopsis">
+<div>
 
 |                                        |                          |
 |----------------------------------------|--------------------------|
 | `attribute `**`create-attribute`**` (` | `attrname ` string ,     |
 |                                        | `attrvalue ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ create-attribute — Creates a special "attribute descriptor" object.
 
 </div>
 
-<div id="xpf_desc_create_attribute" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ will be replaced.
 
 </div>
 
-<div id="xpf_params_create_attribute" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id126466" class="refsect2">
+<div>
 
 ### attrname
 
@@ -62,7 +62,7 @@ Name of attribute which should be created or changed
 
 </div>
 
-<div id="id126469" class="refsect2">
+<div>
 
 ### attrvalue
 
@@ -72,7 +72,7 @@ Value of of attribute
 
 </div>
 
-<div id="xpf_ret_create_attribute" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -80,7 +80,7 @@ Attribute descriptor
 
 </div>
 
-<div id="xpf_seealso_create_attribute" class="refsect1">
+<div>
 
 ## See Also
 

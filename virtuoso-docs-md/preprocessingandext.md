@@ -1,6 +1,6 @@
-<div id="preprocessingandext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -180,7 +180,7 @@ manually edited.
 If an explicit integer document ID column is specified, its value may
 not be 0 or negative.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                      |
 |:--------------------------:|:---------------------------------------------------------------------------------------------------------------------|

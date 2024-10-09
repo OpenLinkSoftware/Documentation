@@ -1,10 +1,10 @@
-<div id="xpf_list" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ sequence of the selected items
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_list" class="funcsynopsis">
+<div>
 
 |                           |                       |
 |---------------------------|-----------------------|
@@ -26,7 +26,7 @@ sequence of the selected items
 |                           | `... ` ,              |
 |                           | `seqN ` sequence `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ sequence of the selected items
 
 </div>
 
-<div id="xpf_desc_list" class="refsect1">
+<div>
 
 ## Description
 
@@ -55,11 +55,11 @@ standard functions.
 
 </div>
 
-<div id="xpf_params_list" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128059" class="refsect2">
+<div>
 
 ### SeqI
 
@@ -70,7 +70,7 @@ the resulting sequence
 
 </div>
 
-<div id="xpf_ret_list" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -78,15 +78,15 @@ Sequence
 
 </div>
 
-<div id="xpf_examples_list" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_list" class="example">
+<div>
 
 **Example 24.599. **
 
-<div class="example-contents">
+<div>
 
 Compose a sequence of the first title in the document, then the first
 abstract, then the first introduction
@@ -103,7 +103,7 @@ list(/title, /abstract, /intro)
 
 </div>
 
-<div id="xpf_seealso_list" class="refsect1">
+<div>
 
 ## See Also
 

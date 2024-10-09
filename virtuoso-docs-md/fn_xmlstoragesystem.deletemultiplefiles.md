@@ -1,10 +1,10 @@
-<div id="fn_xmlstoragesystem.deletemultiplefiles" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,7 +13,7 @@ System Directory
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
@@ -26,7 +26,7 @@ class="funcsynopsis">
 |                                                            | in `password ` string ,           |
 |                                                            | in `relativepathList ` array `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ class="funcsynopsis">
 
 </div>
 
-<div id="desc_xmlstoragesystem.deletemultiplefiles" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ This method is used for removing files from the repository.
 
 </div>
 
-<div id="params_xmlstoragesystem.deletemultiplefiles" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id125052" class="refsect2">
+<div>
 
 ### email
 
@@ -56,7 +56,7 @@ For user identification, this should be a valid email account.
 
 </div>
 
-<div id="id125055" class="refsect2">
+<div>
 
 ### password
 
@@ -64,7 +64,7 @@ The MD5 hash of the password.
 
 </div>
 
-<div id="id125058" class="refsect2">
+<div>
 
 ### relativepathList
 
@@ -75,7 +75,7 @@ WebDAV to be deleted.
 
 </div>
 
-<div id="ret_xmlstoragesystem.deletemultiplefiles" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -95,12 +95,12 @@ class="refsect1">
 
 ## Examples
 
-<div id="ex_xmlstoragesystem.deletemultiplefiles" class="example">
+<div>
 
 **Example 24.541. Using the XML Storage System to Delete Multiple
 Files**
 
-<div class="example-contents">
+<div>
 
 Simple example of removing a file.
 
@@ -130,7 +130,7 @@ Simple example of removing a file.
 
 </div>
 
-<div id="seealso_xmlstoragesystem.deletemultiplefiles" class="refsect1">
+<div>
 
 ## See Also
 

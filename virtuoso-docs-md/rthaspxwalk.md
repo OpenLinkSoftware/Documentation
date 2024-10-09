@@ -1,6 +1,6 @@
-<div id="rthaspxwalk" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="rthaspxnew" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,19 +34,19 @@ This section will describe how to use the MS Visual Studio to create an
 application using as much drag and drop as possible. We want to create a
 table of data in a web page from a database.
 
-<div class="orderedlist">
+<div>
 
 1.  **Launch Microsoft's Visual Studio. ** Once Visual Studio has been
     launch it present you with the start page that lets you create a New
     Project.
 
-    <div id="rthvs001" class="figure">
+    <div>
 
     **Figure 14.18. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs001.jpg)
 
@@ -63,13 +63,13 @@ table of data in a web page from a database.
     Visual Basic Projects type. You must also select a location on an
     IIS web server.
 
-    <div id="rthvs002" class="figure">
+    <div>
 
     **Figure 14.19. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs002.jpg)
 
@@ -85,13 +85,13 @@ table of data in a web page from a database.
     progress dialogue as Visual Studio contacts your web server creating
     a new web application there.
 
-    <div id="rthvs003" class="figure">
+    <div>
 
     **Figure 14.20. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs003.jpg)
 
@@ -108,13 +108,13 @@ table of data in a web page from a database.
     Studio windows. Now we must create our page. Right-click on the
     project name in the Solution Explorer and select Add New Web Form.
 
-    <div id="rthvs004" class="figure">
+    <div>
 
     **Figure 14.21. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs004.jpg)
 
@@ -130,13 +130,13 @@ table of data in a web page from a database.
     option will appear, automatically selecting the "Web Form" item to
     add. Supply a name for the page and click Open to begin.
 
-    <div id="rthvs005" class="figure">
+    <div>
 
     **Figure 14.22. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs005.jpg)
 
@@ -163,13 +163,13 @@ table of data in a web page from a database.
     datasource. Once a data connection has been selected press Next to
     continue.
 
-    <div id="rthvs006" class="figure">
+    <div>
 
     **Figure 14.23. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs006.jpg)
 
@@ -185,13 +185,13 @@ table of data in a web page from a database.
     adapter should access the database. For simplicity we will stick
     with the default of Use SQL Statements. Press Next.
 
-    <div id="rthvs007" class="figure">
+    <div>
 
     **Figure 14.24. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs007.jpg)
 
@@ -210,13 +210,13 @@ table of data in a web page from a database.
     retrieve everything from the Customers table using a simple
     query:`select * from Customers` .
 
-    <div id="rthvs008" class="figure">
+    <div>
 
     **Figure 14.25. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs008.jpg)
 
@@ -234,13 +234,13 @@ table of data in a web page from a database.
     example. OK the advanced options, upon return to the main dialogue
     press the Next button to continue onwards.
 
-    <div id="rthvs009" class="figure">
+    <div>
 
     **Figure 14.26. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs009.jpg)
 
@@ -255,13 +255,13 @@ table of data in a web page from a database.
 10. **View Wizard Results. ** The next panel confirms all the options
     selected leaving us to simply complete the wizard.
 
-    <div id="rthvs010" class="figure">
+    <div>
 
     **Figure 14.27. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs010.jpg)
 
@@ -278,13 +278,13 @@ table of data in a web page from a database.
     have been added to the Web Form. The connection control has been
     automatically generated to support the Data Adapter.
 
-    <div id="rthvs011" class="figure">
+    <div>
 
     **Figure 14.28. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs011.jpg)
 
@@ -302,13 +302,13 @@ table of data in a web page from a database.
     displayed dialog are all sufficient. After verifying them click the
     OK button to generate the dataset.
 
-    <div id="rthvs015" class="figure">
+    <div>
 
     **Figure 14.29. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs015.jpg)
 
@@ -326,13 +326,13 @@ table of data in a web page from a database.
     the DataGrid control. This add the control to the page and will
     display a table on the web page view.
 
-    <div id="rthvs012" class="figure">
+    <div>
 
     **Figure 14.30. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs012.jpg)
 
@@ -348,13 +348,13 @@ table of data in a web page from a database.
     right-clicking on the table and selecting
     <span class="guimenu">Property Builder</span> .
 
-    <div id="rthvs013" class="figure">
+    <div>
 
     **Figure 14.31. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs013.jpg)
 
@@ -373,13 +373,13 @@ table of data in a web page from a database.
     want to adjust the most important aspects of the table, where the
     data comes from.
 
-    <div id="rthvs014" class="figure">
+    <div>
 
     **Figure 14.32. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs014.jpg)
 
@@ -399,13 +399,13 @@ table of data in a web page from a database.
     now-familiar controls configured earlier. Once configured, press the
     OK button to save the changes.
 
-    <div id="rthvs016" class="figure">
+    <div>
 
     **Figure 14.33. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs016.jpg)
 
@@ -420,13 +420,13 @@ table of data in a web page from a database.
 17. **Preview. ** Once the details have been saved the view of the table
     in the page will be updated to reflect the dataset details.
 
-    <div id="rthvs017" class="figure">
+    <div>
 
     **Figure 14.34. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs017.jpg)
 
@@ -458,13 +458,13 @@ table of data in a web page from a database.
     You will find that Visual Studio will offer some assistance in the
     form of intellisense command-completion while you are typing.
 
-    <div id="rthvs018" class="figure">
+    <div>
 
     **Figure 14.35. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs018.jpg)
 
@@ -485,13 +485,13 @@ table of data in a web page from a database.
     closing the browser windows you will automatically return to Visual
     Studio.
 
-    <div id="rthvs019" class="figure">
+    <div>
 
     **Figure 14.36. Databound Examples using MS Visual Studio**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databound Examples using MS Visual Studio](images/rth/vs019.jpg)
 
@@ -507,9 +507,9 @@ table of data in a web page from a database.
 
 </div>
 
-<div id="rthaspxmigratevirt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -528,7 +528,7 @@ using an ASPX data-bound control. Now we will host this same application
 in Virtuoso demonstrating that IIS is no longer required for ASPX
 application deployment.
 
-<div class="orderedlist">
+<div>
 
 1.  **Locating your ASPX application. ** Use explorer to locate the ASPX
     application you want to move away from IIS and re-deploy under
@@ -539,13 +539,13 @@ application deployment.
     VSP root directory or WebDAV. We will copy the application to a
     location in WebDAV for a local Virtuoso server.
 
-    <div id="rthmig001" class="figure">
+    <div>
 
     **Figure 14.37. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig001.jpg)
 
@@ -562,13 +562,13 @@ application deployment.
     <span class="guibutton">Add Network Place</span> shortcut to start
     the wizard.
 
-    <div id="rthmig002" class="figure">
+    <div>
 
     **Figure 14.38. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig002.jpg)
 
@@ -583,13 +583,13 @@ application deployment.
 3.  **Network service provider. ** Select the default option. Click next
     to continue.
 
-    <div id="rthmig003" class="figure">
+    <div>
 
     **Figure 14.39. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig003.jpg)
 
@@ -605,13 +605,13 @@ application deployment.
     the Virtuoso server. We are using Virtuoso on the local machine but
     this could be anywhere on the Internet. Click next to continue.
 
-    <div id="rthmig004" class="figure">
+    <div>
 
     **Figure 14.40. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig004.jpg)
 
@@ -627,13 +627,13 @@ application deployment.
     meaningful name so we can easily find this location in the future.
     Click on next to continue.
 
-    <div id="rthmig005" class="figure">
+    <div>
 
     **Figure 14.41. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig005.jpg)
 
@@ -650,13 +650,13 @@ application deployment.
     we will leave checked. Click Finish to continue and open the DAV
     directory.
 
-    <div id="rthmig006" class="figure">
+    <div>
 
     **Figure 14.42. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig006.jpg)
 
@@ -673,13 +673,13 @@ application deployment.
     entered during the installation, possibly both dav, in which case
     type dav in both fields and press the OK button to continue.
 
-    <div id="rthmig007" class="figure">
+    <div>
 
     **Figure 14.43. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig007.jpg)
 
@@ -695,13 +695,13 @@ application deployment.
     the DAV network place we can copy the `aspxdemo1` application
     directory to it.
 
-    <div id="rthmig008" class="figure">
+    <div>
 
     **Figure 14.44. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig008.jpg)
 
@@ -717,13 +717,13 @@ application deployment.
     Virtuoso virtual directory. Go to Conductor / Web Application Server
     / HTTP Hosts & Directories.
 
-    <div id="rthmig009" class="figure">
+    <div>
 
     **Figure 14.45. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig009.png)
 
@@ -739,13 +739,13 @@ application deployment.
     will list all mappings currently present for the Virtuoso server.
     Click on the "New Directory" link to continue.
 
-    <div id="rthmig010" class="figure">
+    <div>
 
     **Figure 14.46. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig010.png)
 
@@ -760,13 +760,13 @@ application deployment.
 11. **Select DAV Domain template. ** On the next page select for "Type"
     the DAV Domain template and click "Next".
 
-    <div id="rthmig011" class="figure">
+    <div>
 
     **Figure 14.47. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig011.png)
 
@@ -788,13 +788,13 @@ application deployment.
     `dba` using the drop down. To save the changes click on the "Save
     Changes" button at the bottom of the page.
 
-    <div id="rthmig012" class="figure">
+    <div>
 
     **Figure 14.48. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig012.png)
 
@@ -812,13 +812,13 @@ application deployment.
     `http://example.com/aspxdemo1/WebForm1.aspx` , we will see the same
     output as before.
 
-    <div id="rthmig013" class="figure">
+    <div>
 
     **Figure 14.49. Migrating ASP.Net Applications to Virtuoso**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Migrating ASP.Net Applications to Virtuoso](images/rth/mig013.jpg)
 
@@ -832,7 +832,7 @@ application deployment.
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Note: Note:">
 <colgroup>

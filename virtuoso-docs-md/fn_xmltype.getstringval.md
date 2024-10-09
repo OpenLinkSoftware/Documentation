@@ -1,10 +1,10 @@
-<div id="fn_xmltype.getstringval" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ current node like XPATH function 'string()'.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xmltype.getstringval" class="funcsynopsis">
+<div>
 
 |                                   |      |
 |-----------------------------------|------|
 | ` `**`XMLType.getStringVal`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ current node like XPATH function 'string()'.
 
 </div>
 
-<div id="desc_xmltype.getstringval" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,7 +42,7 @@ similar to the XPATH function 'string()'.
 
 </div>
 
-<div id="ret_xmltype.getstringval" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -50,15 +50,15 @@ The member function returns wide string.
 
 </div>
 
-<div id="examples_xmltype.getstringval" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xmltype.getstringval" class="example">
+<div>
 
 **Example 24.554. A table with an XMLType column**
 
-<div class="example-contents">
+<div>
 
 This populates a table with XML data and then selects the string-value
 of an 'ename' element from the appropriate record.
@@ -90,7 +90,7 @@ John
 
 </div>
 
-<div id="seealso_xmltype.getstringval" class="refsect1">
+<div>
 
 ## See Also
 

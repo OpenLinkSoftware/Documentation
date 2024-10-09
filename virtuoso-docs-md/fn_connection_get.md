@@ -1,10 +1,10 @@
-<div id="fn_connection_get" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ connection_get — Get connection variable
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_connection_get" class="funcsynopsis">
+<div>
 
 |                                |                         |
 |--------------------------------|-------------------------|
 | `any `**`connection_get`**` (` | in `name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ connection_get — Get connection variable
 
 </div>
 
-<div id="desc_connection_get" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ for a more detailed discussion of connection variables.
 
 </div>
 
-<div id="params_connection_get" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82710" class="refsect2">
+<div>
 
 ### name
 
@@ -57,7 +57,7 @@ Name of the connection variable
 
 </div>
 
-<div id="ret_connection_get" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -67,15 +67,15 @@ returned.
 
 </div>
 
-<div id="examples_connection_get" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_connection_var1" class="example">
+<div>
 
 **Example 24.48. Setting and Retrieving Connection Variables**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select connection_get('var_demo');
@@ -114,7 +114,7 @@ In a VSP page...
 
 </div>
 
-<div id="seealso_connection_get" class="refsect1">
+<div>
 
 ## See Also
 

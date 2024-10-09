@@ -1,10 +1,10 @@
-<div id="fn_sys_stat" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ sys_stat — Return statistical information about the Virtuoso server.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sys_stat" class="funcsynopsis">
+<div>
 
 |                          |                              |
 |--------------------------|------------------------------|
 | `any `**`sys_stat`**` (` | in `stat_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ sys_stat — Return statistical information about the Virtuoso server.
 
 </div>
 
-<div id="desc_sys_stat" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ name give as a parameter to the function.
 
 </div>
 
-<div id="params_sys_stat" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112884" class="refsect2">
+<div>
 
 ### stat_name
 
@@ -125,7 +125,7 @@ The name of the statistic to look-up and return. This can be one of:
 
 </div>
 
-<div id="ret_sys_stat" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -134,15 +134,15 @@ a string such as the database name.
 
 </div>
 
-<div id="examples_sys_stat" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sys_stat" class="example">
+<div>
 
 **Example 24.414. Returning simple statistics.**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select concat(sys_stat('st_dbms_name'), ' - ', sys_stat('st_dbms_ver'));

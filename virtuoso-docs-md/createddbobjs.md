@@ -1,6 +1,6 @@
-<div id="createddbobjs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -62,7 +62,7 @@ reference between query and user.
 )
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                               |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|

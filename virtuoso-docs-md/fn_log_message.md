@@ -1,10 +1,10 @@
-<div id="fn_log_message" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ log_message — print output into the system log file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_log_message" class="funcsynopsis">
+<div>
 
 |                          |                        |
 |--------------------------|------------------------|
 | ` `**`log_message`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ log_message — print output into the system log file
 
 </div>
 
-<div id="desc_log_message" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ virtuoso.log).
 
 </div>
 
-<div id="params_log_message" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95983" class="refsect2">
+<div>
 
 ### str
 
@@ -55,7 +55,7 @@ An informative string to append to the log file.
 
 </div>
 
-<div id="ret_log_message" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -63,15 +63,15 @@ None
 
 </div>
 
-<div id="examples_log_message" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_log_message_1" class="example">
+<div>
 
 **Example 24.209. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
                 SQL> log_message('1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
@@ -98,7 +98,7 @@ None
 
 </div>
 
-<div id="seealso_log_message" class="refsect1">
+<div>
 
 ## See Also
 

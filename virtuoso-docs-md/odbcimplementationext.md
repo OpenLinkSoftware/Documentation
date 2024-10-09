@@ -1,6 +1,6 @@
-<div id="odbcimplementationext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtodbcsparql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -103,9 +103,9 @@ should to be used:
 #endif
 ```
 
-<div id="virtodbcsparqlapi" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -119,9 +119,9 @@ should to be used:
 
 </div>
 
-<div id="virtodbcsparqlapisgdf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -221,7 +221,7 @@ select RL_ID from DB.DBA.RDF_LANGUAGE where RL_TWOBYTE = ?
 select RDT_QNAME from DB.DBA.RDF_DATATYPE where RDT_TWOBYTE = ?
 ```
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -301,9 +301,9 @@ typebuf variable will contain the rdf type of the field.
 
 </div>
 
-<div id="virtodbcsparqlevalnodes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -407,9 +407,9 @@ node a field is.
 
 </div>
 
-<div id="virtodbcsparqlexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -819,7 +819,7 @@ Here it is the source code:
     }
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>

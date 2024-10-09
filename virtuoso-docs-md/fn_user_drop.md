@@ -1,10 +1,10 @@
-<div id="fn_user_drop" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ objects, DAV resources and other possible resources owned by the user.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_user_drop" class="funcsynopsis">
+<div>
 
 |                        |                            |
 |------------------------|----------------------------|
 | ` `**`USER_DROP`**` (` | in `name ` varchar ,       |
 |                        | in `cascade ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ objects, DAV resources and other possible resources owned by the user.
 
 </div>
 
-<div id="desc_user_drop" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ schema.
 
 </div>
 
-<div id="params_user_drop" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id116422" class="refsect2">
+<div>
 
 ### name
 
@@ -55,7 +55,7 @@ A string containing the name of the user account to be deleted.
 
 </div>
 
-<div id="id116425" class="refsect2">
+<div>
 
 ### cascade
 
@@ -74,7 +74,7 @@ operation).
 
 </div>
 
-<div id="ret_user_drop" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -82,7 +82,7 @@ None
 
 </div>
 
-<div id="seealso_user_drop" class="refsect1">
+<div>
 
 ## See Also
 

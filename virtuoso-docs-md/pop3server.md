@@ -1,6 +1,6 @@
-<div id="pop3server" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

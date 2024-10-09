@@ -1,10 +1,10 @@
-<div id="fn_virtuoso_ini_path" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ virtuoso_ini_path — Return full name of configuration INI file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_virtuoso_ini_path" class="funcsynopsis">
+<div>
 
 |                                |      |
 |--------------------------------|------|
 | ` `**`virtuoso_ini_path`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ virtuoso_ini_path — Return full name of configuration INI file
 
 </div>
 
-<div id="desc_61" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,15 +42,15 @@ contents of the INI file.
 
 </div>
 
-<div id="examples_20" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_virtuoso_ini_path" class="example">
+<div>
 
 **Example 24.444. Simple examples**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select virtuoso_ini_path();
@@ -71,7 +71,7 @@ D:\Program Files\OpenLink\Virtuoso 2.5\demo\demo.ini
 
 </div>
 
-<div id="seealso_33" class="refsect1">
+<div>
 
 ## See Also
 

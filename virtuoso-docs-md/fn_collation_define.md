@@ -1,10 +1,10 @@
-<div id="fn_collation_define" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ collation_define — define a new collation
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_collation_define" class="funcsynopsis">
+<div>
 
 |                               |                                |
 |-------------------------------|--------------------------------|
@@ -24,7 +24,7 @@ collation_define — define a new collation
 |                               | in `FILE_PATH ` varchar ,      |
 |                               | in `ADD_TYPE ` integer `)`;    |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ collation_define — define a new collation
 
 </div>
 
-<div id="desc_collation_define" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ This function lets you define a new collation.
 
 </div>
 
-<div id="params_collation_define" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82388" class="refsect2">
+<div>
 
 ### COLLATION_NAME
 
@@ -54,7 +54,7 @@ The name to be assigned to the new collation.
 
 </div>
 
-<div id="id82391" class="refsect2">
+<div>
 
 ### FILE_PATH
 
@@ -64,7 +64,7 @@ the Virtuoso server.
 
 </div>
 
-<div id="id82394" class="refsect2">
+<div>
 
 ### ADD_TYPE
 
@@ -78,7 +78,7 @@ definitions.
 
 </div>
 
-<div id="ret_collation_define" class="refsect1">
+<div>
 
 ## Return Types
 

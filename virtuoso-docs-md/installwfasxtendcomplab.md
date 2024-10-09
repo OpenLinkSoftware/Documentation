@@ -1,6 +1,6 @@
-<div id="installwfasxtendcomplab" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -22,7 +22,7 @@ displayed in a more readable form.
 
 <span class="emphasis">*Pre-requisites*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  A working copy of the RDFDemo application created in
     <a href="installwfasxtendcomlab.html" class="link"
@@ -31,9 +31,9 @@ displayed in a more readable form.
 
 </div>
 
-<div id="installwfasxtendcomplabextapp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -75,7 +75,7 @@ http://www.w3.org/2000/01/rdf-schema#label. If there is one then the
 associated text is returned by the method. Otherwise the method returns
 the IRI string.
 
-<div class="itemizedlist">
+<div>
 
 - Add the following method to the ExtendedStringHandlerClass
 
@@ -134,15 +134,15 @@ customer details are also the same. It is only when you start exploring
 data outside the Northwind graph that you will see the labels in the
 form change.
 
-<div class="figure-float">
+<div>
 
-<div id="sparqlwinf14" class="figure">
+<div>
 
 **Figure 2.149. Northwind graph**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Northwind graph](images/ui/sparqlwinf14.png)
 

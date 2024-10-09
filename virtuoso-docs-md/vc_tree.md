@@ -1,10 +1,10 @@
-<div id="vc_tree" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ tree — A container for displaying a tree of nested nodes.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_tree" class="funcsynopsis">
+<div>
 
 |                      |                               |
 |----------------------|-------------------------------|
@@ -40,7 +40,7 @@ tree — A container for displaying a tree of nested nodes.
 |                      | `debug-srcline` (optional) ,  |
 |                      | `debug-log` (optional) `)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -50,7 +50,7 @@ tree — A container for displaying a tree of nested nodes.
 
 </div>
 
-<div id="vc_desc_tree" class="refsect1">
+<div>
 
 ## Description
 
@@ -70,7 +70,7 @@ open or not.
 
 </div>
 
-<div id="vc_attrs_tree" class="refsect1">
+<div>
 
 ## Attributes
 
@@ -204,7 +204,7 @@ debugging log.
 
 </div>
 
-<div id="vc_udt_tree" class="refsect1">
+<div>
 
 ## Declaration of type vspx_tree
 
@@ -226,15 +226,15 @@ constructor method vspx_tree (name varchar, parent vspx_control)
 
 </div>
 
-<div id="vc_ex_tree" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="vc_ex_tree__0" class="example">
+<div>
 
 **Example 14.44. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 <v:page name="demo_tree" xmlns:v="http://http://example.com/vspx/">
@@ -270,7 +270,7 @@ constructor method vspx_tree (name varchar, parent vspx_control)
 
   
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                    |
 |:--------------------------:|:-------------------------------------------------------------------|

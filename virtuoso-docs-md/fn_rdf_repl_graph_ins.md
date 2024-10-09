@@ -1,10 +1,10 @@
-<div id="fn_rdf_repl_graph_ins" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ RDF_REPL_GRAPH_INS — Inserts graph to RDF publication.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_repl_graph_ins" class="funcsynopsis">
+<div>
 
 |                                 |                          |
 |---------------------------------|--------------------------|
 | ` `**`RDF_REPL_GRAPH_INS`**` (` | in `graph ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ RDF_REPL_GRAPH_INS — Inserts graph to RDF publication.
 
 </div>
 
-<div id="desc_rdf_repl_graph_ins" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ this replication can be more than one.
 
 </div>
 
-<div id="params_rdf_repl_graph_ins" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id108304" class="refsect2">
+<div>
 
 ### graph
 
@@ -55,15 +55,15 @@ Graph URI to be inserted.
 
 </div>
 
-<div id="examples_rdf_repl_graph_ins" class="refsect1">
+<div>
 
 ## Example
 
-<div id="rdf_repl_graph_ins_ex1" class="example">
+<div>
 
 **Example 24.355. Insert graph to RDF replication**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> DB.DBA.RDF_RDF_REPL_GRAPH_INS ('http://test.org');
@@ -75,11 +75,11 @@ SQL> DB.DBA.RDF_RDF_REPL_GRAPH_INS ('http://test.org');
 
   
 
-<div id="rdf_repl_graph_ins_ex2" class="example">
+<div>
 
 **Example 24.356. Replicate all graphs**
 
-<div class="example-contents">
+<div>
 
 To replicate all graphs ( except the system graph
 http://www.openlinksw.com/schemas/virtrdf# ), one should use
@@ -97,7 +97,7 @@ SQL> DB.DBA.RDF_RDF_REPL_GRAPH_INS ('http://www.openlinksw.com/schemas/virtrdf#r
 
 </div>
 
-<div id="seealso_rdf_repl_graph_ins" class="refsect1">
+<div>
 
 ## See Also
 

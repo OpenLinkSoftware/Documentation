@@ -1,10 +1,10 @@
-<div id="fn_http_path" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ the current http request
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_path" class="funcsynopsis">
+<div>
 
 |                        |      |
 |------------------------|------|
 | ` `**`http_path`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ the current http request
 
 </div>
 
-<div id="desc_http_path" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,15 +42,15 @@ current HTTP request.
 
 </div>
 
-<div id="examples_http_path" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_path" class="example">
+<div>
 
 **Example 24.172. Retrieving Current Path of Request**
 
-<div class="example-contents">
+<div>
 
 ``` screen
   <?vsp

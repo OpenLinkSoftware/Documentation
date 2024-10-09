@@ -1,10 +1,10 @@
-<div id="fn_chr" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ character or wide character
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_chr" class="funcsynopsis">
+<div>
 
 |                         |                          |
 |-------------------------|--------------------------|
 | `varchar `**`chr`**` (` | in `chr_code ` long `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ character or wide character
 
 </div>
 
-<div id="desc_chr" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ with character code given as parameter.
 
 </div>
 
-<div id="params_chr" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id82257" class="refsect2">
+<div>
 
 ### *`chr_code `*
 
@@ -58,7 +58,7 @@ character </span> to be produced.
 
 </div>
 
-<div id="ret_chr" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -68,37 +68,15 @@ Otherwise the returned type is <span class="type">NVARCHAR </span> .
 
 </div>
 
-<div id="errors_chr" class="refsect1">
-
-## Errors
-
-<div id="id82272" class="table">
-
-**Table 24.10. Errors signalled by chr**
-
-<div class="table-contents">
-
-|                                 |                                 |
-|---------------------------------|---------------------------------|
-| <span class="errorcode"></span> | <span class="errortext"></span> |
-
-</div>
-
-</div>
-
-  
-
-</div>
-
-<div id="examples_chr" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_chr_1" class="example">
+<div>
 
 **Example 24.42. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select chr (33);
@@ -117,11 +95,11 @@ _______________________________________________________________________________
 
   
 
-<div id="ex_chr_2" class="example">
+<div>
 
 **Example 24.43. Stored procedure example**
 
-<div class="example-contents">
+<div>
 
 This stored procedure lists the ASCII values and characters in a string
 given as argument.
@@ -176,7 +154,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_chr" class="refsect1">
+<div>
 
 ## See Also
 

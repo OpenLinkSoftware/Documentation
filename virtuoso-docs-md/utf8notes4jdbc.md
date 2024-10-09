@@ -1,6 +1,6 @@
-<div id="utf8notes4jdbc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

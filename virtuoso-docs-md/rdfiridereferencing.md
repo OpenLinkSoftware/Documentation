@@ -1,6 +1,6 @@
-<div id="rdfiridereferencing" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -39,9 +39,9 @@ iteration, the partial result is identical to the result of the previous
 iteration, because there's no more data to retrieve. As the last step,
 SPARQL processor builds the final result set.
 
-<div id="rdfinputgrab" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -64,7 +64,7 @@ additional list of options at end of clause:
 expressions, i.e. expressions that does not contain variables other than
 external parameters. Names of allowed parameters are listed below.
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*get:soft*</span>
 

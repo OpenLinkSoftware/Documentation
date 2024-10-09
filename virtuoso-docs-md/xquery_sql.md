@@ -1,6 +1,6 @@
-<div id="xquery_sql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -69,7 +69,7 @@ database and to return the results in the form of an XML document and to
 avoid redundant data access. This kind of queries also allows computing
 joins between two or more documents and restructuring data.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                 |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------|
@@ -78,11 +78,11 @@ joins between two or more documents and restructuring data.
 
 </div>
 
-<div id="vht03" class="example">
+<div>
 
 **Example 15.8. Example 1**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create xml view "product" as
@@ -138,11 +138,11 @@ select xquery_eval('
 returns the XML document in which each category node contains all
 suppliers supplying products of the given category.
 
-<div id="vht04" class="example">
+<div>
 
 **Example 15.9. Example 2**
 
-<div class="example-contents">
+<div>
 
 Let a document named suppliers.xml contains supplier elements; each
 supplier element in turn contains supplier_id and supplier_name
@@ -183,11 +183,11 @@ variables in a XPATH expression following
 <a href="xpf_xmlview.html" class="link" title="xmlview"><code
 class="function">xmlview()</code></a> functions.
 
-<div id="vht05" class="example">
+<div>
 
 **Example 15.10. Example 3**
 
-<div class="example-contents">
+<div>
 
 The query
 
@@ -227,9 +227,9 @@ and selects all suppliers having attribute "CompanyName" starting with
 
   
 
-<div id="optimizationinxq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -344,9 +344,9 @@ and it speeds up the operation by more than 15 times.
 
 </div>
 
-<div id="restictionsinxq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

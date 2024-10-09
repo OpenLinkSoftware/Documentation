@@ -1,6 +1,6 @@
-<div id="ch-quicktours" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -31,7 +31,7 @@ able to link new tables into Virtuoso, and query the tables.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -150,9 +150,9 @@ start](tipsdbnotstart.html)</span>
 
 </div>
 
-<div id="newadminui" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -166,9 +166,9 @@ start](tipsdbnotstart.html)</span>
 
 </div>
 
-<div id="defpasschange" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -185,11 +185,11 @@ start](tipsdbnotstart.html)</span>
 When you start up Virtuoso for the first time, there are 3 user accounts
 defined:
 
-<div id="id8106" class="decimalstyle">
+<div>
 
 **Table 3.1. Default users of Virtuoso**
 
-<div class="decimalstyle-contents">
+<div>
 
 | User Name | Default Password | Usage                                                                                                       |
 |:----------|------------------|-------------------------------------------------------------------------------------------------------------|
@@ -247,9 +247,9 @@ demo database.
 
 </div>
 
-<div id="postinstsanity" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -263,9 +263,9 @@ demo database.
 
 </div>
 
-<div id="posttestisql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -295,15 +295,15 @@ select * from DB.DBA.SYS_USERS;
 This should produce a resultset containing one record if everything has
 been implemented correctly to this point.
 
-<div class="figure-float">
+<div>
 
-<div id="inst022" class="figure">
+<div>
 
 **Figure 3.1. ISQL in Telnet**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![ISQL in Telnet](images/ln-inst3.gif)
 
@@ -319,9 +319,9 @@ been implemented correctly to this point.
 
 </div>
 
-<div id="posttesthttp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -351,15 +351,15 @@ OpenLink Virtuoso program group.
 
 You will be presented with the OpenLink Virtuoso Conductor screen:
 
-<div class="figure-float">
+<div>
 
-<div id="inst018" class="figure">
+<div>
 
 **Figure 3.2. Virtuoso Conductor**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso Conductor](images/ln-inst4.png)
 
@@ -375,9 +375,9 @@ You will be presented with the OpenLink Virtuoso Conductor screen:
 
 </div>
 
-<div id="posttestqry" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -396,15 +396,15 @@ Virtuoso Server Administration Conductor Interface. You will be
 presented with a login form, type in the correct details for the
 database DBA user, by default this is username=dba; password=dba.
 
-<div class="figure-float">
+<div>
 
-<div id="inst019" class="figure">
+<div>
 
 **Figure 3.3. Virtuoso Conductor - Login Form**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso Conductor - Login Form](images/ln-inst-login.png)
 
@@ -420,15 +420,15 @@ database DBA user, by default this is username=dba; password=dba.
 
 Got to tab "Database" and then go to tab "Interactive SQL".
 
-<div class="figure-float">
+<div>
 
-<div id="inst020" class="figure">
+<div>
 
 **Figure 3.4. Virtuoso Conductor - Interactive SQL**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso Conductor - Interactive SQL](images/ln-inst-isql.png)
 
@@ -450,15 +450,15 @@ cannot type a database command such as "tables;". Also, note that the
 
 You should see the SQL results, as shown below.
 
-<div class="figure-float">
+<div>
 
-<div id="inst021" class="figure">
+<div>
 
 **Figure 3.5. Virtuoso Conductor - SQL Results**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Virtuoso Conductor - SQL Results](images/ln-inst-isql2.png)
 
@@ -476,9 +476,9 @@ You should see the SQL results, as shown below.
 
 </div>
 
-<div id="administeringtheserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -509,15 +509,15 @@ http://example.com:8890/
 Note that that trailing / is important and may be required for older
 browsers
 
-<div class="figure-float">
+<div>
 
-<div id="qsinst021" class="figure">
+<div>
 
 **Figure 3.6. Visual Server Administration Interface**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Visual Server Administration Interface](images/ln-inst4.png)
 

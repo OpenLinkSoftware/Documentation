@@ -1,6 +1,6 @@
-<div id="vdbenginemsqlslink" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,19 +14,19 @@
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Start the Virtuoso Web User Interface
 
-    <div class="figure-float">
+    <div>
 
-    <div id="lora1_02" class="figure">
+    <div>
 
     **Figure 8.648. Start**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Start](images/ui/lora1.png)
 
@@ -43,15 +43,15 @@
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="lora2_02" class="figure">
+    <div>
 
     **Figure 8.649. Conductor**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Conductor](images/ui/lora2.png)
 
@@ -68,15 +68,15 @@
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora3" class="figure">
+    <div>
 
     **Figure 8.650. Databases**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Databases](images/ui/slora3.png)
 
@@ -93,15 +93,15 @@
 4.  Select the "Connect" button for the "sql2k5ma" Microsoft SQL Server
     DSN.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora4" class="figure">
+    <div>
 
     **Figure 8.651. Connect**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Connect](images/ui/slora4.png)
 
@@ -118,15 +118,15 @@
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora5" class="figure">
+    <div>
 
     **Figure 8.652. Link Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Link Objects](images/ui/slora5.png)
 
@@ -142,15 +142,15 @@
 
 6.  Select all the tables that are part of the "Northwind" catalog.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora6" class="figure">
+    <div>
 
     **Figure 8.653. Select all tables**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Select all tables](images/ui/slora6.png)
 
@@ -167,15 +167,15 @@
 7.  Change the Catalog for each table to be "Northwind" using the "Set
     All" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora7" class="figure">
+    <div>
 
     **Figure 8.654. Catalog**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Catalog](images/ui/slora7.png)
 
@@ -191,15 +191,15 @@
 
 8.  All the catalog names are changed to be "NWIND"
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora8" class="figure">
+    <div>
 
     **Figure 8.655. catalog names**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![catalog names](images/ui/slora8.png)
 
@@ -215,15 +215,15 @@
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora9" class="figure">
+    <div>
 
     **Figure 8.656. "Link" button**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     !["Link" button](images/ui/slora9.png)
 
@@ -240,15 +240,15 @@
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora10" class="figure">
+    <div>
 
     **Figure 8.657. Completion**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Completion](images/ui/slora10.png)
 
@@ -267,15 +267,15 @@
     This will display the Interactive ISQL interface which will have
     been already populated with a suitable SQL statement.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora11" class="figure">
+    <div>
 
     **Figure 8.658. Querying**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Querying](images/ui/slora11.png)
 
@@ -291,15 +291,15 @@
 
 12. Select Execute to see data from the remotely linked table.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora12" class="figure">
+    <div>
 
     **Figure 8.659. Execute**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Execute](images/ui/slora12.png)
 
@@ -316,15 +316,15 @@
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "Northwind" catalog name.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="slora13" class="figure">
+    <div>
 
     **Figure 8.660. SQL Schema Objects**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![SQL Schema Objects](images/ui/slora13.png)
 

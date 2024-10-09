@@ -1,10 +1,10 @@
-<div id="fn_lfs_exp" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ LFS_EXP — Export retrieved web site to the local file system
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_lfs_exp" class="funcsynopsis">
+<div>
 
 |                            |                        |
 |----------------------------|------------------------|
@@ -25,7 +25,7 @@ LFS_EXP — Export retrieved web site to the local file system
 |                            | in `root ` varchar ,   |
 |                            | in `dst ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ LFS_EXP — Export retrieved web site to the local file system
 
 </div>
 
-<div id="desc_lfs_exp" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ Copy to the local file system.
 
 </div>
 
-<div id="params_lfs_exp" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id95698" class="refsect2">
+<div>
 
 ### host
 
@@ -56,7 +56,7 @@ The target host name
 
 </div>
 
-<div id="id95701" class="refsect2">
+<div>
 
 ### url
 
@@ -64,7 +64,7 @@ start path on target
 
 </div>
 
-<div id="id95704" class="refsect2">
+<div>
 
 ### root
 
@@ -72,7 +72,7 @@ local WebDAV collection that contains the retrieved content
 
 </div>
 
-<div id="id95707" class="refsect2">
+<div>
 
 ### dst
 
@@ -82,7 +82,7 @@ absolute path to the file system directory to export content to
 
 </div>
 
-<div id="ret_lfs_exp" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -91,15 +91,15 @@ an error occurred while exporting.
 
 </div>
 
-<div id="examples_lfs_exp" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_lfs_exp" class="example">
+<div>
 
 **Example 24.206. Exporting to the Filesystem**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 WS.WS.LFS_EXP ('www.foo.com', '/help/', 'sites/www_foo_com', '/tmp/');
@@ -115,7 +115,7 @@ WS.WS.DAV_EXP ('www.foo.com', '/help/', 'sites/www_foo_com',
 
 </div>
 
-<div id="seealso_lfs_exp" class="refsect1">
+<div>
 
 ## See Also
 

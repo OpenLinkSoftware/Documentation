@@ -1,6 +1,6 @@
-<div id="udtcnsmsoap" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -50,7 +50,7 @@ wrappers using the <a href="fn_wsdl_import_udt.html" class="link"
 title="wsdl_import_udt"><code class="function">WSDL_IMPORT_UDT()</code>
 .</a>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also">
 <colgroup>
@@ -87,7 +87,7 @@ The import function `WSDL_IMPORT_UDT()` has two phases:
 The following points will hold true for this method of SOAP
 encapsulation:
 
-<div class="itemizedlist">
+<div>
 
 - Any XML Schema types, required for calling the target SOAP service
   will be imported in database.
@@ -97,7 +97,7 @@ encapsulation:
 
 - The UDT will have members: url, request, response, and debug.
 
-  <div class="itemizedlist">
+  <div>
 
   - the 'url' member designate the endpoint for SOAP invocation
 
@@ -113,7 +113,7 @@ encapsulation:
 
 - each method of UDT will contain:
 
-  <div class="itemizedlist">
+  <div>
 
   - a number IN/OUT/INOUT parameters (depending on the target method)
 
@@ -128,7 +128,7 @@ encapsulation:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

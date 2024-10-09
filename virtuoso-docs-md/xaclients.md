@@ -1,6 +1,6 @@
-<div id="xaclients" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

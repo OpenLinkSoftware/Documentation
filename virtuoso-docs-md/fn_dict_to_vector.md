@@ -1,10 +1,10 @@
-<div id="fn_dict_to_vector" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ in the given dictionary.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_dict_to_vector" class="funcsynopsis">
+<div>
 
 |                                   |                            |
 |-----------------------------------|----------------------------|
 | `vector `**`dict_to_vector`**` (` | inout `dict ` dictionary , |
 |                                   | in `destructive ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ in the given dictionary.
 
 </div>
 
-<div id="desc_dict_to_vector" class="refsect1">
+<div>
 
 ## Description
 
@@ -62,11 +62,11 @@ unexpected results in other fragments of code that share the dictionary.
 
 </div>
 
-<div id="params_dict_to_vector" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id87184" class="refsect2">
+<div>
 
 ### dict
 
@@ -74,7 +74,7 @@ The dictionary to scan.
 
 </div>
 
-<div id="id87187" class="refsect2">
+<div>
 
 ### destructive
 
@@ -86,7 +86,7 @@ clean unconditionally).
 
 </div>
 
-<div id="ret_dict_to_vector" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -94,7 +94,7 @@ The function returns a vector of even length.
 
 </div>
 
-<div id="seealso_dict_to_vector" class="refsect1">
+<div>
 
 ## See Also
 

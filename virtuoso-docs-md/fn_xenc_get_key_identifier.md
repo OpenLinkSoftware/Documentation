@@ -1,10 +1,10 @@
-<div id="fn_xenc_get_key_identifier" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ xenc_get_key_identifier — Determine a key identifier
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_get_key_identifier" class="funcsynopsis">
+<div>
 
 |                                             |                             |
 |---------------------------------------------|-----------------------------|
 | `varchar `**`xenc_get_key_identifier`**` (` | in `key_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ xenc_get_key_identifier — Determine a key identifier
 
 </div>
 
-<div id="desc_xenc_get_key_identifier" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ The function returns key identifier.
 
 </div>
 
-<div id="params_xenc_get_key_identifier" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120030" class="refsect2">
+<div>
 
 ### key_name
 
@@ -54,7 +54,7 @@ Name of the key
 
 </div>
 
-<div id="ret_xenc_get_key_identifier" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ identifier or key does not exists a NULL will be returned).
 
 </div>
 
-<div id="examples_xenc_get_key_identifier" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xenc_get_key_identifier" class="example">
+<div>
 
 **Example 24.463. Determine the key identifier**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select xenc_get_key_identifier ('myKey');
@@ -91,7 +91,7 @@ LtVJHvVXJFFvzRnfrCaKmdxQaGQ=
 
 </div>
 
-<div id="seealso_xenc_get_key_identifier" class="refsect1">
+<div>
 
 ## See Also
 

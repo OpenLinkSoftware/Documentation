@@ -1,10 +1,10 @@
-<div id="fn_vad_fail_check" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ VAD_FAIL_CHECK — Signals package check failure
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vad_fail_check" class="funcsynopsis">
+<div>
 
 |                                    |                        |
 |------------------------------------|------------------------|
 | `DB.DBA. `**`VAD_FAIL_CHECK`**` (` | in `msg ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ VAD_FAIL_CHECK — Signals package check failure
 
 </div>
 
-<div id="desc_54" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ raw_exit(-1)
 
 </div>
 
-<div id="params_02_01" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id117575" class="refsect2">
+<div>
 
 ### msg
 
@@ -55,7 +55,7 @@ text of message
 
 </div>
 
-<div id="seealso_26" class="refsect1">
+<div>
 
 ## See Also
 

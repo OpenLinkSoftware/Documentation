@@ -1,6 +1,6 @@
-<div id="sparqladdmissingtriples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="sparqladdmissingtripleswhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ Using SPARQL to add missing isDefinedBy relations to an Ontology.
 
 </div>
 
-<div id="sparqladdmissingtripleswhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -56,9 +56,9 @@ discoverable.
 
 </div>
 
-<div id="sparqladdmissingtripleshow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -75,9 +75,9 @@ discoverable.
 Use SPARQL to generate relations that associate Classes and Properties
 the Ontology that describes them.
 
-<div id="sparqladdmissingtriplesvcard" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -93,7 +93,7 @@ the Ontology that describes them.
 
 In this example we will use:
 
-<div class="itemizedlist">
+<div>
 
 - Ontology Document URL: http://www.w3.org/2006/vcard/ns ;
 
@@ -126,9 +126,9 @@ WHERE
 
 </div>
 
-<div id="sparqladdmissingtripleshowrmedia" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -144,7 +144,7 @@ WHERE
 
 In this example we will use:
 
-<div class="itemizedlist">
+<div>
 
 - Ontology Document URL: http://www.w3.org/ns/ma-ont ;
 

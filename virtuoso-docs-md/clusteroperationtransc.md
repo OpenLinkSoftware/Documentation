@@ -1,6 +1,6 @@
-<div id="clusteroperationtransc" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,9 +37,9 @@ whether the transaction did commit. Virtuoso server processes can
 provide this information during roll forward, hence a simultaneous
 restart of cluster nodes will not deadlock.
 
-<div id="clusteroperationtranscperfm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,9 +67,9 @@ In the parameters section of each virtuoso.ini file.
 
 </div>
 
-<div id="clusteroperationrowautomode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

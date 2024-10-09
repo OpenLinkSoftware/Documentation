@@ -1,10 +1,10 @@
-<div id="fn_repl_snp_server" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ REPL_SNP_SERVER — Define bi-directional snapshot replication server name
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_snp_server" class="funcsynopsis">
+<div>
 
 |                                     |                        |
 |-------------------------------------|------------------------|
@@ -24,7 +24,7 @@ REPL_SNP_SERVER — Define bi-directional snapshot replication server name
 |                                     | in `uid ` varchar ,    |
 |                                     | in `pwd ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ REPL_SNP_SERVER — Define bi-directional snapshot replication server name
 
 </div>
 
-<div id="desc_repl_snp_server" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ snapshot replication.
 
 </div>
 
-<div id="params_repl_snp_server" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107643" class="refsect2">
+<div>
 
 ### dsn
 
@@ -55,7 +55,7 @@ Dsn is a data source name.
 
 </div>
 
-<div id="id107646" class="refsect2">
+<div>
 
 ### uid
 
@@ -63,7 +63,7 @@ Uid is data source user name.
 
 </div>
 
-<div id="id107649" class="refsect2">
+<div>
 
 ### pwd
 
@@ -73,7 +73,7 @@ Uid is data source password.
 
 </div>
 
-<div id="ret_repl_snp_server" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -83,15 +83,15 @@ to `REPL_CREATE_SNAPSHOT_SUB()` , `REPL_DROP_SNAPSHOT_SUB()` and
 
 </div>
 
-<div id="examples_repl_snp_server" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_repl_snp_server" class="example">
+<div>
 
 **Example 24.347. Defining bi-directional snapshot replication server**
 
-<div class="example-contents">
+<div>
 
 The following statement defines bi-directional replication server for
 server with DSN 'localhost:1121':
@@ -108,7 +108,7 @@ SQL> REPL_SNP_SERVER ('localhost:1121', 'dba', 'dba');
 
 </div>
 
-<div id="seealso_repl_snp_server" class="refsect1">
+<div>
 
 ## See Also
 

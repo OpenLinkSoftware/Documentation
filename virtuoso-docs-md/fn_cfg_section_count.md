@@ -1,10 +1,10 @@
-<div id="fn_cfg_section_count" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ cfg_section_count — get number of sections in an INI file
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_cfg_section_count" class="funcsynopsis">
+<div>
 
 |                                |                         |
 |--------------------------------|-------------------------|
 | ` `**`cfg_section_count`**` (` | in `path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ cfg_section_count — get number of sections in an INI file
 
 </div>
 
-<div id="desc_section_count" class="refsect1">
+<div>
 
 ## Description
 
@@ -40,11 +40,11 @@ Returns the number of sections in an INI file.
 
 </div>
 
-<div id="params_section_count" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id81840" class="refsect2">
+<div>
 
 ### path
 
@@ -54,7 +54,7 @@ Name of the INI file.
 
 </div>
 
-<div id="ret_section_count" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -63,15 +63,15 @@ in the INI file.
 
 </div>
 
-<div id="examples_section_count" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_cfg_section_count" class="example">
+<div>
 
 **Example 24.34. Simple examples**
 
-<div class="example-contents">
+<div>
 
 Find out how many sections are in the current virtuoso.ini file.
 
@@ -92,7 +92,7 @@ ____________________________________________________
 
 </div>
 
-<div id="seealso_section_count" class="refsect1">
+<div>
 
 ## See Also
 

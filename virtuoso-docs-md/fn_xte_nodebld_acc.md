@@ -1,10 +1,10 @@
-<div id="fn_xte_nodebld_acc" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ xte_nodebld_acc — Adds to the first arguments all remaining arguments
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xte_nodebld_acc" class="funcsynopsis">
+<div>
 
 |                              |                     |
 |------------------------------|---------------------|
@@ -25,7 +25,7 @@ xte_nodebld_acc — Adds to the first arguments all remaining arguments
 |                              | `... ` ,            |
 |                              | in `argN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ xte_nodebld_acc — Adds to the first arguments all remaining arguments
 
 </div>
 
-<div id="desc_xte_nodebld_acc" class="refsect1">
+<div>
 
 ## Description
 
@@ -49,11 +49,11 @@ remaining arguments.
 
 </div>
 
-<div id="xte_nodebld_acc" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id121723" class="refsect2">
+<div>
 
 ### acc
 
@@ -62,7 +62,7 @@ xte_nodebld_acc() functions
 
 </div>
 
-<div id="id121726" class="refsect2">
+<div>
 
 ### argI
 
@@ -73,15 +73,15 @@ functions
 
 </div>
 
-<div id="errors_xte_nodebld_acc" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id121731" class="table">
+<div>
 
-**Table 24.124. Errors signalled by `xte_nodebld_acc `**
+**Table 24.123. Errors signalled by `xte_nodebld_acc `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                                       | Description |
 |---------------------------------------|---------------------------------------|------------------------------------------------------------------------------------------------------------------|-------------|
@@ -96,15 +96,15 @@ functions
 
 </div>
 
-<div id="xte_nodebld_acc_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xte_nodebld_acc" class="example">
+<div>
 
 **Example 24.490. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create procedure test_nodebld()
@@ -136,7 +136,7 @@ CompanyName="Seller"\> \</supplier\>
 
 </div>
 
-<div id="seealso_xte_nodebld_acc" class="refsect1">
+<div>
 
 ## See Also
 

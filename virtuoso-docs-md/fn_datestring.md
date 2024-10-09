@@ -1,10 +1,10 @@
-<div id="fn_datestring" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ external date-time representation
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_datestring" class="funcsynopsis">
+<div>
 
 |                         |                          |
 |-------------------------|--------------------------|
 | ` `**`datestring`**` (` | in `date ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -31,13 +31,13 @@ external date-time representation
 
 </div>
 
-<div id="fsyn_datestring_gmt" class="funcsynopsis">
+<div>
 
 |                             |                          |
 |-----------------------------|--------------------------|
 | ` `**`datestring_gmt`**` (` | in `date ` datetime `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -47,7 +47,7 @@ external date-time representation
 
 </div>
 
-<div id="desc_datestring" class="refsect1">
+<div>
 
 ## Description
 
@@ -60,7 +60,7 @@ string of up to 30 characters.
 The external format is: `YYYY-MM-DD hh:mm:ss uuuuuu` where `uuuuuu`
 represents microseconds.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                |
 |:----------------------------:|:---------------------------------------------------------------|
@@ -71,11 +71,11 @@ represents microseconds.
 
 </div>
 
-<div id="params_datestring" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id84294" class="refsect2">
+<div>
 
 ### date
 
@@ -85,7 +85,7 @@ A <span class="type">datetime </span> value.
 
 </div>
 
-<div id="ret_datestring" class="refsect1">
+<div>
 
 ## Return values
 
@@ -94,15 +94,15 @@ A <span class="type">datetime </span> value.
 
 </div>
 
-<div id="examples_datestring" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_datestring_1" class="example">
+<div>
 
 **Example 24.73. Simple Example**
 
-<div class="example-contents">
+<div>
 
 Get current date in human-readable form.
 
@@ -123,11 +123,11 @@ Get current date in human-readable form.
 
   
 
-<div id="ex_datestring_2" class="example">
+<div>
 
 **Example 24.74. A table query example**
 
-<div class="example-contents">
+<div>
 
 Get orders shipped later than July 3, 1996
 
@@ -155,7 +155,7 @@ Get orders shipped later than July 3, 1996
 
 </div>
 
-<div id="seealso_datestring" class="refsect1">
+<div>
 
 ## See Also
 

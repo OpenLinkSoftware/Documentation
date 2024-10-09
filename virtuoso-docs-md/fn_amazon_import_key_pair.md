@@ -1,10 +1,10 @@
-<div id="fn_amazon_import_key_pair" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ DB.DBA.AMAZON_IMPORT_KEY_PAIR — Uploads public key to Amazon.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_amazon_import_key_pair" class="funcsynopsis">
+<div>
 
 |                                            |                                              |
 |--------------------------------------------|----------------------------------------------|
@@ -26,7 +26,7 @@ DB.DBA.AMAZON_IMPORT_KEY_PAIR — Uploads public key to Amazon.
 |                                            | in `secret_key ` varchar ,                   |
 |                                            | in `http_proxy ` varchar (default null) `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ DB.DBA.AMAZON_IMPORT_KEY_PAIR — Uploads public key to Amazon.
 
 </div>
 
-<div id="desc_amazon_import_key_pair" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ Uploads public key to Amazon
 
 </div>
 
-<div id="params_amazon_import_key_pair" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id98524" class="refsect2">
+<div>
 
 ### aws_access_key
 
@@ -56,7 +56,7 @@ Amazon Access Key ID.
 
 </div>
 
-<div id="id98527" class="refsect2">
+<div>
 
 ### key_name
 
@@ -64,7 +64,7 @@ New name of key, which will be used on Amazon lists.
 
 </div>
 
-<div id="id98530" class="refsect2">
+<div>
 
 ### public_key_material
 
@@ -72,7 +72,7 @@ base64 encoded public key.
 
 </div>
 
-<div id="id98533" class="refsect2">
+<div>
 
 ### secret_key
 
@@ -80,7 +80,7 @@ AWS Security Token.
 
 </div>
 
-<div id="id98536" class="refsect2">
+<div>
 
 ### http_proxy
 
@@ -90,15 +90,15 @@ Proxy server, can be null or empty.
 
 </div>
 
-<div id="examples_amazon_import_key_pair" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_amazon_import_key_pair" class="example">
+<div>
 
 **Example 24.241. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure simple_test()
@@ -130,7 +130,7 @@ create procedure simple_test()
 
 </div>
 
-<div id="seealso_amazon_import_key_pair" class="refsect1">
+<div>
 
 ## See Also
 

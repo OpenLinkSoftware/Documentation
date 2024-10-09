@@ -1,6 +1,6 @@
-<div id="determinedatausagetip" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="determinedatausagetipwhat" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -34,9 +34,9 @@ How to determine the data usage across a Virtuoso instance.
 
 </div>
 
-<div id="determinedatausagetipwhy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -57,9 +57,9 @@ consequences.
 
 </div>
 
-<div id="determinedatausagetiphow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

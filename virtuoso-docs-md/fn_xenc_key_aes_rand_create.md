@@ -1,10 +1,10 @@
-<div id="fn_xenc_key_aes_rand_create" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ xenc_key_AES_rand_create — Used to make a temporary session key.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_xenc_key_aes_rand_create" class="funcsynopsis">
+<div>
 
 |                                       |                      |
 |---------------------------------------|----------------------|
 | ` `**`xenc_key_AES_rand_create`**` (` | in `name ` varchar , |
 |                                       | in `bits ` int `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ xenc_key_AES_rand_create — Used to make a temporary session key.
 
 </div>
 
-<div id="desc_xenc_key_aes_rand_create" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ Used to make a temporary session key for AES encryption.
 
 </div>
 
-<div id="params_xenc_key_aes_rand_create" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id120421" class="refsect2">
+<div>
 
 ### name
 
@@ -53,7 +53,7 @@ The name of the key.
 
 </div>
 
-<div id="id120424" class="refsect2">
+<div>
 
 ### bits
 
@@ -64,7 +64,7 @@ Number of bits in generated key. The values supported are 128, 192 and
 
 </div>
 
-<div id="ret_xenc_key_aes_rand_create" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ None.
 
 </div>
 
-<div id="examples_xenc_key_aes_rand_create" class="refsect1">
+<div>
 
 ## Example
 
-<div id="ex_xenc_key_aes_rand_create" class="example">
+<div>
 
 **Example 24.470. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 xenc_key_AES_rand_create ('ses_key', 192);
@@ -94,7 +94,7 @@ xenc_key_AES_rand_create ('ses_key', 192);
 
 </div>
 
-<div id="seealso_xenc_key_aes_rand_create" class="refsect1">
+<div>
 
 ## See Also
 

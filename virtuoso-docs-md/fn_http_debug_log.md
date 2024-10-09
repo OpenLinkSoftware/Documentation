@@ -1,10 +1,10 @@
-<div id="fn_http_debug_log" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ http_debug_log — set WebDAV HTTP request logging
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_http_debug_log" class="funcsynopsis">
+<div>
 
 |                             |                              |
 |-----------------------------|------------------------------|
 | ` `**`http_debug_log`**` (` | in `file_path ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ http_debug_log — set WebDAV HTTP request logging
 
 </div>
 
-<div id="desc_http_debug_log" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,7 +44,7 @@ file_path string stops the logging.
 
 The log file consists of lines with following fields:
 
-<div class="itemizedlist">
+<div>
 
 - The request and response are marked by \<\<\< and \>\>\> signs
 
@@ -60,15 +60,15 @@ The log file consists of lines with following fields:
 
 </div>
 
-<div id="errors_http_debug_log" class="refsect1">
+<div>
 
 ## Errors
 
-<div id="id92436" class="table">
+<div>
 
-**Table 24.39. Errors signalled by `http_debug_log `**
+**Table 24.38. Errors signalled by `http_debug_log `**
 
-<div class="table-contents">
+<div>
 
 | SQLState                              | Error Code                            | Error Text                                                                                          | Description |
 |---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------|-------------|
@@ -84,15 +84,15 @@ The log file consists of lines with following fields:
 
 </div>
 
-<div id="examples_http_debug_log" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_http_debug_log_1" class="example">
+<div>
 
 **Example 24.157. Logging DAV HTTP Requests**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 -- start the log session

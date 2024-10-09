@@ -1,6 +1,6 @@
-<div id="virtuosospongernnt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="virtuosospongernnts" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -67,9 +67,9 @@ Linked Open Data.
 
 </div>
 
-<div id="virtuosospongernntw" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -94,9 +94,9 @@ game.
 
 </div>
 
-<div id="virtuosospongernntm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -121,9 +121,9 @@ semantics) exploitable using a wide variety of notations.
 
 </div>
 
-<div id="virtuosospongernnthow" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -141,7 +141,7 @@ Due to the compact nature of RDF-Turtle notation, it is possible to
 embed RDF statements into any text based content. The only requirements
 are as follows:
 
-<div class="itemizedlist">
+<div>
 
 - Use the following as a marker for embedded RDF-Turtle based RDF
   statements:
@@ -163,9 +163,9 @@ are as follows:
 
 </div>
 
-<div id="virtuosospongernnthowbasicr" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -181,7 +181,7 @@ are as follows:
 
 As per natural language sentences we have the following parts:
 
-<div class="orderedlist">
+<div>
 
 1.  <span class="emphasis">*Subject*</span>
 
@@ -218,9 +218,9 @@ a foaf:Document .
 
 </div>
 
-<div id="virtuosospongernnthowex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -234,7 +234,7 @@ a foaf:Document .
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Most basic Nanotation:
 
@@ -295,9 +295,9 @@ a foaf:Document .
 
 </div>
 
-<div id="virtuosospongernnthowprusage" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -318,7 +318,7 @@ Virtuoso's in-built Linked Data Transformation middleware (aka
 Likewise, our URIBurner service which is a free public service driven by
 an instance of Virtuoso with the Sponger module enabled:
 
-<div class="itemizedlist">
+<div>
 
 - When using your own instance of Virtuoso, the Sponger service is
   invoked via the URL pattern:
@@ -353,9 +353,9 @@ reveals all the embedded nanotations.
 
 </div>
 
-<div id="virtuosospongernnthownotes" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -391,7 +391,7 @@ flattening each to plain text.
 
 Currently, the list of potential content predicates is:
 
-<div class="itemizedlist">
+<div>
 
 - `bibo:content` (e.g. arising from the HTML+Variants extractor
   cartridge)
@@ -428,9 +428,9 @@ rdf:Statement entity created to describe its subject, predicate and
 object, so you can identify triples arising from nanotations as entities
 labelled 'Embedded Turtle Statement' and a number in the graph.
 
-<div id="virtuosospongernnthownotesdom" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -480,9 +480,9 @@ quoted sentence.
 
 </div>
 
-<div id="virtuosospongernntliveexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -496,7 +496,7 @@ quoted sentence.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://twitter.com/kidehen/status/493857326680776705"
   class="ulink" target="_top">RDF statement about Privacy;</a>
@@ -526,9 +526,9 @@ quoted sentence.
 
 </div>
 
-<div id="virtuosospongernntliveexamplesstar" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -542,7 +542,7 @@ quoted sentence.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <a href="http://bit.ly/nanotations-from-2014-07-28" class="ulink"
   target="_top">Various Nanotations from 28th July 2014;</a>
@@ -563,9 +563,9 @@ quoted sentence.
 
 </div>
 
-<div id="virtuosospongernntfctexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -579,19 +579,19 @@ quoted sentence.
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - Nanotation based RDF statement that describes Nannotation:
 
-  <div class="figure-float">
+  <div>
 
-  <div id="rdf1_01" class="figure">
+  <div>
 
   **Figure 16.111. Faceted Browser Nanotation RDF**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Faceted Browser Nanotation RDF](images/ui/nano1.png)
 
@@ -607,15 +607,15 @@ quoted sentence.
 
 - Nanotation that represents a "Hat Tip" relationship type:
 
-  <div class="figure-float">
+  <div>
 
-  <div id="rdf1_02" class="figure">
+  <div>
 
   **Figure 16.112. Faceted Browser Nanotation Hat Tip Type**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Faceted Browser Nanotation Hat Tip Type](images/ui/nano2.png)
 
@@ -631,16 +631,16 @@ quoted sentence.
 
 - Nanotation generated RDF statements aggregated by Subject:
 
-  <div class="figure-float">
+  <div>
 
-  <div id="rdf1_03" class="figure">
+  <div>
 
   **Figure 16.113. Faceted Browser Nanotation RDF Aggregation by
   Subject**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Faceted Browser Nanotation RDF Aggregation by
   Subject](images/ui/nano3.png)
@@ -657,15 +657,15 @@ quoted sentence.
 
 - Nanotation generated RDF statements by Subject:
 
-  <div class="figure-float">
+  <div>
 
-  <div id="rdf1_04" class="figure">
+  <div>
 
   **Figure 16.114. Faceted Browser Nanotation Generation by Subject**
 
-  <div class="figure-contents">
+  <div>
 
-  <div class="mediaobject">
+  <div>
 
   ![Faceted Browser Nanotation Generation by
   Subject](images/ui/nano4.png)
@@ -684,9 +684,9 @@ quoted sentence.
 
 </div>
 
-<div id="virtuosospongernnts_01" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -702,9 +702,9 @@ quoted sentence.
 
 </div>
 
-<div id="virtuosospongernnts_02" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

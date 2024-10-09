@@ -1,6 +1,6 @@
-<div id="ch-webappdevelopment" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -41,7 +41,7 @@ features include:
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -317,9 +317,9 @@ resources such as specific file system or WebDAV locations, other HTTP
 Servers acting as a proxy or to alter specific processing or
 authentication rules for a directory.
 
-<div id="webserver" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -352,15 +352,15 @@ directory path mappings. A path mapping has the following attributes:
 | <span class="emphasis">*Request Post-processing Function*</span> - Virtuoso/PL procedure name, which performs post-processing action, before sending the response |
 | <span class="emphasis">*Database User Account*</span> - User account name, on behalf of which active content will be executed                                     |
 
-<div class="figure-float">
+<div>
 
-<div id="httpconcept" class="figure">
+<div>
 
 **Figure 14.1. HTTP Server Conceptual Diagram**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![HTTP Server Conceptual Diagram](images/httpconcept.jpg)
 
@@ -396,7 +396,7 @@ Persistent HTTP connections offer several advantages, such as:
 | Network traffic is reduced.                                                                                                                                                                                                                      |
 | Latency on subsequent requests is reduced.                                                                                                                                                                                                       |
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|
@@ -406,9 +406,9 @@ Persistent HTTP connections offer several advantages, such as:
 
 </div>
 
-<div id="vspconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -441,7 +441,7 @@ section in the INI file:
 The meanings of these parameters are briefly explained here as a quick
 reference for the most frequently used parameters:
 
-<div class="itemizedlist">
+<div>
 
 - **ServerPort. ** This specifies the HTTP listen port for the VSP
   server.
@@ -477,7 +477,7 @@ reference for the most frequently used parameters:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                                                                                                         |
 |:--------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -489,9 +489,9 @@ reference for the most frequently used parameters:
 
 </div>
 
-<div id="virtdir" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -547,7 +547,7 @@ ways:
 | Using the functions `vhost_define()` and `vhost_remove()` .  |
 | Updating the system table directory using SQL statements.    |
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -589,15 +589,15 @@ the first step does not succeed then the server will try resolving the
 interface and logical path. Failing that, the default step will attempt
 to resolve the path directly to a physical location.
 
-<div class="figure-float">
+<div>
 
-<div id="id37753" class="figure">
+<div>
 
 **Figure 14.2. HTTP Virtual Directory Matching**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![HTTP Virtual Directory Matching](images/virtualdirectories.jpg)
 
@@ -611,7 +611,7 @@ to resolve the path directly to a physical location.
 
 </div>
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                 |
 |:----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -641,9 +641,9 @@ replaced by the right hand side of the mapping. Note that this is also
 how automatic proxying takes place, since a physical path beginning with
 http:// will be passed forward to a remote server.
 
-<div id="defaultpageanddirbrws" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -663,11 +663,11 @@ checks the default page definition for that virtual directory, if a
 default page exists then the path will be internally expanded to include
 its name, ands its contents returned.
 
-<div id="ex_defpage" class="example">
+<div>
 
 **Example 14.1. Default Page**
 
-<div class="example-contents">
+<div>
 
 if we have a mapping for the host:
 
@@ -703,9 +703,9 @@ calling client.
 
 </div>
 
-<div id="virtandmultihosting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -738,9 +738,9 @@ Virtuoso will listen and accept HTTP requests.
 
 </div>
 
-<div id="virtmetahost" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -773,9 +773,9 @@ WS.WS.host_meta_add
 
 </div>
 
-<div id="virtproxy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -799,7 +799,7 @@ The physical path setting of a virtual directory definition can be URL
 to another HTTP server. In which case Virtuoso will act as a proxy to
 that site when the logical path for it is requested.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -841,7 +841,7 @@ the same machine there is no need to expose their running ports and
 services. This makes the end user experience cleaner, and helps maintain
 some server security and/or anonymity.
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                   |
 |:----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -884,9 +884,9 @@ number. Afterwards the procedure is similar:
 DB.DBA.VHOST_DEFINE(lpath=>'/apache', ppath=>'http://example.com:90/');
 ```
 
-<div id="apachedoingproxy" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -918,9 +918,9 @@ AddModule mod_proxy.c
 ...
 ```
 
-<div id="apachedoingproxyconf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -944,7 +944,7 @@ configuration:
 </Location>
 ```
 
-<div class="orderedlist">
+<div>
 
 1.  Set the ProxyPass directive:
 
@@ -1055,9 +1055,9 @@ configuration:
 
 </div>
 
-<div id="apachedoingproxyconfexample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1131,7 +1131,7 @@ header rewriting and save the time/cpu power to rewrite the content:
      </Location>
 ```
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|
@@ -1149,9 +1149,9 @@ header rewriting and save the time/cpu power to rewrite the content:
 
 </div>
 
-<div id="wsauth" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1175,9 +1175,9 @@ this will be an authentication challenge.
 
 </div>
 
-<div id="wssessman" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1209,7 +1209,7 @@ The post-processing function hook can be any user-defined Virtuoso/PL
 procedure, it will be executed every time after processing of the active
 page.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                       |
 |:--------------------------:|:----------------------------------------------------------------------|
@@ -1222,9 +1222,9 @@ page.
 
 </div>
 
-<div id="customauthsess" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1612,9 +1612,9 @@ and session management.
 
 </div>
 
-<div id="cancelwebreq" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1638,7 +1638,7 @@ this information to isolated and eliminate a process.
 title="http_pending_req"><code
 class="function">http_pending_req()</code></a>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                   |
 |:--------------------------:|:------------------------------------------------------------------|
@@ -1650,9 +1650,9 @@ class="function">http_pending_req()</code></a>
 
 </div>
 
-<div id="virtwebrobot" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1674,9 +1674,9 @@ usages are demonstrated in the WebCopy User Interface in the Visual
 Server Administration Interface. This document provides the actual API's
 and techniques useful for some other implementations.
 
-<div id="robotnewtarget" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1693,7 +1693,7 @@ and techniques useful for some other implementations.
 A new web server target is created by inserting a row in to the
 WS.WS.VFS_SITE table and then a row in to the WS.WS.VFS_QUEUE table.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                           |
 |:--------------------------:|:------------------------------------------------------------------------------------------|
@@ -1703,11 +1703,11 @@ WS.WS.VFS_SITE table and then a row in to the WS.WS.VFS_QUEUE table.
 
 </div>
 
-<div id="newrobottarget" class="example">
+<div>
 
 **Example 14.2. Creating a new target**
 
-<div class="example-contents">
+<div>
 
 This example creates a new target pointing to the site
 http://www.foo.com/help/, with instructions to walk across foreign
@@ -1716,7 +1716,7 @@ from the remote, retrieve images, walk on entire site using HTTP GET
 method. The content will be stored in /DAV/sites/www_foo_com collection
 in the local WebDAV repository.
 
-<div class="orderedlist">
+<div>
 
 1.  Create target for http://www.foo.com/help/
 
@@ -1747,9 +1747,9 @@ in the local WebDAV repository.
 
 </div>
 
-<div id="robotqueuehook" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1768,11 +1768,11 @@ robot's queue following a custom algorithm. The following example
 extracts the oldest entry comparing to the my_data array (this array
 consists of non-desirable sites) and returns if some are found.
 
-<div id="robotcustomqueuehook" class="example">
+<div>
 
 **Example 14.3. Creating A Custom Robot Queue Hook**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 create procedure
@@ -1818,7 +1818,7 @@ done:
 
   
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                                                                                                |
 |:----------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1829,9 +1829,9 @@ done:
 
 </div>
 
-<div id="robotretrievestart" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1854,9 +1854,9 @@ class="function">serv_queue_top()</code></a>
 
 </div>
 
-<div id="exporttofsordav" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1876,7 +1876,7 @@ class="function">lfs_exp</code></a>
 <a href="fn_dav_exp.html" class="link" title="DAV_EXP"><code
 class="function">dav_exp</code></a>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                     |
 |:--------------------------:|:--------------------------------------------------------------------|
@@ -1890,9 +1890,9 @@ class="function">dav_exp</code></a>
 
 </div>
 
-<div id="server_http_ext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -1917,7 +1917,7 @@ name contains the extension:
 <span class="emphasis">*\_\_http_handler\_\[extension\]*</span> . The
 VSEs for HTTP handling must have the following parameters:
 
-<div id="fsyn_http_handler" class="funcsynopsis">
+<div>
 
 |                                         |                             |
 |-----------------------------------------|-----------------------------|
@@ -1926,7 +1926,7 @@ VSEs for HTTP handling must have the following parameters:
 |                                         | in `request_header` vector, |
 |                                         | inout `type_flag` any`)`;   |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -1934,7 +1934,7 @@ VSEs for HTTP handling must have the following parameters:
 
 </div>
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*resource*</span> is either the path to a file
   or the content of a resource in the WebDAV store. The interpretation
@@ -1961,7 +1961,7 @@ VSEs for HTTP handling must have the following parameters:
 
 </div>
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                            |                                                                                 |
 |:--------------------------:|:--------------------------------------------------------------------------------|
@@ -1974,9 +1974,9 @@ VSEs for HTTP handling must have the following parameters:
 
 </div>
 
-<div id="webserverchunking" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2007,7 +2007,7 @@ Failing these conditions, `http_flush(1)` will be a No-Operation.
 
 Chunked mode is not supported for static content.
 
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 <table data-border="0" data-summary="Tip: See Also:">
 <colgroup>
@@ -2034,9 +2034,9 @@ target="_top">RFC-2616</a></p></td>
 
 </div>
 
-<div id="webserverviaapache" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2084,9 +2084,9 @@ requests to Virtuoso HTTP server.
 
 </div>
 
-<div id="webserverhttpslistenerset" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2107,9 +2107,9 @@ Note that when you want to change from Virtuoso hosted Cert and Public
 Key to File System and vice versa, first should be stopped the listener
 for either setup.
 
-<div id="webserverhttpslistenersetfs" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2123,7 +2123,7 @@ for either setup.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  X.509 certificate Generation
 
@@ -2134,7 +2134,7 @@ for either setup.
     CA, you must first setup a self-signed CA; read OpenSSL documents on
     how to do this.
 
-    <div class="orderedlist">
+    <div>
 
     1.  Add the following line to the `[usr_cert]` section of the
         `openssl.cnf` file:
@@ -2222,20 +2222,20 @@ for either setup.
 
 5.  Setting Up Firefox:
 
-    <div class="orderedlist">
+    <div>
 
     1.  In the Preferences dialog, open the Advanced tab, and click the
         "View certificates" button.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="sphttps1" class="figure">
+        <div>
 
         **Figure 14.3. HTTPS Listener**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![HTTPS Listener](images/ui/htps1.png)
 
@@ -2255,15 +2255,15 @@ for either setup.
 
     3.  Click OK, and confirm the exception.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="sphttps2" class="figure">
+        <div>
 
         **Figure 14.4. HTTPS Listener**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![HTTPS Listener](images/ui/htps2.png)
 
@@ -2285,9 +2285,9 @@ for either setup.
 
 </div>
 
-<div id="webserverhttpslistenersetvt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -2301,20 +2301,20 @@ for either setup.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Go to the `http://cname:port/conductor` URL, enter the DBA user
     credentials.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sphttps3" class="figure">
+    <div>
 
     **Figure 14.5. HTTPS Listener**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![HTTPS Listener](images/ui/htps3.png)
 
@@ -2330,15 +2330,15 @@ for either setup.
 
 2.  Go to System Admin-\>Security
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sphttps4" class="figure">
+    <div>
 
     **Figure 14.6. HTTPS Listener**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![HTTPS Listener](images/ui/htps4.png)
 
@@ -2354,15 +2354,15 @@ for either setup.
 
 3.  Enter the Issuer details:
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sphttps5" class="figure">
+    <div>
 
     **Figure 14.7. HTTPS Listener**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![HTTPS Listener](images/ui/htps5.png)
 
@@ -2378,15 +2378,15 @@ for either setup.
 
 4.  Click Generate
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sphttps6" class="figure">
+    <div>
 
     **Figure 14.8. HTTPS Listener**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![HTTPS Listener](images/ui/htps6.png)
 
@@ -2402,15 +2402,15 @@ for either setup.
 
 5.  Click Configure HTTPS Listeners
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sphttps7" class="figure">
+    <div>
 
     **Figure 14.9. HTTPS Listener**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![HTTPS Listener](images/ui/htps7.png)
 
@@ -2426,15 +2426,15 @@ for either setup.
 
 6.  Edit the new listener, and click "Generate New" key.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sphttps8" class="figure">
+    <div>
 
     **Figure 14.10. HTTPS Listener**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![HTTPS Listener](images/ui/htps8.png)
 
@@ -2450,15 +2450,15 @@ for either setup.
 
 7.  Click Save
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sphttps9" class="figure">
+    <div>
 
     **Figure 14.11. HTTPS Listener**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![HTTPS Listener](images/ui/htps9.png)
 
@@ -2474,7 +2474,7 @@ for either setup.
 
 8.  Setting Up Firefox:
 
-    <div class="orderedlist">
+    <div>
 
     1.  In the Preferences dialog, open the Advanced tab, and click the
         "View certificates" button.
@@ -2485,15 +2485,15 @@ for either setup.
 
     3.  Click OK, and confirm the exception.
 
-        <div class="figure-float">
+        <div>
 
-        <div id="sphttps10" class="figure">
+        <div>
 
         **Figure 14.12. HTTPS Listener**
 
-        <div class="figure-contents">
+        <div>
 
-        <div class="mediaobject">
+        <div>
 
         ![HTTPS Listener](images/ui/htps10.png)
 

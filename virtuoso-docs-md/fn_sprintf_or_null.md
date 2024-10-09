@@ -1,10 +1,10 @@
-<div id="fn_sprintf_or_null" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ arguments except the first is null.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_sprintf_or_null" class="funcsynopsis">
+<div>
 
 |                              |                    |
 |------------------------------|--------------------|
@@ -26,7 +26,7 @@ arguments except the first is null.
 |                              | `... ` ,           |
 |                              | `arg_x ` any `)`;  |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ arguments except the first is null.
 
 </div>
 
-<div id="desc_28" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,15 +47,15 @@ null if any of the arguments except the first one is null.
 
 </div>
 
-<div id="examples_sprintf_or_null" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_sprintf_or_null" class="example">
+<div>
 
 **Example 24.392. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 create function job_history(

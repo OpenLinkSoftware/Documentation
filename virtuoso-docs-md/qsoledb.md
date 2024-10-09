@@ -1,6 +1,6 @@
-<div id="qsoledb" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

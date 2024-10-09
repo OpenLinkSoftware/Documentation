@@ -1,10 +1,10 @@
-<div id="fn_repl_drop_snapshot_pub" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ REPL_DROP_SNAPSHOT_PUB — Drop bi-directional snapshot publication
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_repl_drop_snapshot_pub" class="funcsynopsis">
+<div>
 
 |                                         |                         |
 |-----------------------------------------|-------------------------|
 | `None `**`REPL_DROP_SNAPSHOT_PUB`**` (` | in `item ` varchar ,    |
 |                                         | in `type ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ REPL_DROP_SNAPSHOT_PUB — Drop bi-directional snapshot publication
 
 </div>
 
-<div id="desc_repl_drop_snapshot_pub" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ This procedure drops a snapshot publication.
 
 </div>
 
-<div id="params_repl_drop_snapshot_pub" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id107446" class="refsect2">
+<div>
 
 ### item
 
@@ -53,7 +53,7 @@ Item is a DAV collection or table name.
 
 </div>
 
-<div id="id107449" class="refsect2">
+<div>
 
 ### type
 
@@ -64,7 +64,7 @@ or 2 if item is a table name.
 
 </div>
 
-<div id="ret_repl_drop_snapshot_pub" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -72,15 +72,15 @@ None.
 
 </div>
 
-<div id="examples_repl_drop_snapshot_pub_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_repl_drop_snapshot_pub_01" class="example">
+<div>
 
 **Example 24.344. Dropping bi-directional snapshot publication**
 
-<div class="example-contents">
+<div>
 
 The following statement drops bi-directional snapshot publication of
 table 'Demo.demo.Shippers':
@@ -97,7 +97,7 @@ SQL> DB.DBA.REPL_DROP_SNAPSHOT_PUB ('Demo.demo.Shippers', 2);
 
 </div>
 
-<div id="seealso_repl_drop_snapshot_pub" class="refsect1">
+<div>
 
 ## See Also
 

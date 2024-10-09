@@ -1,6 +1,6 @@
-<div id="qsmultihome" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -21,9 +21,9 @@ own domains, with web servers accessible as www.company1.com and
 www.company2.com, without requiring the user to know any extra path
 information.
 
-<div id="qsvirthostpl" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -45,9 +45,9 @@ Hosting</a> section.
 
 </div>
 
-<div id="qsvirthostui" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -65,7 +65,7 @@ This step by step example will define a virtual home for the URL
 http://www.ahelp.com/ to the server www.a.com and directory
 /departments/support/
 
-<div class="orderedlist">
+<div>
 
 1.  Have a domain name allocated in the DNS for the ahelp.com that
     points to the same IP address of the a.com that is hosting a
@@ -74,15 +74,15 @@ http://www.ahelp.com/ to the server www.a.com and directory
 2.  From the Conductor UI go to Web Application Server/ Virtual Domains
     & Directories.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="qsvirtdir1" class="figure">
+    <div>
 
     **Figure 3.27. Http Hosts and Directories.**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Http Hosts and Directories.](images/ui/virtdir1.png)
 
@@ -99,15 +99,15 @@ http://www.ahelp.com/ to the server www.a.com and directory
 3.  To add a new host definition, enter for "Port" 80, enter for "HTTP
     Host" www.ahelp.com and select the "Add" button.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virthost2" class="figure">
+    <div>
 
     **Figure 3.28. Add new site**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Add new site](images/ui/virthost2.png)
 
@@ -125,15 +125,15 @@ http://www.ahelp.com/ to the server www.a.com and directory
     the mapping between the virtual host and the actual listening host
     domain names.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virthost3" class="figure">
+    <div>
 
     **Figure 3.29. New site mapping**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![New site mapping](images/ui/virthost3.png)
 
@@ -150,15 +150,15 @@ http://www.ahelp.com/ to the server www.a.com and directory
 5.  Click the "folder" icon for the new defined site and then click the
     "Edit" link for the Logical Path "/".
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virthost3a" class="figure">
+    <div>
 
     **Figure 3.30. Set Logical Path**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Set Logical Path](images/ui/virthost3a.png)
 
@@ -176,15 +176,15 @@ http://www.ahelp.com/ to the server www.a.com and directory
     are optional. In this example, only the logical and physical paths
     and the default page name are required.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="virthost4" class="figure">
+    <div>
 
     **Figure 3.31. Mapping details**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Mapping details](images/ui/virthost4.png)
 

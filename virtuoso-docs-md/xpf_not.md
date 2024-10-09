@@ -1,10 +1,10 @@
-<div id="xpf_not" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ not — Returns true if its argument is false, and false otherwise.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_not" class="funcsynopsis">
+<div>
 
 |                         |                     |
 |-------------------------|---------------------|
 | `boolean `**`not`**` (` | `obj ` boolean `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ not — Returns true if its argument is false, and false otherwise.
 
 </div>
 
-<div id="xpf_desc_not" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ converted to boolean first.
 
 </div>
 
-<div id="xpf_params_not" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id128365" class="refsect2">
+<div>
 
 ### obj
 
@@ -56,7 +56,7 @@ Boolean value
 
 </div>
 
-<div id="xpf_ret_not" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_not" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_not" class="example">
+<div>
 
 **Example 24.606. **
 
-<div class="example-contents">
+<div>
 
 ``` screen
 ```
@@ -85,7 +85,7 @@ Boolean
 
 </div>
 
-<div id="xpf_seealso_not" class="refsect1">
+<div>
 
 ## See Also
 

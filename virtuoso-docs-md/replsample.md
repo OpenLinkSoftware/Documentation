@@ -1,6 +1,6 @@
-<div id="replsample" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -63,9 +63,9 @@ all other servers. The wl_hit_repl function does the actual work. The
 top level function calls this plus logs the call with its arguments on
 the local server's hits publication for distribution to other servers.
 
-<div id="loggercfg" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

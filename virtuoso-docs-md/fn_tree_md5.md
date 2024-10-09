@@ -1,10 +1,10 @@
-<div id="fn_tree_md5" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ tree_md5 — returns MD5 checksum of array argument
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_tree_md5" class="funcsynopsis">
+<div>
 
 |                             |                     |
 |-----------------------------|---------------------|
 | `string `**`tree_md5`**` (` | in `tree ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ tree_md5 — returns MD5 checksum of array argument
 
 </div>
 
-<div id="desc_tree_md5" class="refsect1">
+<div>
 
 ## Description
 
@@ -41,11 +41,11 @@ of the argument. The argument can be any array or scalar.
 
 </div>
 
-<div id="params_tree_md5" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id114067" class="refsect2">
+<div>
 
 ### tree
 
@@ -55,7 +55,7 @@ String or string_session to be processed with MD5 algorithm.
 
 </div>
 
-<div id="ret_tree_md5" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -64,7 +64,7 @@ algorithm used on the data argument.
 
 </div>
 
-<div id="errors_tree_md5" class="refsect1">
+<div>
 
 ## Errors
 

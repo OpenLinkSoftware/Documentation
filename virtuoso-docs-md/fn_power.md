@@ -1,10 +1,10 @@
-<div id="fn_power" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ power — return value of expression raised to specified power.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_power" class="funcsynopsis">
+<div>
 
 |                    |                               |
 |--------------------|-------------------------------|
 | ` `**`power`**` (` | in `x ` double precision ,    |
 |                    | in `y ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ power — return value of expression raised to specified power.
 
 </div>
 
-<div id="desc_power" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ power — return value of expression raised to specified power.
 
 </div>
 
-<div id="params_power" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id99628" class="refsect2">
+<div>
 
 ### x
 
@@ -54,7 +54,7 @@ power — return value of expression raised to specified power.
 
 </div>
 
-<div id="id99632" class="refsect2">
+<div>
 
 ### y
 
@@ -64,7 +64,7 @@ power — return value of expression raised to specified power.
 
 </div>
 
-<div id="ret_power" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -72,15 +72,15 @@ power — return value of expression raised to specified power.
 
 </div>
 
-<div id="examples_power" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_power" class="example">
+<div>
 
 **Example 24.246. Stored Procedure Example**
 
-<div class="example-contents">
+<div>
 
 Calculate squares of integers between 2 numbers.
 
@@ -128,7 +128,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_power" class="refsect1">
+<div>
 
 ## See Also
 

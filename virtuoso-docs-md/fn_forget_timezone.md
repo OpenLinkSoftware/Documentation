@@ -1,10 +1,10 @@
-<div id="fn_forget_timezone" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,18 +12,18 @@ forget_timezone — returns its first argument as a timezoned value
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_forget_timezone" class="funcsynopsis">
+<div>
 
 |                                      |                                    |
 |--------------------------------------|------------------------------------|
 | `datetime `**`forget_timezone`**` (` | in `dt ` datetime ,                |
 |                                      | in `ignore_timezone ` integer `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ forget_timezone — returns its first argument as a timezoned value
 
 </div>
 
-<div id="desc_forget_timezone" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ the value is first made GMT and then it becomes timezoneless.
 
 </div>
 
-<div id="params_forget_timezone" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id83332" class="refsect2">
+<div>
 
 ### dt
 
@@ -58,7 +58,7 @@ Datetime value.
 
 </div>
 
-<div id="id83335" class="refsect2">
+<div>
 
 ### ignore_timezone
 
@@ -68,15 +68,15 @@ Flag
 
 </div>
 
-<div id="examples_forget_timezone" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_forget_timezone" class="example">
+<div>
 
 **Example 24.58. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select cast (forget_timezone (cast ('1999-12-31 11:59+02:00' as datetime)) as varchar);
@@ -93,7 +93,7 @@ No. of rows in result: 1
 
 </div>
 
-<div id="seealso_forget_timezone" class="refsect1">
+<div>
 
 ## See Also
 

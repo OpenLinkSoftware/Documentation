@@ -1,6 +1,6 @@
-<div id="xaservicesvql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

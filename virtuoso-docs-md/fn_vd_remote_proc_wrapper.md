@@ -1,10 +1,10 @@
-<div id="fn_vd_remote_proc_wrapper" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ execution
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_vd_remote_proc_wrapper" class="funcsynopsis">
+<div>
 
 |                                            |                                |
 |--------------------------------------------|--------------------------------|
@@ -30,7 +30,7 @@ execution
 |                                            | in `make_resultset ` integer , |
 |                                            | in `description ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -40,7 +40,7 @@ execution
 
 </div>
 
-<div id="desc_vd_remote_proc_wrapper" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ array(vector) depending of the 'make_resultset' flag.
 
 </div>
 
-<div id="params_vd_remote_proc_wrapper" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id118063" class="refsect2">
+<div>
 
 ### dsn
 
@@ -62,7 +62,7 @@ the remote datasource name
 
 </div>
 
-<div id="id118066" class="refsect2">
+<div>
 
 ### remote_name
 
@@ -70,7 +70,7 @@ name of the remote procedure
 
 </div>
 
-<div id="id118069" class="refsect2">
+<div>
 
 ### local_name
 
@@ -78,7 +78,7 @@ name of the PL wrapper to be created locally
 
 </div>
 
-<div id="id118072" class="refsect2">
+<div>
 
 ### metadata
 
@@ -94,7 +94,7 @@ need to have following structure:
 
 </div>
 
-<div id="id118080" class="refsect2">
+<div>
 
 ### status_code
 
@@ -102,7 +102,7 @@ returns SQL status code of the PL wrapper generation
 
 </div>
 
-<div id="id118083" class="refsect2">
+<div>
 
 ### error_message
 
@@ -110,7 +110,7 @@ returns the error message if status code is different than 00000
 
 </div>
 
-<div id="id118086" class="refsect2">
+<div>
 
 ### make_resultset
 
@@ -119,7 +119,7 @@ return result set. Otherwise will be generated to return an array.
 
 </div>
 
-<div id="id118089" class="refsect2">
+<div>
 
 ### description
 
@@ -130,15 +130,15 @@ a method description if the PL wrapper is published as a SOAP method.
 
 </div>
 
-<div id="examples_vsp_calculate_digest" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_vsp_calculate_digest" class="example">
+<div>
 
 **Example 24.438. Creating a PL wrapper which returns resultset**
 
-<div class="example-contents">
+<div>
 
 The following example will create a PL wrapper to invoke the MS
 SqlServer Stored Procedure 'Northwind.dbo.CustOrderHist'
@@ -202,7 +202,7 @@ Vegie-spread                              20
 
 </div>
 
-<div id="seealso_vsp_calculate_digest" class="refsect1">
+<div>
 
 ## See Also
 

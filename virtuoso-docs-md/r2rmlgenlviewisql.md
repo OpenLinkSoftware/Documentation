@@ -1,6 +1,6 @@
-<div id="r2rmlgenlviewisql" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -33,7 +33,7 @@ R2RML_GENERATE_LINKED_VIEW
 
 Here is detailed description of the funcion's parameter:
 
-<div class="itemizedlist">
+<div>
 
 - <span class="emphasis">*source*</span>
 
@@ -68,9 +68,9 @@ as in the R2RML. If so, then if destination graph is specified as
 physical, all virtual graphs found in the R2RML would go in the
 destination_graph.
 
-<div id="r2rmlgenlviewisqlex" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -84,7 +84,7 @@ destination_graph.
 
 </div>
 
-<div class="orderedlist">
+<div>
 
 1.  Ensure the R2RML VAD package <a
     href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/rdb2rdf_dav.vad"

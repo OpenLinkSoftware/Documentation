@@ -1,6 +1,6 @@
-<div id="twopcimplementation" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -37,9 +37,9 @@ There are two ways of using MTS-driven distributed transactions in
 Virtuoso. Virtuoso either initiates the transaction, or it responds to a
 transaction.
 
-<div id="twopc_send" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

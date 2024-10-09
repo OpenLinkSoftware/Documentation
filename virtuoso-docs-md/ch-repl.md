@@ -1,6 +1,6 @@
-<div id="ch-repl" class="chapter">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -12,7 +12,7 @@
 
 <div>
 
-<div class="abstract">
+<div>
 
 **Abstract**
 
@@ -33,7 +33,7 @@ chapter.
 
 </div>
 
-<div class="toc">
+<div>
 
 **Table of Contents**
 
@@ -131,9 +131,9 @@ Dynamics](loggerdynamics.html)</span>
 
 </div>
 
-<div id="replintro" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -149,9 +149,9 @@ Dynamics](loggerdynamics.html)</span>
 
 Virtuoso provides several replication methods:
 
-<div id="preface_snapshot" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -173,7 +173,7 @@ Virtuoso provides the following flavors of snapshot replication:
 | Incremental snapshot replication Incremental snapshot replication is useful when the data is changed frequently and implements incremental updates using a snapshot log.                          |
 | Bi-directional snapshot replication Bi-directional snapshot replication allows data to be modified on both publisher and subscribers. This is useful read-write access to the replicas is needed. |
 
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div>
 
 |                              |                                                                                                                      |
 |:----------------------------:|:---------------------------------------------------------------------------------------------------------------------|
@@ -184,9 +184,9 @@ Virtuoso provides the following flavors of snapshot replication:
 
 </div>
 
-<div id="preface_trx" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

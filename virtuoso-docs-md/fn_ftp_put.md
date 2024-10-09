@@ -1,10 +1,10 @@
-<div id="fn_ftp_put" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ftp_put — FTP put command; Virtuoso FTP client
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ftp_put" class="funcsynopsis">
+<div>
 
 |                             |                                  |
 |-----------------------------|----------------------------------|
@@ -27,7 +27,7 @@ ftp_put — FTP put command; Virtuoso FTP client
 |                             | in `remote_file_name ` varchar , |
 |                             | in `is_pasv ` integer `)`;       |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ ftp_put — FTP put command; Virtuoso FTP client
 
 </div>
 
-<div id="desc_ftp_put" class="refsect1">
+<div>
 
 ## Description
 
@@ -47,11 +47,11 @@ any PL, this can be combined with Web Services and SOAP.
 
 </div>
 
-<div id="params_ftp_put" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id89363" class="refsect2">
+<div>
 
 ### server
 
@@ -59,7 +59,7 @@ The remote server address or IP Address.
 
 </div>
 
-<div id="id89366" class="refsect2">
+<div>
 
 ### user
 
@@ -67,7 +67,7 @@ The username for authentication at the FTP server.
 
 </div>
 
-<div id="id89369" class="refsect2">
+<div>
 
 ### pass
 
@@ -75,7 +75,7 @@ The accompanying password for authentication at the FTP server.
 
 </div>
 
-<div id="id89372" class="refsect2">
+<div>
 
 ### local_file_name
 
@@ -85,7 +85,7 @@ in DirsAllowed ACL list in the Virtuoso.INI file.
 
 </div>
 
-<div id="id89375" class="refsect2">
+<div>
 
 ### remote_file_name
 
@@ -93,7 +93,7 @@ Full path and file name to the file on the FTP server to be uploaded.
 
 </div>
 
-<div id="id89378" class="refsect2">
+<div>
 
 ### is_pasv
 
@@ -105,7 +105,7 @@ default.
 
 </div>
 
-<div id="ret_ftp_put" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -114,7 +114,7 @@ the server.
 
 </div>
 
-<div id="errors_ftp_get_02" class="refsect1">
+<div>
 
 ## Errors
 
@@ -122,15 +122,15 @@ This function will return any errors returned by the remote FTP server.
 
 </div>
 
-<div id="examples_ftp_put" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ftp_put_01" class="example">
+<div>
 
 **Example 24.121. Uploading a file to an FTP server**
 
-<div class="example-contents">
+<div>
 
 To upload the file virtuoso30.tar.gz to the ftp server
 ftp.openlinksw.com, one can use:
@@ -150,7 +150,7 @@ directory, and save it to the remote servers root directory.
 
 </div>
 
-<div id="seealso_ftp_put" class="refsect1">
+<div>
 
 ## See Also
 

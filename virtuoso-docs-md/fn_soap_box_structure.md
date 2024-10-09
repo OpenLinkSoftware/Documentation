@@ -1,10 +1,10 @@
-<div id="fn_soap_box_structure" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ soap_box_structure
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_soap_box_structure" class="funcsynopsis">
+<div>
 
 |                                    |                       |
 |------------------------------------|-----------------------|
@@ -26,7 +26,7 @@ soap_box_structure
 |                                    | in `elem1 ` varchar , |
 |                                    | in `value1 ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -36,7 +36,7 @@ soap_box_structure
 
 </div>
 
-<div id="desc_soap_box_structure" class="refsect1">
+<div>
 
 ## Description
 
@@ -72,11 +72,11 @@ documentation).
 
 </div>
 
-<div id="params_soap_box_structure" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id110974" class="refsect2">
+<div>
 
 ### elem
 
@@ -84,7 +84,7 @@ name which represents name of the member of a structure
 
 </div>
 
-<div id="id110977" class="refsect2">
+<div>
 
 ### value
 
@@ -94,7 +94,7 @@ value which represents value of the member of a structure
 
 </div>
 
-<div id="ret_soap_box_structure" class="refsect1">
+<div>
 
 ## Return Types
 

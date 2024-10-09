@@ -1,6 +1,6 @@
-<div id="newssrvadm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="newsgrpsadm" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -43,15 +43,15 @@ the NewsServerPort number.
 
 The tab "NNTP Servers" shows list of the registered News servers.
 
-<div class="figure-float">
+<div>
 
-<div id="id15780" class="figure">
+<div>
 
 **Figure 6.175. News Server Administration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![News Server Administration](images/ui/news_adm_01.png)
 
@@ -68,15 +68,15 @@ The tab "NNTP Servers" shows list of the registered News servers.
 Click the "Edit" link to change the news server settings, or click the
 "Delete" link to remove the news server.
 
-<div class="figure-float">
+<div>
 
-<div id="id15786" class="figure">
+<div>
 
 **Figure 6.176. Edit News Server Properties**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Edit News Server Properties](images/ui/news_adm_01a.png)
 
@@ -93,15 +93,15 @@ Click the "Edit" link to change the news server settings, or click the
 Click the "Edit Groups" link for a current News Server in order to
 manage the list of available newsgroups.
 
-<div class="figure-float">
+<div>
 
-<div id="id15792" class="figure">
+<div>
 
 **Figure 6.177. News Groups List**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![News Groups List](images/ui/news_adm_01b.png)
 
@@ -128,15 +128,15 @@ edit the <span class="emphasis">*Properties*</span> of the group, or
 can get previous 500 messages or to get new messages by clicking the
 links at the bottom of the form shown below.
 
-<div class="figure-float">
+<div>
 
-<div id="id15803" class="figure">
+<div>
 
 **Figure 6.178. Manage subscribed for Newsgroup**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Manage subscribed for Newsgroup](images/ui/news_adm_01c.png)
 
@@ -150,9 +150,9 @@ links at the bottom of the form shown below.
 
 </div>
 
-<div id="newsaddgrp" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -170,15 +170,15 @@ From the "NNTP Servers" tab click on the "Edit Groups" link for a
 registered News Server. Then click the <span class="emphasis">*Subscribe
 to newsgroups*</span> link to subscribe to newsgroups on the server.
 
-<div class="figure-float">
+<div>
 
-<div id="id15812" class="figure">
+<div>
 
 **Figure 6.179. Add Newsgroup**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![Add Newsgroup](images/ui/news_addgrp_01.png)
 
@@ -201,9 +201,9 @@ return to the News Servers List page.
 
 </div>
 
-<div id="newssrvadd" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -230,15 +230,15 @@ news server is listening on. By default news servers listen on port 119.
 <span class="emphasis">*Password*</span> allow you to provide login
 credentials if the server requires them.
 
-<div class="figure-float">
+<div>
 
-<div id="id15831" class="figure">
+<div>
 
 **Figure 6.180. News Server Administration**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![News Server Administration](images/ui/news_add_01.png)
 
@@ -254,9 +254,9 @@ credentials if the server requires them.
 
 </div>
 
-<div id="newscliui" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -278,15 +278,15 @@ installed. Then you can go from ODS to tab "Discussions" where will be
 shown the list of available newsgroups. Each one has shown as link its
 name, which leads to page where are listed its messages.
 
-<div class="figure-float">
+<div>
 
-<div id="id15839" class="figure">
+<div>
 
 **Figure 6.181. View of messages in a newsgroup in ODS Discussions.**
 
-<div class="figure-contents">
+<div>
 
-<div class="mediaobject">
+<div>
 
 ![View of messages in a newsgroup in ODS
 Discussions.](images/ui/news_lclsrvr_01.png)
@@ -305,9 +305,9 @@ Discussions.](images/ui/news_lclsrvr_01.png)
 
 </div>
 
-<div id="newsmsgft" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_st_linestring" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ st_linestring — returns a linestring in default SRID
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_st_linestring" class="funcsynopsis">
+<div>
 
 |                            |                      |
 |----------------------------|----------------------|
@@ -24,7 +24,7 @@ st_linestring — returns a linestring in default SRID
 |                            | in `item2 ` any ,    |
 |                            | in `itemN ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ st_linestring — returns a linestring in default SRID
 
 </div>
 
-<div id="desc_st_linestring" class="refsect1">
+<div>
 
 ## Description
 
@@ -46,11 +46,11 @@ repeating vertices in the middle of a linestring/arcstring argument.
 
 </div>
 
-<div id="params_st_linestring" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131446" class="refsect2">
+<div>
 
 ### item1
 
@@ -58,7 +58,7 @@ Geometry.
 
 </div>
 
-<div id="id131449" class="refsect2">
+<div>
 
 ### item2
 
@@ -66,7 +66,7 @@ Geometry.
 
 </div>
 
-<div id="id131452" class="refsect2">
+<div>
 
 ### itemN
 
@@ -76,7 +76,7 @@ Geometry.
 
 </div>
 
-<div id="ret_st_linestring" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -84,15 +84,15 @@ Returns varchar.
 
 </div>
 
-<div id="examples_st_linestring" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_st_linestring" class="example">
+<div>
 
 **Example 24.665. Simple Use**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL> select st_linestring (st_point (11,22),
@@ -125,7 +125,7 @@ LINESTRING(11.0 22.0,13.0 24.0,15.0 26.0,17.0 28.0)
 
 </div>
 
-<div id="seealso_st_linestring" class="refsect1">
+<div>
 
 ## See Also
 

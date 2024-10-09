@@ -1,10 +1,10 @@
-<div id="fn_gz_compress" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ gz_compress — Compress data using gzip algorithm
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_gz_compress" class="funcsynopsis">
+<div>
 
 |                          |                        |
 |--------------------------|------------------------|
 | ` `**`gz_compress`**` (` | in `str ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ gz_compress — Compress data using gzip algorithm
 
 </div>
 
-<div id="desc_compress" class="refsect1">
+<div>
 
 ## Description
 
@@ -42,11 +42,11 @@ any 8 bit characters.
 
 </div>
 
-<div id="params_gz_compress" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id90338" class="refsect2">
+<div>
 
 ### str
 
@@ -56,7 +56,7 @@ The string containing data to be compressed.
 
 </div>
 
-<div id="ret_gz_compress" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -64,15 +64,15 @@ A string containing the compressed data.
 
 </div>
 
-<div id="examples_gz_compress" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_gz_compress_1" class="example">
+<div>
 
 **Example 24.134. GZIP test 2**
 
-<div class="example-contents">
+<div>
 
 Just see how it compresses.
 
@@ -115,7 +115,7 @@ SQL>
 
 </div>
 
-<div id="seealso_gz_compress" class="refsect1">
+<div>
 
 ## See Also
 

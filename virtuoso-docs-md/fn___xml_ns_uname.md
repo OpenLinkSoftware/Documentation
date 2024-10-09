@@ -1,10 +1,10 @@
-<div id="fn___xml_ns_uname" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ expanded namespace IRI and the local part.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn___xml_ns_uname" class="funcsynopsis">
+<div>
 
 |                             |                         |
 |-----------------------------|-------------------------|
 | ` `**`__xml_ns_uname`**` (` | in `str1 ` varchar ,    |
 |                             | in `str2 ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ expanded namespace IRI and the local part.
 
 </div>
 
-<div id="desc___xml_ns_uname" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ IRI and the local part.
 
 </div>
 
-<div id="params___xml_ns_uname" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id103324" class="refsect2">
+<div>
 
 ### str1
 
@@ -55,7 +55,7 @@ Namespace prefix.
 
 </div>
 
-<div id="id103327" class="refsect2">
+<div>
 
 ### str2
 
@@ -65,15 +65,15 @@ Local part (varchar).
 
 </div>
 
-<div id="examples__xml_ns_uname" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_xml_ns_uname_1" class="example">
+<div>
 
 **Example 24.296. Simple Example**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> SELECT __xml_ns_uname ('foaf', 'knows');
@@ -94,7 +94,7 @@ http://xmlns.com/foaf/0.1/knows
 
 </div>
 
-<div id="seealso__xml_ns_uname" class="refsect1">
+<div>
 
 ## See Also
 

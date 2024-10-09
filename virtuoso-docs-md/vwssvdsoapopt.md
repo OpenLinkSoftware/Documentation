@@ -1,6 +1,6 @@
-<div id="vwssvdsoapopt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -17,7 +17,7 @@
 The following SOAP options are available for configuring a virtual
 directory:
 
-<div class="itemizedlist">
+<div>
 
 - **WS-SEC . ** WS-Security processing is enabled on the endpoint, in
   practice this enables the input and output message filters for
@@ -59,11 +59,11 @@ directory:
 
 </div>
 
-<div id="vwssvirtdirexpl" class="example">
+<div>
 
 **Example 17.27. Configuring WS Secure Endpoints**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 -- definition of /SecureWebServices endpoint

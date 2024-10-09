@@ -1,10 +1,10 @@
-<div id="xpf_function_available" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,17 +14,17 @@ false.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="xpf_syn_function_available" class="funcsynopsis">
+<div>
 
 |                                        |                        |
 |----------------------------------------|------------------------|
 | `boolean `**`function-available`**` (` | `funname ` string `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ false.
 
 </div>
 
-<div id="xpf_desc_function_available" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ function is not defined, function-available returns false.
 
 </div>
 
-<div id="xpf_params_function_available" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id127537" class="refsect2">
+<div>
 
 ### funname
 
@@ -58,7 +58,7 @@ The name of XPATH extension function
 
 </div>
 
-<div id="xpf_ret_function_available" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -66,15 +66,15 @@ Boolean
 
 </div>
 
-<div id="xpf_examples_function_available" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="xpf_ex_function_available" class="example">
+<div>
 
 **Example 24.590. **
 
-<div class="example-contents">
+<div>
 
 This expression should return false.
 
@@ -90,7 +90,7 @@ function-available('http://example.com/Virtuoso/nosuchfunction')
 
 </div>
 
-<div id="xpf_seealso_function_available" class="refsect1">
+<div>
 
 ## See Also
 

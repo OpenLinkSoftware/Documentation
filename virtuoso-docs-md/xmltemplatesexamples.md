@@ -1,6 +1,6 @@
-<div id="xmltemplatesexamples" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,11 +14,11 @@
 
 </div>
 
-<div id="ex_xmltemplatefs" class="example">
+<div>
 
 **Example 15.19. Executing an XML template from the file system**
 
-<div class="example-contents">
+<div>
 
 First step is to setup the /xmlt directory on file system. The function
 <a href="fn_vhost_define.html" class="link" title="VHOST_DEFINE"><code
@@ -127,11 +127,11 @@ for the results.
 
   
 
-<div id="ex_xmltemplatedav" class="example">
+<div>
 
 **Example 15.20. Executing an XML template from WebDAV**
 
-<div class="example-contents">
+<div>
 
 The first step is to create a new DAV collection and configure it to
 allow XML template execution. DBA privileges are required for these

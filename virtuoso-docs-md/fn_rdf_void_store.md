@@ -1,10 +1,10 @@
-<div id="fn_rdf_void_store" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,18 +13,18 @@ it.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_void_store" class="funcsynopsis">
+<div>
 
 |                                    |                                  |
 |------------------------------------|----------------------------------|
 | ` `**`DB.DBA.RDF_VOID_STORE`**` (` | in `graph ` varchar ,            |
 |                                    | in `to_graph_name ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ it.
 
 </div>
 
-<div id="desc_rdf_void_store" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ in the database before executing the function.
 
 </div>
 
-<div id="params_rdf_void_store" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id100435" class="refsect2">
+<div>
 
 ### graph
 
@@ -56,7 +56,7 @@ the graph iri string to take statistics from
 
 </div>
 
-<div id="id100438" class="refsect2">
+<div>
 
 ### to_graph_name
 
@@ -66,15 +66,15 @@ the graph iri string to write the void data.
 
 </div>
 
-<div id="examples_rdf_void_store" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_rdf_void_store" class="example">
+<div>
 
 **Example 24.258. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 SQL>DB.DBA.RDF_VOID_STORE('http://www.openlinksw.com/blog/~kidehen','http://example.com');
@@ -133,7 +133,7 @@ SQL>
 
 </div>
 
-<div id="seealso_rdf_void_store" class="refsect1">
+<div>
 
 ## See Also
 

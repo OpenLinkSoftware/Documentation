@@ -1,10 +1,10 @@
-<div id="fn_haversine_deg_km" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -14,11 +14,11 @@ kilometers
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_haversine_deg_km" class="funcsynopsis">
+<div>
 
 |                               |                                   |
 |-------------------------------|-----------------------------------|
@@ -27,7 +27,7 @@ kilometers
 |                               | in `lat2 ` double precision ,     |
 |                               | in `long2 ` double precision `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -37,7 +37,7 @@ kilometers
 
 </div>
 
-<div id="desc_haversine_deg_km" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ longitude-latitude.
 
 </div>
 
-<div id="params_haversine_deg_km" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id131256" class="refsect2">
+<div>
 
 ### lat1
 
@@ -62,7 +62,7 @@ latitude
 
 </div>
 
-<div id="id131259" class="refsect2">
+<div>
 
 ### long1
 
@@ -70,7 +70,7 @@ longitude
 
 </div>
 
-<div id="id131262" class="refsect2">
+<div>
 
 ### lat2
 
@@ -78,7 +78,7 @@ latitude
 
 </div>
 
-<div id="id131265" class="refsect2">
+<div>
 
 ### long2
 
@@ -88,7 +88,7 @@ longitude
 
 </div>
 
-<div id="ret_haversine_deg_km" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -96,15 +96,15 @@ The function returns distance in kilometers as double precision.
 
 </div>
 
-<div id="examples_haversine_deg_km" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_haversine_deg_km" class="example">
+<div>
 
 **Example 24.663. Simple example**
 
-<div class="example-contents">
+<div>
 
 ``` screen
 -- select haversine_deg_km (-90,0,90,0)
@@ -130,7 +130,7 @@ _______________________________________________________________________________
 
 </div>
 
-<div id="seealso_haversine_deg_km" class="refsect1">
+<div>
 
 ## See Also
 

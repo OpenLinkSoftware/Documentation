@@ -1,6 +1,6 @@
-<div id="rdfviewiriusingfunction" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

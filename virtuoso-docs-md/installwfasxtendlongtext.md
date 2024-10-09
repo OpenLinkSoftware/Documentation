@@ -1,6 +1,6 @@
-<div id="installwfasxtendlongtext" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -20,7 +20,7 @@ images and web pages can be viewed in a browser window.
 
 <span class="emphasis">*Pre-requisites*</span>
 
-<div class="orderedlist">
+<div>
 
 1.  A working copy of the RDFDemo application created in
     <a href="installwfasmodify.html" class="link"
@@ -29,9 +29,9 @@ images and web pages can be viewed in a browser window.
 
 </div>
 
-<div id="installwfasxtendlongtextmodf" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -52,12 +52,12 @@ that when the text in the boxes is too long to be seen in full a button
 will appear beside the box on the form and if you click the button the
 complete text will be displayed in a separate window.
 
-<div class="orderedlist">
+<div>
 
 1.  Add a new class, MoreButton that extends
     System.Windows.Forms.Button.
 
-    <div class="itemizedlist">
+    <div>
 
     - In the
 
@@ -75,15 +75,15 @@ complete text will be displayed in a separate window.
 
     - Add a new class called MoreButton.cs.
 
-      <div class="figure-float">
+      <div>
 
-      <div id="sparqlwinf18" class="figure">
+      <div>
 
       **Figure 2.153. Add a new class**
 
-      <div class="figure-contents">
+      <div>
 
-      <div class="mediaobject">
+      <div>
 
       ![Add a new class](images/ui/sparqlwinf18.png)
 
@@ -170,15 +170,15 @@ complete text will be displayed in a separate window.
     to it. If you click on that button the text from the Notes field is
     displayed in a new window.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf19" class="figure">
+    <div>
 
     **Figure 2.154. Notes**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Notes](images/ui/sparqlwinf19.png)
 
@@ -201,12 +201,12 @@ pages will be opened in a browser window. Again we will do this by
 adding a button beside the box on the form that will open the browser
 window.
 
-<div class="orderedlist">
+<div>
 
 1.  Add a new class, OpenButton that extends
     System.Windows.Forms.Button.
 
-    <div class="itemizedlist">
+    <div>
 
     - In the
 
@@ -288,15 +288,15 @@ window.
     Open next to it. If you click on that button the image is opened in
     your default browser.
 
-    <div class="figure-float">
+    <div>
 
-    <div id="sparqlwinf20" class="figure">
+    <div>
 
     **Figure 2.155. Image**
 
-    <div class="figure-contents">
+    <div>
 
-    <div class="mediaobject">
+    <div>
 
     ![Image](images/ui/sparqlwinf20.png)
 

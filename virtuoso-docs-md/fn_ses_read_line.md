@@ -1,10 +1,10 @@
-<div id="fn_ses_read_line" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,11 +12,11 @@ ses_read_line — Read a line of character data from a TCP session.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_ses_read_line" class="funcsynopsis">
+<div>
 
 |                                   |                                        |
 |-----------------------------------|----------------------------------------|
@@ -24,7 +24,7 @@ ses_read_line — Read a line of character data from a TCP session.
 |                                   | in `throw_exception_on_eof ` integer , |
 |                                   | in `binary_mode ` integer `)`;         |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -34,7 +34,7 @@ ses_read_line — Read a line of character data from a TCP session.
 
 </div>
 
-<div id="desc_ses_read_line" class="refsect1">
+<div>
 
 ## Description
 
@@ -50,11 +50,11 @@ was unsuccessful.
 
 </div>
 
-<div id="params_ses_read_line" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id109659" class="refsect2">
+<div>
 
 ### ses
 
@@ -64,7 +64,7 @@ string session to be sent to the client upon request completion.
 
 </div>
 
-<div id="id109662" class="refsect2">
+<div>
 
 ### throw_exception_on_eof
 
@@ -76,7 +76,7 @@ or remaining content will be returned as above.
 
 </div>
 
-<div id="id109665" class="refsect2">
+<div>
 
 ### binary_mode
 
@@ -91,7 +91,7 @@ Instructs the function to be in binary or text mode.
 
 </div>
 
-<div id="ret_ses_read_line" class="refsect1">
+<div>
 
 ## Return Types
 
@@ -99,16 +99,16 @@ The characters read from the session are returned from this function.
 
 </div>
 
-<div id="examples_ses_read_line" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_ses_read_line" class="example">
+<div>
 
 **Example 24.371. Simple demonstration of reading from the HTTP
 session**
 
-<div class="example-contents">
+<div>
 
 This example reads the first line of the session and outputs the
 contents. This code can be run from a vsp file.
@@ -131,7 +131,7 @@ contents. This code can be run from a vsp file.
 
 </div>
 
-<div id="seealso_ses_read_line" class="refsect1">
+<div>
 
 ## See Also
 

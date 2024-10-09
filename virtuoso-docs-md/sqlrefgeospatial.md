@@ -1,6 +1,6 @@
-<div id="sqlrefgeospatial" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -26,9 +26,9 @@ dimensions, with a choice of WGS 84 (or similar) latitude and longitude
 coordinates with haversine distances or a flat 2 dimensional plane for
 spatial reference system.
 
-<div id="sqlrefgeospatialspatref" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

@@ -1,10 +1,10 @@
-<div id="fn_string_output_string" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ string_output_string — produce a string out of a string output stream
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_string_output_string" class="funcsynopsis">
+<div>
 
 |                                   |                           |
 |-----------------------------------|---------------------------|
 | ` `**`string_output_string`**` (` | in `string_out ` any `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ string_output_string — produce a string out of a string output stream
 
 </div>
 
-<div id="desc_35" class="refsect1">
+<div>
 
 ## Description
 
@@ -44,11 +44,11 @@ string output streams.
 
 </div>
 
-<div id="params_09" class="refsect1">
+<div>
 
 ## Parameters
 
-<div id="id112450" class="refsect2">
+<div>
 
 ### string_out
 
@@ -58,7 +58,7 @@ The string output stream
 
 </div>
 
-<div id="ret_03_01" class="refsect1">
+<div>
 
 ## Return Values
 
@@ -67,15 +67,15 @@ output stream.
 
 </div>
 
-<div id="examples_06_01" class="refsect1">
+<div>
 
 ## Examples
 
-<div id="ex_string_output_string" class="example">
+<div>
 
 **Example 24.410. Convert string output stream into a string**
 
-<div class="example-contents">
+<div>
 
 Create a string output, write 'foo' and ' bar' into it, convert to
 string and produce a result.
@@ -113,7 +113,7 @@ foo bar
 
 </div>
 
-<div id="seealso_16" class="refsect1">
+<div>
 
 ## See Also
 

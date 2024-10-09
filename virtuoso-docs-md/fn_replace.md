@@ -1,10 +1,10 @@
-<div id="fn_replace" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,11 +13,11 @@ first argument with the third argument.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_replace" class="funcsynopsis">
+<div>
 
 |                            |                              |
 |----------------------------|------------------------------|
@@ -25,7 +25,7 @@ first argument with the third argument.
 |                            | in `what ` varchar ,         |
 |                            | in `repl_with ` varchar `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -35,7 +35,7 @@ first argument with the third argument.
 
 </div>
 
-<div id="desc_13" class="refsect1">
+<div>
 
 ## Description
 
@@ -43,11 +43,11 @@ This replaces every occurrence of the second argument in the first
 argument with the third argument. The arguments can be narrow or wide
 strings.
 
-<div id="ex__20" class="example">
+<div>
 
 **Example 24.317. Example:**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 SQL> select replace ('12345512345', '23', '-----');

@@ -1,6 +1,6 @@
-<div id="conn_stmt_options" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -14,9 +14,9 @@
 
 </div>
 
-<div id="connopt" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -30,9 +30,9 @@
 
 </div>
 
-<div id="sql_autocommit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -81,9 +81,9 @@ are undefined.
 
 </div>
 
-<div id="sql_txn_iso" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -127,9 +127,9 @@ as a separate transaction if the connection is in autocommit mode.
 
 </div>
 
-<div id="sql_access_mode" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -149,9 +149,9 @@ though.
 
 </div>
 
-<div id="sql_current_qual" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -171,9 +171,9 @@ USE statements.
 
 </div>
 
-<div id="sql_no_char_c_escape" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -192,9 +192,9 @@ statement. It takes boolean int values (0/non-0)
 
 </div>
 
-<div id="sql_charset" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -213,9 +213,9 @@ takes string values (the name of the character set to use).
 
 </div>
 
-<div id="sql_encrypt_connection" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -240,9 +240,9 @@ options).
 
 </div>
 
-<div id="sql_shutdown_on_connect" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -265,9 +265,9 @@ authenticating the DBA user (see the -K ISQL option).
 
 </div>
 
-<div id="sqlsetstmtoption" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -285,9 +285,9 @@ Virtuoso supports all ODBC 2.x and ODBC 3.x statement options. The
 following options are mentioned below due to implementation specific
 details.
 
-<div id="sqlconcurrency" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -317,9 +317,9 @@ all cases.
 
 </div>
 
-<div id="sqlmaxrows" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -337,9 +337,9 @@ This option only affects static cursors.
 
 </div>
 
-<div id="sqltxntimeout" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -361,9 +361,9 @@ or not.
 
 </div>
 
-<div id="sqlprefetchsize" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -393,9 +393,9 @@ and sent to the client by the SQLExecute call that opens the cursor.
 
 </div>
 
-<div id="sqlcursortype" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -420,9 +420,9 @@ should not be modified after executing a SELECT.
 
 </div>
 
-<div id="sqlgetlastserial" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

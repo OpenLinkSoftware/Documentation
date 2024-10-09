@@ -1,6 +1,6 @@
-<div id="xmldom" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -42,7 +42,7 @@ processor locks the source at start and unlock at end so any attempt to
 modify the source during the run will signal an error. The document can
 be locked in the following cases:
 
-<div class="itemizedlist">
+<div>
 
 - The document is the source of the XSLT processing that is in progress.
 
@@ -62,7 +62,7 @@ One additional issue of using DOM operations is that any DOM operation
 invalidates DTD and schema validation information that was associated
 with the document before the operation.
 
-<div class="itemizedlist">
+<div>
 
 - **Schema validation status ("is validated" flag). ** E.g. if an schema
   based instance of XMLType is validated against its schema and thus it
@@ -83,9 +83,9 @@ with the document before the operation.
 
 </div>
 
-<div id="xmldomtypecasting" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 

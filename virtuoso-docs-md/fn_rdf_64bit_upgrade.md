@@ -1,10 +1,10 @@
-<div id="fn_rdf_64bit_upgrade" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -12,17 +12,17 @@ DB.DBA.RDF_64BIT_UPGRADE — Alters IRI_ID columns to get IRI_ID_8.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="fsyn_rdf_64bit_upgrade" class="funcsynopsis">
+<div>
 
 |                                       |      |
 |---------------------------------------|------|
 | ` `**`DB.DBA.RDF_64BIT_UPGRADE`**` (` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -32,7 +32,7 @@ DB.DBA.RDF_64BIT_UPGRADE — Alters IRI_ID columns to get IRI_ID_8.
 
 </div>
 
-<div id="desc_rdf_64bit_upgrade" class="refsect1">
+<div>
 
 ## Description
 

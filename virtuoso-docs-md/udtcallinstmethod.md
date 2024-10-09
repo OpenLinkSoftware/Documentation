@@ -1,6 +1,6 @@
-<div id="udtcallinstmethod" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
@@ -51,11 +51,11 @@ IST.IM ( [ parameter, ... ] )
 
 will call the method `IM` as defined in `ST` .
 
-<div id="ex_callinginstmethods" class="example">
+<div>
 
 **Example 9.10. Calling Overloaded Instance Methods**
 
-<div class="example-contents">
+<div>
 
 ``` programlisting
 CREATE TYPE UDT_BASE

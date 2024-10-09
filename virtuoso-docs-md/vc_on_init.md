@@ -1,10 +1,10 @@
-<div id="vc_on_init" class="refentry">
+<div>
 
-<div class="titlepage">
+<div>
 
 </div>
 
-<div class="refnamediv">
+<div>
 
 ## Name
 
@@ -13,17 +13,17 @@ control instantiation.
 
 </div>
 
-<div class="refsynopsisdiv">
+<div>
 
 ## Synopsis
 
-<div id="vc_syn_on_init" class="funcsynopsis">
+<div>
 
 |                                                         |      |
 |---------------------------------------------------------|------|
 | ` <`**`on-init`**` >(EventHandler)</`**`on-init`**` >(` | `)`; |
 
-<div class="funcprototype-spacer">
+<div>
 
  
 
@@ -33,7 +33,7 @@ control instantiation.
 
 </div>
 
-<div id="vc_desc_on_init" class="refsect1">
+<div>
 
 ## Description
 

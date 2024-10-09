@@ -1,6 +1,6 @@
-<div id="bpelvdit" class="section">
+<div>
 
-<div class="titlepage">
+<div>
 
 <div>
 
