@@ -52,7 +52,7 @@ can be used in XPATH, XSLT, XQuery.
 - [checkpoint_interval](fn_checkpoint_interval.html "Configure database checkpointing
   ") ()
 - [DB.DBA.VACUUM](fn_vacuum.html "Compact index structures in the database (deprecated since v6)
-      ") ()
+  ") ()
 - [disconnect_user](fn_disconnect_user.html "Disconnect client connections of a given user
   ") ()
 - [fk_check_input_values](fn_fk_check_input_values.html "alter default foreign key checking behavior
