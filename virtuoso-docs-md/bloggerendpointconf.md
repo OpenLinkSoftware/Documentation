@@ -62,11 +62,11 @@ ways:
     <tr class="even">
     <td style="text-align: left;" data-valign="top"><p><a
     href="admui.internetdomains.html#httpvirtualdirs" class="link"
-    title="HTTP Virtual Directories">Virtual Directory Administration
-    UI</a></p>
-    <p><a href="fn_vhost_define.html" class="link"
+    shape="rect" title="HTTP Virtual Directories">Virtual Directory
+    Administration UI</a></p>
+    <p><a href="fn_vhost_define.html" class="link" shape="rect"
     title="VHOST_DEFINE">vhost_define()</a></p>
-    <p><a href="fn_vhost_remove.html" class="link"
+    <p><a href="fn_vhost_remove.html" class="link" shape="rect"
     title="VHOST_REMOVE">vhost_remove()</a></p></td>
     </tr>
     </tbody>

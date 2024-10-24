@@ -219,12 +219,12 @@ CR-escape=yes;
 
 <div>
 
-|                            |                                                                                                                                         |
-|:--------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                                                                                               |
-|                            | For a list of available SOAP Options review the end section of the SOAP chapter: <a href="ch-webservices.html#soapoptions" class="link" 
-                              title="17.1.20. SOAP Endpoint Options">Optional Parameters to the SOAP                                                                   
-                              Endpoint</a> .                                                                                                                           |
+|                            |                                                                                                                                                      |
+|:--------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                                                                                                            |
+|                            | For a list of available SOAP Options review the end section of the SOAP chapter: <a href="ch-webservices.html#soapoptions" class="link" shape="rect" 
+                              title="17.1.20. SOAP Endpoint Options">Optional Parameters to the SOAP                                                                                
+                              Endpoint</a> .                                                                                                                                        |
 
 </div>
 
@@ -264,11 +264,11 @@ remove existing mappings as their link suggests.
 
 <div>
 
-|                            |                                                             |
-|:--------------------------:|:------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                   |
-|                            | <a href="ch-webappdevelopment.html#virtdir" class="link"    
-                              title="14.1.2. Virtual Directories">Virtual Directories</a>  |
+|                            |                                                                       |
+|:--------------------------:|:----------------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                             |
+|                            | <a href="ch-webappdevelopment.html#virtdir" class="link" shape="rect" 
+                              title="14.1.2. Virtual Directories">Virtual Directories</a>            |
 
 </div>
 

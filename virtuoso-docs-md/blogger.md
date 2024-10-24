@@ -68,9 +68,9 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 <tr class="even">
 <td style="text-align: left;" data-valign="top"><p>Blogger System Tables
 <a href="http://xmlrpc.free-conversant.com/docs/bloggerAPI"
-class="ulink" target="_top">Blogger API</a></p>
+class="ulink" target="_top" shape="rect">Blogger API</a></p>
 <p><a href="http://www.xmlrpc.com/metaWeblogApi" class="ulink"
-target="_top">MetaWeblog API</a></p></td>
+target="_top" shape="rect">MetaWeblog API</a></p></td>
 </tr>
 </tbody>
 </table>

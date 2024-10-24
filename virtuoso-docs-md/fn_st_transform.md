@@ -47,11 +47,11 @@ using origin_proj4_string for projection of original shape and
 dest_proj4_string for the result. If orig_proj4_string or
 dest_proj4_string argument is passed but is NULL instead of string, the
 projection corresponding to original or destination SRID is used.
-ST_Transform is provided by a separate plugin named v7proj4, as
-described below. When the plugin is loaded, functions like
-ST_Intersects() support pairs of arguments with different SRIDs by
-converting coords of second argument into the system of the first one,
-as required by OGC and GeoSPARQL.
+ST_Transform is provided by a separate plugin named proj4, as described
+below. When the plugin is loaded, functions like ST_Intersects() support
+pairs of arguments with different SRIDs by converting coords of second
+argument into the system of the first one, as required by OGC and
+GeoSPARQL.
 
 </div>
 
@@ -112,7 +112,7 @@ Returns varchar.
 <div>
 
 ``` screen
-SQL> SELECT * FROM DB.DBA.SYS_V7PROJ4_SRIDS;
+SQL> SELECT * FROM DB.DBA.SYS_PROJ4_SRIDS;
 SR_ID              SR_FAMILY          SR_TAG    SR_ORIGIN              SR_IRI    SR_PROJ4_STRING                                                                                                                                                                         SR_WKT    SR_COMMENT   SR_PROJ4_XML
 INTEGER NOT NULL   VARCHAR NOT NULL   VARCHAR   VARCHAR NOT NULL       VARCHAR   VARCHAR NOT NULL                                                                                                                                                                        VARCHAR   VARCHAR      VARCHAR
 ________________   ________________   _______   ____________________   _______   _____________________________________________________________________________________________________________________________________________________________________________________   _______   __________   ____________

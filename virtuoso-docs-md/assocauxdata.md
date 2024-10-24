@@ -19,13 +19,13 @@ variables:
 
 <div>
 
-- <a href="fn_connection_id.html" class="link"
+- <a href="fn_connection_id.html" class="link" shape="rect"
   title="connection_id">connection_id()</a>
 
-- <a href="fn_connection_set.html" class="link"
+- <a href="fn_connection_set.html" class="link" shape="rect"
   title="connection_set">connection_set()</a>
 
-- <a href="fn_connection_get.html" class="link"
+- <a href="fn_connection_get.html" class="link" shape="rect"
   title="connection_get">connection_get()</a>
 
 </div>

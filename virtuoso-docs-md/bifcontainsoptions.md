@@ -21,7 +21,7 @@ Virtuoso supports the following free-text options for bif:contains:
 1.  <span class="emphasis">*OFFBAND*</span>
 
     : See description for this free-text option in
-    <a href="offbanddata.html" class="link"
+    <a href="offbanddata.html" class="link" shape="rect"
     title="20.2.8. Using Offband Data for Faster Filtering">this section</a>
     .
 
@@ -35,8 +35,8 @@ Virtuoso supports the following free-text options for bif:contains:
 2.  <span class="emphasis">*SCORE*</span>
 
     : This free-text option is calculated as described in
-    <a href="hitscores.html" class="link" title="20.2.6. Hit Scores">this
-    section</a> :
+    <a href="hitscores.html" class="link" shape="rect"
+    title="20.2.6. Hit Scores">this section</a> :
 
     ``` programlisting
     SQL>SPARQL
@@ -72,7 +72,7 @@ Virtuoso supports the following free-text options for bif:contains:
 3.  <span class="emphasis">*SCORE_LIMIT*</span>
 
     : This free-text option works as it is in plain SQL free-text.
-    <a href="queryingftcols.html" class="link"
+    <a href="queryingftcols.html" class="link" shape="rect"
     title="20.3. Querying Free Text Indexes">See more details</a> :
 
     ``` programlisting
