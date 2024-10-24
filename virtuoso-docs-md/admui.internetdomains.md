@@ -200,12 +200,12 @@ SOAP endpoint itself.</p></td>
 The permissions panel lets you choose whether to enable various
 abilities in the directory.
 
-In the SOAP Options section you can publish or unpublish procedures
+In the SOAP Options section, you can publish or unpublish procedures
 and/or templates, both native and remote to the virtual directory using
 the Publish/Unpublish buttons respectively. The SOAP Options text-area
 allows you to specify other SOAP options such as DIME encapsulations and
 WS-security settings. These options are supplied as name=value pairs
-terminated with a semi-colon and a carriage-return. Here is an example
+terminated with a semicolon and a carriage-return. Here is an example
 of the options used for the default Interop test based demo virtual
 directory:
 
@@ -219,12 +219,11 @@ CR-escape=yes;
 
 <div>
 
-|                            |                                                                                                                                                      |
-|:--------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                                                                                                            |
-|                            | For a list of available SOAP Options review the end section of the SOAP chapter: <a href="ch-webservices.html#soapoptions" class="link" shape="rect" 
-                              title="17.1.20. SOAP Endpoint Options">Optional Parameters to the SOAP                                                                                
-                              Endpoint</a> .                                                                                                                                        |
+|                            |                                                                              |
+|:--------------------------:|:-----------------------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                                    |
+|                            | For a list of available SOAP Options, review the end section of the SOAP                            
+                               chapter: <a href="ch-webservices.html#soapoptions" class="link" shape="rect"                                                       title="17.1.20. SOAP Endpoint Options">Optional Parameters to the SOAP                                                             Endpoint</a>.                                                                |
 
 </div>
 
@@ -267,8 +266,8 @@ remove existing mappings as their link suggests.
 |                            |                                                                       |
 |:--------------------------:|:----------------------------------------------------------------------|
 | ![\[Tip\]](images/tip.png) | See Also:                                                             |
-|                            | <a href="ch-webappdevelopment.html#virtdir" class="link" shape="rect" 
-                              title="14.1.2. Virtual Directories">Virtual Directories</a>            |
+|                            | <a href="ch-webappdevelopment.html#virtdir" class="link" shape="rect"         
+                               title="14.1.2. Virtual Directories">Virtual Directories</a>           |
 
 </div>
 
