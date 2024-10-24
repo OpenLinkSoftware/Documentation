@@ -404,11 +404,11 @@ atom.delete_Post ('http://example.com/Atom/Http/entry?b=128&id=1', req);
 
 <div>
 
-|                            |                                                             |
-|:--------------------------:|:------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                   |
-|                            | <a href="https://tools.ietf.org/html/rfc5023" class="ulink" 
-                              target="_top">RFC 5023: The Atom Publishing Protocol</a>     |
+|                            |                                                                       |
+|:--------------------------:|:----------------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                             |
+|                            | <a href="https://tools.ietf.org/html/rfc5023" class="ulink"           
+                              target="_top" shape="rect">RFC 5023: The Atom Publishing Protocol</a>  |
 
 </div>
 

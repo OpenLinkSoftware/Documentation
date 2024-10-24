@@ -155,28 +155,28 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 <td style="text-align: left;" data-valign="top"><p>The following
 functions are used for creating, dropping and updating publications and
 subscriptions to them:</p>
-<p><a href="fn_repl_create_snapshot_sub.html" class="link"
+<p><a href="fn_repl_create_snapshot_sub.html" class="link" shape="rect"
 title="REPL_CREATE_SNAPSHOT_SUB"><code
 class="function">REPL_CREATE_SNAPSHOT_SUB()</code></a></p>
-<p><a href="fn_repl_create_snapshot_pub.html" class="link"
+<p><a href="fn_repl_create_snapshot_pub.html" class="link" shape="rect"
 title="REPL_CREATE_SNAPSHOT_PUB"><code
 class="function">REPL_CREATE_SNAPSHOT_PUB()</code></a></p>
-<p><a href="fn_repl_drop_snapshot_sub.html" class="link"
+<p><a href="fn_repl_drop_snapshot_sub.html" class="link" shape="rect"
 title="REPL_DROP_SNAPSHOT_SUB"><code
 class="function">REPL_DROP_SNAPSHOT_SUB()</code></a></p>
-<p><a href="fn_repl_drop_snapshot_pub.html" class="link"
+<p><a href="fn_repl_drop_snapshot_pub.html" class="link" shape="rect"
 title="REPL_DROP_SNAPSHOT_PUB"><code
 class="function">REPL_DROP_SNAPSHOT_PUB()</code></a></p>
-<p><a href="fn_repl_init_snapshot.html" class="link"
+<p><a href="fn_repl_init_snapshot.html" class="link" shape="rect"
 title="REPL_INIT_SNAPSHOT"><code
 class="function">REPL_INIT_SNAPSHOT()</code></a></p>
-<p><a href="fn_repl_update_snapshot.html" class="link"
+<p><a href="fn_repl_update_snapshot.html" class="link" shape="rect"
 title="REPL_UPDATE_SNAPSHOT"><code
 class="function">REPL_UPDATE_SNAPSHOT()</code></a></p>
-<p><a href="fn_repl_snp_server.html" class="link"
+<p><a href="fn_repl_snp_server.html" class="link" shape="rect"
 title="REPL_SNP_SERVER"><code
 class="function">REPL_SNP_SERVER()</code></a></p>
-<p><a href="fn_repl_server_name.html" class="link"
+<p><a href="fn_repl_server_name.html" class="link" shape="rect"
 title="REPL_SERVER_NAME"><code
 class="function">REPL_SERVER_NAME()</code></a></p></td>
 </tr>
@@ -485,10 +485,10 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;" data-valign="top"><p><a
-href="fn_repl_add_dav_cr.html" class="link"
+href="fn_repl_add_dav_cr.html" class="link" shape="rect"
 title="REPL_ADD_DAV_CR"><code
 class="function">REPL_ADD_DAV_CR()</code></a></p>
-<p><a href="fn_repl_add_snapshot_cr.html" class="link"
+<p><a href="fn_repl_add_snapshot_cr.html" class="link" shape="rect"
 title="REPL_ADD_SNAPSHOT_CR"><code
 class="function">REPL_ADD_SNAPSHOT_CR()</code></a></p></td>
 </tr>

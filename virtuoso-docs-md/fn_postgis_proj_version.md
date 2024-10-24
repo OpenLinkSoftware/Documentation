@@ -8,8 +8,8 @@
 
 ## Name
 
-postgis_proj_version — Returns the version of v7proj4 plugin in use, as
-a string, for compatibility with PostGIS.
+postgis_proj_version — Returns the version of proj4 plugin in use, as a
+string, for compatibility with PostGIS.
 
 </div>
 
@@ -39,8 +39,8 @@ a string, for compatibility with PostGIS.
 
 Returns the version of the
 <a href="sqlrefgeospatial7enchance.html#sqlrefgeospatial7enchanceplg"
-class="link" title="v7proj4 plugin">v7proj4 plugin</a> in use, as a
-string, for compatibility with PostGIS.
+class="link" title="proj4 plugin">proj4 plugin</a> in use, as a string,
+for compatibility with PostGIS.
 
 </div>
 

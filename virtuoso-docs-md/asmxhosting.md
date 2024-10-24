@@ -27,7 +27,7 @@ permissions are set for any .asmx files.
 |                            |                                                                          |
 |:--------------------------:|:-------------------------------------------------------------------------|
 | ![\[Tip\]](images/tip.png) | See Also:                                                                |
-|                            | <a href="rthwritaspxapps.html" class="link"                              
+|                            | <a href="rthwritaspxapps.html" class="link" shape="rect"                 
                               title="14.5. Deploying ASP.Net Web Applications">ASP.Net Web Application  
                               Hosting</a>                                                               |
 

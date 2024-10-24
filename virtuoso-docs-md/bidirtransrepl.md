@@ -354,11 +354,11 @@ done by calling REPL_ADD_CR function.
 
 <div>
 
-|                            |                                                                      |
-|:--------------------------:|:---------------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                            |
-|                            | <a href="fn_repl_add_cr.html" class="link" title="REPL_ADD_CR"><code 
-                              class="function">REPL_ADD_CR()</code></a>                             |
+|                            |                                                                     |
+|:--------------------------:|:--------------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                           |
+|                            | <a href="fn_repl_add_cr.html" class="link" shape="rect"             
+                              title="REPL_ADD_CR"><code class="function">REPL_ADD_CR()</code></a>  |
 
 </div>
 

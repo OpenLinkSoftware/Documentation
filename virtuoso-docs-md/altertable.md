@@ -175,11 +175,11 @@ ALTER TABLE test_add_check ADD CONSTRAINT chkage CHECK (age > 18);
 
 <div>
 
-|                            |                                                              |
-|:--------------------------:|:-------------------------------------------------------------|
-| ![\[Tip\]](images/tip.png) | See Also:                                                    |
-|                            | <a href="sqlrefcreattablecheck.html" class="link"            
-                              title="9.8.8. The CHECK Constraint">The CHECK constraint</a>  |
+|                            |                                                                |
+|:--------------------------:|:---------------------------------------------------------------|
+| ![\[Tip\]](images/tip.png) | See Also:                                                      |
+|                            | <a href="sqlrefcreattablecheck.html" class="link" shape="rect" 
+                              title="9.8.8. The CHECK Constraint">The CHECK constraint</a>    |
 
 </div>
 

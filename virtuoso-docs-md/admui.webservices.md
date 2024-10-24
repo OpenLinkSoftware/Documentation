@@ -156,7 +156,8 @@ Some of the supported features are:
   | ![\[Tip\]](images/tip.png) | See Also:                                                                                                        |
   |                            | <a                                                                                                               
                                 href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetCrawlerJobsGuideSemanticSitemapsFuncExample"  
-                                class="ulink" target="_top">Example of Stored Functions.</a>                                                      |
+                                class="ulink" target="_top" shape="rect">Example of Stored                                                        
+                                Functions.</a>                                                                                                    |
 
   </div>
 
@@ -171,7 +172,8 @@ Some of the supported features are:
   | ![\[Tip\]](images/tip.png) | See Also:                                                                                                        |
   |                            | <a                                                                                                               
                                 href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetCrawlerJobsGuideSemanticSitemapsFuncExample"  
-                                class="ulink" target="_top">Example of Stored Functions.</a>                                                      |
+                                class="ulink" target="_top" shape="rect">Example of Stored                                                        
+                                Functions.</a>                                                                                                    |
 
   </div>
 
@@ -371,7 +373,8 @@ Jobs:
 
 </div>
 
-See <a href="rdfinsertmethodvirtuosocrawler.html" class="link"
+See
+<a href="rdfinsertmethodvirtuosocrawler.html" class="link" shape="rect"
 title="16.9.8. Using Virtuoso Crawler">details</a> how to use Virtuoso
 Crawler for including the Sponger options so you crawl non-RDF but get
 RDF and this to the Quad Store.
@@ -2304,7 +2307,8 @@ From "System Admin" -\> Security -\> "Access Controls" you can manage
 Rules and ACL respectively for HTTP, News, Proxy. The tabs PSH and
 PSH-SSL are available only when the <a
 href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/pubsubhub_dav.vad"
-class="ulink" target="_top">pubsubhub_dav.vad</a> is installed.
+class="ulink" target="_top" shape="rect">pubsubhub_dav.vad</a> is
+installed.
 
 <div>
 

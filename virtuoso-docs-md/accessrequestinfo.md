@@ -96,15 +96,15 @@ width="25"><img src="images/tip.png" alt="[Tip]" /></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;" data-valign="top"><p><a
-href="fn_get_keyword.html" class="link" title="get_keyword"><code
-class="function">get_keyword()</code></a></p>
-<p><a href="fn_atoi.html" class="link" title="atoi"><code
+href="fn_get_keyword.html" class="link" shape="rect"
+title="get_keyword"><code class="function">get_keyword()</code></a></p>
+<p><a href="fn_atoi.html" class="link" shape="rect" title="atoi"><code
 class="function">atoi()</code></a></p>
-<p><a href="fn_aref.html" class="link" title="aref"><code
+<p><a href="fn_aref.html" class="link" shape="rect" title="aref"><code
 class="function">aref()</code></a></p>
-<p><a href="fn_aset.html" class="link" title="aset"><code
+<p><a href="fn_aset.html" class="link" shape="rect" title="aset"><code
 class="function">aset()</code></a></p>
-<p><a href="ch-sqlreference.html#dtcasting" class="link"
+<p><a href="ch-sqlreference.html#dtcasting" class="link" shape="rect"
 title="9.1.2. Casting">cast</a></p></td>
 </tr>
 </tbody>

@@ -52,7 +52,7 @@ can be used in XPATH, XSLT, XQuery.
 - [checkpoint_interval](fn_checkpoint_interval.html "Configure database checkpointing
   ") ()
 - [DB.DBA.VACUUM](fn_vacuum.html "Compact index structures in the database (deprecated since v6)
-  ") ()
+      ") ()
 - [disconnect_user](fn_disconnect_user.html "Disconnect client connections of a given user
   ") ()
 - [fk_check_input_values](fn_fk_check_input_values.html "alter default foreign key checking behavior
@@ -1773,7 +1773,7 @@ can be used in XPATH, XSLT, XQuery.
   ") ()
 - [st_ewkt_read](fn_st_ewkt_read.html "Parses the given text as a EWKT and returns the parsed shape.
   ") ()
-- [postgis_proj_version](fn_postgis_proj_version.html "Returns the version of v7proj4 plugin in use, as a string, for compatibility with PostGIS.
+- [postgis_proj_version](fn_postgis_proj_version.html "Returns the version of proj4 plugin in use, as a string, for compatibility with PostGIS.
   ") ()
 - [dist_from_point_to_line_segment](fn_dist_from_point_to_line_segment.html "returns the distance between a point and a segment on a plane.
   ") ()

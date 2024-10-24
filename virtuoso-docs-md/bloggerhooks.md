@@ -32,7 +32,7 @@ server. The following hooks are available for definition:
 |                            |                                                    |
 |:--------------------------:|:---------------------------------------------------|
 | ![\[Tip\]](images/tip.png) | See Also:                                          |
-|                            | <a href="xmlrpc.html" class="link"                 
+|                            | <a href="xmlrpc.html" class="link" shape="rect"    
                               title="17.10. XML-RPC support">XML-RPC section</a>  |
 
 </div>

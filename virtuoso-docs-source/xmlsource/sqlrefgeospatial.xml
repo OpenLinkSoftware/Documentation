@@ -798,7 +798,7 @@ etc.
           of string, the projection corresponding to original or destination SRID is used. 
               <link linkend="fn_st_transform"><function>ST_Transform</function></link>
                is
-          provided by a separate plugin named v7proj4, as described below. When the plugin is loaded, functions like
+          provided by a separate plugin named proj4, as described below. When the plugin is loaded, functions like
 
               <link linkend="fn_st_intersects"><function>st_intersects()</function></link>
                support pairs of arguments with different SRIDs by converting coords of second argument
@@ -811,8 +811,8 @@ etc.
           </itemizedlist>
         </section>
         <section xml:id="sqlrefgeospatial7enchanceplg">
-          <title>v7proj4 plugin</title>
-          <para>The Virtuoso v7proj4 hosted plugin module is required for performing transformation between different
+          <title>proj4 plugin</title>
+          <para>The Virtuoso proj4 hosted plugin module is required for performing transformation between different
        	co-ordinates systems using the <link linkend="fn_st_transform"><function>ST_Transform()</function></link>
 
    function. The plugin is based on
@@ -823,14 +823,14 @@ etc.
        	or on different location at all. The reason is that the plugin should load data about coordinate systems to
        	work and the simplest way to get the right data from a high-quality source is to use the package.</para>
           <section xml:id="sqlrefgeospatial7enchanceplgcomp">
-            <title>Compiling open source v7proj4 plugin</title>
-            <para>The v7proj4 is currently available in the default develop/7 branch of the
-          	"<link xlink:href="https://github.com/v7fasttrack/virtuoso-opensource">v7fasttrack</link>
+            <title>Compiling open source proj4 plugin</title>
+            <para>The proj4 is currently available in the default develop/7 branch of the
+          	"<link xlink:href="https://github.com/openlink/virtuoso-opensource">Virtuoso Open Source</link>
 
   " git repository and
           	can be build as follows:</para>
             <programlisting>
-git clone https://github.com/v7fasttrack/virtuoso-opensource.git
+git clone https://github.com/openlink/virtuoso-opensource.git
 cd virtuoso-opensource
 ./autogen.sh
 export CFLAGS="-msse4.2 -DSSE42"
@@ -839,28 +839,28 @@ make -j 24
 make install
 </programlisting>
             <para>Note first the "proj.4" library must be installed on the system and can be proj.4 download area, which
-          	the configure script will detect the installation of enabling the v7proj4 plugin library to be built
+          	the configure script will detect the installation of enabling the proj4 plugin library to be built
           	in ~/libsrc/plugin/.libs:</para>
             <programlisting>
-ls libsrc/plugin/.libs/v7proj4*
-libsrc/plugin/.libs/v7proj4.a
-libsrc/plugin/.libs/v7proj4.la
-libsrc/plugin/.libs/v7proj4.lai
-libsrc/plugin/.libs/v7proj4_la-import_gate_virtuoso.o
-libsrc/plugin/.libs/v7proj4_la-sql_v7proj4.o
-libsrc/plugin/.libs/v7proj4_la-v7proj4_plugin.o
-libsrc/plugin/.libs/v7proj4.so
-libsrc/plugin/.libs/v7proj4.ver
+ls libsrc/plugin/.libs/proj4*
+libsrc/plugin/.libs/proj4.a
+libsrc/plugin/.libs/proj4.la
+libsrc/plugin/.libs/proj4.lai
+libsrc/plugin/.libs/proj4_la-import_gate_virtuoso.o
+libsrc/plugin/.libs/proj4_la-sql_proj4.o
+libsrc/plugin/.libs/proj4_la-proj4_plugin.o
+libsrc/plugin/.libs/proj4.so
+libsrc/plugin/.libs/proj4.ver
 </programlisting>
           </section>
           <section xml:id="sqlrefgeospatial7enchanceplginst">
-            <title>Installation and Configuration of v7proj4 plugin</title>
-            <para>When the plugin (v7proj4.so) is built, it needs to be added to the [Plugins] section of Virtuoso configuration file
+            <title>Installation and Configuration of proj4 plugin</title>
+            <para>When the plugin (proj4.so) is built, it needs to be added to the [Plugins] section of Virtuoso configuration file
           	(virtuoso.ini or the like), also on every node of a cluster:</para>
             <programlisting>
 [Plugins]
 LoadPath = ./plugins
-Load2    = plain, v7proj4
+Load2    = plain, proj4
 </programlisting>
             <para>If everything is fine then the virtuoso.log file will contain something like the following lines after the next
           	startup:</para>
@@ -869,24 +869,24 @@ Load2    = plain, v7proj4
 21:30:10   ShapefileIO version 0.1virt71 from OpenLink Software
 21:30:10   Shapefile support based on Frank Warmerdam's Shapelib
 21:30:10   SUCCESS plugin 1: loaded from ./plugins/shapefileio.so }
-21:30:10 { Loading plugin 2: Type `plain', file `v7proj4' in `.'
+21:30:10 { Loading plugin 2: Type `plain', file `proj4' in `.'
 21:30:11   plain version 3208 from OpenLink Software
 21:30:11   Cartographic Projections support based on Frank Warmerdam's
 proj4 library
-21:30:11   SUCCESS plugin 2: loaded from ./plugins/v7proj4.so }
+21:30:11   SUCCESS plugin 2: loaded from ./plugins/proj4.so }
 21:30:11 OpenLink Virtuoso Universal Server
 21:30:11 Version 07.10.3208-pthreads for Linux as of Mar 31 2014
 ...
-21:30:28 PL LOG: Initial setup of DB.DBA.SYS_V7PROJ4_SRIDS data from
+21:30:28 PL LOG: Initial setup of DB.DBA.SYS_PROJ4_SRIDS data from
 files in "/usr/share/proj"
-21:30:30 PL LOG: DB.DBA.SYS_V7PROJ4_SRIDS now contains 6930 spatial
+21:30:30 PL LOG: DB.DBA.SYS_PROJ4_SRIDS now contains 6930 spatial
 reference systems
 ...
 21:30:32 Server online at 1720 (pid 9654)
 </programlisting>
             <para>To store descriptions of coordinate systems, the plugin creates a table:</para>
             <programlisting>
-create table DB.DBA.SYS_V7PROJ4_SRIDS (
+create table DB.DBA.SYS_PROJ4_SRIDS (
  SR_ID integer,
  SR_FAMILY varchar not null,
  SR_TAG varchar,
@@ -921,7 +921,7 @@ $ cat /usr/share/proj/epsg
 &lt;4326&gt;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&lt;&gt;
 </programlisting>
             <programlisting>
-SQL&gt; SELECT * FROM DB.DBA.SYS_V7PROJ4_SRIDS;
+SQL&gt; SELECT * FROM DB.DBA.SYS_PROJ4_SRIDS;
 SR_ID             SR_FAMILY          SR_TAG    SR_ORIGIN              SR_IRI    SR_PROJ4_STRING                                    SR_WKT    SR_COMMENT   SR_PROJ4_XML
 INTEGER NOT NULL  VARCHAR NOT NULL   VARCHAR   VARCHAR NOT NULL       VARCHAR   VARCHAR NOT NULL                                   VARCHAR   VARCHAR      VARCHAR
 _______________________________________________________________________________
@@ -934,37 +934,37 @@ SQL&gt;
             <para>There are two procedures are available for loading more co-ordinate systems:</para>
             <orderedlist>
               <listitem>
-                <para><code>DB.DBA.V7PROJ4_LOAD_SYS_SRIDS</code>
-                : it is called at server startup if the v7proj4 plugin is loaded:
+                <para><code>DB.DBA.PROJ4_LOAD_SYS_SRIDS</code>
+                : it is called at server startup if the proj4 plugin is loaded:
 </para>
                 <programlisting>
-DB.DBA.V7PROJ4_LOAD_SYS_SRIDS (
+DB.DBA.PROJ4_LOAD_SYS_SRIDS (
   in projdir varchar := '/usr/share/proj',
   in only_if_empty_table integer := 0
 )
 </programlisting>
               </listitem>
               <listitem>
-                <para><code>DB.DBA.V7PROJ4_LOAD_INIT_FILE</code>
+                <para><code>DB.DBA.PROJ4_LOAD_INIT_FILE</code>
                 : it is lower-level procedure:
 </para>
                 <programlisting>
-DB.DBA.V7PROJ4_LOAD_INIT_FILE (
+DB.DBA.PROJ4_LOAD_INIT_FILE (
   in path varchar,
   in _sr_family varchar
 )
 </programlisting>
               </listitem>
             </orderedlist>
-            <para>The main part of <code>DB.DBA.V7PROJ4_LOAD_SYS_SRIDS()</code>
+            <para>The main part of <code>DB.DBA.PROJ4_LOAD_SYS_SRIDS()</code>
 
    is a sequence of: </para>
             <programlisting>
-DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/epsg', 'EPSG');
-DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/esri', 'ESRI');
-DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/esri.extra', 'ESRI');
-DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/nad83', 'NAD83');
-DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/nad27', 'NAD27');
+DB.DBA.PROJ4_LOAD_INIT_FILE (projdir || '/epsg', 'EPSG');
+DB.DBA.PROJ4_LOAD_INIT_FILE (projdir || '/esri', 'ESRI');
+DB.DBA.PROJ4_LOAD_INIT_FILE (projdir || '/esri.extra', 'ESRI');
+DB.DBA.PROJ4_LOAD_INIT_FILE (projdir || '/nad83', 'NAD83');
+DB.DBA.PROJ4_LOAD_INIT_FILE (projdir || '/nad27', 'NAD27');
 </programlisting>
             <para>Rows with same SRID but different <code>SR_FAMILY</code>
 
@@ -976,11 +976,11 @@ DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/nad27', 'NAD27');
             <programlisting>
 SELECT COALESCE
    (
-     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='PG'),
-     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='EPSG'),
-     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='ESRI'),
-     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='NAD83'),
-     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='NAD27')
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='PG'),
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='EPSG'),
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='ESRI'),
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='NAD83'),
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_PROJ4_SRIDS WHERE SR_ID=:0 AND SR_FAMILY='NAD27')
    )
 </programlisting>
             <para>so for <link linkend="fn_st_transform"><function>ST_Transform()</function></link>
@@ -990,7 +990,7 @@ SELECT COALESCE
           not listed here or strings from other tables etc., and feed projection strings directly to <link linkend="fn_st_transform"><function>ST_Transform()</function></link>
 
   .</para>
-            <para>The co-ordinate systems can also be updated by direct manipulations on <code>DB.DBA.SYS_V7PROJ4_SRIDS table</code>
+            <para>The co-ordinate systems can also be updated by direct manipulations on <code>DB.DBA.SYS_PROJ4_SRIDS table</code>
 
           (the table it is readable for public and writable for DBA only). When the table is edited, call function
           "<code>Proj4 cache_reset()</code>
@@ -998,7 +998,7 @@ SELECT COALESCE
   " to prevent SQL runtime from using previously prepared projections that might become
           obsolete after changes in the table. Note that proj4 projections are for normalized data in radians whereas Virtuoso
           stores shapes using numbers that come from WKT, i.e. they're latitudes and longitudes in degrees for almost all cases.</para>
-            <para>The v7proj4 plugin automatically applies <code>RAD_TO_DEG</code>
+            <para>The proj4 plugin automatically applies <code>RAD_TO_DEG</code>
 
    multiplier before conversion and/or
           <code>RAD_TO_DEG</code>
@@ -1025,7 +1025,7 @@ SELECT COALESCE
    function to transform some of the sample
           coordinate systems load into Virtuoso:</para>
             <programlisting>
-SQL&gt; SELECT * FROM DB.DBA.SYS_V7PROJ4_SRIDS;
+SQL&gt; SELECT * FROM DB.DBA.SYS_PROJ4_SRIDS;
 SR_ID              SR_FAMILY          SR_TAG    SR_ORIGIN              SR_IRI    SR_PROJ4_STRING                                                                                                                                                                         SR_WKT    SR_COMMENT   SR_PROJ4_XML
 INTEGER NOT NULL   VARCHAR NOT NULL   VARCHAR   VARCHAR NOT NULL       VARCHAR   VARCHAR NOT NULL                                                                                                                                                                        VARCHAR   VARCHAR      VARCHAR
 _______________________________________________________________________________
